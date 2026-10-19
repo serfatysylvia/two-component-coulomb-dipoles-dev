@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite the paper it formalizes."
+title: "Dipole formation in the two-component plasma: a Lean 4 formalization"
+type: software
+authors:
+  - family-names: Serfaty
+    given-names: Sylvia
+license: Apache-2.0
+repository-code: "https://github.com/serfatysylvia/two-component-coulomb-dipoles-dev"
+preferred-citation:
+  type: article
+  title: "Dipole Formation in the Two-component Plasma"
+  authors:
+    - family-names: Boursier
+      given-names: Jeanne
+    - family-names: Serfaty
+      given-names: Sylvia
+  identifiers:
+    - type: other
+      value: "arXiv:2410.01025"
+  url: "https://arxiv.org/abs/2410.01025"
+  year: 2024

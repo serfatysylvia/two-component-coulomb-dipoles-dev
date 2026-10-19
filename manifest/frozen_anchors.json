@@ -1,0 +1,1577 @@
+{
+  "schema_version": 1,
+  "manifest_state": "AUTHOR_APPROVED",
+  "seal_limits": {
+    "max_body_lines": 3,
+    "max_body_bytes": 240
+  },
+  "anchors": [
+    {
+      "id": "def:logKernel",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 137–139"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.logKernel",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+      "export": "TwoComponentCoulomb.logKernel",
+      "abi_sha256": "2326a3be757a4174a46bf1cf190cacc56c49adff05abea25e6bf9bbfcec6a9fe",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:logKernel",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+    },
+    {
+      "id": "def:box",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 125"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.box",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Box.lean",
+      "export": "TwoComponentCoulomb.box",
+      "abi_sha256": "4386dc7a81b6d32b5188403c28a002fa3b4d5b948a696cf4ca6419b5705845b5",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:box",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+    },
+    {
+      "id": "def:smearedCharge",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 148"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.smearedCharge",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+      "export": "TwoComponentCoulomb.smearedCharge",
+      "abi_sha256": "bd5227fe077eeb201430f342ae007693199199fd881abf185b961fa7cce8c424",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:smearedCharge",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+    },
+    {
+      "id": "def:kappa",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 149–150 (eq. defkappa)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.kappa",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+      "export": "TwoComponentCoulomb.kappa",
+      "abi_sha256": "b9caec07fd1c5a2d2a5fb8464a11d838f52fc2b94257f6e73a552480d79e202d",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:kappa",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+    },
+    {
+      "id": "def:smearedKernel",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 162–163 (eq. eq:defgeta)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.smearedKernel",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+      "export": "TwoComponentCoulomb.smearedKernel",
+      "abi_sha256": "5cbd6c23c9a2f5b069bc1f9c785efee6577c39b03539458f05b95a8892bd6ecf",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:smearedKernel",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+    },
+    {
+      "id": "def:charge",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 216"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.charge",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+      "export": "TwoComponentCoulomb.charge",
+      "abi_sha256": "d3b497064e856dc079fc0876893d3544d2315b5d6824b8fdf33c636c1a8d3ebc",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:charge",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+    },
+    {
+      "id": "def:energy",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 155–158 (eq. eq:F3)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.energy",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+      "export": "TwoComponentCoulomb.energy",
+      "abi_sha256": "4c5b216b4f0249af9cd75bc97955596c59f2045a31c4d68853d280a2f4242528",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:energy",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+    },
+    {
+      "id": "def:partitionFunction",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 176–177 (eq. eq:ZRV)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.partitionFunction",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
+      "export": "TwoComponentCoulomb.partitionFunction",
+      "abi_sha256": "24d6383319955ae7c366c04b58a7e496be96af5af723ea20ceab62e0d5f53e38",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:partitionFunction",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+    },
+    {
+      "id": "def:gibbsMeasure",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 172–174 (eq. defP)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.gibbsMeasure",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/GibbsMeasure.lean",
+      "export": "TwoComponentCoulomb.gibbsMeasure",
+      "abi_sha256": "49660b3f3a1b3ea2ffd5cadfb17917d85856b9efacd4294d6aef6937e0a2cd63",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
+          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:gibbsMeasure",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "ae05faf33d30ce4482724f6512506f1a15a43a7c8e07220add543c153083afe0"
+    },
+    {
+      "id": "def:dipoleConstant",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 208–213 (eq. def:Cbeta)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.dipoleConstant",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
+      "export": "TwoComponentCoulomb.dipoleConstant",
+      "abi_sha256": "03248486dee2252c92cc1972895f0bb1ec8c9e3e0dcac4556a7cf974fcaed5e3",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:dipoleConstant",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+    },
+    {
+      "id": "def:M0",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 233"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.M0",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/M0.lean",
+      "export": "TwoComponentCoulomb.M0",
+      "abi_sha256": "3a4b235ee54739dacec18786d3b37264db3ad50a109375def1a373ee44fc4145",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:M0",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+    },
+    {
+      "id": "def:nearestNeighbor",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 217"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.nearestNeighbor",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+      "export": "TwoComponentCoulomb.nearestNeighbor",
+      "abi_sha256": "26fa09d8af849e1fd25756db202481bfe2f3193cd224ca50d13c8ce8d5997644",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:nearestNeighbor",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+    },
+    {
+      "id": "def:IsIsolatedDipole",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 222–230"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.IsIsolatedDipole",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
+      "export": "TwoComponentCoulomb.IsIsolatedDipole",
+      "abi_sha256": "8f5a3a9d68304e703ffd8fa54fe8965dd7931a83acdfd1c9325d8613b330400c",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:IsIsolatedDipole",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+    },
+    {
+      "id": "def:isolatedDipoles",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 230, 259"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.isolatedDipoles",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/IsolatedDipoles.lean",
+      "export": "TwoComponentCoulomb.isolatedDipoles",
+      "abi_sha256": "051aac16630b353a5b1d43755f76768018f45baf1638b539e181982c0c6d8967",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
+          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:isolatedDipoles",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "fca9e6e3abfbd06cf64124967d47b8b19867daf401f721cee5165c27c6c8bbb3"
+    },
+    {
+      "id": "def:longIsolatedDipoles",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 263"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.longIsolatedDipoles",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/LongIsolatedDipoles.lean",
+      "export": "TwoComponentCoulomb.longIsolatedDipoles",
+      "abi_sha256": "b25e4d70d007c188d08dac928fc94c9b5b684ba959d791d6be6a715579244ce2",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
+          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:longIsolatedDipoles",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "d64ba477642a9f36eb404359a02f7e1994dcc4ead5dd829bfc46adaaa7b7ccf4"
+    },
+    {
+      "id": "def:reducedEnergy",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 255–257"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.reducedEnergy",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/ReducedEnergy.lean",
+      "export": "TwoComponentCoulomb.reducedEnergy",
+      "abi_sha256": "1259cc0eb9c099f4b524d69cb36775d78e4f245aeaf7569ead171b985b642492",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:reducedEnergy",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+    },
+    {
+      "id": "def:fluct",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R17, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 298"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.fluct",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Fluct.lean",
+      "export": "TwoComponentCoulomb.fluct",
+      "abi_sha256": "83edfbedbe797eafd5e43468082abea9f43b29c5fb03ff0274e5ec764954d5e6",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:fluct",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R17, R19"
+      },
+      "full_file_sha256": "4d772749d072be3ce0d6f7ac775356d1f2c4a17180008e63b07e52959c9980b4"
+    },
+    {
+      "id": "def:IsGeneric",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 217, 348"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.IsGeneric",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/IsGeneric.lean",
+      "export": "TwoComponentCoulomb.IsGeneric",
+      "abi_sha256": "a99229e2236a4f33aa830946e01feeb307b515c247cac4b3ccece114eab88765",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:IsGeneric",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "full_file_sha256": "ffe32dde03daecb29fe958800374b9678039fd9b004a45d797118dedd9ed63a9"
+    },
+    {
+      "id": "def:secondNearestNeighbor",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 367–368"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.secondNearestNeighbor",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/SecondNearestNeighbor.lean",
+      "export": "TwoComponentCoulomb.secondNearestNeighbor",
+      "abi_sha256": "7ca8cbda058089b542d75ee280717721189706f2d2cd260b06d849866ab9f3c8",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:secondNearestNeighbor",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "full_file_sha256": "5db664e8fa71290b16476c43ee50fa7fb06e76862f80ca6c5aa6181ed956cfc7"
+    },
+    {
+      "id": "def:firstNeighborRadius",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 365 (eq. nn2)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.firstNeighborRadius",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/FirstNeighborRadius.lean",
+      "export": "TwoComponentCoulomb.firstNeighborRadius",
+      "abi_sha256": "37d572d57b72a698310134e9905a72c70465393b920d9f49439ad26535b17c45",
+      "definition_closure": [],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:firstNeighborRadius",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "full_file_sha256": "a0a58c4042413e3135c26ebb169f098d060905c988782a89a9130a30a604e581"
+    },
+    {
+      "id": "def:secondNeighborRadius",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 367 (eq. nn3, p = 2)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.secondNeighborRadius",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/SecondNeighborRadius.lean",
+      "export": "TwoComponentCoulomb.secondNeighborRadius",
+      "abi_sha256": "02164d772ad174dfd17e3bffce105be341401098251f4df1514ca31a507759c0",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:secondNeighborRadius",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "full_file_sha256": "a723c4331c144e817e4417dfbb9cff2a69bf8e3021c6ee1ed4dc59edd519bc44"
+    },
+    {
+      "id": "def:IsIsolatedPair",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 375–385 (eq. defIdip)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.IsIsolatedPair",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/IsIsolatedPair.lean",
+      "export": "TwoComponentCoulomb.IsIsolatedPair",
+      "abi_sha256": "9785b5f320e946ea9ee8c1f3f741ef56262bca29632cf8b44027a60351dec688",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:IsIsolatedPair",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "full_file_sha256": "c1d10d34587a2a9ef1a1cb0b2ec599edd94fed3a18424cd1579c8d97bae7a0d0"
+    },
+    {
+      "id": "def:numComponents",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 375"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.numComponents",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/NumComponents.lean",
+      "export": "TwoComponentCoulomb.numComponents",
+      "abi_sha256": "2b8973cca153c314d934c78eb8e1f1a47c13981843ec4498b3d449c4175d6e0a",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:numComponents",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "full_file_sha256": "23f9f53813dcf36277e44192acae9741103b1b3a6219e7d5168e720cf5636b16"
+    },
+    {
+      "id": "def:reducedPartitionFunction",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 922–930"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.reducedPartitionFunction",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/ReducedPartitionFunction.lean",
+      "export": "TwoComponentCoulomb.reducedPartitionFunction",
+      "abi_sha256": "2102bdae12bd6ee35bd8f72f1ee493d9a2c09252852dcaeaf3aa80c82cfa2bda",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/ReducedEnergy.lean",
+          "sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:reducedPartitionFunction",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "full_file_sha256": "3d533471684b4af06c615197a32526ea75253ec7f759453e5d356af693c8181e"
+    },
+    {
+      "id": "prop:mino2",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 434–443 (prop:mino2, Proposition 2.2)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.proposition_2_2",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Proposition22.lean",
+      "export": "TwoComponentCoulomb.proposition_2_2",
+      "abi_sha256": "0a606e7655fce4ca83b75c2ba2e2734f7537d35a8794d79a217506378387a0c3",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsGeneric.lean",
+          "sha256": "ffe32dde03daecb29fe958800374b9678039fd9b004a45d797118dedd9ed63a9"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/FirstNeighborRadius.lean",
+          "sha256": "a0a58c4042413e3135c26ebb169f098d060905c988782a89a9130a30a604e581"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SecondNeighborRadius.lean",
+          "sha256": "a723c4331c144e817e4417dfbb9cff2a69bf8e3021c6ee1ed4dc59edd519bc44"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "prop:mino2",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "implementation": {
+        "module": "TwoComponentCoulomb.Energy.Proposition22",
+        "export": "TwoComponentCoulomb.Energy.proposition_2_2"
+      },
+      "prefix_sha256": "683b03d500c6e0821e14792aca81b125f695efb21e4283cdd7c88582ee1fc22c",
+      "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "coromino",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 452–464 (coromino, Corollary 2.3)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.corollary_2_3",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Corollary23.lean",
+      "export": "TwoComponentCoulomb.corollary_2_3",
+      "abi_sha256": "9c56eade24eb749314b3a04e622fa1e0580faaaaf4e6fb4db6874fcb5ade6e2b",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
+          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsGeneric.lean",
+          "sha256": "ffe32dde03daecb29fe958800374b9678039fd9b004a45d797118dedd9ed63a9"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SecondNearestNeighbor.lean",
+          "sha256": "5db664e8fa71290b16476c43ee50fa7fb06e76862f80ca6c5aa6181ed956cfc7"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/FirstNeighborRadius.lean",
+          "sha256": "a0a58c4042413e3135c26ebb169f098d060905c988782a89a9130a30a604e581"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SecondNeighborRadius.lean",
+          "sha256": "a723c4331c144e817e4417dfbb9cff2a69bf8e3021c6ee1ed4dc59edd519bc44"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsIsolatedPair.lean",
+          "sha256": "c1d10d34587a2a9ef1a1cb0b2ec599edd94fed3a18424cd1579c8d97bae7a0d0"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NumComponents.lean",
+          "sha256": "23f9f53813dcf36277e44192acae9741103b1b3a6219e7d5168e720cf5636b16"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "coromino",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "implementation": {
+        "module": "TwoComponentCoulomb.Energy.Corollary23",
+        "export": "TwoComponentCoulomb.Energy.corollary_2_3"
+      },
+      "prefix_sha256": "b2c9b8de2f17b8342c6a99fbcbf8c3e5352d7a6a07c54ae5f070354843d48e5f",
+      "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "lemma:part-nn",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 922–946 (lemma:part nn, Lemma 3.6)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.lemma_3_6",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Lemma36.lean",
+      "export": "TwoComponentCoulomb.lemma_3_6",
+      "abi_sha256": "5d0ee1e74500c02a089aeaf37ebb642899d913a5a9008da4abcba4f0547a20e9",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
+          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/ReducedEnergy.lean",
+          "sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/ReducedPartitionFunction.lean",
+          "sha256": "3d533471684b4af06c615197a32526ea75253ec7f759453e5d356af693c8181e"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "lemma:part-nn",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "implementation": {
+        "module": "TwoComponentCoulomb.UpperBound.Lemma36",
+        "export": "TwoComponentCoulomb.UpperBound.lemma_3_6"
+      },
+      "prefix_sha256": "63c4602a947c4b31d79a11d578044bf9222591bffa52226c31a1071a58033697",
+      "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:lower-bound",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-10",
+        "approval_ref": "RULINGS.md R18, R19",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 1745–1759 (prop:lower bound, Proposition 4.1)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.proposition_4_1",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Proposition41.lean",
+      "export": "TwoComponentCoulomb.proposition_4_1",
+      "abi_sha256": "45b43df883f93f8feede0065dcf9fa2698b7fda5ca70f2024c604a7697f5fe0a",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
+          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
+          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "prop:lower-bound",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R18, R19"
+      },
+      "implementation": {
+        "module": "TwoComponentCoulomb.LowerBound.Proposition41",
+        "export": "TwoComponentCoulomb.LowerBound.proposition_4_1"
+      },
+      "prefix_sha256": "a3702fc18a42886192e2ca349c59877277509f057bf83588b7b7f2949ff9f767",
+      "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "def:errorRate",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-18",
+        "approval_ref": "RULINGS.md R20",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 236–244 (eq. eq:defgammal)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.errorRate",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/ErrorRate.lean",
+      "export": "TwoComponentCoulomb.errorRate",
+      "abi_sha256": "382b1458175aa2aea2e063a5da865b4ef64f3ba5214fd92e5c99570c0fd8f073",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/M0.lean",
+          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "def:errorRate",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R20"
+      },
+      "full_file_sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+    },
+    {
+      "id": "prop:upper-bound",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-18",
+        "approval_ref": "RULINGS.md R20",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 1423–1455 (prop:upper bound, Proposition 3.10)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.proposition_3_10",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Proposition310.lean",
+      "export": "TwoComponentCoulomb.proposition_3_10",
+      "abi_sha256": "11ff2fbeb59bd38cba8ad3eeb75103f19203a7e546f60c90ceefcc1f0f0c45c9",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
+          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
+          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/M0.lean",
+          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/ErrorRate.lean",
+          "sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
+          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsolatedDipoles.lean",
+          "sha256": "fca9e6e3abfbd06cf64124967d47b8b19867daf401f721cee5165c27c6c8bbb3"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/LongIsolatedDipoles.lean",
+          "sha256": "d64ba477642a9f36eb404359a02f7e1994dcc4ead5dd829bfc46adaaa7b7ccf4"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "prop:upper-bound",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R20"
+      },
+      "implementation": {
+        "module": "TwoComponentCoulomb.UpperBound.Proposition310",
+        "export": "TwoComponentCoulomb.UpperBound.proposition_3_10"
+      },
+      "prefix_sha256": "8a03b1fc047040c868a56412374357d9a046a3961b2a1120bab887f2ecab8704",
+      "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "theorem:th1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-18",
+        "approval_ref": "RULINGS.md R20",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 235–274 (theorem:th1)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.theorem_1",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Theorem1.lean",
+      "export": "TwoComponentCoulomb.theorem_1",
+      "abi_sha256": "9dc9c1289d16b0351c0b1c0199440717c8729351d5c2951aaf9ca4884afb5197",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
+          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
+          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/GibbsMeasure.lean",
+          "sha256": "ae05faf33d30ce4482724f6512506f1a15a43a7c8e07220add543c153083afe0"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
+          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/M0.lean",
+          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/ErrorRate.lean",
+          "sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
+          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
+          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/IsolatedDipoles.lean",
+          "sha256": "fca9e6e3abfbd06cf64124967d47b8b19867daf401f721cee5165c27c6c8bbb3"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/LongIsolatedDipoles.lean",
+          "sha256": "d64ba477642a9f36eb404359a02f7e1994dcc4ead5dd829bfc46adaaa7b7ccf4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/ReducedEnergy.lean",
+          "sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "theorem:th1",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R20"
+      },
+      "implementation": {
+        "module": "TwoComponentCoulomb.Main.Theorem1",
+        "export": "TwoComponentCoulomb.Main.theorem_1"
+      },
+      "prefix_sha256": "650015c30cf916cecf923961871bcf44b15c99e292360c36ca652afe79aa95c7",
+      "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:linear",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "paper authors",
+        "approved_at": "2026-10-18",
+        "approval_ref": "RULINGS.md R20",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
+        "range": "l. 297–305 (prop:linear, Theorem 2)"
+      },
+      "contract": {
+        "id": "TwoComponentCoulomb.theorem_2",
+        "version": "1"
+      },
+      "path": "TwoComponentCoulomb/Frozen/Theorem2.lean",
+      "export": "TwoComponentCoulomb.theorem_2",
+      "abi_sha256": "dffaae9f223fa9df9eefc74318df1239787e23cb90ad35b2632e1d54629cd035",
+      "definition_closure": [
+        {
+          "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
+          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Box.lean",
+          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
+          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
+          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Charge.lean",
+          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Energy.lean",
+          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
+          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/GibbsMeasure.lean",
+          "sha256": "ae05faf33d30ce4482724f6512506f1a15a43a7c8e07220add543c153083afe0"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/M0.lean",
+          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/ErrorRate.lean",
+          "sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+        },
+        {
+          "path": "TwoComponentCoulomb/Frozen/Fluct.lean",
+          "sha256": "4d772749d072be3ce0d6f7ac775356d1f2c4a17180008e63b07e52959c9980b4"
+        }
+      ],
+      "state": "SEALED",
+      "split_policy": {
+        "source_group": "prop:linear",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "RULINGS.md R20"
+      },
+      "implementation": {
+        "module": "TwoComponentCoulomb.Main.Theorem2",
+        "export": "TwoComponentCoulomb.Main.theorem_2"
+      },
+      "prefix_sha256": "ce93a4bf26b6454acb5cfcf57ec4bd8e8872e54d1a2bcb8a92d286ee943a76bd",
+      "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    }
+  ]
+}

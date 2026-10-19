@@ -1,0 +1,47 @@
+name: Build and axiom audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Free runner disk space
+        run: |
+          set -Eeuo pipefail
+          # Only remove preinstalled, unused SDKs on disposable hosted runners.
+          if [[ "${RUNNER_ENVIRONMENT:-}" == github-hosted ]]; then
+            sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+            sudo docker image prune --all --force > /dev/null || true
+          fi
+          df -h .
+          available_kib="$(df -Pk . | awk 'NR==2 {print $4}')"
+          test "$available_kib" -ge 20971520
+
+      - name: Build (with the Mathlib cache)
+        uses: leanprover/lean-action@f061402b660e0c34644504b324e830f2991d4865 # v1.6.1
+        with:
+          auto-config: false
+          use-mathlib-cache: true
+          build: true
+
+      - name: Project checks
+        run: scripts/check_all.sh --no-build
+
+      - name: Axiom audit
+        run: |
+          scripts/print_axioms.sh TwoComponentCoulomb \
+            TwoComponentCoulomb.theorem_1 TwoComponentCoulomb.theorem_2 \
+            TwoComponentCoulomb.proposition_2_2 TwoComponentCoulomb.corollary_2_3 \
+            TwoComponentCoulomb.lemma_3_6 TwoComponentCoulomb.proposition_3_10 \
+            TwoComponentCoulomb.proposition_4_1
