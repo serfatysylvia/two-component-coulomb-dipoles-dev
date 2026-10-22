@@ -4,23 +4,28 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 module
 
-public import TwoComponentCoulomb.LowerBound.DiscFactor
-public import TwoComponentCoulomb.LowerBound.RadiusTail
+public import TwoComponentCoulomb.LowerBound.PhiExpectation
+public import TwoComponentCoulomb.LowerBound.ScreenedLower
+import TwoComponentCoulomb.Integrals.Radial
 
 /-!
 # Jensen over the placement set and the lower bound for `β > 2`
 
-Source: Proposition 4.1, Steps 2--3 (l. 1829--1899), eqs.
-(minz3), (align57), (eq:volume-lower), (eq:Jensen) and the conclusion before Stirling, by the
-route of ruling R12a (the exponent of the disc factor has no `-C s²/r²` correction).
+Source: Proposition 4.1, Steps 2--3 (l. 1828--1898), eqs.
+(minz3), (align57), (eq:volume-lower), (eq:Jensen) and the conclusion before Stirling's formula.
+The proof follows the source (ruling R22): the pair factor `J_β(r)` carries the correction
+`-β s²/r²` coming from eq. (majof), and Jensen's inequality is applied to the profile `φ_β`.
 
 * `measureReal_mul_exp_neg_le_integral` : Jensen's inequality for `exp(-g)` on a finite measure
   (tangent-line proof).
-* `lintegral_prod_disc_factor_ge` : `∫_H ∏_i J(r(x_i)) ≥ vol H · A^N · exp(-C Σ_i (1/vol H) ∫_H
-  (λ/r(x_i))^{β-2})` with `A = 𝒵_β λ^{2-β}` (item 4).
+* `lintegral_prod_pairFactor_ge` : eq. (eq:Jensen) in integrated form,
+  `∫_H ∏_i J_β(ϱ(x_i)) ≥ vol H · (𝒵_β λ^{2-β})^N · exp(-C Σ_i (1/vol H) ∫_H φ_β(ϱ(x_i)))`, from
+  (align57) (`exists_pairFactor_ge_exp`).
 * `partitionFunction_ge_of_two_lt` : the lower bound
-  `Z ≥ N! N^N (𝒵_β λ^{2-β})^N exp(-C N ε_λ - C √N η_λ)` for `β > 2` (item 5; the inequality of
-  the source before the use of Stirling's formula).
+  `Z ≥ N! N^N (𝒵_β λ^{2-β})^N exp(-C N ε_λ - C √N η_λ)` for `β > 2` (the inequality of the source
+  before the use of Stirling's formula, l. 1889--1892), from (minz3)
+  (`partitionFunction_ge_pairFactor`), (eq:volume-lower) (`volume_placementSet_ge`) and Step 3
+  (`expectation_isolatedPhi_lowerRadius_le`).
 -/
 
 public section
@@ -65,21 +70,20 @@ theorem measureReal_mul_exp_neg_le_integral {α : Type*} [MeasurableSpace α] {�
   rw [h2] at h1
   linarith
 
-/-- **Jensen over `H`** (source l. 1856--1860, eqs. (minz3), (align57), (eq:Jensen)): there is
-`C > 0` (depending only on `β`) such that for `4λ ≤ 1`,
-`∫_H ∏_i J(r(x_i)) dX ≥ vol H · (𝒵_β λ^{2-β})^N · exp(-C Σ_i (1/vol H) ∫_H (λ/r(x_i))^{β-2})`,
-where `J(r) = ∫_{B̄(0, r/2)} e^{β g_λ}`. -/
-theorem lintegral_prod_disc_factor_ge {β : ℝ} (hβ : 2 < β) :
+/-- **Jensen over `H`** (source l. 1856--1860, eqs. (minz3), (align57), (eq:Jensen)): for `β > 2`
+there is `C > 0` such that for `0 < λ`, `4λ ≤ 1` and `H = H(N, N, 4λ, 8λ)`,
+`∫_H ∏_i J_β(ϱ(x_i)) dX ≥ vol H · (𝒵_β λ^{2-β})^N · exp(-C Σ_i (1/vol H) ∫_H φ_β(ϱ(x_i)))`,
+where `J_β = pairFactor β β λ` and `φ_β = isolatedPhi β`. -/
+theorem lintegral_prod_pairFactor_ge {β : ℝ} (hβ : 2 < β) :
     ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → 4 * lam ≤ 1 →
       ENNReal.ofReal ((volume (placementSet N N (4 * lam) (8 * lam))).toReal *
           (dipoleConstant β hβ.le * lam ^ (2 - β)) ^ N *
           Real.exp (-(C * (∑ i, ∫ X in placementSet N N (4 * lam) (8 * lam),
-              (lam / lowerRadius hN X i) ^ (β - 2)) /
+              isolatedPhi β hβ.le lam (lowerRadius hN X i)) /
             (volume (placementSet N N (4 * lam) (8 * lam))).toReal))) ≤
-        ∫⁻ X in placementSet N N (4 * lam) (8 * lam), ∏ i, ENNReal.ofReal
-          (∫ u in Metric.closedBall (0 : ℂ) (lowerRadius hN X i / 2),
-            Real.exp (β * smearedKernel lam u)) := by
-  obtain ⟨C, hC, hdisc⟩ := disc_factor_ge hβ
+        ∫⁻ X in placementSet N N (4 * lam) (8 * lam), ∏ i,
+          ENNReal.ofReal (pairFactor β β lam (lowerRadius hN X i)) := by
+  obtain ⟨C, hC, hpair⟩ := exists_pairFactor_ge_exp hβ (A := β) (by linarith)
   refine ⟨C, hC, fun N hN lam hlam h4 => ?_⟩
   set H := placementSet N N (4 * lam) (8 * lam) with hH
   have hHm : MeasurableSet H := measurableSet_placementSet _ _ _ _
@@ -87,38 +91,28 @@ theorem lintegral_prod_disc_factor_ge {β : ℝ} (hβ : 2 < β) :
   by_cases hV0 : V = 0
   · simp [hV0]
   have hVpos : 0 < V := lt_of_le_of_ne ENNReal.toReal_nonneg (Ne.symm hV0)
-  have hfin : volume H ≠ ⊤ := fun h => hV0 (by simp [hV, h])
-  have : IsFiniteMeasure (volume.restrict H) :=
-    ⟨by rw [Measure.restrict_apply_univ]; exact lt_top_iff_ne_top.2 hfin⟩
+  have : IsFiniteMeasure (volume.restrict H) := isFiniteMeasure_restrict_placementSet N N _ _
   set μ : Measure (Fin N → ℂ) := volume.restrict H with hμ
   have hμV : μ.real Set.univ = V := by
     rw [hμ, measureReal_def, Measure.restrict_apply_univ]
   set A : ℝ := dipoleConstant β hβ.le * lam ^ (2 - β) with hA
   have hApos : 0 < A := mul_pos (dipoleConstant_pos β hβ.le) (Real.rpow_pos_of_pos hlam _)
-  set f : Fin N → (Fin N → ℂ) → ℝ := fun i X => (lam / lowerRadius hN X i) ^ (β - 2) with hf
-  have hfmeas : ∀ i, Measurable (f i) := fun i =>
-    (measurable_const.div (measurable_lowerRadius hN i)).pow_const _
-  have hfb : ∀ i, ∀ X ∈ H, 0 ≤ f i X ∧ f i X ≤ 1 := by
-    intro i X hX
-    have h4r := four_mul_le_lowerRadius hN h4 hX i
-    have hr0 : 0 < lowerRadius hN X i := by linarith
-    refine ⟨by positivity, Real.rpow_le_one (by positivity) ?_ (by linarith)⟩
-    rw [div_le_one hr0]
-    linarith
-  have hfae : ∀ i, ∀ᵐ X ∂μ, 0 ≤ f i X ∧ f i X ≤ 1 := fun i =>
-    (ae_restrict_iff' hHm).2 (Filter.Eventually.of_forall (hfb i))
+  set f : Fin N → (Fin N → ℂ) → ℝ := fun i X => isolatedPhi β hβ.le lam (lowerRadius hN X i)
+    with hf
   have hfint : ∀ i, Integrable (f i) μ := fun i =>
-    Integrable.of_bound (hfmeas i).aestronglyMeasurable 1
-      ((hfae i).mono fun X hX => by
-        rw [Real.norm_of_nonneg hX.1]; exact hX.2)
+    integrableOn_isolatedPhi_lowerRadius hβ hN hlam h4 i
+  have hf0 : ∀ i, ∀ X ∈ H, 0 ≤ f i X := fun i X hX =>
+    isolatedPhi_nonneg hβ.le hlam (by linarith [four_mul_le_lowerRadius hN h4 hX i])
+  have hfae : ∀ i, ∀ᵐ X ∂μ, 0 ≤ f i X := fun i =>
+    (ae_restrict_iff' hHm).2 (Filter.Eventually.of_forall (hf0 i))
   set g : (Fin N → ℂ) → ℝ := fun X => C * ∑ i, f i X with hg
   have hgint : Integrable g μ := (integrable_finsetSum _ fun i _ => hfint i).const_mul C
   have hgnn : ∀ᵐ X ∂μ, 0 ≤ g X := by
-    have : ∀ᵐ X ∂μ, ∀ i, 0 ≤ f i X ∧ f i X ≤ 1 := ae_all_iff.2 hfae
-    exact this.mono fun X hX => mul_nonneg hC.le (Finset.sum_nonneg fun i _ => (hX i).1)
-  have hgmeas : Measurable g := (Finset.measurable_sum _ fun i _ => hfmeas i).const_mul C
+    have : ∀ᵐ X ∂μ, ∀ i, 0 ≤ f i X := ae_all_iff.2 hfae
+    exact this.mono fun X hX => mul_nonneg hC.le (Finset.sum_nonneg fun i _ => hX i)
   have hegint : Integrable (fun X => Real.exp (-g X)) μ :=
-    Integrable.of_bound (hgmeas.neg.exp).aestronglyMeasurable 1
+    Integrable.of_bound ((Real.continuous_exp.comp continuous_neg).comp_aestronglyMeasurable
+      hgint.aestronglyMeasurable) 1
       (hgnn.mono fun X hX => by
         rw [Real.norm_of_nonneg (Real.exp_pos _).le]
         exact Real.exp_le_one_iff.2 (by linarith))
@@ -128,22 +122,19 @@ theorem lintegral_prod_disc_factor_ge {β : ℝ} (hβ : 2 < β) :
     simp only [hg]
     rw [integral_const_mul, integral_finsetSum _ fun i _ => hfint i]
   rw [hgsum] at hJ
-  -- the pointwise bound
-  have hpt : ∀ X ∈ H, ENNReal.ofReal (A ^ N * Real.exp (-g X)) ≤ ∏ i, ENNReal.ofReal
-      (∫ u in Metric.closedBall (0 : ℂ) (lowerRadius hN X i / 2),
-        Real.exp (β * smearedKernel lam u)) := by
+  -- the pointwise bound, from (align57)
+  have hpt : ∀ X ∈ H, ENNReal.ofReal (A ^ N * Real.exp (-g X)) ≤
+      ∏ i, ENNReal.ofReal (pairFactor β β lam (lowerRadius hN X i)) := by
     intro X hX
     have h1 : A ^ N * Real.exp (-g X) = ∏ i : Fin N, (A * Real.exp (-(C * f i X))) := by
       rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin,
         ← Real.exp_sum, Finset.sum_neg_distrib, ← Finset.mul_sum]
     rw [h1, ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity)]
-    refine Finset.prod_le_prod fun i _ => ENNReal.ofReal_le_ofReal ?_
-    exact hdisc lam (lowerRadius hN X i) hlam (four_mul_le_lowerRadius hN h4 hX i)
+    exact Finset.prod_le_prod fun i _ => ENNReal.ofReal_le_ofReal
+      (hpair lam (lowerRadius hN X i) hlam (four_mul_le_lowerRadius hN h4 hX i))
   have hlow : ∫⁻ X in H, ENNReal.ofReal (A ^ N * Real.exp (-g X)) ≤
-      ∫⁻ X in H, ∏ i, ENNReal.ofReal
-        (∫ u in Metric.closedBall (0 : ℂ) (lowerRadius hN X i / 2),
-          Real.exp (β * smearedKernel lam u)) :=
-    lintegral_mono_ae ((ae_restrict_iff' hHm).2 (Filter.Eventually.of_forall hpt))
+      ∫⁻ X in H, ∏ i, ENNReal.ofReal (pairFactor β β lam (lowerRadius hN X i)) :=
+    setLIntegral_mono' hHm hpt
   refine le_trans ?_ hlow
   rw [← ofReal_integral_eq_lintegral_ofReal (hegint.const_mul _)
     (hgnn.mono fun X _ => by positivity)]
@@ -154,8 +145,8 @@ theorem lintegral_prod_disc_factor_ge {β : ℝ} (hβ : 2 < β) :
       = A ^ N * (V * Real.exp (-((C * ∑ i, ∫ X in H, f i X) / V))) := by ring
     _ ≤ A ^ N * ∫ X, Real.exp (-g X) ∂μ := mul_le_mul_of_nonneg_left hJ hAN.le
 
-/-- **The lower bound for `β > 2`** (source l. 1829--1899, the inequality before Stirling): there
-are `λ₀, C > 0` such that for all `N ≥ 2` and `0 < λ < λ₀`,
+/-- **The lower bound for `β > 2`** (source l. 1828--1892, the inequality before Stirling's
+formula): there are `λ₀, C > 0` such that for all `N ≥ 2` and `0 < λ < λ₀`,
 `Z ≥ N! N^N (𝒵_β λ^{2-β})^N exp(-C N ε_λ - C √N η_λ)`. -/
 theorem partitionFunction_ge_of_two_lt {β : ℝ} (hβ : 2 < β) :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧ ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
@@ -163,8 +154,8 @@ theorem partitionFunction_ge_of_two_lt {β : ℝ} (hβ : 2 < β) :
           (dipoleConstant β hβ.le * lam ^ (2 - β)) ^ N *
           Real.exp (-C * N * lowerEps β hβ lam - C * Real.sqrt N * lowerEta β hβ lam)) ≤
         partitionFunction N β lam := by
-  obtain ⟨C₃, hC₃, hjen⟩ := lintegral_prod_disc_factor_ge hβ
-  obtain ⟨lam₁, C₄, hlam₁, hC₄, hexp⟩ := expectation_lowerRadius_pow_le hβ
+  obtain ⟨C₃, hC₃, hjen⟩ := lintegral_prod_pairFactor_ge hβ
+  obtain ⟨lam₁, C₄, hlam₁, hC₄, hexp⟩ := expectation_isolatedPhi_lowerRadius_le hβ
   refine ⟨min lam₁ (1 / 64), C₃ * C₄ + 256, lt_min hlam₁ (by norm_num), by positivity,
     fun N hN lam hlam hlam₀ => ?_⟩
   have hlam1 : lam < lam₁ := lt_of_lt_of_le hlam₀ (min_le_left _ _)
@@ -192,12 +183,12 @@ theorem partitionFunction_ge_of_two_lt {β : ℝ} (hβ : 2 < β) :
   set η := lowerEta β hβ lam with hη
   have hε0 : 0 ≤ ε := lowerEps_nonneg hβ hlam
   have hη0 : 0 ≤ η := lowerEta_nonneg hβ hlam
-  have hsum : ∑ i : Fin N, ∫ X in H, (lam / lowerRadius hN X i) ^ (β - 2) ≤
+  have hsum : ∑ i : Fin N, ∫ X in H, isolatedPhi β hβ.le lam (lowerRadius hN X i) ≤
       N * (C₄ * (ε + η / Real.sqrt N) * V) := by
     calc _ ≤ ∑ _i : Fin N, C₄ * (ε + η / Real.sqrt N) * V :=
           Finset.sum_le_sum fun i _ => hexp N hN lam hlam hlam1 i
       _ = _ := by simp
-  have hm : C₃ * (∑ i : Fin N, ∫ X in H, (lam / lowerRadius hN X i) ^ (β - 2)) / V ≤
+  have hm : C₃ * (∑ i : Fin N, ∫ X in H, isolatedPhi β hβ.le lam (lowerRadius hN X i)) / V ≤
       C₃ * C₄ * (N * ε + Real.sqrt N * η) := by
     rw [div_le_iff₀ hVpos]
     have : C₃ * C₄ * (N * ε + Real.sqrt N * η) * V =
@@ -228,7 +219,7 @@ theorem partitionFunction_ge_of_two_lt {β : ℝ} (hβ : 2 < β) :
     linarith only [h1, h2, mul_nonneg hsqN.le hη0]
   -- assemble
   have hjen' := hjen N hN lam hlam h4
-  have hZ := partitionFunction_ge_lowerRadius hN hlam β h4
+  have hZ := partitionFunction_ge_pairFactor hN hlam (by linarith : (0 : ℝ) ≤ β) h4
   refine le_trans ?_ hZ
   refine le_trans ?_ (mul_le_mul_right hjen' _)
   rw [← ENNReal.ofReal_mul (by positivity)]
@@ -237,7 +228,7 @@ theorem partitionFunction_ge_of_two_lt {β : ℝ} (hβ : 2 < β) :
     add_nonneg (mul_nonneg hNpos.le hε0) (mul_nonneg hsqN.le hη0)
   have hexp1 : Real.exp (-(C₃ * C₄ + 256) * N * ε - (C₃ * C₄ + 256) * Real.sqrt N * η) ≤
       Real.exp (-(8 * (4 * lam) * Real.sqrt N + Real.pi * N * (8 * lam) ^ 2)) *
-        Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, (lam / lowerRadius hN X i) ^ (β - 2)) / V)) := by
+        Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, isolatedPhi β hβ.le lam (lowerRadius hN X i)) / V)) := by
     rw [← Real.exp_add]
     apply Real.exp_le_exp.2
     linarith only [hc1, hm]
@@ -252,17 +243,17 @@ theorem partitionFunction_ge_of_two_lt {β : ℝ} (hβ : 2 < β) :
         Real.exp (-(C₃ * C₄ + 256) * N * ε - (C₃ * C₄ + 256) * Real.sqrt N * η)
       ≤ (N.factorial : ℝ) * (N : ℝ) ^ N * A ^ N *
         (Real.exp (-(8 * (4 * lam) * Real.sqrt N + Real.pi * N * (8 * lam) ^ 2)) *
-          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, (lam / lowerRadius hN X i) ^ (β - 2)) / V))) :=
+          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, isolatedPhi β hβ.le lam (lowerRadius hN X i)) / V))) :=
         mul_le_mul_of_nonneg_left hexp1 (by positivity)
     _ = (N.factorial : ℝ) * (A ^ N * ((N : ℝ) ^ N * Real.exp (-(8 * (4 * lam) * Real.sqrt N +
           Real.pi * N * (8 * lam) ^ 2))) *
-          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, (lam / lowerRadius hN X i) ^ (β - 2)) / V))) := by
+          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, isolatedPhi β hβ.le lam (lowerRadius hN X i)) / V))) := by
         ring
     _ ≤ (N.factorial : ℝ) * (A ^ N * V *
-          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, (lam / lowerRadius hN X i) ^ (β - 2)) / V))) := by
+          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, isolatedPhi β hβ.le lam (lowerRadius hN X i)) / V))) := by
         gcongr
     _ = (N.factorial : ℝ) * (V * A ^ N *
-          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, (lam / lowerRadius hN X i) ^ (β - 2)) / V))) := by
+          Real.exp (-(C₃ * (∑ i : Fin N, ∫ X in H, isolatedPhi β hβ.le lam (lowerRadius hN X i)) / V))) := by
         ring
 
 end TwoComponentCoulomb

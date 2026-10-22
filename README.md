@@ -55,11 +55,14 @@ modelled by `ℂ` (R1), every `O_β(·)` becomes an explicit constant quantified
 Before release, independent reviewers compared every frozen statement and definition with the
 source and checked the proofs' axioms (`reviews/statement_audit.md`), and checked the release
 itself: its derivation from the development repository, a clean build and its documentation
-(`reviews/release_review.md`).
+(`reviews/release_review.md`). The later update of the proof of Proposition 4.1 was reviewed in
+`reviews/update_review.md`.
 
-One proof step follows a different route from the paper's: Step 1 of Proposition 4.1 uses
-Jensen's inequality over radially symmetric pair displacements and Newton's theorem instead of
-the paper's Neumann problem (R12a). The statements are unchanged.
+The proof of Proposition 4.1 is the paper's argument (R22). In its Step 1 (the construction of
+the screened dipoles), the Neumann problem on each disc is solved explicitly by an image charge,
+and the estimate (estimatesv) is proved from that formula (R22a). The other implementation
+choices are recorded in `RULINGS.md` (for example R12b and R12c), and the module docstrings note
+where a proof step is carried out differently in detail from the paper.
 
 ## Terminology
 

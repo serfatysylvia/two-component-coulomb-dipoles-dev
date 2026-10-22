@@ -4,23 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 module
 
-public import TwoComponentCoulomb.LowerBound.LabelSum
 public import TwoComponentCoulomb.PhaseSpace.Placement
 
 /-!
-# Lower bounds for the partition function from separated configurations
+# The radius `ϱ(x_i)` and the discs of the lower bound
 
-Source: Proposition 4.1, Step 1 (l. 1763--1775), the case
-`β = 2` (l. 1820--1827) and Step 2, eq. (minz3) (l. 1837--1843), by the route of ruling R12a.
+Source: Proposition 4.1, Step 1 (l. 1762--1775) and the case
+`β = 2` (l. 1820--1826). The proof of Proposition 4.1 follows the source (ruling R22); this module
+holds the geometry of the configurations used there.
 
 Positive charges are restricted to the set `placementSet N N a b` of configurations in the inner
-square `Λ_a = [a, √N - a]²` at mutual distance at least `b`, and the negative charge `y_i` is
-restricted to a disc (or annulus) around `x_i`; the dipole Jensen bound and the sum over the
-assignments of negative labels (`partitionFunction_ge_label_sum`) then bound the partition
-function from below by one-dipole integrals.
+square `Λ_a = [a, √N - a]²` at mutual distance at least `b` (the source's `H` for `a = 4λ`,
+`b = 8λ`). About each `x_i` the source uses the disc `B(x_i, ϱ(x_i))`; these discs are disjoint,
+lie in `Λ`, and carry the Neumann problems of Step 1.
 
-* `lowerRadius` : the radius `r(x_i) = min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}` of
-  l. 1770--1772. We write the distance to the boundary as the distance to the complement of `Λ`,
+* `lowerRadius` : the radius `ϱ(x_i) = min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}` of
+  l. 1771--1773. We write the distance to the boundary as the distance to the complement of `Λ`,
   which is the quantity that is convenient to bound below (`le_infDist_compl_box`: a point of the
   inner square `Λ_a` has distance at least `a` from `Λᶜ`, and a disc of smaller radius about it
   lies in `Λ`). For `x_i ∈ Λ` this is the source's `dist(x_i, ∂Λ)`: `infDist_frontier_box_eq`
@@ -28,11 +27,10 @@ function from below by one-dipole integrals.
   and `∂Λ ⊆ closure Λᶜ`), and `lowerRadius_eq_min_frontier` restates `lowerRadius` with the
   frontier.
 * `measurable_lowerRadius`, `four_mul_le_lowerRadius`, `closedBall_lowerRadius_div_two_subset_box`,
-  `lowerRadius_sep` : measurability, `r(x_i) ≥ 4λ`, and the discs `B̄(x_i, r(x_i)/2)` lie in `Λ`
-  and are `2λ`-separated.
-* `partitionFunction_ge_lowerRadius` : (minz3) with the dipole bound of R12a.
-* `partitionFunction_ge_placement_annulus`, `partitionFunction_two_ge_placement` : the lower bound
-  of l. 1820--1827 for `β = 2`.
+  `lowerRadius_add_lowerRadius_le` : measurability, `ϱ(x_i) ≥ 4λ` on `H`, the discs
+  `B̄(x_i, ϱ(x_i)/2)` lie in `Λ`, and the discs `B(x_i, ϱ(x_i))` are disjoint (l. 1774).
+* `closedBall_subset_box_of_mem_placementSet` : discs about the points of `placementSet N n a b`
+  of radius at most `a` lie in `Λ` (used for `β = 2`, l. 1820--1823).
 -/
 
 public section
@@ -139,7 +137,7 @@ theorem infDist_frontier_eq_infDist_compl {s : Set ℂ} {x : ℂ} (hx : x ∈ s)
     rw [← Metric.infDist_closure]
     exact Metric.infDist_le_dist_of_mem hw'
 
-/-- For `x ∈ Λ`, `dist(x, ∂Λ) = dist(x, Λᶜ)`: the radius `r(x_i)` of `lowerRadius` is the
+/-- For `x ∈ Λ`, `dist(x, ∂Λ) = dist(x, Λᶜ)`: the radius `ϱ(x_i)` of `lowerRadius` is the
 source's `min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}`. -/
 theorem infDist_frontier_box_eq {x : ℂ} (hx : x ∈ box N) :
     Metric.infDist x (frontier (box N)) = Metric.infDist x (box N)ᶜ := by
@@ -149,14 +147,14 @@ theorem infDist_frontier_box_eq {x : ℂ} (hx : x ∈ box N) :
   simp at this
   linarith
 
-/-! ### The radius `r(x_i)` -/
+/-! ### The radius `ϱ(x_i)` -/
 
 theorem univ_erase_nonempty (hN : 2 ≤ N) (i : Fin N) : (Finset.univ.erase i).Nonempty := by
   rw [← Finset.card_pos, Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ,
     Fintype.card_fin]
   omega
 
-/-- The radius `r(x_i) = min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}` of l. 1770--1772,
+/-- The radius `ϱ(x_i) = min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}` of l. 1771--1773,
 with the distance to the boundary of `Λ` written as the distance to the complement of `Λ` (see the
 module docstring). -/
 noncomputable def lowerRadius (hN : 2 ≤ N) (X : Fin N → ℂ) (i : Fin N) : ℝ :=
@@ -194,7 +192,7 @@ theorem two_mul_lowerRadius_le (hN : 2 ≤ N) (X : Fin N → ℂ) {i j : Fin N} 
     2 * lowerRadius hN X i ≤ ‖X j - X i‖ :=
   ((le_lowerRadius_iff hN X i).1 le_rfl).1 j hji
 
-/-- `r(x_i)` depends continuously on `X`. -/
+/-- `ϱ(x_i)` depends continuously on `X`. -/
 theorem continuous_lowerRadius (hN : 2 ≤ N) (i : Fin N) :
     Continuous fun X : Fin N → ℂ => lowerRadius hN X i := by
   unfold lowerRadius
@@ -209,7 +207,7 @@ theorem measurable_lowerRadius (hN : 2 ≤ N) (i : Fin N) :
     Measurable fun X : Fin N → ℂ => lowerRadius hN X i :=
   (continuous_lowerRadius hN i).measurable
 
-/-- For `X ∈ H(N, N, 4λ, 8λ)` and `4λ ≤ 1` the radii satisfy `r(x_i) ≥ 4λ` (source l. 1772). -/
+/-- For `X ∈ H(N, N, 4λ, 8λ)` and `4λ ≤ 1` the radii satisfy `ϱ(x_i) ≥ 4λ` (source l. 1774). -/
 theorem four_mul_le_lowerRadius (hN : 2 ≤ N) {lam : ℝ} (h4 : 4 * lam ≤ 1) {X : Fin N → ℂ}
     (hX : X ∈ placementSet N N (4 * lam) (8 * lam)) (i : Fin N) :
     4 * lam ≤ lowerRadius hN X i := by
@@ -218,7 +216,7 @@ theorem four_mul_le_lowerRadius (hN : 2 ≤ N) {lam : ℝ} (h4 : 4 * lam ≤ 1) 
   have := hX.2 j i hji
   linarith
 
-/-- The closed discs `B̄(x_i, r(x_i) / 2)` lie in `Λ` (source l. 1772). -/
+/-- The closed discs `B̄(x_i, ϱ(x_i) / 2)` lie in `Λ` (source l. 1774). -/
 theorem closedBall_lowerRadius_div_two_subset_box (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
     (h4 : 4 * lam ≤ 1) {X : Fin N → ℂ} (hX : X ∈ placementSet N N (4 * lam) (8 * lam))
     (i : Fin N) : Metric.closedBall (X i) (lowerRadius hN X i / 2) ⊆ box N := by
@@ -230,80 +228,14 @@ theorem closedBall_lowerRadius_div_two_subset_box (hN : 2 ≤ N) {lam : ℝ} (hl
   by_contra hzb
   exact Set.disjoint_left.1 hd hz hzb
 
-/-- The discs `B̄(x_i, r(x_i) / 2)` are `2λ`-separated:
-`r(x_i) / 2 + r(x_j) / 2 + 2λ ≤ |x_i - x_j|` for `i ≠ j` (source l. 1772). -/
-theorem lowerRadius_sep (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
-    {X : Fin N → ℂ} (hX : X ∈ placementSet N N (4 * lam) (8 * lam)) {i j : Fin N} (hij : i ≠ j) :
-    lowerRadius hN X i / 2 + lowerRadius hN X j / 2 + 2 * lam ≤ ‖X i - X j‖ := by
+/-- The discs `B(x_i, ϱ(x_i))` are disjoint: `ϱ(x_i) + ϱ(x_j) ≤ |x_i - x_j|` for `i ≠ j`
+(source l. 1774). -/
+theorem lowerRadius_add_lowerRadius_le (hN : 2 ≤ N) (X : Fin N → ℂ) {i j : Fin N} (hij : i ≠ j) :
+    lowerRadius hN X i + lowerRadius hN X j ≤ ‖X i - X j‖ := by
   have h1 := two_mul_lowerRadius_le hN X (i := j) (j := i) hij
   have h2 := two_mul_lowerRadius_le hN X (i := i) (j := j) hij.symm
-  have h3 := hX.2 i j hij
   have h4 : ‖X j - X i‖ = ‖X i - X j‖ := norm_sub_rev _ _
   linarith
-
-/-! ### The instances of `partitionFunction_ge_label_sum` -/
-
-/-- The closed ball about `0` as a closed annulus with inner radius `0`. -/
-theorem setOf_zero_le_norm_le (b : ℝ) :
-    {u : ℂ | 0 ≤ ‖u‖ ∧ ‖u‖ ≤ b} = Metric.closedBall (0 : ℂ) b := by
-  ext u
-  simp [norm_nonneg]
-
-/-- **The lower bound (minz3) with the dipole Jensen bound** (source l. 1763--1775, 1837--1843;
-ruling R12a, no correction term). For `4λ ≤ 1`, restricting the positive charges to
-`H = H(N, N, 4λ, 8λ)` and each negative charge `y_i` to the disc `B̄(x_i, r(x_i) / 2)`,
-`Z ≥ N! ∫_H ∏_i ∫_{B̄(0, r(x_i)/2)} e^{β g_λ(u)} du dX`. -/
-theorem partitionFunction_ge_lowerRadius (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (β : ℝ)
-    (h4 : 4 * lam ≤ 1) :
-    ENNReal.ofReal (N.factorial : ℝ) *
-        ∫⁻ X in placementSet N N (4 * lam) (8 * lam), ∏ i, ENNReal.ofReal
-          (∫ u in Metric.closedBall (0 : ℂ) (lowerRadius hN X i / 2),
-            Real.exp (β * smearedKernel lam u)) ≤
-      partitionFunction N β lam := by
-  have h := partitionFunction_ge_label_sum hlam β (measurableSet_placementSet N N (4 * lam)
-    (8 * lam)) (a := fun _ _ => 0) (b := fun X i => lowerRadius hN X i / 2)
-    (fun _ => measurable_const) (fun i => (measurable_lowerRadius hN i).div_const 2)
-    (fun X hX i => ⟨le_rfl, by linarith [four_mul_le_lowerRadius hN h4 hX i]⟩)
-    (fun X hX i => closedBall_lowerRadius_div_two_subset_box hN hlam h4 hX i)
-    (fun X hX i j hij => lowerRadius_sep hN hlam hX hij)
-  simpa only [setOf_zero_le_norm_le] using h
-
-/-- **The lower bound of source l. 1820--1827** (the case `β = 2`, but valid for every `β`):
-restricting the positive charges to `H(N, N, t, 4t)` and each displacement to
-`2λ ≤ |x_i - y_i| ≤ t²`, with `0 < t ≤ 1` and `2λ ≤ t²`,
-`Z ≥ N! · vol H(N, N, t, 4t) · (∫_{2λ ≤ |u| ≤ t²} e^{β g_λ(u)} du)^N`. -/
-theorem partitionFunction_ge_placement_annulus {lam t : ℝ} (hlam : 0 < lam) (β : ℝ)
-    (ht : 0 < t) (ht1 : t ≤ 1) (hlt : 2 * lam ≤ t ^ 2) :
-    ENNReal.ofReal (N.factorial : ℝ) * volume (placementSet N N t (4 * t)) *
-        (ENNReal.ofReal (∫ u in {u : ℂ | 2 * lam ≤ ‖u‖ ∧ ‖u‖ ≤ t ^ 2},
-          Real.exp (β * smearedKernel lam u))) ^ N ≤
-      partitionFunction N β lam := by
-  have ht2 : t ^ 2 ≤ t := by nlinarith
-  have h := partitionFunction_ge_label_sum hlam β (measurableSet_placementSet N N t (4 * t))
-    (a := fun _ _ => 2 * lam) (b := fun _ _ => t ^ 2) (fun _ => measurable_const)
-    (fun _ => measurable_const) (fun X hX i => ⟨by linarith, hlt⟩)
-    (fun X hX i => closedBall_subset_box_of_mem_placementSet hX ht2 i)
-    (fun X hX i j hij => by
-      have := hX.2 i j hij
-      nlinarith)
-  simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, setLIntegral_const] at h
-  calc ENNReal.ofReal (N.factorial : ℝ) * volume (placementSet N N t (4 * t)) *
-        (ENNReal.ofReal (∫ u in {u : ℂ | 2 * lam ≤ ‖u‖ ∧ ‖u‖ ≤ t ^ 2},
-          Real.exp (β * smearedKernel lam u))) ^ N
-      = ENNReal.ofReal (N.factorial : ℝ) *
-        ((ENNReal.ofReal (∫ u in {u : ℂ | 2 * lam ≤ ‖u‖ ∧ ‖u‖ ≤ t ^ 2},
-          Real.exp (β * smearedKernel lam u))) ^ N * volume (placementSet N N t (4 * t))) := by
-        ring
-    _ ≤ partitionFunction N β lam := h
-
-/-- **The lower bound of source l. 1820--1827 for `β = 2`.** -/
-theorem partitionFunction_two_ge_placement {lam t : ℝ} (hlam : 0 < lam)
-    (ht : 0 < t) (ht1 : t ≤ 1) (hlt : 2 * lam ≤ t ^ 2) :
-    ENNReal.ofReal (N.factorial : ℝ) * volume (placementSet N N t (4 * t)) *
-        (ENNReal.ofReal (∫ u in {u : ℂ | 2 * lam ≤ ‖u‖ ∧ ‖u‖ ≤ t ^ 2},
-          Real.exp (2 * smearedKernel lam u))) ^ N ≤
-      partitionFunction N 2 lam :=
-  partitionFunction_ge_placement_annulus hlam 2 ht ht1 hlt
 
 end TwoComponentCoulomb
 

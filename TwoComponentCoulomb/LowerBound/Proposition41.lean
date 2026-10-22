@@ -16,7 +16,7 @@ Registered implementation module of `TwoComponentCoulomb/Frozen/Proposition41.le
 `TwoComponentCoulomb.LowerBound.proposition_4_1` states and proves exactly the frozen statement
 (Proposition 4.1, source l. 1745--1759): the case `β = 2` is
 `partitionFunction_two_ge_frozen_form` (`CriticalLower`), and the case `β > 2` is
-`proposition_4_1_of_two_lt` (`LowerAssembly`).
+`proposition_4_1_of_two_lt` (`LowerAssembly`). The proof follows the source (ruling R22).
 
 The anchor is sealed with `by exact TwoComponentCoulomb.LowerBound.proposition_4_1`. This module
 must never import the anchor.

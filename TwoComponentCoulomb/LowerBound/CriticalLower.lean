@@ -8,15 +8,18 @@ public import TwoComponentCoulomb.Frozen.DipoleConstant
 public import TwoComponentCoulomb.Frozen.PartitionFunction
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import TwoComponentCoulomb.Integrals.Stirling
-import TwoComponentCoulomb.LowerBound.PartitionLower
+import TwoComponentCoulomb.LowerBound.ScreenedLower
 import TwoComponentCoulomb.PhaseSpace.Placement
 import TwoComponentCoulomb.UpperBound.ReducedConstruction
 
 /-!
 # Proposition 4.1 for `β = 2`: the critical lower bound
 
-Source: Proposition 4.1, eq. (eq:lbz2) (l. 1755--1759), proved at
-l. 1820--1828 with `ℓ = |log λ|` and `t = ℓ^{-1/5}`.
+Source: Proposition 4.1, eq. (eq:lbz2) (l. 1755--1757),
+proved at l. 1820--1826 with `ℓ = |log λ|` and `t = ℓ^{-1/5}`. The proof follows the source
+(ruling R22): the positive charges are restricted to `H_t = H(N, N, t, 4t)`, the dipole lengths to
+`2λ ≤ |x_i - y_i| ≤ t²`, and the energy is bounded by the Neumann construction on the disjoint
+balls `B(x_i, t)` (eq. (majof)), with energy error `Σ_i |x_i - y_i|²/t² ≤ N t²`.
 
 * `partitionFunction_two_ge` : there are `λ₀, C > 0` such that for all `N ≥ 2` and `0 < λ < λ₀`,
   `exp (2 N log N + N (log ℓ + (log (2π) - 1)) - C N ℓ^{-1/5}) ≤ Z_{N,2}^λ`.
@@ -26,15 +29,15 @@ l. 1820--1828 with `ℓ = |log λ|` and `t = ℓ^{-1/5}`.
 
 Proof. Put `s = ℓ^{1/5}` and `t = 1/s`, so that `s^5 = ℓ`. For `λ` small (`s > 16`) one has
 `t ≤ 1/16`, `2λ ≤ t²` and `4t√N + Nπ(4t)² ≤ N/2`, uniformly in `N ≥ 1`. Then
-`partitionFunction_two_ge_placement` bounds `Z` below by `N! · vol H · A^N`, with
-`vol H ≥ N^N e^{-E}` (`volume_placementSet_ge`), `E = 8t√N + 16πNt² ≤ (8 + 16π) N t`, and
-`A = 2π log (t²/(2λ)) = 2π R` with `R = s⁵ - 2 log s - log 2`
-(`integral_annulus_exp_two_smearedKernel`).
-Since `log R ≥ log s⁵ - 4/s` (`log_sub_le_log_critical`), the assembly step
+`partitionFunction_ge_placement_annulus` (`LowerBound/ScreenedLower.lean`) bounds `Z` below by
+`N! · vol H_t · A^N` with `A = e^{-2t²} · 2π log (t²/(2λ))`, where `e^{-2t²}` is the energy error
+of (majof) and `2π log (t²/(2λ)) = 2π R` with `R = s⁵ - 2 log s - log 2`
+(`integral_annulus_exp_two_smearedKernel`); and `vol H_t ≥ N^N e^{-E}`
+(`volume_placementSet_ge`), `E = 8t√N + 16πNt² ≤ (8 + 16π) N t`.
+Since `log R ≥ log s⁵ - 4/s` (`log_sub_le_log_critical`) and `2t² ≤ 2t`, the assembly step
 `ofReal_exp_le_of_factorial_mul` (from `log N! ≥ N log N - N + 1`) gives the claim with
-`C = 12 + 16π`.
+`C = 14 + 16π`.
 -/
-
 public section
 
 open MeasureTheory
@@ -88,14 +91,14 @@ theorem log_sub_le_log_critical {s : ℝ} (hs : 16 ≤ s) :
 
 /-! ### The assembly -/
 
-/-- **Proposition 4.1 for `β = 2`** (source l. 1820--1828, eq. (eq:lbz2)). -/
+/-- **Proposition 4.1 for `β = 2`** (source l. 1820--1826, eq. (eq:lbz2)). -/
 theorem partitionFunction_two_ge :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
         ENNReal.ofReal (Real.exp (2 * N * Real.log N
             + N * (Real.log |Real.log lam| + (Real.log (2 * Real.pi) - 1))
             - C * N * |Real.log lam| ^ (-(1 / 5 : ℝ)))) ≤ partitionFunction N 2 lam := by
-  refine ⟨Real.exp (-(16 : ℝ) ^ 5), 12 + 16 * Real.pi, Real.exp_pos _, by positivity, ?_⟩
+  refine ⟨Real.exp (-(16 : ℝ) ^ 5), 14 + 16 * Real.pi, Real.exp_pos _, by positivity, ?_⟩
   intro N hN lam hlam hlt
   have hN1 : 1 ≤ N := by omega
   have hN0 : (0 : ℝ) < N := by exact_mod_cast hN1
@@ -155,40 +158,43 @@ theorem partitionFunction_two_ge :
     linarith
   have hvol := volume_placementSet_ge (N := N) (a := t) (b := 4 * t) ht0.le (by positivity) hcond
   have hint := integral_annulus_exp_two_smearedKernel hlam hlt2
-  have hcore := partitionFunction_two_ge_placement (N := N) hlam ht0 ht1 hlt2
+  have hcore := partitionFunction_ge_placement_annulus (N := N) hlam (by norm_num : (0 : ℝ) ≤ 2)
+    ht0 (by linarith) hlt2
   rw [hint, hratio] at hcore
   set R := s ^ 5 - 2 * Real.log s - Real.log 2 with hRdef
-  set A := 2 * Real.pi * R with hA
+  set A := Real.exp (-(2 * t ^ 2)) * (2 * Real.pi * R) with hA
   have hApos : 0 < A := by positivity
+  have htt : t ^ 2 ≤ t := pow_le_of_le_one ht0.le ht1 (by norm_num)
   set E := 8 * t * Real.sqrt N + Real.pi * N * (4 * t) ^ 2 with hE
   have hEneg : -8 * t * Real.sqrt N - Real.pi * N * (4 * t) ^ 2 = -E := by rw [hE]; ring
   rw [hEneg] at hvol
   -- the exponent comparison
   have hEle : E ≤ (8 + 16 * Real.pi) * N * t := by
     have e1 : 8 * t * Real.sqrt N ≤ 8 * t * N := by gcongr
-    have e2 : t ^ 2 ≤ t := pow_le_of_le_one ht0.le ht1 (by norm_num)
     have e3 : Real.pi * N * (4 * t) ^ 2 ≤ 16 * Real.pi * N * t := by
       calc Real.pi * N * (4 * t) ^ 2 = 16 * (Real.pi * N) * t ^ 2 := by ring
         _ ≤ 16 * (Real.pi * N) * t := by gcongr
         _ = 16 * Real.pi * N * t := by ring
     rw [hE]
     linarith [e1, e3]
-  have hlogA : Real.log (2 * Real.pi) + (Real.log (s ^ 5) - 4 * t) ≤ Real.log A := by
-    rw [hA, Real.log_mul (by positivity) hRpos.ne']
+  have hlogA : Real.log (2 * Real.pi) + (Real.log (s ^ 5) - 4 * t) - 2 * t ^ 2 ≤
+      Real.log A := by
+    rw [hA, Real.log_mul (Real.exp_pos _).ne' (by positivity), Real.log_exp,
+      Real.log_mul (by positivity) hRpos.ne']
     have := log_sub_le_log_critical hs16
     have h4 : 4 / s = 4 * t := by rw [ht]; ring
     rw [h4] at this
     linarith
   have hexp : 2 * N * Real.log N + N * (Real.log ℓ + (Real.log (2 * Real.pi) - 1))
-        - (12 + 16 * Real.pi) * N * t ≤
+        - (14 + 16 * Real.pi) * N * t ≤
       2 * N * Real.log N + N * (Real.log A - 1) - E := by
     have hl5 : Real.log (s ^ 5) = Real.log ℓ := by rw [hs5]
     rw [hl5] at hlogA
-    have h1 : (N : ℝ) * (Real.log ℓ + (Real.log (2 * Real.pi) - 1) - 4 * t) ≤
+    have h1 : (N : ℝ) * (Real.log ℓ + (Real.log (2 * Real.pi) - 1) - 6 * t) ≤
         N * (Real.log A - 1) := mul_le_mul_of_nonneg_left (by linarith) hN0.le
     linarith [h1, hEle]
   calc ENNReal.ofReal (Real.exp (2 * N * Real.log N
-            + N * (Real.log ℓ + (Real.log (2 * Real.pi) - 1)) - (12 + 16 * Real.pi) * N * t))
+            + N * (Real.log ℓ + (Real.log (2 * Real.pi) - 1)) - (14 + 16 * Real.pi) * N * t))
       ≤ ENNReal.ofReal (Real.exp (2 * N * Real.log N + N * (Real.log A - 1) - E)) :=
         ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 hexp)
     _ ≤ ENNReal.ofReal ((N ! : ℝ) * (N : ℝ) ^ N * A ^ N * Real.exp (-E)) :=
@@ -203,7 +209,7 @@ theorem partitionFunction_two_ge :
           (ENNReal.ofReal A) ^ N := by gcongr
     _ ≤ partitionFunction N 2 lam := hcore
 
-/-- **Proposition 4.1 for `β = 2`, in the form of the frozen statement** (source l. 1755--1759):
+/-- **Proposition 4.1 for `β = 2`, in the form of the frozen statement** (source l. 1755--1757):
 the expressions of `proposition_4_1` at `β = 2`, with `dipoleConstant 2 _ = 2π` and the
 `if β = 2` branches resolved. -/
 theorem partitionFunction_two_ge_frozen_form (hβ : (2 : ℝ) ≤ 2) :

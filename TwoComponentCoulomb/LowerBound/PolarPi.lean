@@ -11,9 +11,9 @@ public import Mathlib.MeasureTheory.Integral.CircleIntegral
 /-!
 # Polar coordinates on `ℂ` and on `Fin N → ℂ`, and a Fubini lemma for products of radial weights
 
-Tools for the dipole lower bound of Proposition 4.1 (source Step 1, by the
-route of ruling R12a), where each displacement `y_i - x_i = s_i e^{iθ_i}` is written in polar
-coordinates.
+Generic polar-coordinate tools for integrals over pair displacements `y_i - x_i = s_i e^{iθ_i}`,
+used by the upper-bound modules (`UpperBound/AuxIntegrationVolume.lean`,
+`PhaseSpace/RadialSimplex.lean`).
 
 * `lintegral_complex_eq_polar` : `∫⁻_ℂ f = ∫⁻_{s > 0} ∫⁻_{|θ| < π} s f(s e^{iθ})`.
 * `lintegral_pi_complex_eq_polar` : the same on `(Fin N → ℂ)`, with the weight `∏ s_i`.

@@ -5,16 +5,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 module
 
 public import TwoComponentCoulomb.Gibbs.Basic
-public import TwoComponentCoulomb.LowerBound.DipoleJensen
 public import TwoComponentCoulomb.Potential.PairIntegral
 
 /-!
 # The sum over the assignments of negative labels
 
-Source: Proposition 4.1, Step 1 (l. 1763--1775), the case `β = 2`
-(l. 1820--1827) and Step 2, eq. (minz3) (l. 1837--1843): "the `N!` assignments of negative labels
-are disjoint". Combined with the dipole Jensen bound `prod_annulus_le_lintegral_exp_energy`
-(ruling R12a), this gives a lower bound on the partition function in terms of one-dipole integrals.
+Source: Proposition 4.1, Step 1 (l. 1820--1826, the case
+`β = 2`) and Step 2, eq. (minz3) (l. 1828--1834): "the `N!` assignments of negative labels are
+disjoint". The proof follows the source (ruling R22). This module is the generic part of that
+argument: if the positive charges `X` range over a set `H` and, for `X ∈ H`, the negative charge
+paired with `x_i` ranges over a closed annulus `a(X)_i ≤ |y - x_i| ≤ b(X)_i`, where the discs
+`B̄(x_i, b(X)_i)` are disjoint and lie in `Λ`, then the `N!` relabellings of the negative charges
+give disjoint sets of configurations with the same Boltzmann weight. Hence any per-configuration
+lower bound `f(X)` for the integral of `e^{-β F_λ(X, Y)}` over the annuli gives
+`N! ∫_H f ≤ Z_{N,β}^λ`. The per-configuration bound itself is eq. (majof)
+(`LowerBound/ScreenedLower.lean`).
 
 * `energy_comp_equiv`, `energy_sum_elim_comp_perm` : the energy is invariant under relabelling
   the negative charges.
@@ -24,7 +29,8 @@ are disjoint". Combined with the dipole Jensen bound `prod_annulus_le_lintegral_
   `(X, Y) ∈ Λ^N × Λ^N`.
 * `labelSet` : the set `A_σ` where the `i`-th positive charge is paired with the `σ i`-th negative
   charge, which lies in the annulus `a ≤ |y_{σ i} - x_i| ≤ b` around `x_i`.
-* `partitionFunction_ge_label_sum` : `Z ≥ N! ∫_{H'} ∏_i ∫_{a ≤ |u| ≤ b} e^{β g_λ(u)} du dX`.
+* `partitionFunction_ge_label_sum` : if `f(X) ≤ ∫_{a(X)_i ≤ |y_i - x_i| ≤ b(X)_i} e^{-β F_λ(X, Y)} dY`
+  for `X ∈ H`, then `N! ∫_H f ≤ Z`.
 -/
 
 public section
@@ -121,7 +127,7 @@ theorem partitionFunction_eq_lintegral_prod (β lam : ℝ) :
 
 /-- The set `A_σ` of pairs `(X, Y)` of positive and negative charges such that `X ∈ H` and the
 `i`-th positive charge is paired with the `σ i`-th negative charge, which lies in the closed
-annulus `a(X)_i ≤ |y_{σ i} - x_i| ≤ b(X)_i` (source l. 1820--1827: "the `N!` assignments of
+annulus `a(X)_i ≤ |y_{σ i} - x_i| ≤ b(X)_i` (source l. 1820, 1833: "the `N!` assignments of
 negative labels"). -/
 def labelSet (H : Set (Fin N → ℂ)) (a b : (Fin N → ℂ) → Fin N → ℝ) (σ : Equiv.Perm (Fin N)) :
     Set ((Fin N → ℂ) × (Fin N → ℂ)) :=
@@ -156,12 +162,11 @@ theorem measurableSet_labelSet {H : Set (Fin N → ℂ)} {a b : (Fin N → ℂ) 
   · exact measurableSet_le ((ha i).comp measurable_fst) (by fun_prop)
   · exact measurableSet_le (by fun_prop) ((hb i).comp measurable_fst)
 
-/-- **The `N!` assignments of negative labels are disjoint** (source l. 1820, 1839): if the
-annuli around the points of `X ∈ H` are `2λ`-separated, then a negative charge lies in at most one
-of them. -/
-theorem pairwise_disjoint_labelSet {lam : ℝ} (hlam : 0 < lam) {H : Set (Fin N → ℂ)}
-    {a b : (Fin N → ℂ) → Fin N → ℝ}
-    (hsep : ∀ X ∈ H, ∀ i j, i ≠ j → b X i + b X j + 2 * lam ≤ ‖X i - X j‖) :
+/-- **The `N!` assignments of negative labels are disjoint** (source l. 1820, 1833): if the
+closed discs `B̄(x_i, b_i)` about the points of `X ∈ H` are disjoint
+(`b_i + b_j < |x_i - x_j|`), then a negative charge lies in at most one of them. -/
+theorem pairwise_disjoint_labelSet {H : Set (Fin N → ℂ)} {a b : (Fin N → ℂ) → Fin N → ℝ}
+    (hsep : ∀ X ∈ H, ∀ i j, i ≠ j → b X i + b X j < ‖X i - X j‖) :
     Pairwise (Function.onFun Disjoint (labelSet H a b)) := by
   intro σ τ hστ
   rw [Function.onFun, Set.disjoint_left]
@@ -247,53 +252,49 @@ theorem lintegral_labelSet {H : Set (Fin N → ℂ)} {a b : (Fin N → ℂ) → 
 
 /-- The sets `A_σ` lie in `Λ^N × Λ^N` when the discs `B̄(x_i, b_i)` lie in `Λ`. -/
 theorem labelSet_subset {H : Set (Fin N → ℂ)} {a b : (Fin N → ℂ) → Fin N → ℝ}
-    (hab : ∀ X ∈ H, ∀ i, 0 ≤ a X i ∧ a X i ≤ b X i)
     (hbox : ∀ X ∈ H, ∀ i, Metric.closedBall (X i) (b X i) ⊆ box N) (σ : Equiv.Perm (Fin N)) :
     labelSet H a b σ ⊆ (Set.univ.pi fun _ : Fin N => box N) ×ˢ
       (Set.univ.pi fun _ : Fin N => box N) := by
   rintro p ⟨hpH, hp⟩
   refine ⟨fun i _ => hbox p.1 hpH i ?_, fun j _ => ?_⟩
-  · exact Metric.mem_closedBall_self (le_trans (hab p.1 hpH i).1 (hab p.1 hpH i).2)
+  · exact Metric.mem_closedBall_self ((norm_nonneg _).trans (hp i).2)
   · apply hbox p.1 hpH (σ.symm j)
     have := (hp (σ.symm j)).2
     rw [Equiv.apply_symm_apply] at this
     rwa [Metric.mem_closedBall, dist_eq_norm]
 
 /-- **The partition function dominates the sum over the assignments of negative labels**
-(source l. 1820--1827 and eq. (minz3), l. 1837--1843; Prop. 4.1, Steps 1--2, by the route of
-ruling R12a). Let `H` be a measurable set of positions of the positive charges and `a ≤ b` radius
-functions such that, for `X ∈ H`, the closed discs `B̄(x_i, b_i)` lie in `Λ` and
-`b_i + b_j + 2λ ≤ |x_i - x_j|` for `i ≠ j`. Then
-`Z ≥ N! ∫_H ∏_i ∫_{a_i ≤ |u| ≤ b_i} e^{β g_λ(u)} du dX`. -/
-theorem partitionFunction_ge_label_sum {lam : ℝ} (hlam : 0 < lam) (β : ℝ)
-    {H : Set (Fin N → ℂ)} (hH : MeasurableSet H) {a b : (Fin N → ℂ) → Fin N → ℝ}
-    (ha : ∀ i, Measurable fun X => a X i) (hb : ∀ i, Measurable fun X => b X i)
-    (hab : ∀ X ∈ H, ∀ i, 0 ≤ a X i ∧ a X i ≤ b X i)
+(source l. 1820 and eq. (minz3), l. 1833--1834). Let `H` be a measurable set of positions of the
+positive charges and `a, b` measurable radius functions such that, for `X ∈ H`, the closed discs
+`B̄(x_i, b_i)` lie in `Λ` and are disjoint. If `f(X)` bounds from below the integral of the
+Boltzmann weight over the negative charges `y_i` in the annuli `a_i ≤ |y_i - x_i| ≤ b_i`, for every
+`X ∈ H`, then `N! ∫_H f ≤ Z`: the `N!` relabellings of the negative charges give disjoint sets of
+configurations of `Λ^{2N}` with the same weight. -/
+theorem partitionFunction_ge_label_sum (β lam : ℝ) {H : Set (Fin N → ℂ)} (hH : MeasurableSet H)
+    {a b : (Fin N → ℂ) → Fin N → ℝ} (ha : ∀ i, Measurable fun X => a X i)
+    (hb : ∀ i, Measurable fun X => b X i)
     (hbox : ∀ X ∈ H, ∀ i, Metric.closedBall (X i) (b X i) ⊆ box N)
-    (hsep : ∀ X ∈ H, ∀ i j, i ≠ j → b X i + b X j + 2 * lam ≤ ‖X i - X j‖) :
-    ENNReal.ofReal (N.factorial : ℝ) *
-        ∫⁻ X in H, ∏ i, ENNReal.ofReal (∫ u in {u : ℂ | a X i ≤ ‖u‖ ∧ ‖u‖ ≤ b X i},
-          Real.exp (β * smearedKernel lam u)) ≤
-      partitionFunction N β lam := by
+    (hsep : ∀ X ∈ H, ∀ i j, i ≠ j → b X i + b X j < ‖X i - X j‖) {f : (Fin N → ℂ) → ℝ≥0∞}
+    (hf : ∀ X ∈ H, f X ≤ ∫⁻ Y in {Y : Fin N → ℂ | ∀ i, a X i ≤ ‖Y i - X i‖ ∧ ‖Y i - X i‖ ≤ b X i},
+      ENNReal.ofReal (Real.exp (-β * energy lam (Sum.elim X Y)))) :
+    ENNReal.ofReal (N.factorial : ℝ) * ∫⁻ X in H, f X ≤ partitionFunction N β lam := by
   classical
   set W : (Fin N → ℂ) × (Fin N → ℂ) → ℝ≥0∞ := fun p =>
     ENNReal.ofReal (Real.exp (-β * energy lam (Sum.elim p.1 p.2))) with hW
-  calc ENNReal.ofReal (N.factorial : ℝ) * ∫⁻ X in H, ∏ i, ENNReal.ofReal
-          (∫ u in {u : ℂ | a X i ≤ ‖u‖ ∧ ‖u‖ ≤ b X i}, Real.exp (β * smearedKernel lam u))
+  calc ENNReal.ofReal (N.factorial : ℝ) * ∫⁻ X in H, f X
       ≤ ENNReal.ofReal (N.factorial : ℝ) * ∫⁻ X in H, ∫⁻ Y in annulusSet a b X,
-          ENNReal.ofReal (Real.exp (-β * energy lam (Sum.elim X Y))) := by
-        refine mul_le_mul_right (setLIntegral_mono' hH fun X hX => ?_) _
-        exact prod_annulus_le_lintegral_exp_energy hlam β X (a X) (b X) (hab X hX) (hsep X hX)
+          ENNReal.ofReal (Real.exp (-β * energy lam (Sum.elim X Y))) :=
+        mul_le_mul_right (setLIntegral_mono' hH hf) _
     _ = ∑ σ : Equiv.Perm (Fin N), ∫⁻ p in labelSet H a b σ, W p := by
         simp_rw [hW, lintegral_labelSet hH ha hb β lam]
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul,
           ENNReal.ofReal_natCast]
     _ = ∫⁻ p in ⋃ σ : Equiv.Perm (Fin N), labelSet H a b σ, W p := by
         rw [lintegral_iUnion (fun σ => measurableSet_labelSet hH ha hb σ)
-          (pairwise_disjoint_labelSet hlam fun X hX => hsep X hX), tsum_fintype]
+          (pairwise_disjoint_labelSet hsep), tsum_fintype]
     _ ≤ ∫⁻ p in (Set.univ.pi fun _ : Fin N => box N) ×ˢ (Set.univ.pi fun _ : Fin N => box N),
           W p :=
-        lintegral_mono_set (Set.iUnion_subset fun σ => labelSet_subset hab hbox σ)
+        lintegral_mono_set (Set.iUnion_subset fun σ => labelSet_subset hbox σ)
     _ = partitionFunction N β lam := (partitionFunction_eq_lintegral_prod β lam).symm
 
 end TwoComponentCoulomb

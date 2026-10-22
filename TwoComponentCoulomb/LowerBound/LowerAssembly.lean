@@ -15,7 +15,7 @@ import TwoComponentCoulomb.LowerBound.RadiusTail
 /-!
 # Assembly of Proposition 4.1 for `β > 2`
 
-Source: Proposition 4.1, end of the proof (l. 1892--1899): the
+Source: Proposition 4.1, end of the proof (l. 1889--1899): the
 bound `Z ≥ N! N^N (𝒵_β λ^{2-β})^N exp(-C N ε_λ - C √N η_λ)` of `partitionFunction_ge_of_two_lt`
 is turned, by Stirling's formula and the arithmetic--geometric mean inequality
 `C √N η ≤ C N ε + C η² / (4 ε)` together with `η_λ² / ε_λ → 0`, into the frozen form of the
