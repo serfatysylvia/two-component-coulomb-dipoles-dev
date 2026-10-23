@@ -9,16 +9,17 @@ public import Mathlib.Data.Nat.Choose.Basic
 public import Mathlib.Data.Nat.Factorial.Basic
 public import Mathlib.Logic.Relation
 public import TwoComponentCoulomb.NearestNeighbor.GeneralStructure
+public import TwoComponentCoulomb.UpperBound.AuxPairEnumeration
 
 /-!
-# The restricted nearest-neighbour graph and its count (Proposition 3.7, Step 1)
+# The restricted nearest-neighbour graph and its count (Proposition 3.6, Step 1)
 
-Source: proof of Proposition 3.7 (`prop:auxk`), l. 1035--1077 (Step 1,
-"counting graphs") and l. 1122--1125 (the cruder count used in Step 3).
+Source `source/dipole-formation.tex`, proof of Proposition 3.6 (`prop:auxk`), l. 984–1025 (Step 1,
+"counting graphs") and l. 1065 (the cruder count used in Step 3).
 
 For `p` points `z₁, …, z_p` with nearest-neighbour map `φ = nnMap key z` and a selected set
 `S = {i : i < k}`, the *restricted graph* `γ'_p` has an edge `i → φ i` exactly for `i ∈ S`
-(l. 1041). It is determined by the restriction `g : Fin k → Fin p` of `φ` to `S`. We identify
+(l. 990). It is determined by the restriction `g : Fin k → Fin p` of `φ` to `S`. We identify
 vertices with their values in `ℕ`, so that the selected vertices are the `v : Fin p` with
 `v < k` and `g` is a map on `Fin k`; no hypothesis `k ≤ p` is needed for the definitions.
 
@@ -32,24 +33,26 @@ vertices with their values in `ℕ`, so that the selected vertices are the `v : 
   selected vertex, i.e. the roots of the nontrivial tree components; their number is `k₁`.
 * `TwoComponentCoulomb.IsAdmissibleRestriction g`: `g` has no fixed point, and every directed
   cycle of its graph is a `2`-cycle (the structure inherited from `φ`).
-* `TwoComponentCoulomb.restrictedGraphs p k k₀ k₁`: the set `D(k₀, k₁)` of source l. 1054 of
+* `TwoComponentCoulomb.restrictedGraphs p k k₀ k₁`: the set `D(k₀, k₁)` of source definition of
   admissible restricted graphs with `k₀` two-cycles and `k₁` roots.
 * `TwoComponentCoulomb.exists_reach_root_or_twoCycle`: in an admissible restricted graph every
   forward path reaches a vertex outside `S` or a vertex on a `2`-cycle inside `S` (the component
-  structure of source l. 1041--1044).
-* `TwoComponentCoulomb.two_mul_card_twoCyclesIn_add_card_rootsOf_le`: `2 k₀ + k₁ ≤ k` (source
-  l. 1054, used at l. 1127, 1134; `k₁ ≤ k` is a consequence).
+  structure of source l. 995–1001).
+* `TwoComponentCoulomb.two_mul_card_twoCyclesIn_add_card_rootsOf_le`: `2 k₀ + k₁ ≤ k` (used at
+  source l. 1075, 1082; the source's remark `k₁ ≤ k`, is a consequence).
 * `TwoComponentCoulomb.card_restrictedGraphs_mul_le`,
   `TwoComponentCoulomb.card_restrictedGraphs_le`: the count
-  `|D(k₀, k₁)| ≤ 2 ^ k k ^ k p ^ {k₁} / (k₀ ! k₁ !)` (source l. 1122--1125).
-* `TwoComponentCoulomb.restrictedNnMap hk key z`: the restriction of `nnMap key z` to `S`;
-  `TwoComponentCoulomb.restriction_mem_restrictedGraphs` shows that it lies in
-  `D(k₀(z), k₁(z))` for the numbers `restrictedCycleCount`, `restrictedRootCount` computed
-  from `z`; `TwoComponentCoulomb.two_mul_k0_add_k1_le` is `2 k₀(z) + k₁(z) ≤ k`; and
-  `TwoComponentCoulomb.measurableSet_restrictedNnMap_eq` shows that the events
-  `{z | restrictedNnMap hk key z = g}` are measurable.
+  `|D(k₀, k₁)| ≤ 2 ^ k k ^ k p ^ {k₁} / (k₀ ! k₁ !)` (source l. 1065).
+* `TwoComponentCoulomb.restrictedNnMap hk key z`: the restriction of `nnMap key z` to `S`.
+  `isAdmissibleRestriction_restrictedNnMap` proves its graph structure, and
+  `measurableSet_restrictedNnMap_eq` proves measurability of its cells.
 
-The component structure of the source claim (l. 1041--1044) is encoded by the two conditions of
+The enumeration follows `source/dipole-formation.tex`, l. 1005–1025. `UpperBound/AuxPairEnumeration.lean` counts
+ordered collections of disjoint unordered pairs exactly. Dividing by component
+permutations gives `card_restrictedGraphs_pairs_mul_le` before the relaxation used
+by `card_restrictedGraphs_mul_le`.
+
+The component structure of the source claim (l. 995–1001) is encoded by the two conditions of
 `IsAdmissibleRestriction` together with the definition of the roots: the vertices without
 outgoing edge are exactly those outside `S`, a directed cycle can only be a `2`-cycle, and hence
 every orbit starting in `S` leaves `S` (reaches a root) or ends in a `2`-cycle inside `S`.
@@ -66,21 +69,21 @@ section Definitions
 
 variable {p k : ℕ}
 
-/-- The edge relation of the restricted graph `γ'` of `g : Fin k → Fin p` (source l. 1041): there is
+/-- The edge relation of the restricted graph `γ'` of `g : Fin k → Fin p` (source l. 990): there is
 an edge `u → v` iff `u` is selected (`u < k`) and `g u = v`. The vertices without an outgoing
 edge are exactly the `v ≥ k`. -/
 def restrictedEdge (g : Fin k → Fin p) (u v : Fin p) : Prop :=
   ∃ h : (u : ℕ) < k, g ⟨u, h⟩ = v
 
 open scoped Classical in
-/-- The `2`-cycles of the restricted graph of `g` lying inside the selected set (source l. 1041):
+/-- The `2`-cycles of the restricted graph of `g` lying inside the selected set (source l. 990):
 the pairs `i < j` of selected vertices with `g i = j` and `g j = i`. Their number is the number
 `k₀` of two-cycles of the source. -/
 noncomputable def twoCyclesIn (g : Fin k → Fin p) : Finset (Fin k × Fin k) :=
   univ.filter fun e => e.1 < e.2 ∧ (g e.1 : ℕ) = e.2 ∧ (g e.2 : ℕ) = e.1
 
 open scoped Classical in
-/-- The roots of the nontrivial tree components of the restricted graph of `g` (source l. 1054):
+/-- The roots of the nontrivial tree components of the restricted graph of `g` (source l. 1003):
 the vertices `v ≥ k` outside the selected set that are the target of a selected vertex. Their
 number is the number `k₁` of the source. -/
 noncomputable def rootsOf (g : Fin k → Fin p) : Finset (Fin p) :=
@@ -89,7 +92,7 @@ noncomputable def rootsOf (g : Fin k → Fin p) : Finset (Fin p) :=
 /-- A map `g : Fin k → Fin p` is an *admissible restriction* if it has no fixed point and every
 directed cycle of its restricted graph is a `2`-cycle: if `u → v` is an edge and `v` can reach
 `u`, then `v → u` is an edge. These are the properties of `φ = nnMap key z` that survive
-restriction to the selected set (source l. 1044: the nearest-neighbour graph has only
+restriction to the selected set (source l. 993: the nearest-neighbour graph has only
 `2`-cycles). -/
 def IsAdmissibleRestriction (g : Fin k → Fin p) : Prop :=
   (∀ i : Fin k, (g i : ℕ) ≠ i) ∧
@@ -97,7 +100,7 @@ def IsAdmissibleRestriction (g : Fin k → Fin p) : Prop :=
       restrictedEdge g v u
 
 open scoped Classical in
-/-- The set `D(k₀, k₁)` of source l. 1054: the admissible restricted graphs on `p` vertices with
+/-- The set `D(k₀, k₁)` of source l. 1003: the admissible restricted graphs on `p` vertices with
 `k` selected ones, having `k₀` two-cycles inside the selected set and `k₁` roots outside it. -/
 noncomputable def restrictedGraphs (p k k₀ k₁ : ℕ) : Finset (Fin k → Fin p) :=
   univ.filter fun g => IsAdmissibleRestriction g ∧ (twoCyclesIn g).card = k₀ ∧
@@ -185,7 +188,7 @@ theorem card_restrictedCycleVerts : (restrictedCycleVerts g).card = 2 * (twoCycl
     card_image_of_injOn snd_injOn_twoCyclesIn]
   ring
 
-/-- Source l. 1054 and l. 1127, 1134: `2 k₀ + k₁ ≤ k`. Every `2`-cycle inside the selected set uses
+/-- Source l. 1003 and l. 1075, 1082: `2 k₀ + k₁ ≤ k`. Every `2`-cycle inside the selected set uses
 two selected vertices pointing into the selected set, and every root is the image of a selected
 vertex pointing outside of it; these selected vertices are all distinct. -/
 theorem two_mul_card_twoCyclesIn_add_card_rootsOf_le (g : Fin k → Fin p) :
@@ -220,7 +223,7 @@ section Structure
 
 variable {p k : ℕ}
 
-/-- Source l. 1041--1044: in an admissible restricted graph, the forward path from any vertex
+/-- Source l. 990–993: in an admissible restricted graph, the forward path from any vertex
 reaches either a vertex outside the selected set (a vertex without outgoing edge: the root of a
 tree component) or a vertex on a `2`-cycle inside the selected set. Together with the absence of
 fixed points, this says that every nontrivial component contains either a `2`-cycle inside the
@@ -280,7 +283,7 @@ variable {p k : ℕ}
 /-- The fibre of the pair `(roots, two-cycles)` through `g₀` is small: on the selected vertices
 that are not on a `2`-cycle, a map with the same roots and the same `2`-cycles takes values in
 the `≤ k + k₁` vertices of the selected set and of the set of roots, and on the vertices of a
-`2`-cycle it is determined by the cycles (source l. 1069--1073). -/
+`2`-cycle it is determined by the cycles (source l. 1018–1022). -/
 theorem card_fiber_le (g₀ : Fin k → Fin p) :
     (univ.filter fun g : Fin k → Fin p =>
         twoCyclesIn g = twoCyclesIn g₀ ∧ rootsOf g = rootsOf g₀).card ≤
@@ -332,27 +335,42 @@ theorem card_fiber_le (g₀ : Fin k → Fin p) :
   rw [h2]
   exact Nat.pow_le_pow_left hTcard _
 
-/-- The count of source l. 1056--1073 and 1122--1125, in multiplied form:
-`|D(k₀, k₁)| k₀ ! k₁ ! ≤ 2 ^ k k ^ k p ^ {k₁}`. The roots are chosen among the `≤ p` vertices
-outside the selected set (`p ^ {k₁} / k₁ !` choices), the `2`-cycles among the pairs of selected
-vertices (`k ^ {2 k₀} / k₀ !` choices), and each of the remaining `k - 2 k₀` selected vertices has
-one of `k + k₁ ≤ 2 k` targets. -/
-theorem card_restrictedGraphs_mul_le (p k k₀ k₁ : ℕ) :
-    (restrictedGraphs p k k₀ k₁).card * (k₀ ! * k₁ !) ≤ 2 ^ k * k ^ k * p ^ k₁ := by
+/-- The cycles of a restricted graph form a disjoint set of unordered pairs. -/
+noncomputable def pairSet_twoCycles (g : Fin k → Fin p) {m : ℕ} (hm : (twoCyclesIn g).card = m) :
+    PairEnumeration.PairSets k m :=
+  ⟨twoCyclesIn g, hm, fun e he => (mem_twoCyclesIn.1 he).1, by
+    rintro ⟨e, b⟩ ⟨e', b'⟩ h
+    cases b <;> cases b'
+    · exact Prod.ext (Subtype.ext (fst_injOn_twoCyclesIn e.property e'.property h)) rfl
+    · exact False.elim (fst_ne_snd_of_mem_twoCyclesIn e.property e'.property h)
+    · exact False.elim (fst_ne_snd_of_mem_twoCyclesIn e'.property e.property h.symm)
+    · exact Prod.ext (Subtype.ext (snd_injOn_twoCyclesIn e.property e'.property h)) rfl⟩
+
+/-- The manuscript's count before relaxation. Ordering the cycle components and
+then dividing by their permutations and endpoint orientations gives
+`|D| k₀! k₁! 2^{k₀} ≤ (k!/(k-2k₀)!) p^{k₁} (k+k₁)^{k-2k₀}`.
+The root and cycle component orders can be separated since
+`(k₀+k₁)! / (k₀! k₁!)` chooses their types. -/
+theorem card_restrictedGraphs_pairs_mul_le (p k k₀ k₁ : ℕ) :
+    (restrictedGraphs p k k₀ k₁).card * (k₀ ! * k₁ !) * 2 ^ k₀ ≤
+      k.descFactorial (2 * k₀) * p ^ k₁ * (k + k₁) ^ (k - 2 * k₀) := by
   classical
   set D := restrictedGraphs p k k₀ k₁ with hD
   rcases D.eq_empty_or_nonempty with h | ⟨g₀, hg₀⟩
   · simp [h]
   have hle : 2 * k₀ + k₁ ≤ k := two_mul_add_le_of_mem_restrictedGraphs hg₀
   set O : Finset (Fin p) := univ.filter fun v => k ≤ (v : ℕ) with hO
+  set P : Finset (Finset (Fin k × Fin k)) :=
+    univ.image (fun M : PairEnumeration.PairSets k k₀ => M.val) with hP
   set idx : Finset (Finset (Fin p) × Finset (Fin k × Fin k)) :=
-    powersetCard k₁ O ×ˢ powersetCard k₀ (univ : Finset (Fin k × Fin k)) with hidx
+    powersetCard k₁ O ×ˢ P with hidx
   have hmaps : Set.MapsTo (fun g : Fin k → Fin p => (rootsOf g, twoCyclesIn g)) D idx := by
     intro g hg
     obtain ⟨-, h0, h1⟩ := mem_restrictedGraphs.1 (mem_coe.1 hg)
-    rw [mem_coe, hidx, mem_product, mem_powersetCard, mem_powersetCard]
-    refine ⟨⟨fun v hv => ?_, h1⟩, subset_univ _, h0⟩
-    simpa [hO] using (mem_rootsOf.1 hv).1
+    rw [mem_coe, hidx, mem_product, mem_powersetCard]
+    refine ⟨⟨fun v hv => ?_, h1⟩, ?_⟩
+    · simpa [hO] using (mem_rootsOf.1 hv).1
+    · exact mem_image.2 ⟨pairSet_twoCycles g h0, mem_univ _, rfl⟩
   have hsum := card_eq_sum_card_fiberwise hmaps
   have hfib : ∀ b ∈ idx, (D.filter fun g => (rootsOf g, twoCyclesIn g) = b).card ≤
       (k + k₁) ^ (k - 2 * k₀) := by
@@ -372,44 +390,55 @@ theorem card_restrictedGraphs_mul_le (p k k₀ k₁ : ℕ) :
         · exact (Prod.ext_iff.1 (hgb.trans hg₁b.symm)).1
       have := (card_le_card hsub).trans (card_fiber_le g₁)
       rwa [h0, h1] at this
-  have hidxcard : idx.card ≤ p.choose k₁ * (k * k).choose k₀ := by
-    rw [hidx, card_product, card_powersetCard, card_powersetCard, card_univ, Fintype.card_prod,
-      Fintype.card_fin]
+  have hidxcard : idx.card ≤ p.choose k₁ * Fintype.card (PairEnumeration.PairSets k k₀) := by
+    have hPc : P.card = Fintype.card (PairEnumeration.PairSets k k₀) := by
+      dsimp only [P]
+      exact (card_image_of_injective _
+        (show Function.Injective (fun M : PairEnumeration.PairSets k k₀ => M.val) from
+          fun x y h => Subtype.ext h)).trans card_univ
+    rw [hidx, card_product, card_powersetCard, hPc]
     refine Nat.mul_le_mul (Nat.choose_le_choose _ ?_) le_rfl
     calc O.card ≤ (univ : Finset (Fin p)).card := card_le_univ O
       _ = p := by rw [card_univ, Fintype.card_fin]
-  have hcard : D.card ≤ p.choose k₁ * (k * k).choose k₀ * (k + k₁) ^ (k - 2 * k₀) := by
+  have hcard : D.card ≤ p.choose k₁ * Fintype.card (PairEnumeration.PairSets k k₀) * (k + k₁) ^ (k - 2 * k₀) := by
     rw [hsum]
     calc ∑ b ∈ idx, (D.filter fun g => (rootsOf g, twoCyclesIn g) = b).card
         ≤ ∑ _b ∈ idx, (k + k₁) ^ (k - 2 * k₀) := sum_le_sum hfib
       _ = idx.card * (k + k₁) ^ (k - 2 * k₀) := by rw [sum_const, smul_eq_mul]
       _ ≤ _ := Nat.mul_le_mul hidxcard le_rfl
-  -- arithmetic
-  have hk₁ : k₁ ≤ k := by omega
   have e1 : k₁ ! * p.choose k₁ ≤ p ^ k₁ := by
     rw [← Nat.descFactorial_eq_factorial_mul_choose]
     exact Nat.descFactorial_le_pow p k₁
-  have e0 : k₀ ! * (k * k).choose k₀ ≤ (k * k) ^ k₀ := by
-    rw [← Nat.descFactorial_eq_factorial_mul_choose]
-    exact Nat.descFactorial_le_pow (k * k) k₀
-  have e2 : (k + k₁) ^ (k - 2 * k₀) ≤ (2 * k) ^ (k - 2 * k₀) :=
-    Nat.pow_le_pow_left (by omega) _
-  calc D.card * (k₀ ! * k₁ !)
-      ≤ (p.choose k₁ * (k * k).choose k₀ * (k + k₁) ^ (k - 2 * k₀)) * (k₀ ! * k₁ !) :=
-        Nat.mul_le_mul_right _ hcard
-    _ = (k₁ ! * p.choose k₁) * (k₀ ! * (k * k).choose k₀) * (k + k₁) ^ (k - 2 * k₀) := by ring
-    _ ≤ p ^ k₁ * (k * k) ^ k₀ * (2 * k) ^ (k - 2 * k₀) :=
-        Nat.mul_le_mul (Nat.mul_le_mul e1 e0) e2
-    _ = 2 ^ (k - 2 * k₀) * k ^ k * p ^ k₁ := by
-        have : k ^ k = k ^ (2 * k₀) * k ^ (k - 2 * k₀) := by
-          rw [← pow_add, Nat.add_sub_cancel' (by omega)]
-        rw [this, mul_pow, pow_mul, sq]
-        ring
-    _ ≤ 2 ^ k * k ^ k * p ^ k₁ := by
-        gcongr
-        exact Nat.sub_le _ _
+  calc D.card * (k₀ ! * k₁ !) * 2 ^ k₀
+      ≤ (p.choose k₁ * Fintype.card (PairEnumeration.PairSets k k₀) *
+          (k + k₁) ^ (k - 2 * k₀)) * (k₀ ! * k₁ !) * 2 ^ k₀ := by gcongr
+    _ = (Fintype.card (PairEnumeration.PairSets k k₀) * k₀ ! * 2 ^ k₀) *
+        (k₁ ! * p.choose k₁) * (k + k₁) ^ (k - 2 * k₀) := by ring
+    _ ≤ _ := by rw [PairEnumeration.card_pairSets]; gcongr
 
-/-- The count of source l. 1122--1125: `|D(k₀, k₁)| ≤ 2 ^ k k ^ k p ^ {k₁} / (k₀ ! k₁ !)`. -/
+/-- Relax the exact disjoint-pair count to the bound used in Step 3. -/
+theorem card_restrictedGraphs_mul_le (p k k₀ k₁ : ℕ) :
+    (restrictedGraphs p k k₀ k₁).card * (k₀ ! * k₁ !) ≤ 2 ^ k * k ^ k * p ^ k₁ := by
+  classical
+  rcases (restrictedGraphs p k k₀ k₁).eq_empty_or_nonempty with h | ⟨g, hg⟩
+  · simp [h]
+  have hle := two_mul_add_le_of_mem_restrictedGraphs hg
+  have hsharp := card_restrictedGraphs_pairs_mul_le p k k₀ k₁
+  have hdrop : (restrictedGraphs p k k₀ k₁).card * (k₀ ! * k₁ !) ≤
+      (restrictedGraphs p k k₀ k₁).card * (k₀ ! * k₁ !) * 2 ^ k₀ :=
+    Nat.le_mul_of_pos_right _ (by positivity)
+  calc _ ≤ k.descFactorial (2 * k₀) * p ^ k₁ * (k + k₁) ^ (k - 2 * k₀) := hdrop.trans hsharp
+    _ ≤ k ^ (2 * k₀) * p ^ k₁ * (2 * k) ^ (k - 2 * k₀) :=
+      Nat.mul_le_mul (Nat.mul_le_mul_right _ (Nat.descFactorial_le_pow _ _))
+        (Nat.pow_le_pow_left (by omega) _)
+    _ = 2 ^ (k - 2 * k₀) * k ^ k * p ^ k₁ := by
+      have he : k ^ k = k ^ (2 * k₀) * k ^ (k - 2 * k₀) := by
+        rw [← pow_add, Nat.add_sub_cancel' (by omega)]
+      rw [he, mul_pow]
+      ring
+    _ ≤ _ := by gcongr; exact Nat.sub_le _ _
+
+/-- The count of source l. 1070–1073: `|D(k₀, k₁)| ≤ 2 ^ k k ^ k p ^ {k₁} / (k₀ ! k₁ !)`. -/
 theorem card_restrictedGraphs_le (p k k₀ k₁ : ℕ) :
     ((restrictedGraphs p k k₀ k₁).card : ℝ) ≤
       2 ^ k * (k : ℝ) ^ k * (p : ℝ) ^ k₁ / ((k₀ ! : ℝ) * (k₁ ! : ℝ)) := by
@@ -423,16 +452,8 @@ section NearestNeighbor
 variable {p k : ℕ} [Nontrivial (Fin p)] (hk : k ≤ p) (key : Fin p ↪ ℕ) (z : Fin p → ℂ)
 
 /-- The restriction of the nearest-neighbour map `φ = nnMap key z` of `p` points to the selected
-vertices `{i : i < k}` (source l. 1041: the edges `i → φ i` of `γ'_p` are those with `i` among the first `k` indices). -/
+vertices `{i : i < k}` (source l. 990: the edges `i → φ i` of `γ'_p` are those with `i` among the first `k` indices). -/
 noncomputable def restrictedNnMap : Fin k → Fin p := fun i => nnMap key z (Fin.castLE hk i)
-
-/-- The number `k₀` of `2`-cycles of `φ = nnMap key z` contained in the selected set
-`{i : i < k}`. -/
-noncomputable def restrictedCycleCount : ℕ := (twoCyclesIn (restrictedNnMap hk key z)).card
-
-/-- The number `k₁` of roots of `γ'_p`: the vertices `v ≥ k` outside the selected set that are the
-nearest neighbour of some selected vertex. -/
-noncomputable def restrictedRootCount : ℕ := (rootsOf (restrictedNnMap hk key z)).card
 
 theorem restrictedEdge_restrictedNnMap_iff (u v : Fin p) :
     restrictedEdge (restrictedNnMap hk key z) u v ↔ (u : ℕ) < k ∧ nnMap key z u = v := by
@@ -457,7 +478,7 @@ theorem exists_iterate_nnMap_of_reflTransGen {a b : Fin p}
 
 /-- The restriction of the nearest-neighbour map is an admissible restricted graph: it has no
 fixed point, and, since all cycles of `φ` are `2`-cycles (`nnMap_nnMap_of_iterate_eq_self`), all
-directed cycles of `γ'_p` are `2`-cycles (source l. 1044). -/
+directed cycles of `γ'_p` are `2`-cycles (source l. 993). -/
 theorem isAdmissibleRestriction_restrictedNnMap :
     IsAdmissibleRestriction (restrictedNnMap hk key z) := by
   refine ⟨fun i h => nnMap_ne key z (Fin.castLE hk i) (Fin.ext h), ?_⟩
@@ -473,31 +494,6 @@ theorem isAdmissibleRestriction_restrictedNnMap :
     refine (restrictedEdge_restrictedNnMap_iff hk key z _ _).2 ⟨hv, ?_⟩
     exact nnMap_nnMap_of_iterate_eq_self key z (n := m + 2) (by omega) hcyc
 
-/-- Source l. 1041--1054: the restriction of the nearest-neighbour map of `z` to the selected set
-`{i : i < k}` lies in `D(k₀(z), k₁(z))`, where `k₀(z)` is the number of `2`-cycles of `φ` inside
-the selected set and `k₁(z)` the number of roots. -/
-theorem restriction_mem_restrictedGraphs :
-    restrictedNnMap hk key z ∈
-      restrictedGraphs p k (restrictedCycleCount hk key z) (restrictedRootCount hk key z) :=
-  mem_restrictedGraphs.2 ⟨isAdmissibleRestriction_restrictedNnMap hk key z, rfl, rfl⟩
-
-/-- Source l. 1054, 1127, 1134: `2 k₀(z) + k₁(z) ≤ k`. -/
-theorem two_mul_k0_add_k1_le :
-    2 * restrictedCycleCount hk key z + restrictedRootCount hk key z ≤ k :=
-  two_mul_card_twoCyclesIn_add_card_rootsOf_le _
-
-/-- Source l. 1054: `k₁(z) ≤ k`. -/
-theorem restrictedRootCount_le : restrictedRootCount hk key z ≤ k := by
-  have := two_mul_k0_add_k1_le hk key z
-  omega
-
-/-- Every configuration has a type `(k₀, k₁)` of restricted graph, with `2 k₀ + k₁ ≤ k`
-(source l. 1054). -/
-theorem exists_restriction_mem_restrictedGraphs :
-    ∃ k₀ k₁ : ℕ, 2 * k₀ + k₁ ≤ k ∧ restrictedNnMap hk key z ∈ restrictedGraphs p k k₀ k₁ :=
-  ⟨_, _, two_mul_k0_add_k1_le hk key z,
-    restriction_mem_restrictedGraphs hk key z⟩
-
 end NearestNeighbor
 
 section Measurability
@@ -512,7 +508,7 @@ theorem measurable_restrictedNnMap : Measurable fun z : Fin p → ℂ => restric
   refine measurable_pi_iff.2 fun i => ?_
   exact (measurable_nnMap key).eval
 
-/-- The event `{γ'_p = g}` of source l. 1081--1086 is measurable for each graph `g`. -/
+/-- The event `{γ'_p = g}` of source l. 1030–1034 is measurable for each graph `g`. -/
 theorem measurableSet_restrictedNnMap_eq (g : Fin k → Fin p) :
     MeasurableSet {z : Fin p → ℂ | restrictedNnMap hk key z = g} :=
   (measurable_restrictedNnMap hk key) (measurableSet_singleton g)

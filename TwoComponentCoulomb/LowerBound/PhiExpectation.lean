@@ -10,16 +10,16 @@ public import TwoComponentCoulomb.UpperBound.IsolatedRadial
 /-!
 # The expectation of `φ_β(ϱ(x_i))` on the placement set
 
-Source: Proposition 4.1, Step 3 (l. 1864--1899), as
+Source: Proposition 4.1, Step 3 (l. 1775–1803), as
 required by ruling R22.
 
 Let `H = H(N, N, 4λ, 8λ)` (`placementSet N N (4 * lam) (8 * lam)`), let `ℚ` be the normalised
 Lebesgue measure on `H`, and let `ϱ(x_i) = lowerRadius hN X i`, so that `ϱ(x_i) ∈ [4λ, 1]` on `H`.
-The source integrates the tail bound `ℚ(ϱ(x_1) ≤ r) ≤ C (r² + r / √N)` (l. 1866--1868; Lean:
+The source integrates the tail bound `ℚ(ϱ(x_1) ≤ r) ≤ C (r² + r / √N)` (l. 1776–1778; Lean:
 `radius_tail_le`) against the decreasing profile `φ_β` of (defvarphi) (Lean: `isolatedPhi`):
 writing `φ_β(ϱ) = φ_β(1) + ∫_ϱ^1 (-φ_β'(s)) ds` and exchanging the integrals (Tonelli),
 `E_ℚ[φ_β(ϱ(x_1))] ≤ φ_β(1) + C ∫_{4λ}^1 (-φ_β'(r)) (r² + r / √N) dr ≤ C_β (ε_λ + η_λ / √N)`
-(l. 1883--1888), the last step by elementary integration.
+(l. 1787–1792), the last step by elementary integration.
 
 * `integral_comp_lowerRadius_le_of_eq_add_integral`, `integral_comp_lowerRadius_le` : the
   integration step for a general `f` with continuous derivative `f' ≤ 0` on `[4λ, 1]`:
@@ -81,7 +81,7 @@ theorem integrableOn_comp_lowerRadius (hN : 2 ≤ N) {lam : ℝ} (h4 : 4 * lam �
     ((ae_restrict_iff' hHm).2 (Filter.Eventually.of_forall fun X hX =>
       hC _ (lowerRadius_mem_Icc hN h4 hX i)))
 
-/-- **The integration step of Step 3** (source l. 1883--1888), in integrated form: if
+/-- **The integration step of Step 3** (source l. 1787–1792), in integrated form: if
 `f(x) = f(1) + ∫_x^1 g` on `[4λ, 1]` with `g ≥ 0` continuous, then by Tonelli and the tail bound
 `radius_tail_le`,
 `∫_H f(ϱ(x_i)) ≤ vol H · (f(1) + ∫_{4λ}^1 g(s) (32π s² + 16 s / √N) ds)`. -/
@@ -199,7 +199,7 @@ theorem integral_comp_lowerRadius_le_of_eq_add_integral (hN : 2 ≤ N) {lam : �
   rw [hsplit]
   linarith only [hkey]
 
-/-- **The integration step of Step 3** (source l. 1883--1888): if `f` is differentiable on
+/-- **The integration step of Step 3** (source l. 1787–1792): if `f` is differentiable on
 `[4λ, 1]` with continuous derivative `f' ≤ 0`, then writing
 `f(ϱ) = f(1) + ∫_ϱ^1 (-f'(s)) ds`, Tonelli and the tail bound `radius_tail_le` give
 `∫_H f(ϱ(x_i)) ≤ vol H · (f(1) + ∫_{4λ}^1 (-f'(s)) (32π s² + 16 s / √N) ds)`. -/
@@ -400,7 +400,7 @@ theorem eta_rpow_part_le {β : ℝ} (hβ : 2 < β) (h4 : β < 4) :
       _ = (β - 2) * (16 / (β - 3)) * (lam ^ (β - 2) * (4 * lam) ^ (3 - β)) := by ring
       _ ≤ (β - 2) * (16 / (β - 3)) * lam := by gcongr
 
-/-- **Step 3 for `2 < β < 4`** (source l. 1883--1888), where `φ_β(r) = (λ/r)^{β-2}`:
+/-- **Step 3 for `2 < β < 4`** (source l. 1787–1792), where `φ_β(r) = (λ/r)^{β-2}`:
 `∫_H φ_β(ϱ(x_i)) ≤ C (ε_λ + η_λ / √N) vol H` for `64 λ ≤ 1`. -/
 theorem exists_integral_isolatedPhi_le_of_lt_four {β : ℝ} (hβ : 2 < β) (h4 : β < 4) :
     ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → 64 * lam ≤ 1 → ∀ i : Fin N,
@@ -438,7 +438,7 @@ theorem exists_integral_isolatedPhi_le_of_lt_four {β : ℝ} (hβ : 2 < β) (h4 
   exact mul_add_div_le_of_le ENNReal.toReal_nonneg hq (lowerEps_nonneg hβ hlam)
     (lowerEta_nonneg hβ hlam) (by positivity) hC₂.le hE (hη lam hlam h64)
 
-/-- **Step 3 for `β > 4`** (source l. 1883--1888), where `φ_β(r) = (λ/r)²`:
+/-- **Step 3 for `β > 4`** (source l. 1787–1792), where `φ_β(r) = (λ/r)²`:
 `∫_H φ_β(ϱ(x_i)) ≤ C (ε_λ + η_λ / √N) vol H` for `64 λ ≤ 1`. -/
 theorem exists_integral_isolatedPhi_le_of_four_lt {β : ℝ} (hβ : 2 < β) (h4 : 4 < β) :
     ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → 64 * lam ≤ 1 → ∀ i : Fin N,
@@ -506,7 +506,7 @@ theorem hasDerivAt_phiFour_primitive {lam q s : ℝ} (hlam : 0 < lam) (hq : q �
   field_simp
   ring
 
-/-- **Step 3 for `β = 4`** (source l. 1883--1888), where `φ_4(r) = (λ/r)² (1 + log(r/λ))`:
+/-- **Step 3 for `β = 4`** (source l. 1787–1792), where `φ_4(r) = (λ/r)² (1 + log(r/λ))`:
 `∫_H φ_4(ϱ(x_i)) ≤ C (ε_λ + η_λ / √N) vol H` for `64 λ ≤ 1`. -/
 theorem exists_integral_isolatedPhi_le_four {β : ℝ} (hβ : 2 < β) (h4 : β = 4) :
     ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → 64 * lam ≤ 1 → ∀ i : Fin N,
@@ -598,7 +598,7 @@ theorem exists_integral_isolatedPhi_le_four {β : ℝ} (hβ : 2 < β) (h4 : β =
 /-! ### The expectation -/
 
 /-- **Expectation of `φ_β(ϱ(x_i))` over `H`** (source
-Proposition 4.1, Step 3, l. 1883--1888):
+Proposition 4.1, Step 3, l. 1787–1792):
 `E_ℚ[φ_β(ϱ(x_1))] ≤ φ_β(1) + C ∫_{4λ}^1 (-φ_β'(r)) (r² + r/√N) dr ≤ C_β (ε_λ + η_λ / √N)`,
 written as `∫_H φ_β(ϱ(x_i)) ≤ C (ε_λ + η_λ / √N) vol H` for `0 < λ < 1/64`. -/
 theorem expectation_isolatedPhi_lowerRadius_le {β : ℝ} (hβ : 2 < β) :

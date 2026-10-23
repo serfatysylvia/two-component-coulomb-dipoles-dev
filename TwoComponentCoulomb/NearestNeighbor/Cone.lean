@@ -10,9 +10,9 @@ public import Mathlib.Algebra.Order.Floor.Semiring
 public import TwoComponentCoulomb.NearestNeighbor.Basic
 
 /-!
-# Cone bounds (Remark 2.1)
+# Cone bounds (Lemma 2.1)
 
-Source l. 388--397: dividing the plane around a point `O` into six half-open cones of angle
+Source l. 391–403: dividing the plane around a point `O` into six half-open cones of angle
 `π/3`, if `A, B` lie in one cone and `|OA| ≤ |OB|` then `|AB| < |OB|`. Consequently `O` is the
 nearest neighbour of at most six points, and the number of points `j ≠ O` having at most one
 point strictly closer than `O` is at most twelve (the points having `O` as second nearest
@@ -172,7 +172,7 @@ theorem card_le_six_mul_of_card_filter_lt_le {Z : Fin N ⊕ Fin N → ℂ} (hZ :
     _ ≤ (c + 1) * 6 := Nat.mul_le_mul_left _ h2
     _ = 6 * (c + 1) := by ring
 
-/-- Remark 2.1, first bound: a point is the nearest neighbour of at most six points. -/
+/-- Lemma 2.1, first bound: a point is the nearest neighbour of at most six points. -/
 theorem card_filter_nearestNeighbor_eq_le_six {Z : Fin N ⊕ Fin N → ℂ}
     (hZ : Function.Injective Z) (o : Fin N ⊕ Fin N) :
     (univ.filter fun j => nearestNeighbor Z j = o).card ≤ 6 := by
@@ -187,7 +187,7 @@ theorem card_filter_nearestNeighbor_eq_le_six {Z : Fin N ⊕ Fin N → ℂ}
   rw [hφ] at this
   exact absurd hk.2.2 (not_lt.2 this)
 
-/-- Remark 2.1, second bound (stated without the second nearest neighbour map): at most twelve
+/-- Lemma 2.1, second bound (stated without the second nearest neighbour map): at most twelve
 indices `j ≠ o` have at most one index `k ∉ {j, o}` with `z_k` strictly closer to `z_j` than
 `z_o`. In particular `o` is the second nearest neighbour of at most twelve points. -/
 theorem card_filter_card_filter_lt_le_one_le_twelve {Z : Fin N ⊕ Fin N → ℂ}

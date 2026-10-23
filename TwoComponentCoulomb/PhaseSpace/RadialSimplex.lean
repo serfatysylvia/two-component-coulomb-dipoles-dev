@@ -11,7 +11,7 @@ public import TwoComponentCoulomb.LowerBound.PolarPi
 /-!
 # Radial integrals over a ball of `κ → ℂ` reduce to the simplex
 
-Source l. 884--895 (polar reduction of the integral over `B_2`). For a finite index type `κ`
+Source l. 832–843 (polar reduction of the integral over `B_2`). For a finite index type `κ`
 and measurable functions `g_i : ℝ → [0,∞]`, the integral of the product of radial weights
 `∏_i g_i(|u_i|)` over the ball `{u : κ → ℂ | ∑_i |u_i|² ≤ s}` becomes, after the substitution
 `t_i = |u_i|²` (each `u_i ∈ ℂ` contributes `2π r dr = π dt`), an integral over the open simplex
@@ -130,7 +130,7 @@ theorem volume_sum_eq_const [Nonempty κ] (s : ℝ) :
   rw [hset, measure_preimage_add_right]
   exact Measure.addHaar_submodule volume _ hK
 
-/-- **Polar reduction to the simplex** (source l. 884--895): for a finite index type `κ`,
+/-- **Polar reduction to the simplex** (source l. 832–843): for a finite index type `κ`,
 measurable `g_i : ℝ → [0,∞]` and `s > 0`,
 `∫⁻_{∑|u_i|² ≤ s} ∏ g_i(|u_i|) du = π^|κ| ∫⁻_{t ∈ (0,∞)^κ, ∑ t_i < s} ∏ g_i(√t_i) dt`. -/
 theorem lintegral_sumSq_le_prod_radial_eq {s : ℝ} (hs : 0 < s) (g : κ → ℝ → ℝ≥0∞)
@@ -179,7 +179,7 @@ theorem lintegral_sumSq_le_prod_radial_eq {s : ℝ} (hs : 0 < s) (g : κ → ℝ
 
 end Pi
 
-/-- **Polar reduction to the simplex** for `κ = Fin n` (source l. 884--895):
+/-- **Polar reduction to the simplex** for `κ = Fin n` (source l. 832–843):
 `∫⁻_{∑|u_i|² ≤ s} ∏ g_i(|u_i|) du = π^n ∫⁻_{t ∈ (0,∞)^n, ∑ t_i < s} ∏ g_i(√t_i) dt`. -/
 theorem lintegral_ball_prod_radial_eq {n : ℕ} {s : ℝ} (hs : 0 < s) (g : Fin n → ℝ → ℝ≥0∞)
     (hg : ∀ i, Measurable (g i)) :

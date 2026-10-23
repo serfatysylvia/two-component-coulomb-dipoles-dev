@@ -7,13 +7,14 @@ module
 public import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
 public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Probability.Distributions.Beta
+import TwoComponentCoulomb.Integrals.Stirling
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.MeasureTheory.Constructions.Pi
 
 /-!
 # Dirichlet integrals (Lemma 3.1)
 
-Source l. 604–638 (Lemma `lemdirichlet`).
+Source lines 608–643 (Lemma `lemdirichlet`).
 
 * `lintegral_dirichlet`: the exact value (eq:ind I) of the Dirichlet integral
   `I_{k,s}(α₁, …, α_k) = ∫_{(ℝ⁺)^k} 1_{Σ t_i < s} ∏ t_i^{α_i - 1} dt`, as a `lintegral` over
@@ -21,10 +22,11 @@ Source l. 604–638 (Lemma `lemdirichlet`).
 * `dirichletTwoLevel` is `I_{k,s}` for the exponent vector `(α₀, …, α₀, 1, …, 1)` with `α₀`
   repeated `k₀` times. `dirichletTwoLevel_log_estimate` is the Stirling-type estimate
   (eq:estimate Dirichlet) and `dirichletTwoLevel_le` is the final upper bound of Lemma 3.1.
-  Both rest on the elementary two-sided bounds
-  `(x/e)^x ≤ Γ(x+1) ≤ 2 (x+1) (x/e)^x` proved in this file (no Stirling formula is needed).
+  The logarithmic estimate uses the factorial Stirling formula, extended to real arguments
+  by monotonicity and log-convexity of Gamma. The final upper bound uses
+  `(x/e)^x ≤ Γ(x+1)`, as in the manuscript.
 * Generic tools (Fubini on `Fin (k+1) → ℝ`, factorisation of product integrals, scaling on `ℝ`)
-  live in the sub-namespace `TwoComponentCoulomb.Dirichlet`.
+  live in the sub-namespace `TwoComponentCoulomb.Integrals.Dirichlet`.
 
 All "O(·)" terms of the source are explicit constants quantified before `k`, `k₀`, `s`.
 -/
@@ -37,7 +39,7 @@ open MeasureTheory Set
 open scoped ENNReal
 
 /-- The open simplex `{t ∈ (0,∞)^k | t₁ + ⋯ + t_k < s}` (the domain of the Dirichlet integral
-`I_{k,s}` of source (eq:indis)). -/
+`I_{k,s}` of source the definition of the Dirichlet integral). -/
 @[expose] def posSimplex (k : ℕ) (s : ℝ) : Set (Fin k → ℝ) :=
   {t | (∀ i, 0 < t i) ∧ ∑ i, t i < s}
 
@@ -274,20 +276,8 @@ theorem lintegral_dirichlet (k : ℕ) (hk : 1 ≤ k) (α : Fin k → ℝ) (hα :
 
 namespace Dirichlet
 
-/-! ### Elementary two-sided bounds for `Γ(x+1)` -/
+/-! ### Gamma bounds and Stirling interpolation -/
 
-
-/-- Tangent-line bound `t^x ≤ c^x exp (x t / c - x)` (from `log y ≤ y - 1`). -/
-theorem rpow_le_rpow_mul_exp {x c t : ℝ} (hx : 0 < x) (hc : 0 < c) (ht : 0 < t) :
-    t ^ x ≤ c ^ x * Real.exp (x * (t / c) - x) := by
-  have h1 : (t / c) ^ x ≤ Real.exp (x * (t / c) - x) := by
-    rw [Real.rpow_def_of_pos (div_pos ht hc)]
-    apply Real.exp_le_exp.2
-    have := Real.log_le_sub_one_of_pos (div_pos ht hc)
-    nlinarith
-  calc t ^ x = c ^ x * (t / c) ^ x := by
-        rw [← Real.mul_rpow hc.le (div_pos ht hc).le, mul_div_cancel₀ _ hc.ne']
-    _ ≤ c ^ x * Real.exp (x * (t / c) - x) := by gcongr
 
 /-- `exp (-t)` is integrable on `(c, ∞)`. -/
 theorem integrableOn_exp_neg_Ioi (c : ℝ) : IntegrableOn (fun t : ℝ => Real.exp (-t)) (Ioi c) := by
@@ -315,89 +305,47 @@ theorem rpow_mul_exp_neg_le_Gamma_add_one {x : ℝ} (hx : 0 < x) :
           positivity
         · exact Filter.Eventually.of_forall (Ioi_subset_Ioi hx.le)
 
-/-- Upper bound `Γ(x+1) ≤ 2 (x+1) (x/e)^x` for `x > 0` (split the Gamma integral at `2x`). -/
-theorem Gamma_add_one_le {x : ℝ} (hx : 0 < x) :
-    Real.Gamma (x + 1) ≤ 2 * (x + 1) * (x ^ x * Real.exp (-x)) := by
-  have hint := Real.GammaIntegral_convergent (s := x + 1) (by linarith)
-  simp only [add_sub_cancel_right] at hint
-  rw [Real.Gamma_eq_integral (by linarith), add_sub_cancel_right]
-  have hsplit : Ioi (0 : ℝ) = Ioc 0 (2 * x) ∪ Ioi (2 * x) := by
-    rw [Ioc_union_Ioi_eq_Ioi (by linarith)]
-  rw [hsplit, setIntegral_union (Ioc_disjoint_Ioi le_rfl) measurableSet_Ioi
-    (hint.mono_set (hsplit ▸ subset_union_left)) (hint.mono_set (hsplit ▸ subset_union_right))]
-  have h1 : ∫ t in Ioc 0 (2 * x), Real.exp (-t) * t ^ x ≤ 2 * x * (x ^ x * Real.exp (-x)) := by
-    calc ∫ t in Ioc 0 (2 * x), Real.exp (-t) * t ^ x
-        ≤ ∫ t in Ioc 0 (2 * x), x ^ x * Real.exp (-x) := by
-          refine setIntegral_mono_on (hint.mono_set (hsplit ▸ subset_union_left))
-            (integrableOn_const measure_Ioc_lt_top.ne) measurableSet_Ioc ?_
-          intro t ht
-          have := rpow_le_rpow_mul_exp hx hx ht.1
-          calc Real.exp (-t) * t ^ x ≤ Real.exp (-t) * (x ^ x * Real.exp (x * (t / x) - x)) := by
-                gcongr
-            _ = x ^ x * Real.exp (-x) := by
-                rw [mul_left_comm, ← Real.exp_add]
-                congr 2
-                rw [mul_div_cancel₀ _ hx.ne']; ring
-      _ = 2 * x * (x ^ x * Real.exp (-x)) := by
-          rw [setIntegral_const, Real.volume_real_Ioc_of_le (by linarith)]
-          simp
-  have h2 : ∫ t in Ioi (2 * x), Real.exp (-t) * t ^ x ≤ 2 * (x ^ x * Real.exp (-x)) := by
-    calc ∫ t in Ioi (2 * x), Real.exp (-t) * t ^ x
-        ≤ ∫ t in Ioi (2 * x), (2 * x) ^ x * Real.exp (-x) * Real.exp (-1 / 2 * t) := by
-          refine setIntegral_mono_on (hint.mono_set (hsplit ▸ subset_union_right))
-            ((integrableOn_exp_mul_Ioi (a := -1 / 2) (by norm_num) (2 * x)).const_mul _)
-            measurableSet_Ioi ?_
-          intro t ht
-          have ht0 : 0 < t := lt_trans (by linarith) ht
-          have := rpow_le_rpow_mul_exp hx (show 0 < 2 * x by linarith) ht0
-          calc Real.exp (-t) * t ^ x
-              ≤ Real.exp (-t) * ((2 * x) ^ x * Real.exp (x * (t / (2 * x)) - x)) := by gcongr
-            _ = (2 * x) ^ x * Real.exp (-x) * Real.exp (-1 / 2 * t) := by
-                rw [mul_left_comm, ← Real.exp_add, mul_assoc, ← Real.exp_add]
-                congr 2
-                field_simp
-                ring
-      _ = 2 * ((2 * x) ^ x * Real.exp (-x) * Real.exp (-x)) := by
-          rw [integral_const_mul, integral_exp_mul_Ioi (by norm_num),
-            show (-1 / 2 : ℝ) * (2 * x) = -x by ring]
-          ring
-      _ ≤ 2 * (x ^ x * Real.exp (-x)) := by
-          have h2e : (2 : ℝ) ^ x ≤ Real.exp x := by
-            calc (2 : ℝ) ^ x ≤ (Real.exp 1) ^ x := by
-                  gcongr
-                  linarith [Real.add_one_le_exp (1 : ℝ)]
-              _ = Real.exp x := by rw [← Real.exp_mul, one_mul]
-          have : (2 * x) ^ x * Real.exp (-x) ≤ x ^ x := by
-            rw [Real.mul_rpow (by norm_num) hx.le]
-            calc 2 ^ x * x ^ x * Real.exp (-x) ≤ Real.exp x * x ^ x * Real.exp (-x) := by gcongr
-              _ = x ^ x := by
-                rw [mul_right_comm, ← Real.exp_add]; simp
-          calc 2 * ((2 * x) ^ x * Real.exp (-x) * Real.exp (-x))
-              = 2 * (((2 * x) ^ x * Real.exp (-x)) * Real.exp (-x)) := by ring
-            _ ≤ 2 * (x ^ x * Real.exp (-x)) := by gcongr
-  linarith
-
-
-
-
-/-- `log (x^x e^{-x}) = x log x - x`. -/
-theorem log_rpow_mul_exp_neg {x : ℝ} (hx : 0 < x) :
-    Real.log (x ^ x * Real.exp (-x)) = x * Real.log x - x := by
-  rw [Real.log_mul (Real.rpow_pos_of_pos hx _).ne' (Real.exp_pos _).ne', Real.log_rpow hx,
-    Real.log_exp]; ring
-
-/-- `x log x - x ≤ log Γ(x+1)` for `x > 0`. -/
-theorem le_log_Gamma_add_one {x : ℝ} (hx : 0 < x) :
-    x * Real.log x - x ≤ Real.log (Real.Gamma (x + 1)) := by
-  rw [← log_rpow_mul_exp_neg hx]
-  exact Real.log_le_log (by positivity) (rpow_mul_exp_neg_le_Gamma_add_one hx)
-
-/-- `log Γ(x+1) ≤ log 2 + log (x+1) + x log x - x` for `x > 0`. -/
-theorem log_Gamma_add_one_le {x : ℝ} (hx : 0 < x) :
-    Real.log (Real.Gamma (x + 1)) ≤ Real.log 2 + Real.log (x + 1) + (x * Real.log x - x) := by
-  rw [← log_rpow_mul_exp_neg hx, ← Real.log_mul (by norm_num) (by linarith),
-    ← Real.log_mul (by positivity) (by positivity)]
-  exact Real.log_le_log (Real.Gamma_pos_of_pos (by linarith)) (Gamma_add_one_le hx)
+/-- The logarithmic real-Gamma Stirling estimate needed for the Dirichlet quotient.
+For `x ≥ 1`, monotonicity interpolates the factorial Stirling bound at `ceil x`.
+For `0 < x ≤ 1`, log-convexity between `Γ(1) = Γ(2) = 1` supplies the bound. -/
+theorem log_Gamma_add_one_le_stirling {x : ℝ} (hx : 0 < x) :
+    Real.log (Real.Gamma (x + 1)) ≤ x * Real.log x - x + 1 + 2 * Real.log (x + 1) := by
+  have hlower : -1 ≤ x * Real.log x - x := by
+    have h := mul_le_mul_of_nonneg_left (Real.one_sub_inv_le_log_of_pos hx) hx.le
+    rw [mul_sub, mul_inv_cancel₀ hx.ne'] at h
+    linarith only [h]
+  rcases le_or_gt x 1 with hx1 | hx1
+  · have hconv := Real.convexOn_log_Gamma.2 (show (1 : ℝ) ∈ Ioi 0 by norm_num)
+      (show (2 : ℝ) ∈ Ioi 0 by norm_num) (sub_nonneg.2 hx1) hx.le (by ring : 1 - x + x = 1)
+    have hid : (1 - x) * 1 + x * 2 = x + 1 := by ring
+    simp only [smul_eq_mul, Function.comp_apply, hid, Real.Gamma_one, Real.Gamma_two,
+      Real.log_one, mul_zero, add_zero] at hconv
+    have hlog : 0 ≤ Real.log (x + 1) := Real.log_nonneg (by linarith)
+    linarith only [hconv, hlower, hlog]
+  · let n := Nat.ceil x
+    have hxn : x ≤ (n : ℝ) := Nat.le_ceil x
+    have hnx : (n : ℝ) < x + 1 := Nat.ceil_lt_add_one hx.le
+    have hn : 1 ≤ n := Nat.one_le_ceil_iff.2 hx
+    have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
+    have hg : Real.log (Real.Gamma (x + 1)) ≤ Real.log (n.factorial : ℝ) := by
+      rw [← Real.Gamma_nat_eq_factorial]
+      apply Real.log_le_log (Real.Gamma_pos_of_pos (by linarith))
+      exact Real.Gamma_strictMonoOn_Ici.monotoneOn (by change 2 ≤ x + 1; linarith)
+        (by change 2 ≤ (n : ℝ) + 1; linarith) (by linarith)
+    have hs := log_factorial_stirling_le hn
+    have hlog : Real.log (n : ℝ) - Real.log x ≤ (n : ℝ) / x - 1 := by
+      rw [← Real.log_div hn0.ne' hx.ne']
+      exact Real.log_le_sub_one_of_pos (div_pos hn0 hx)
+    have hmul : x * (Real.log (n : ℝ) - Real.log x) ≤ (n : ℝ) - x := by
+      have h := mul_le_mul_of_nonneg_left hlog hx.le
+      have hid : x * ((n : ℝ) / x - 1) = (n : ℝ) - x := by field_simp
+      linarith only [h, hid]
+    have hln0 : 0 ≤ Real.log (n : ℝ) := Real.log_nonneg (by exact_mod_cast hn)
+    have hdiff : ((n : ℝ) - x) * Real.log n ≤ Real.log n :=
+      mul_le_of_le_one_left hln0 (by linarith only [hnx])
+    have hln : Real.log (n : ℝ) ≤ Real.log (x + 1) := Real.log_le_log hn0 hnx.le
+    have hlx : 0 ≤ Real.log (x + 1) := Real.log_nonneg (by linarith)
+    linarith only [hg, hs, hmul, hdiff, hln, hlx]
 
 /-- Number of indices `i < k₀` in `Fin k`. -/
 theorem card_filter_val_lt_fin (k k₀ : ℕ) (h : k₀ ≤ k) :
@@ -434,13 +382,25 @@ theorem lintegral_dirichlet_two_level {α₀ : ℝ} (hα₀ : 0 < α₀) (k k₀
         Real.Gamma (α₀ * k₀ + ((k : ℝ) - k₀) + 1)) := by
   have hpos : ∀ i : Fin k, 0 < (if (i : ℕ) < k₀ then α₀ else 1) := by
     intro i; split_ifs <;> [exact hα₀; exact one_pos]
-  have := lintegral_posSimplex_eq_aux k (fun i : Fin k => if (i : ℕ) < k₀ then α₀ else 1) hpos s hs
+  have hvalue : ∫⁻ t in posSimplex k s,
+      ENNReal.ofReal (∏ i, t i ^ ((if (i : ℕ) < k₀ then α₀ else 1) - 1)) =
+      ENNReal.ofReal (s ^ (∑ i : Fin k, if (i : ℕ) < k₀ then α₀ else 1) *
+        (∏ i : Fin k, Real.Gamma (if (i : ℕ) < k₀ then α₀ else 1)) /
+        Real.Gamma ((∑ i : Fin k, if (i : ℕ) < k₀ then α₀ else 1) + 1)) := by
+    rcases Nat.eq_zero_or_pos k with rfl | hk
+    · exact lintegral_posSimplex_eq_aux 0 _ hpos s hs
+    · have h := lintegral_dirichlet k hk _ hpos hs
+      have hsum : 0 < ∑ i : Fin k, if (i : ℕ) < k₀ then α₀ else 1 :=
+        Finset.sum_pos (fun i _ => hpos i) (Finset.univ_nonempty_iff.2 ⟨⟨0, hk⟩⟩)
+      rw [Real.Gamma_add_one hsum.ne', mul_comm (∑ i : Fin k, if (i : ℕ) < k₀ then α₀ else 1),
+        ← div_div]
+      exact h
   have hG : ∀ i : Fin k, Real.Gamma (if (i : ℕ) < k₀ then α₀ else 1) =
       if (i : ℕ) < k₀ then Real.Gamma α₀ else 1 := by
     intro i; split_ifs
     · rfl
     · exact Real.Gamma_one
-  rw [show {t : Fin k → ℝ | (∀ i, 0 < t i) ∧ ∑ i, t i < s} = posSimplex k s from rfl, this]
+  rw [show {t : Fin k → ℝ | (∀ i, 0 < t i) ∧ ∑ i, t i < s} = posSimplex k s from rfl, hvalue]
   simp_rw [hG]
   rw [sum_ite_val_lt α₀ k k₀ hk₀, prod_ite_val_lt _ k k₀ hk₀, Nat.cast_sub hk₀]
 
@@ -527,8 +487,10 @@ theorem dirichletTwoLevel_log_estimate {α₀ : ℝ} (hα₀ : 0 < α₀) :
   have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
   set q : ℝ := Real.log M / Real.log 2 with hq
   have hq0 : 0 ≤ q := div_nonneg (Real.log_nonneg hM1) hlog2.le
+  obtain ⟨D, hD, hupper⟩ := dirichletTwoLevel_le hα₀
+  set c₂ : ℝ := |Real.log D|
   set c₁ : ℝ := |Real.log (Real.Gamma α₀) + α₀ - 1| with hc₁
-  refine ⟨c₁ + 2 + q, fun k k₀ hk hk₀ s hs => ?_⟩
+  refine ⟨c₁ + c₂ + 4 + 2 * q, fun k k₀ hk hk₀ s hs => ?_⟩
   set A : ℝ := α₀ * k₀ + ((k : ℝ) - k₀) with hAdef
   have hA : 0 < A := dirichletTwoLevel_exponent_pos hα₀ hk hk₀
   have hk₀' : (k₀ : ℝ) ≤ k := by exact_mod_cast hk₀
@@ -544,8 +506,18 @@ theorem dirichletTwoLevel_log_estimate {α₀ : ℝ} (hα₀ : 0 < α₀) :
       A * Real.log s + k₀ * Real.log (Real.Gamma α₀) - Real.log (Real.Gamma (A + 1)) := by
     rw [hI, Real.log_div (by positivity) hΓA.ne', Real.log_mul (by positivity) (by positivity),
       Real.log_rpow hs, Real.log_pow]
-  have hG1 := le_log_Gamma_add_one hA
-  have hG2 := log_Gamma_add_one_le hA
+  have hupperReal := ENNReal.toReal_mono ENNReal.ofReal_ne_top (hupper k k₀ hk hk₀ s hs)
+  have hbase : 0 < (s / A) ^ A * Real.exp (k : ℝ) * D ^ k₀ := by positivity
+  rw [ENNReal.toReal_ofReal hbase.le] at hupperReal
+  have hlogUpper := Real.log_le_log
+    (ENNReal.toReal_pos (dirichletTwoLevel_pos hα₀ hk hk₀ hs).ne'
+      (dirichletTwoLevel_lt_top hα₀ hk₀ hs).ne) hupperReal
+  change Real.log (dirichletTwoLevel α₀ k k₀ s).toReal ≤
+    Real.log ((s / A) ^ A * Real.exp (k : ℝ) * D ^ k₀) at hlogUpper
+  rw [Real.log_mul (by positivity) (by positivity),
+    Real.log_mul (by positivity) (Real.exp_pos _).ne', Real.log_rpow (by positivity),
+    Real.log_div hs.ne' hA.ne', Real.log_exp, Real.log_pow, hlogI] at hlogUpper
+  have hG2 := log_Gamma_add_one_le_stirling hA
   -- bounds on `log (A+1)`
   have hAM : A + 1 ≤ M * ((k : ℝ) + 1) := by
     have : A ≤ M * k := by
@@ -565,10 +537,11 @@ theorem dirichletTwoLevel_log_estimate {α₀ : ℝ} (hα₀ : 0 < α₀) :
       rw [hq]; field_simp
     rw [this]
     exact mul_le_mul_of_nonneg_left hlogk hq0
+  have hlogkhalf : 1 ≤ 2 * Real.log ((k : ℝ) + 1) := by
+    have hhalf := Real.one_sub_inv_le_log_of_pos (show (0 : ℝ) < 2 by norm_num)
+    norm_num at hhalf
+    linarith only [hlogk, hhalf]
   have hlk : 0 ≤ Real.log ((k : ℝ) + 1) := le_trans hlog2.le hlogk
-  have hx1 : (k₀ : ℝ) * (Real.log (Real.Gamma α₀) + α₀ - 1) ≤ c₁ * k₀ := by
-    have := mul_le_mul_of_nonneg_left (le_abs_self (Real.log (Real.Gamma α₀) + α₀ - 1)) hk₀0
-    linarith
   have hx2 : -(c₁ * k₀) ≤ (k₀ : ℝ) * (Real.log (Real.Gamma α₀) + α₀ - 1) := by
     have := mul_le_mul_of_nonneg_left (neg_abs_le (Real.log (Real.Gamma α₀) + α₀ - 1)) hk₀0
     linarith
@@ -579,9 +552,15 @@ theorem dirichletTwoLevel_log_estimate {α₀ : ℝ} (hα₀ : 0 < α₀) :
   have e2 : 0 ≤ (k₀ : ℝ) * 2 := by positivity
   have e3 : 0 ≤ q * (k₀ : ℝ) := mul_nonneg hq0 hk₀0
   have e4 : 0 ≤ q * Real.log ((k : ℝ) + 1) := mul_nonneg hq0 hlk
+  have e5 : 0 ≤ c₂ * k₀ := mul_nonneg (abs_nonneg _) hk₀0
+  have e6 : 0 ≤ c₂ * Real.log ((k : ℝ) + 1) := mul_nonneg (abs_nonneg _) hlk
+  have e7 : 0 ≤ c₁ * k₀ := mul_nonneg hc₁0 hk₀0
+  have hxD : (k₀ : ℝ) * Real.log D ≤ c₂ * k₀ := by
+    have h := mul_le_mul_of_nonneg_left (le_abs_self (Real.log D)) hk₀0
+    linarith only [h]
   constructor
-  · linarith only [hG2, hlogA, hlogk, hlogM, hx2, hAk, e1, e2, e3, e4, hlk, hc₁0]
-  · linarith only [hG1, hx1, hAk, e1, e2, e3, e4, hlk]
+  · linarith only [hG2, hlogA, hlogk, hlogM, hx2, hAk, e1, e2, e3, e4, e5, e6, hlk, hc₁0, hlogkhalf]
+  · linarith only [hlogUpper, hxD, e1, e2, e3, e4, e5, e6, e7, hlk]
 
 end TwoComponentCoulomb
 

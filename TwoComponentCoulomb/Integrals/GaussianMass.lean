@@ -17,8 +17,8 @@ import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 /-!
 # The Gaussian mass of the critical case `β = 2`
 
-Source l. 707--710 and 746: Lemma 3.3 (`lem:critical radial`), part (2), `(eq:critical-B)`; it is
-used for `β = 2` in the proof of Lemma 3.6 (`lemma:part nn`, l. 957--961, 974). With `ℓ = |log λ|`
+Source l. 703–707, 738: Lemma 3.3 (`lem:critical radial`), part (2), `(eq:critical-B)`; it is
+used for `β = 2` in the proof of Lemma 3.5 (`lemma:part nn`, ). With `ℓ = |log λ|`
 the Gaussian mass `B = J_λ(1/ℓ) = ∫_{ℝ²} e^{2 g_λ(u) - |u|²/ℓ} du` is `2π (ℓ + ½ log ℓ + O(1))`.
 
 * `integrable_gaussianMass` : the integrand is integrable (`0 < λ ≤ e⁻¹`).
@@ -347,7 +347,7 @@ theorem integrable_gaussianMass {lam : ℝ} (hlam : 0 < lam) (hle : lam ≤ Real
     (integrableOn_mul_gaussianProfile hlam (by linarith) h2)
 
 /-- The Gaussian mass `B = ∫_{ℝ²} e^{2 g_λ(u) - |u|²/ℓ} du`, `ℓ = |log λ|`, equals
-`2π (ℓ + ½ log ℓ + O(1))` (source l. 707--710, `(eq:critical-B)` of Lemma 3.3). -/
+`2π (ℓ + ½ log ℓ + O(1))` (source l. 703–707, `(eq:critical-B)` of Lemma 3.3). -/
 theorem exists_abs_gaussianMass_sub_le :
     ∃ C : ℝ, ∀ lam : ℝ, 0 < lam → lam ≤ Real.exp (-1) →
       |(∫ u : ℂ, Real.exp (2 * smearedKernel lam u - ‖u‖ ^ 2 / |Real.log lam|)) -

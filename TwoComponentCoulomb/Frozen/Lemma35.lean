@@ -8,13 +8,13 @@ module
 
 public import TwoComponentCoulomb.Frozen.DipoleConstant
 public import TwoComponentCoulomb.Frozen.ReducedPartitionFunction
-import TwoComponentCoulomb.UpperBound.Lemma36
+import TwoComponentCoulomb.UpperBound.Lemma35
 
 /-!
-# Frozen: `TwoComponentCoulomb.lemma_3_6`
+# Frozen: `TwoComponentCoulomb.lemma_3_5`
 
 Frozen statement, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 922–946.
+Source: l. 870–896.
 -/
 
 open scoped ENNReal
@@ -23,8 +23,8 @@ open scoped ENNReal
 
 namespace TwoComponentCoulomb
 
-/-- **Lemma 3.6** (`lemma:part nn`, source l. 922–946). -/
-theorem lemma_3_6 (β : ℝ) (hβ : 2 ≤ β) :
+/-- **Lemma 3.5** (`lemma:part nn`, source l. 870–896). -/
+theorem lemma_3_5 (β : ℝ) (hβ : 2 ≤ β) :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
         0 < reducedPartitionFunction N β lam ∧ reducedPartitionFunction N β lam < ∞ ∧
@@ -36,7 +36,7 @@ theorem lemma_3_6 (β : ℝ) (hβ : 2 ≤ β) :
           ≤ C * (N * (if β = 2 then |Real.log lam| ^ (-(1 / 2 : ℝ)) else lam ^ min ((β - 2) / 2) 1)
             + Real.log (N + 1)) :=
 -- FROZEN_ANCHOR_PROOF_BEGIN
-  by exact TwoComponentCoulomb.UpperBound.lemma_3_6
+  by exact TwoComponentCoulomb.UpperBound.lemma_3_5
 -- FROZEN_ANCHOR_PROOF_END
 -- FROZEN_ANCHOR_SUFFIX_BEGIN
 

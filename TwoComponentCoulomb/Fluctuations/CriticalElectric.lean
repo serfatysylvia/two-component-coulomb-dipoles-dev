@@ -14,6 +14,7 @@ public import TwoComponentCoulomb.Frozen.GibbsMeasure
 public import TwoComponentCoulomb.Frozen.IsolatedDipoles
 public import TwoComponentCoulomb.Frozen.NumComponents
 public import TwoComponentCoulomb.UpperBound.CriticalGraphSum
+public import TwoComponentCoulomb.UpperBound.CriticalFixedGraph
 public import TwoComponentCoulomb.UpperBound.IsolatedRadial
 import Mathlib.Analysis.Real.Pi.Bounds
 import TwoComponentCoulomb.Frozen.Proposition41
@@ -31,10 +32,10 @@ import TwoComponentCoulomb.UpperBound.PairBlocks
 /-!
 # Theorem 2 at `β = 2`: the exponential moment of the electric energy (eq. (eq:critical electric))
 
-Source l. 2023--2060 (proof of Theorem 2, Step 2, `β = 2`).
+Source l. 1903–1938 (proof of Theorem 2, Step 2, `β = 2`).
 
 Write `ℓ = |log λ|`, `S = 1 + log ℓ + log (1/γ)` and `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` (`alphaRadius`,
-source (eq:def alphai)). The source uses the ball-growth inequality of Step 2 directly, with the
+source the definition of αᵢ in Step 2). The source uses the ball-growth inequality of Step 2 directly, with the
 retained coordinates of the proof of (eq:critical upper), so that the electric energy
 `(1/4π) ∫ |∇h_α|²` is kept. For `0 < c ≤ 1/(2π)` the factor `e^{c ∫ |∇h_α|²}` is absorbed by it, the
 neutral pair error is `C ((a/ρ)² + min {a/γ, 1}²)` and the same-sign correction is at least
@@ -47,20 +48,20 @@ of the proof of (eq:critical upper), proved for a general integrand in
 
 `log 𝔼_ℙ[e^{c ∫ |∇h_α|²}] ≤ C N (ℓ^{-1/5} + S/ℓ) + C log (N+1) ≤ C N (ω_λ + φ₂(γ)) + C log (N+1)`.
 
-Here `ω_λ = errorRate 2 _ λ = ℓ^{-1/5}` (source l. 2055, "`ℓ^{-1/5} = ω_λ`"), and, for `γ ≤ 1`,
+Here `ω_λ = errorRate 2 _ λ = ℓ^{-1/5}` ( "`ℓ^{-1/5} = ω_λ`"), and, for `γ ≤ 1`,
 `S/ℓ = φ₂(γ) + log ℓ/ℓ` with `log ℓ/ℓ ≤ (5/4) ℓ^{-1/5}`.
 
 ## Main results
 
-* `exists_neg_two_mul_energy_add_electric_le` (source l. 2014--2023, 2038): for `c ≤ 1/(2π)`,
+* `exists_neg_two_mul_energy_add_electric_le` : for `c ≤ 1/(2π)`,
   `-2 F_λ + c ∫ |∇h_α|² ≤ ∑_{i ∉ I^pair} (g_λ(zᵢ - z_{φ₁ i}) + c₁) + ∑_{s ∈ S} E_s`, from the
   ball-growth inequality of Step 2 (`energy_ge_electric_alphaRadius`).
-* `exists_lintegral_cell_electric_le` (source l. 2038--2044): the integral of
-  `e^{-2F_λ + c ∫ |∇h_α|²}` over one cell (by `exists_lintegral_cell_le_pairCellExponent`).
-* `exists_lintegral_exp_electric_le` (source l. 2045--2055):
+* `exists_lintegral_cell_electric_le`: the integral of `e^{-2F_λ + c ∫ |∇h_α|²}` over one cell
+  (by `exists_lintegral_cell_le_criticalCellExponent`).
+* `exists_lintegral_exp_electric_le`:
   `∫_{Λ^{2N}} e^{-2F_λ + c ∫ |∇h_α|²} ≤
-  exp (2N log N + N (log (2πℓ) - 1) + C N (ℓ^{-1/5} + S/ℓ) + C log (N+1))`, the sum over the graphs
-  (by `exists_lintegral_pi_box_le_of_cell_le`).
+  exp (2N log N + N (log (2πℓ) - 1) + C N (ω_λ + S/ℓ) + C log (N+1))`, the sum over the graphs
+  (by `exists_lintegral_pi_box_le_of_cell_le`), with `ω_λ = ℓ^{-1/5}`.
 * `measurable_integral_norm_sq_electricField_alphaRadius`: `Z ↦ ∫ |∇h_α|²` is measurable.
 * `critical_electric` (eq:critical electric): there are `C, λ₁ > 0` such that for `c ≤ 1/(2π)`,
   `N ≥ 2`, `0 < λ < λ₁` and `2λ ≤ γ ≤ 1`,
@@ -78,11 +79,11 @@ namespace TwoComponentCoulomb
 
 variable {N : ℕ}
 
-/-! ### The energy bound keeping the electric energy (source l. 2014--2023, 2038) -/
+/-! ### The energy bound keeping the electric energy  -/
 
 section Energy
 
-/-- The 2-cycle term of the ball-growth inequality of Step 2 at the vertex `i` (source l. 2014--2022,
+/-- The 2-cycle term of the ball-growth inequality of Step 2 at the vertex `i` (source l. 1891–1899,
 `energy_ge_electric_alphaRadius`):
 `dᵢ d_{φ₁ i} g_λ(zᵢ - z_{φ₁ i}) - dᵢ (dᵢ + d_{φ₁ i}) (g(αᵢ) + κ) - 64 (r̃₁ / ((r̃₂ ∧ γ) ∨ r̃₁))²`. -/
 noncomputable def alphaCycleTerm (hN : 2 ≤ N) (lam γ : ℝ) (Z : Fin N ⊕ Fin N → ℂ)
@@ -94,7 +95,7 @@ noncomputable def alphaCycleTerm (hN : 2 ≤ N) (lam γ : ℝ) (Z : Fin N ⊕ Fi
         max (min (secondNeighborRadius hN lam Z i) γ) (firstNeighborRadius lam Z i)) ^ 2
 
 /-- The tree term with the radii `α`: `g(αᵢ) + κ ≤ g_λ(zᵢ - z_{φ₁ i}) + C`, since `αᵢ ≥ r̃₁(zᵢ)`
-(source eq. (gr2r1)). -/
+(source the nonneutral-pair comparison in Corollary 2.3). -/
 theorem alpha_tree_term_le (hN : 2 ≤ N) {Cg : ℝ}
     (hCg : ∀ lam : ℝ, 0 < lam → ∀ z : ℂ, -Real.log (max ‖z‖ lam) - Cg ≤ smearedKernel lam z)
     {lam : ℝ} (hlam : 0 < lam) (γ : ℝ) (Z : Fin N ⊕ Fin N → ℂ) (i : Fin N ⊕ Fin N) :
@@ -139,7 +140,7 @@ theorem neg_alphaCycleTerm_le (hN : 2 ≤ N) {Cg : ℝ}
 
 variable {Z : Fin N ⊕ Fin N → ℂ}
 
-/-- The two cycle terms of an isolated neutral pair, with the radii `α` (source l. 2023,
+/-- The two cycle terms of an isolated neutral pair, with the radii `α` (
 "the neutral pair error is bounded by `C((a/ρ)² + min{a/γ, 1}²)`"):
 `-T_s - T_{φ₁ s} ≤ 2 g_λ(u_s) + 832 ((a/ρ)² + ((a/γ)² ∧ 1))`, using
 `(r̃₁ / ((r̃₂ ∧ γ) ∨ r̃₁))² ≤ (r̃₁/r̃₂)² + ((r̃₁/γ)² ∧ 1)` and `ρ ≤ 3 r̃₂` at both endpoints. -/
@@ -228,7 +229,7 @@ theorem max_min_isoRadius_le_three_mul_alphaRadius (hN : 2 ≤ N) {lam : ℝ} (h
       · have := min_le_right ρ γ; linarith
     linarith
 
-/-- The two cycle terms of an isolated same-sign pair, with the radii `α` (source l. 2023, "the
+/-- The two cycle terms of an isolated same-sign pair, with the radii `α` ( "the
 same-sign correction is at least `2 log (((ρ ∧ γ) ∨ a)/a) - C`"):
 `-T_s - T_{φ₁ s} ≤ 2 log (|u_s| ∨ λ) - 4 log ((ρ ∧ γ) ∨ a) + C`, using `-g_λ(u) ≤ log (|u| ∨ λ) + C`,
 `α_{φ₁ s} = αₛ` and `αₛ ≥ ((ρ ∧ γ) ∨ a)/3`. -/
@@ -288,9 +289,9 @@ theorem neg_alphaCycleTerm_sameSign_pair_le (hN : 2 ≤ N) {Cg : ℝ}
 
 variable (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) in
 /-- The exponent `E_s` of the isolated pair of the non-retained endpoint `s` in the electric moment
-(source l. 2023): with `u = z_s - z_{f s}`, `ρ = ρ_s` and `a = (|u|/4) ∨ λ`,
+(source l. 1910–1912): with `u = z_s - z_{f s}`, `ρ = ρ_s` and `a = (|u|/4) ∨ λ`,
 `2 g_λ(u) + c₂ ((a/ρ)² + ((a/γ)² ∧ 1))` for a neutral pair and
-`2 log (|u| ∨ λ) - 4 log ((ρ ∧ γ) ∨ a) + c₃` for a same-sign pair. -/
+`2 g_λ(u) + 4 log a - 4 log ((ρ ∧ γ) ∨ a) + c₃` for a same-sign pair. -/
 noncomputable def elecPairExponent (hN : 2 ≤ N) (lam γ c₂ c₃ : ℝ) (Z : Fin N ⊕ Fin N → ℂ)
     (s : {s // s ∈ isoSecondVerts f}) : ℝ :=
   if charge (s : Fin N ⊕ Fin N) * charge (f s) = -1 then
@@ -299,11 +300,12 @@ noncomputable def elecPairExponent (hN : 2 ≤ N) (lam γ c₂ c₃ : ℝ) (Z : 
           isoRadius f hN lam (fun k => Z k) (isoPartner s)) ^ 2 +
         min ((displacementScale lam (Z s - Z (f s)) / γ) ^ 2) 1)
   else
-    2 * Real.log (max ‖Z s - Z (f s)‖ lam) -
+    2 * smearedKernel lam (Z s - Z (f s)) +
+      4 * Real.log (displacementScale lam (Z s - Z (f s))) -
       4 * Real.log (max (min (isoRadius f hN lam (fun k => Z k) (isoPartner s)) γ)
         (displacementScale lam (Z s - Z (f s)))) + c₃
 
-/-- **The energy bound keeping the electric energy** (source l. 2014--2023 and 2038, from the
+/-- **The energy bound keeping the electric energy** ( from the
 ball-growth inequality of Step 2 used directly). There are constants `c₁, c₂ ≥ 0` and `c₃` such
 that for `N ≥ 2`, `λ > 0`, `γ > 0`, `c ≤ 1/(2π)` and every configuration `Z`, with `f = φ₁(Z)`,
 `-2 F_λ(Z) + c ∫ |∇h_α|² ≤ ∑_{i ∉ I^pair} (g_λ(z_i - z_{f i}) + c₁) + ∑_{s ∈ S} E_s`,
@@ -320,7 +322,7 @@ theorem exists_neg_two_mul_energy_add_electric_le :
   obtain ⟨Cg, hCg⟩ := exists_smearedKernel_ge
   have hl4 : 0 ≤ Real.log 4 := Real.log_nonneg (by norm_num)
   refine ⟨2 * |Cg| + 2 * Real.log 4 + 2 * |kappa| + 64, 832,
-    2 * |Cg| + 4 * Real.log 3 + 4 * |kappa| + 128, by positivity, by norm_num,
+    4 * |Cg| + 4 * Real.log 3 + 4 * Real.log 4 + 4 * |kappa| + 128, by positivity, by norm_num,
     fun N hN lam hlam γ hγ c hc Z => ?_⟩
   classical
   set f := nearestNeighbor Z with hf
@@ -372,7 +374,7 @@ theorem exists_neg_two_mul_energy_add_electric_le :
       linarith
   -- Step 3: the isolated pairs
   have hstep4 : ∀ s : {s // s ∈ isoSecondVerts f}, W s + W (f s) ≤
-      elecPairExponent f hN lam γ 832 (2 * |Cg| + 4 * Real.log 3 + 4 * |kappa| + 128) Z s := by
+      elecPairExponent f hN lam γ 832 (4 * |Cg| + 4 * Real.log 3 + 4 * Real.log 4 + 4 * |kappa| + 128) Z s := by
     intro s
     have hs := s.2
     have h2 : f (f s) = s := (mem_isoSecondVerts.1 hs).1.1
@@ -387,7 +389,19 @@ theorem exists_neg_two_mul_energy_add_electric_le :
       linarith
     · rw [ite_eq_right hn]
       have := neg_alphaCycleTerm_sameSign_pair_le hN hCg hlam γ s hn
-      linarith
+      have ha0 := displacementScale_pos hlam (Z s - Z (f s))
+      have hM0 : 0 < max ‖Z s - Z (f s)‖ lam := lt_max_of_lt_right hlam
+      have hM4 : max ‖Z s - Z (f s)‖ lam ≤
+          4 * displacementScale lam (Z s - Z (f s)) := by
+        unfold displacementScale
+        have h1 := le_max_left (‖Z s - Z (f s)‖ / 4) lam
+        have h2 := le_max_right (‖Z s - Z (f s)‖ / 4) lam
+        exact max_le (by linarith) (by linarith)
+      have hlog := Real.log_le_log hM0 hM4
+      rw [Real.log_mul (by norm_num) ha0.ne'] at hlog
+      have hg := hCg lam hlam (Z s - Z (f s))
+      have hab := le_abs_self Cg
+      linarith only [this, hlog, hg, hab]
   -- assembly
   have hsplit : ∑ i, W i = ∑ i ∈ (isoPairVerts f)ᶜ, W i +
       ∑ s : {s // s ∈ isoSecondVerts f}, (W s + W (f s)) := by
@@ -422,8 +436,9 @@ theorem measurable_elecPairWeight (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (lam
   · exact measurable_elecNeutralWeight lam ℓ γ c₂
   · exact measurable_elecSameSignWeight lam ℓ γ (Real.exp c₃)
 
-/-- The pair weight dominates `e^{E_s - |u_s|²/ℓ}` (source l. 1672, 1682): `|u_s| ≤ 4ρ_s`, and
-`e^{2 log (|u| ∨ λ) - 4 log M + c₃} = e^{c₃} (|u| ∨ λ)² / M⁴`. -/
+/-- The pair weight dominates `e^{E_s - |u_s|²/ℓ}`. For a same-sign pair,
+exponentiating the logarithmic correction gives the literal factor `(a/M)^4`
+against `e^{2g_λ(u)-|u|²/ℓ}`. -/
 theorem ofReal_exp_elecPairExponent_le (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (γ c₂ c₃ : ℝ)
     {Z : Fin N ⊕ Fin N → ℂ} (s : {s // s ∈ isoSecondVerts (nearestNeighbor Z)}) :
     ENNReal.ofReal (Real.exp (elecPairExponent (nearestNeighbor Z) hN lam γ c₂ c₃ Z s -
@@ -450,56 +465,163 @@ theorem ofReal_exp_elecPairExponent_le (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < la
     have hM0 : 0 < max (min (isoRadius (nearestNeighbor Z) hN lam (fun k => Z k) (isoPartner s)) γ)
         (displacementScale lam (Z s - Z (nearestNeighbor Z s))) :=
       (displacementScale_pos hlam _).trans_le (le_max_right _ _)
-    rw [sub_eq_add_neg, Real.exp_add,
-      exp_two_mul_log_sub_four_mul_log (lt_max_of_lt_right hlam) hM0]
+    have ha0 := displacementScale_pos hlam (Z s - Z (nearestNeighbor Z s))
+    have he : Real.exp (4 * Real.log (displacementScale lam (Z s - Z (nearestNeighbor Z s))) -
+          4 * Real.log (max (min (isoRadius (nearestNeighbor Z) hN lam (fun k => Z k)
+            (isoPartner s)) γ) (displacementScale lam (Z s - Z (nearestNeighbor Z s))))) =
+        (displacementScale lam (Z s - Z (nearestNeighbor Z s)) /
+          max (min (isoRadius (nearestNeighbor Z) hN lam (fun k => Z k) (isoPartner s)) γ)
+            (displacementScale lam (Z s - Z (nearestNeighbor Z s)))) ^ 4 := by
+      rw [← mul_sub, ← Real.log_div ha0.ne' hM0.ne',
+        show (4 : ℝ) = ((4 : ℕ) : ℝ) by norm_num, ← Real.log_pow,
+        Real.exp_log (pow_pos (div_pos ha0 hM0) _)]
+    rw [show 2 * smearedKernel lam (Z s - Z (nearestNeighbor Z s)) +
+          4 * Real.log (displacementScale lam (Z s - Z (nearestNeighbor Z s))) -
+          4 * Real.log (max (min (isoRadius (nearestNeighbor Z) hN lam (fun k => Z k)
+            (isoPartner s)) γ) (displacementScale lam (Z s - Z (nearestNeighbor Z s)))) + c₃ -
+          ‖Z s - Z (nearestNeighbor Z s)‖ ^ 2 / |Real.log lam| =
+        c₃ + (2 * smearedKernel lam (Z s - Z (nearestNeighbor Z s)) -
+          ‖Z s - Z (nearestNeighbor Z s)‖ ^ 2 / |Real.log lam|) +
+        (4 * Real.log (displacementScale lam (Z s - Z (nearestNeighbor Z s))) -
+          4 * Real.log (max (min (isoRadius (nearestNeighbor Z) hN lam (fun k => Z k)
+            (isoPartner s)) γ) (displacementScale lam (Z s - Z (nearestNeighbor Z s))))) by ring,
+      Real.exp_add, he, Real.exp_add, mul_assoc]
 
-/-- **The cell bound of the electric moment** (source l. 2038--2044, repeating l. 1682--1706).
+/-- **The cell bound of the electric moment** (source l. 1910–1912, repeating l. 1618–1620).
 There are constants such that for `N ≥ 2`, `0 < λ ≤ e⁻²`, `2λ ≤ γ ≤ 1`, `c ≤ 1/(2π)` and every
 nearest-neighbour graph `f = φ₁(Z₀)`, the integral of `e^{-2F_λ + c ∫ |∇h_α|²}` over the cell
-`Λ^{2N} ∩ {φ₁ = f}` is at most `exp (pairCellExponent …)` evaluated at the numbers of components,
+`Λ^{2N} ∩ {φ₁ = f}` is at most `exp (criticalCellExponent …)` evaluated at the numbers of components,
 isolated pairs and isolated neutral pairs of `f`, with the neutral mass `neutralMass λ γ K C`
-("`J_λ(1/ℓ) + CS`") and the same-sign mass `elecSameSignMass` ("`CS`"). -/
+("`J + CS`") and the literal same-sign mass `C_s e^{c₃} S`. -/
 theorem exists_lintegral_cell_electric_le :
-    ∃ c₁ CJ K Cn c₃ : ℝ, 0 ≤ c₁ ∧ 0 ≤ CJ ∧ 0 ≤ K ∧ 0 ≤ Cn ∧
+    ∃ c₁ CJ K Cn Cs c₃ : ℝ, 0 ≤ c₁ ∧ 0 ≤ CJ ∧ 0 ≤ K ∧ 0 ≤ Cn ∧ 0 < Cs ∧
       ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → lam ≤ Real.exp (-2) →
       ∀ γ : ℝ, 2 * lam ≤ γ → γ ≤ 1 → ∀ c : ℝ, c ≤ 1 / (2 * Real.pi) →
       ∀ (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (Z₀ : Fin N ⊕ Fin N → ℂ), nearestNeighbor Z₀ = f →
         ∫⁻ Z in (Set.univ.pi fun _ : Fin N ⊕ Fin N => box N) ∩ {Z | nearestNeighbor Z = f},
             ENNReal.ofReal (Real.exp (-2 * energy lam Z +
               c * ∫ x, ‖electricField charge Z (alphaRadius hN lam γ Z) x‖ ^ 2)) ≤
-          ENNReal.ofReal (Real.exp (pairCellExponent c₁ CJ lam (neutralMass lam γ K Cn)
-            (elecSameSignMass lam γ (Real.exp c₃)) N (numComponents Z₀) (numIsolatedPairs Z₀)
+          ENNReal.ofReal (Real.exp (criticalCellExponent c₁ CJ lam (neutralMass lam γ K Cn)
+            (Cs * Real.exp c₃ * (1 + Real.log |Real.log lam| + Real.log (1 / γ))) N (numComponents Z₀) (numIsolatedPairs Z₀)
             (isolatedDipoles Z₀).card)) := by
   obtain ⟨c₁, c₂, c₃, hc₁, hc₂, hE⟩ := exists_neg_two_mul_energy_add_electric_le
   obtain ⟨K, Cn, hK, hCn, hNW⟩ := exists_lintegral_elecNeutralWeight_le hc₂
-  obtain ⟨CJ, hCJ, hcell⟩ := exists_lintegral_cell_le_pairCellExponent
-  refine ⟨c₁, CJ, K, Cn, c₃, hc₁, hCJ, hK, hCn, ?_⟩
+  obtain ⟨Cs, hCs, hSW⟩ := exists_lintegral_elecSameSignWeight_le
+  obtain ⟨CJ, hCJ, hcell⟩ := exists_lintegral_cell_le_criticalCellExponent
+  refine ⟨c₁, CJ, K, Cn, Cs, c₃, hc₁, hCJ, hK, hCn, hCs, ?_⟩
   intro N hN lam hlam hlam2 γ hγ hγ1 c hc f Z₀ hf₀
   have hle1 : lam ≤ Real.exp (-1) := hlam2.trans (Real.exp_le_exp.2 (by norm_num))
   have hℓ1 := one_le_abs_log hlam hle1
   have hγ0 : 0 < γ := by linarith only [hγ, hlam]
-  refine hcell N hN lam hlam hlam2 c₁ _ _ (neutralMass_pos hK hCn hℓ1 hγ0 hγ1)
-    (elecSameSignMass_pos (Real.exp_pos _) hℓ1 hγ0 hγ1) f Z₀ hf₀ _
+  refine hcell N hN lam hlam hlam2 c₁ _ _ (neutralMass_pos hlam hle1 hK hCn)
+    (by
+      have hlogℓ := Real.log_nonneg hℓ1
+      have hlogγ := Real.log_nonneg ((one_le_div hγ0).2 hγ1)
+      positivity) f Z₀ hf₀ _
     (elecPairWeight f lam |Real.log lam| γ c₂ c₃)
     (measurable_elecPairWeight f lam |Real.log lam| γ c₂ c₃) ?_ ?_
   · intro s ρ hρ
     unfold elecPairWeight
     split_ifs
     · exact hNW lam γ ρ hlam hle1 hγ hγ1 hρ
-    · exact lintegral_elecSameSignWeight_le hlam hle1 hγ hγ1 hρ (Real.exp_pos _).le
+    · exact hSW lam γ ρ (Real.exp c₃) hlam hle1 hγ hγ1 hρ (Real.exp_pos _).le
   · intro Z hbox _ hZf
     subst hZf
     exact ofReal_exp_le_cell_of_exponent hN hlam hle1 (nearestNeighbor Z) hbox rfl _ _
       (hE N hN lam hlam γ hγ0 c hc Z)
       (fun s => ofReal_exp_elecPairExponent_le hN hlam γ c₂ c₃ s)
 
+/-- **The fixed-graph electric moment** in Step 2 of Section 5. Both the neutral
+pairs and the remaining cycles use the same Gaussian mass `J_λ(1/ℓ)`. -/
+theorem critical_electric_fixed_graph :
+    ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ),
+      0 < lam → lam ≤ Real.exp (-2) → ∀ γ : ℝ, 2 * lam ≤ γ → γ ≤ 1 →
+      ∀ c : ℝ, c ≤ 1 / (2 * Real.pi) →
+      ∀ (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (Z₀ : Fin N ⊕ Fin N → ℂ),
+      nearestNeighbor Z₀ = f →
+      let K := numComponents Z₀
+      let m := numIsolatedPairs Z₀
+      let p₀ := (isolatedDipoles Z₀).card
+      let S := 1 + Real.log |Real.log lam| + Real.log (1 / γ)
+      ∫⁻ Z in (Set.univ.pi fun _ : Fin N ⊕ Fin N => box N) ∩ {Z | nearestNeighbor Z = f},
+          ENNReal.ofReal (Real.exp (-2 * energy lam Z +
+            c * ∫ x, ‖electricField charge Z (alphaRadius hN lam γ Z) x‖ ^ 2)) ≤
+        ENNReal.ofReal (Real.exp (C * ((m - p₀ : ℕ) + (N - K : ℕ)) + C * N / |Real.log lam|) *
+          (N : ℝ) ^ K * (criticalCycleMass lam + C * S) ^ p₀ * (C * S) ^ (m - p₀) *
+          criticalCycleMass lam ^ (K - m) * (C * N / (N - K : ℕ)) ^ (N - K)) := by
+  obtain ⟨c₁, CJ, K₀, Cn, Cs, c₃, hc₁, hCJ, hK₀, hCn, hCs, hcell⟩ :=
+    exists_lintegral_cell_electric_le
+  obtain ⟨C₀, hC₀, henv⟩ := exists_critical_fixedGraphEnvelope (CJ := CJ) hc₁
+  let C := 1 + C₀ + 2 * Real.pi * K₀ + Cn + Cs * Real.exp c₃
+  have hC : 0 < C := by dsimp [C]; positivity
+  have hCC : C₀ ≤ C := by
+    dsimp [C]
+    have ht : 0 ≤ 2 * Real.pi * K₀ := by positivity
+    have hs : 0 ≤ Cs * Real.exp c₃ := by positivity
+    linarith only [ht, hs, hCn]
+  have hCN : 2 * Real.pi * K₀ + Cn ≤ C := by
+    dsimp [C]
+    have hs : 0 ≤ Cs * Real.exp c₃ := by positivity
+    linarith only [hC₀, hs]
+  have hCS : Cs * Real.exp c₃ ≤ C := by
+    dsimp [C]
+    have ht : 0 ≤ 2 * Real.pi * K₀ := by positivity
+    linarith only [hC₀, ht, hCn]
+  refine ⟨C, hC, fun N hN lam hlam hlam2 γ hγ hγ1 c hc f Z₀ hf => ?_⟩
+  dsimp only
+  have hle := hlam2.trans (Real.exp_le_exp.2 (by norm_num : (-2 : ℝ) ≤ -1))
+  have hℓ := one_le_abs_log hlam hle
+  have hγ0 : 0 < γ := by linarith only [hγ, hlam]
+  have hlℓ := Real.log_nonneg hℓ
+  have hlγ := Real.log_nonneg ((one_le_div hγ0).2 hγ1)
+  let S := 1 + Real.log |Real.log lam| + Real.log (1 / γ)
+  have hS : 1 ≤ S := by dsimp [S]; linarith only [hlℓ, hlγ]
+  have hS0 : 0 ≤ S := by linarith only [hS]
+  have hcounts := critGraphs_constraints
+    (show (critGraphs N (numComponents Z₀) (numIsolatedPairs Z₀) (isolatedDipoles Z₀).card).Nonempty
+      from ⟨f, mem_critGraphs.2 ⟨Z₀, hf, rfl, rfl, rfl⟩⟩)
+  obtain ⟨hp₀, hmK, hKN, hr2⟩ := hcounts
+  have hMn : neutralMass lam γ K₀ Cn ≤ criticalCycleMass lam + C * S := by
+    have ht := integral_tail_gaussianMass_le hlam hle hγ hγ1
+    change criticalTailMass lam γ ≤ _ at ht
+    have ht' : criticalTailMass lam γ ≤ 2 * Real.pi * S := by
+      refine ht.trans ?_
+      dsimp [S]
+      apply mul_le_mul_of_nonneg_left _ (by positivity)
+      linarith only [hlℓ]
+    have h1 := mul_le_mul_of_nonneg_left ht' hK₀
+    have h2 := le_mul_of_one_le_right hCn hS
+    have h3 := mul_le_mul_of_nonneg_right hCN hS0
+    unfold neutralMass
+    nlinarith only [h1, h2, h3]
+  have hMs : Cs * Real.exp c₃ * S ≤ C * S := mul_le_mul_of_nonneg_right hCS hS0
+  have hExp : C₀ * (N - numComponents Z₀ : ℕ) + C₀ * N / |Real.log lam| ≤
+      C * ((numIsolatedPairs Z₀ - (isolatedDipoles Z₀).card : ℕ) + (N - numComponents Z₀ : ℕ)) +
+        C * N / |Real.log lam| := by
+    have h1 := mul_le_mul_of_nonneg_right hCC
+      (Nat.cast_nonneg (N - numComponents Z₀) : (0 : ℝ) ≤ (N - numComponents Z₀ : ℕ))
+    have h2 := mul_le_mul_of_nonneg_right hCC
+      (show 0 ≤ (N : ℝ) / |Real.log lam| by positivity)
+    have h3 := mul_nonneg hC.le
+      (Nat.cast_nonneg (numIsolatedPairs Z₀ - (isolatedDipoles Z₀).card) :
+        (0 : ℝ) ≤ (numIsolatedPairs Z₀ - (isolatedDipoles Z₀).card : ℕ))
+    linear_combination h1 + h2 + h3
+  have hj := (criticalCycleMass_pos hlam hle).le
+  have hneu := (neutralMass_pos (R := γ) hlam hle hK₀ hCn).le
+  refine (hcell N hN lam hlam hlam2 γ hγ hγ1 c hc f Z₀ hf).trans
+    ((henv N _ _ _ (by omega) hp₀ hmK hKN hr2 lam _ _ hlam hle
+      (neutralMass_pos hlam hle hK₀ hCn) (by positivity)).trans ?_)
+  apply ENNReal.ofReal_le_ofReal
+  change _ ≤ Real.exp _ * _ * (criticalCycleMass lam + C * S) ^ _ * (C * S) ^ _ * _ * _
+  gcongr
+
 end Cell
 
-/-! ### The sum over the graphs (source l. 1709--1739, 2045--2055) -/
+/-! ### The sum over the graphs (source l. 1648–1650, 1925–1932) -/
 
 section Sum
 
-/-- **The integral of `e^{-2F_λ + c ∫ |∇h_α|²}` over `Λ^{2N}`** (source l. 2045--2055, before the
+/-- **The integral of `e^{-2F_λ + c ∫ |∇h_α|²}` over `Λ^{2N}`** (source l. 1925–1932, before the
 division by the partition function). There is `C > 0` such that for `N ≥ 2`,
 `0 < λ ≤ e⁻²`, `2λ ≤ γ ≤ 1` and `c ≤ 1/(2π)`, with `ℓ = |log λ|`,
 `∫_{Λ^{2N}} e^{-2F_λ + c ∫ |∇h_α|²} ≤ exp (2N log N + N (log (2πℓ) - 1)
@@ -516,9 +638,10 @@ theorem exists_lintegral_exp_electric_le :
             + C * N * (|Real.log lam| ^ (-(1 / 5 : ℝ))
               + (1 + Real.log |Real.log lam| + Real.log (1 / γ)) / |Real.log lam|)
             + C * Real.log (N + 1))) := by
-  obtain ⟨c₁, CJ, K, Cn, c₃, hc₁, hCJ, hK, hCn, hcell⟩ := exists_lintegral_cell_electric_le
-  obtain ⟨C, hC, hsum⟩ := exists_lintegral_pi_box_le_of_cell_le (Cm := 1 + K + Cn)
-    (C₀ := 512 * Real.pi * Real.exp c₃) hc₁ hCJ (by positivity) (by positivity)
+  obtain ⟨c₁, CJ, K, Cn, Cs, c₃, hc₁, hCJ, hK, hCn, hCs, hcell⟩ := exists_lintegral_cell_electric_le
+  obtain ⟨CB, hCB, hB⟩ := exists_criticalCycleMass_le
+  obtain ⟨C, hC, hsum⟩ := exists_lintegral_pi_box_le_of_cell_le (Cm := 1 + K + (Cn + CB))
+    (C₀ := Cs * Real.exp c₃) hc₁ hCJ (by positivity) (by positivity)
   refine ⟨C, hC, ?_⟩
   intro N hN lam hlam hlam2 γ hγ hγ1 c hc
   have hle1 : lam ≤ Real.exp (-1) := hlam2.trans (Real.exp_le_exp.2 (by norm_num))
@@ -526,8 +649,11 @@ theorem exists_lintegral_exp_electric_le :
   have hγ0 : 0 < γ := by linarith only [hγ, hlam]
   have hlogγ : 0 ≤ Real.log (1 / γ) := Real.log_nonneg (by rw [le_div_iff₀ hγ0]; linarith only [hγ1])
   exact hsum N hN lam _ _ _ hlam hlam2 (by linarith only [hlogγ])
-    (log_neutralMass_le hK hCn hℓ1 hγ0 hγ1) (elecSameSignMass_pos (Real.exp_pos _) hℓ1 hγ0 hγ1)
-    (elecSameSignMass_le (Real.exp_pos _).le hℓ1 hγ0 hγ1) _
+    (log_neutralMass_le hlam hle1 hCB (hB lam hlam hle1) hγ hK hCn hℓ1 hγ0 hγ1) (by
+      have hlogℓ := Real.log_nonneg hℓ1
+      have hlogγ := Real.log_nonneg ((one_le_div hγ0).2 hγ1)
+      positivity)
+    (le_refl _) _
     (fun f Z₀ hf₀ => hcell N hN lam hlam hlam2 γ hγ hγ1 c hc f Z₀ hf₀)
 
 end Sum
@@ -611,7 +737,7 @@ end Measurability
 
 section Moment
 
-/-- `log ℓ / ℓ ≤ (5/4) ℓ^{-1/5}` for `ℓ ≥ 1` (`ℓ^{-1/5} = errorRate 2 _ λ` for `ℓ = |log λ|`). -/
+/-- `log ℓ / ℓ ≤ (5/4) ℓ^{-1/5}` for `ℓ ≥ 1` (the rate ω_λ). -/
 private theorem log_div_le_rpow_neg_fifth {ℓ : ℝ} (hℓ : 1 ≤ ℓ) :
     Real.log ℓ / ℓ ≤ (5 / 4) * ℓ ^ (-(1 / 5 : ℝ)) := by
   have hℓ0 : 0 < ℓ := by linarith only [hℓ]
@@ -624,7 +750,7 @@ private theorem log_div_le_rpow_neg_fifth {ℓ : ℝ} (hℓ : 1 ≤ ℓ) :
   have : ℓ ^ (-(1 / 5 : ℝ)) * ℓ / (4 / 5) = (5 / 4) * ℓ ^ (-(1 / 5 : ℝ)) * ℓ := by ring
   linarith only [h1, this]
 
-/-- **Theorem 2, eq. (eq:critical electric)** (source l. 2023--2060, which states
+/-- **Theorem 2, eq. (eq:critical electric)** (source l. 1903–1938, which states
 "`ℓ^{-1/5} = ω_λ`"): there are `C, λ₁ > 0` such that for every `c ≤ 1/(2π)`, `N ≥ 2`,
 `0 < λ < λ₁` and `2λ ≤ γ ≤ 1`, with the radii `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` (`alphaRadius`),
 `𝔼_ℙ[e^{c ∫ |∇h_α|²}] ≤ exp (C N (φ₂(γ) + ω_λ) + C log (N+1))`
@@ -733,7 +859,7 @@ theorem critical_electric :
         linarith
 
 /-- **The β = 2 instance of items (ii)--(iii) of `MomentBoundRate 2 _ (errorRate 2 _)`** (source
-l. 2023--2060): `critical_electric` with `ω_λ = errorRate 2 _ λ = ℓ^{-1/5}`. With `c = 1/(2π)`
+l. 1903–1938): `critical_electric` with `ω_λ = errorRate 2 _ λ = ℓ^{-1/5}`. With `c = 1/(2π)`
 and the radii `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` (`alphaRadius`; item (i) is `alphaRadius_pos` and
 `alphaRadius_le_max`), there are `C, λ₁ > 0` such that for `N ≥ 2`, `0 < λ < λ₁` and
 `2λ ≤ γ ≤ 1`, `Z ↦ ∫ |∇h_α|²` is almost-everywhere measurable for the Gibbs measure and

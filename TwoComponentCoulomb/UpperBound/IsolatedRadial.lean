@@ -14,11 +14,11 @@ import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 /-!
-# Radial integrals for the pair displacements of Proposition 3.9
+# Radial integrals for the pair displacements of Proposition 3.8
 
-Source: Step 2 of the proof of Proposition 3.9, l. 1280--1332
+Source: Step 2 of the proof of Proposition 3.8, l. 1224–1262
 (`align1`, `defvarphi`, `align2`, `pred3`), and the analogous tilt factors in Steps 3 and 4 of the
-proof of Theorem 2, l. 2092--2100 and 2143--2150.
+proof of Theorem 2, l. 1970–1978, 2021–2028.
 
 Throughout `g_λ = smearedKernel λ`, `a(u) = (|u|/4) ∨ λ` is `displacementScale λ u`, `ℓ = |log λ|`,
 and `𝒵_β = dipoleConstant β`.
@@ -59,16 +59,16 @@ namespace TwoComponentCoulomb
 
 /-! ### Definitions -/
 
-/-- The scale `a(u) = (|u|/4) ∨ λ` of a displacement `u` (source l. 1266). -/
+/-- The scale `a(u) = (|u|/4) ∨ λ` of a displacement `u` . -/
 noncomputable def displacementScale (lam : ℝ) (u : ℂ) : ℝ :=
   max (‖u‖ / 4) lam
 
 /-- The normalisation `λ^{2-β} 1_{β>2} + ℓ 1_{β=2}` of the leading term of the radial integrals
-(source `align1`, l. 1284--1289); defined for `β ≥ 2` only (ruling R6). -/
+(source `align1`, l. 1228–1232); defined for `β ≥ 2` only (ruling R6). -/
 noncomputable def isolatedScale (β : ℝ) (_hβ : 2 ≤ β) (lam : ℝ) : ℝ :=
   if β = 2 then |Real.log lam| else lam ^ (2 - β)
 
-/-- The correction profile `φ_β(x)` (source `defvarphi`, l. 1290--1298), with `ℓ = |log λ|`;
+/-- The correction profile `φ_β(x)` (source `defvarphi`, l. 1233–1240), with `ℓ = |log λ|`;
 defined for `β ≥ 2` only (ruling R6). -/
 noncomputable def isolatedPhi (β : ℝ) (_hβ : 2 ≤ β) (lam x : ℝ) : ℝ :=
   if β = 2 then (1 + |Real.log x|) / |Real.log lam|
@@ -77,7 +77,7 @@ noncomputable def isolatedPhi (β : ℝ) (_hβ : 2 ≤ β) (lam x : ℝ) : ℝ :
   else (lam / x) ^ 2
 
 /-- The normalised same-sign radial factor `ℓ^{-1} 1_{β=2} + (λ/ρ)^{β-2} 1_{β>2}` of `pred3`
-(source l. 1329--1331); defined for `β ≥ 2` only (ruling R6). -/
+; defined for `β ≥ 2` only (ruling R6). -/
 noncomputable def isolatedTail (β : ℝ) (_hβ : 2 ≤ β) (lam ρ : ℝ) : ℝ :=
   if β = 2 then |Real.log lam|⁻¹ else (lam / ρ) ^ (β - 2)
 
@@ -355,7 +355,7 @@ theorem isolatedPhi_anti {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) {lam x y : �
 
 /-! ### The quadratic correction -/
 
-/-- **Quadratic correction** (source l. 1305--1309): for `β ≥ 2`, `0 < λ ≤ e^{-1}`, `ρ ≥ λ`,
+/-- **Quadratic correction** (source l. 1241–1245): for `β ≥ 2`, `0 < λ ≤ e^{-1}`, `ρ ≥ λ`,
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} (a(u)/ρ)² du ≤ C (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}) φ_β(ρ)`. -/
 theorem exists_integral_closedBall_exp_mul_sq_le {β : ℝ} (hβ : 2 ≤ β) :
     ∃ C : ℝ, 0 < C ∧ ∀ lam ρ : ℝ, 0 < lam → lam ≤ Real.exp (-1) → lam ≤ ρ →
@@ -525,13 +525,62 @@ theorem lintegral_closedBall_ofReal_eq {f : ℂ → ℝ} (hf : Continuous f) (hf
 
 /-! ### `align2`: the same-sign pair -/
 
-/-- Real form of `align2` (source l. 1317--1321): for `β ≥ 0` there is `C` with
+/-- The uniform quadratic integral in `eq:critical-correction`. The core and annulus
+are bounded separately, as in the proof of `lem:critical radial`. -/
+theorem exists_integral_critical_quadratic_le :
+    ∃ C : ℝ, 0 < C ∧ ∀ lam ρ : ℝ, 0 < lam → lam ≤ ρ →
+      ∫ u in Metric.closedBall (0 : ℂ) (4 * ρ),
+        Real.exp (2 * smearedKernel lam u) * (displacementScale lam u / ρ) ^ 2 ≤ C := by
+  obtain ⟨K, hK0, hK⟩ := exists_integral_closedBall_exp_mul_pow_le
+    (β := 2) (κ := 2) zero_le_two zero_le_two
+  refine ⟨K + 16 * Real.pi, by positivity, fun lam ρ hlam hρ => ?_⟩
+  have hρ0 : 0 < ρ := hlam.trans_le hρ
+  have hq : (lam / ρ) ^ 2 ≤ 1 :=
+    pow_le_one₀ (by positivity) ((div_le_one hρ0).2 hρ)
+  have hi : ∫ y in (2 * lam)..(4 * ρ), y ^ ((1 : ℝ) - 2 + 2) ≤ 8 * ρ ^ 2 := by
+    norm_num
+    nlinarith only [sq_nonneg lam]
+  have h := hK lam ρ hlam hρ
+  simp only [show (2 : ℝ) - 2 = 0 by norm_num, Real.rpow_zero, mul_one,
+    show (1 : ℝ) - 2 + 2 = 1 by norm_num, Real.rpow_one,
+    Real.rpow_neg hρ0.le, Real.rpow_two] at h
+  calc
+    _ ≤ K * (lam / ρ) ^ 2 + 2 * Real.pi * (ρ ^ 2)⁻¹ *
+        ∫ y in (2 * lam)..(4 * ρ), y := h
+    _ ≤ K + 2 * Real.pi * (ρ ^ 2)⁻¹ * (8 * ρ ^ 2) := by
+      apply add_le_add (mul_le_of_le_one_right hK0.le hq)
+      apply mul_le_mul_of_nonneg_left _ (by positivity)
+      simpa using hi
+    _ = K + 16 * Real.pi := by field_simp; ring
+
+/-- Real form of `align2` (source l. 1253–1257): for `β ≥ 0` there is `C` with
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} (a(u)/ρ)^{2β} du ≤ C ρ^{2-β}` for all `0 < λ ≤ ρ`. -/
 theorem exists_integral_closedBall_exp_mul_pow_two_mul_le {β : ℝ} (hβ : 0 ≤ β) :
     ∃ C : ℝ, 0 < C ∧ ∀ lam ρ : ℝ, 0 < lam → lam ≤ ρ →
       ∫ u in Metric.closedBall (0 : ℂ) (4 * ρ),
           Real.exp (β * smearedKernel lam u) * (displacementScale lam u / ρ) ^ (2 * β) ≤
         C * ρ ^ (2 - β) := by
+  by_cases htwo : β = 2
+  · subst β
+    obtain ⟨C, hC0, hC⟩ := exists_integral_critical_quadratic_le
+    refine ⟨C, hC0, fun lam ρ hlam hρ => ?_⟩
+    have hρ0 : 0 < ρ := hlam.trans_le hρ
+    norm_num
+    refine le_trans (setIntegral_mono_on ?_ ?_ measurableSet_closedBall ?_) (hC lam ρ hlam hρ)
+    · exact ((continuous_exp_mul_smearedKernel hlam).mul
+        (((continuous_displacementScale lam).div_const ρ).pow 4)).continuousOn.integrableOn_compact
+          (isCompact_closedBall (0 : ℂ) (4 * ρ))
+    · exact ((continuous_exp_mul_smearedKernel hlam).mul
+        (((continuous_displacementScale lam).div_const ρ).pow 2)).continuousOn.integrableOn_compact
+          (isCompact_closedBall (0 : ℂ) (4 * ρ))
+    · intro u hu
+      have hx0 : 0 ≤ displacementScale lam u / ρ :=
+        (div_pos (displacementScale_pos hlam u) hρ0).le
+      have hx1 : displacementScale lam u / ρ ≤ 1 := (div_le_one hρ0).2
+        (displacementScale_le_of_norm_le hρ (by simpa using hu))
+      have hx2 : (displacementScale lam u / ρ) ^ 2 ≤ 1 := pow_le_one₀ hx0 hx1
+      apply mul_le_mul_of_nonneg_left _ (Real.exp_pos _).le
+      nlinarith only [sq_nonneg (displacementScale lam u / ρ), hx2]
   obtain ⟨K, hK0, hK⟩ := exists_integral_closedBall_exp_mul_pow_le (β := β) (κ := 2 * β) hβ
     (by linarith)
   refine ⟨K + 2 * Real.pi * 4 ^ (2 + β) / (2 + β), by positivity, fun lam ρ hlam hρ => ?_⟩
@@ -563,7 +612,7 @@ theorem exists_integral_closedBall_exp_mul_pow_two_mul_le {β : ℝ} (hβ : 0 �
     _ = _ := by
         linear_combination (2 * Real.pi / (2 + β)) * i3
 
-/-- `align2` (source l. 1317--1321), as a lintegral: for `β ≥ 2` there is `C` with
+/-- `align2` (source l. 1253–1257), as a lintegral: for `β ≥ 2` there is `C` with
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} (a(u)/ρ)^{2β} du ≤ C ρ^{2-β}` for all `0 < λ ≤ ρ`. -/
 theorem lintegral_sameSignPair_le {β : ℝ} (hβ : 2 ≤ β) :
     ∃ C : ℝ, 0 < C ∧ ∀ lam ρ : ℝ, 0 < lam → lam ≤ ρ →
@@ -591,7 +640,7 @@ theorem isolatedScale_mul_isolatedTail {β : ℝ} (hβ : 2 ≤ β) {lam ρ : ℝ
   · have := rpow_neg_mul_div_rpow hlam hρ (β - 2)
     rwa [neg_sub] at this
 
-/-- `align2` in the normalised form used in `pred3` (source l. 1317--1329): for `β ≥ 2` there is
+/-- `align2` in the normalised form used in `pred3` (source l. 1253–1262): for `β ≥ 2` there is
 `C` with, for `0 < λ ≤ e^{-1}` and `ρ ≥ λ`,
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} (a(u)/ρ)^{2β} du ≤ C 𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2})
   (ℓ^{-1} 1_{β=2} + (λ/ρ)^{β-2} 1_{β>2})`. -/
@@ -612,7 +661,7 @@ theorem lintegral_sameSignPair_le_normalized {β : ℝ} (hβ : 2 ≤ β) :
 
 /-! ### `align1`: the neutral pair -/
 
-/-- The convexity bound `e^{C s²} ≤ 1 + (e^C - 1) s²` for `0 ≤ s ≤ 1` (source l. 1282). -/
+/-- The convexity bound `e^{C s²} ≤ 1 + (e^C - 1) s²` for `0 ≤ s ≤ 1` (source l. 1226). -/
 theorem exp_mul_sq_le {C s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
     Real.exp (C * s ^ 2) ≤ 1 + (Real.exp C - 1) * s ^ 2 := by
   have ht0 : 0 ≤ s ^ 2 := sq_nonneg s
@@ -625,7 +674,7 @@ theorem exp_mul_sq_le {C s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
 
 /-- The leading term of `align1`: for `β ≥ 2` there is `c > 0` with
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} du ≤ 𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}) (1 + c φ_β(ρ))`
-(source l. 1283--1289 and 1299--1304: (3.20b) for `β > 2`, the explicit radial integral for
+(source : the planar pair-mass identity for `β > 2`, the explicit radial integral for
 `β = 2`). -/
 theorem exists_integral_closedBall_exp_le {β : ℝ} (hβ : 2 ≤ β) :
     ∃ c : ℝ, 0 < c ∧ ∀ lam ρ : ℝ, 0 < lam → lam ≤ Real.exp (-1) → lam ≤ ρ →
@@ -691,7 +740,7 @@ theorem continuous_exp_mul_smearedKernel_mul_exp {β C lam ρ : ℝ} (hlam : 0 <
   (continuous_exp_mul_smearedKernel hlam).mul
     (((continuous_displacementScale lam).div_const ρ).pow 2 |>.const_mul C).rexp
 
-/-- Real form of `align1` (source l. 1284--1289): for `β ≥ 2` and `C ≥ 0` there is `C' > 0` with,
+/-- Real form of `align1` (source l. 1228–1232): for `β ≥ 2` and `C ≥ 0` there is `C' > 0` with,
 for `0 < λ ≤ e^{-1}` and `ρ ≥ λ`,
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} e^{C (a(u)/ρ)²} du ≤ 𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}) (1 + C' φ_β(ρ))`. -/
 theorem exists_integral_closedBall_exp_mul_exp_le {β : ℝ} (hβ : 2 ≤ β) {C : ℝ} (hC : 0 ≤ C) :
@@ -752,7 +801,7 @@ theorem exists_integral_closedBall_exp_mul_exp_le {β : ℝ} (hβ : 2 ≤ β) {C
         field_simp
         ring
 
-/-- **`align1`** (source l. 1284--1289): the radial integral of a neutral pair. For `β ≥ 2` and
+/-- **`align1`** (source l. 1228–1232): the radial integral of a neutral pair. For `β ≥ 2` and
 `C ≥ 0` there is `C' > 0`, depending only on `β` and `C`, such that for `0 < λ ≤ e^{-1}` and
 `ρ ≥ λ`,
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} e^{C (a(u)/ρ)²} du ≤ 𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}) (1 + C' φ_β(ρ))`
@@ -774,7 +823,7 @@ theorem lintegral_neutralPair_le {β : ℝ} (hβ : 2 ≤ β) {C : ℝ} (hC : 0 �
 
 /-- For `β > 2`, `t ≥ 2λ` and a continuous weight `0 ≤ w ≤ 1`, the integral of `e^{β g_λ} w` over
 `ℂ` is at most its integral over `B̄(0, t)` plus the exact tail `2π t^{2-β}/(β-2)` of `e^{β g_λ}`
-outside the disc (source l. 2100, "we integrate the second over `ℝ²`"). -/
+outside the disc (source l. 1978, "we integrate the second over `ℝ²`"). -/
 theorem lintegral_le_closedBall_add_tail {β lam t : ℝ} (hβ : 2 < β) (hlam : 0 < lam)
     (ht : 2 * lam ≤ t) {w : ℂ → ℝ} (hwc : Continuous w) (hw0 : ∀ u, 0 ≤ w u)
     (hw1 : ∀ u, w u ≤ 1) :
@@ -805,7 +854,7 @@ theorem continuous_displacementScale_div_max {lam : ℝ} (m : ℝ) (hlam : 0 < l
   (continuous_displacementScale lam).div (continuous_const.max (continuous_displacementScale lam))
     fun u => (lt_of_lt_of_le (displacementScale_pos hlam u) (le_max_right _ _)).ne'
 
-/-- The cut-off same-sign factor (source l. 2092--2100) over the whole plane: for `β > 2` there is
+/-- The cut-off same-sign factor (source l. 1970–1978) over the whole plane: for `β > 2` there is
 `C` with, for `0 < λ ≤ m`,
 `∫_{ℂ} e^{β g_λ(u)} (a(u) / (m ∨ a(u)))^{2β} du ≤ C m^{2-β}`. -/
 theorem lintegral_sameSignPair_cutoff_le_univ {β : ℝ} (hβ : 2 < β) :
@@ -852,7 +901,7 @@ theorem lintegral_sameSignPair_cutoff_le_univ {β : ℝ} (hβ : 2 < β) :
   · have : 0 < β - 2 := by linarith
     positivity
 
-/-- **Theorem 2, Step 3** (source l. 2092--2100): the cut-off same-sign radial factor. For `β > 2`
+/-- **Theorem 2, Step 3** (source l. 1970–1978): the cut-off same-sign radial factor. For `β > 2`
 there is `C` with, for `0 < λ ≤ ρ` and `λ ≤ γ`,
 `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} (a(u) / ((ρ ∧ γ) ∨ a(u)))^{2β} du
   ≤ C 𝒵_β λ^{2-β} ((λ/ρ)^{β-2} + (λ/γ)^{β-2})`. -/
@@ -889,7 +938,7 @@ theorem lintegral_sameSignPair_cutoff_le {β : ℝ} (hβ : 2 < β) :
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hle (by positivity)) (by positivity)
     _ = _ := by ring
 
-/-- **Theorem 2, Step 4** (source l. 2143--2150): the radial contribution of the tilt for a pair
+/-- **Theorem 2, Step 4** (source l. 2021–2028): the radial contribution of the tilt for a pair
 in `I ∖ I'`. For `β > 2` there is `C` with, for `0 < λ ≤ e^{-1}` and `λ ≤ γ`,
 `∫_{ℂ} e^{β g_λ(u)} ((a(u)/γ)² ∧ 1) du ≤ C 𝒵_β λ^{2-β} φ_β(γ)`.
 The source assumes `2λ ≤ γ ≤ 1`; only `λ ≤ γ` is needed. -/

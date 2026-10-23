@@ -7,12 +7,12 @@ module
 public import TwoComponentCoulomb.UpperBound.AuxIntegration
 
 /-!
-# Proposition 3.8, Step 2: integration over one restricted graph with one weight per vertex
+# Proposition 3.7, Step 2: integration over one restricted graph with one weight per vertex
 
-Source: proof of Proposition 3.8 (`prop:two species`), l. 1174--1187
-("We repeat the Gaussian integration from Step 2 of Proposition 3.7, with `t` marked vertices").
+Source: proof of Proposition 3.7 (`prop:two species`), l. 1122–1135
+("We repeat the Gaussian integration from Step 2 of Proposition 3.6, with `t` marked vertices").
 
-In Proposition 3.7 (`AuxIntegration.lean`) all selected vertices carry the same radial weight `w`.
+In Proposition 3.6 (`UpperBound/AuxIntegration.lean`) all selected vertices carry the same radial weight `w`.
 Here the selected vertex `i < k` carries its own measurable weight `W i`, evaluated at the
 first-neighbour radius `r̃₁(z_i) = r(z_i) ∨ λ` (`TwoComponentCoulomb.nnRadius`). For a restricted
 graph `g ∈ D(k₀, k₁)` the integral over the cell `Λ^p ∩ {γ'_p = g}` of `∏_{i<k} W i (r̃₁(z_i))`
@@ -52,7 +52,7 @@ namespace AuxIntegration
 /-! ### The integral of a product of two weights -/
 
 /-- The Gaussian integral of the product of two displacement weights `w, w'` at the common radius
-`a(u) = |u|/4 ∨ λ` of a `2`-cycle (source l. 1174, "a mixed cycle"). -/
+`a(u) = |u|/4 ∨ λ` of a `2`-cycle (source l. 1122, "a mixed cycle"). -/
 noncomputable def pairIntegral (lam : ℝ) (w w' : ℝ → ℝ≥0∞) : ℝ≥0∞ :=
   ∫⁻ u : ℂ, w (max (‖u‖ / 4) lam) * w' (max (‖u‖ / 4) lam) *
     ENNReal.ofReal (Real.exp (-(auxC * ‖u‖ ^ 2)))
@@ -189,7 +189,7 @@ open scoped Classical
 variable {p k : ℕ} (hk : k ≤ p) (g : Fin k → Fin p) (hg : IsAdmissibleRestriction g)
 
 include hk hg in
-/-- **Source l. 1174--1187, the displacement integrals with one weight per vertex.** After the
+/-- **Source l. 1122–1135, the displacement integrals with one weight per vertex.** After the
 Gunson--Panta change of variables on the nontrivial components, the reference points integrate to
 `N^{|R|}`; every `2`-cycle `(i, j)` gives the pair integral of `W i` and `W j`, and every other
 selected vertex `i` gives the integral of `W i`. -/
@@ -262,7 +262,7 @@ open scoped Classical
 
 variable {p k : ℕ} (hk : k ≤ p) (g : Fin k → Fin p) [Nontrivial (Fin p)] (key : Fin p ↪ ℕ)
 
-/-- **Source l. 1087--1114 and 1174--1187, Step 2 for one restricted graph with one weight per
+/-- **Source l. 1035–1062, 1122–1135, Step 2 for one restricted graph with one weight per
 selected vertex.** For `g ∈ D(k₀, k₁)` the integral over the cell `{γ'_p = g} ∩ Λ^p` of
 `∏_{i<k} W i (r̃₁(z_i))` is at most `e^{2k} N^{p-k+k₀}` times the product of the pair integrals of
 the weights of the `2`-cycles of `g` and of the integrals of the weights of the other selected
@@ -357,8 +357,8 @@ end AuxIntegration
 
 /-! ### The integral over one restricted graph -/
 
-/-- **Proposition 3.8, Step 2 (integration over one restricted graph, one weight per vertex;
-source l. 1174--1187).** There are absolute constants `C, c > 0` such that for every `p ≥ 2`,
+/-- **Proposition 3.7, Step 2 (integration over one restricted graph, one weight per vertex;
+source l. 1122–1135).** There are absolute constants `C, c > 0` such that for every `p ≥ 2`,
 `k ≤ p`, `N ≤ 2p`, every tie-break key, every family of measurable radial weights `W i` and every
 restricted graph `g ∈ D(k₀, k₁)`, the integral over the cell `Λ^p ∩ {γ'_p = g}` of
 `∏_{i<k} W i (r̃₁(z_i))` is at most `C^k N^{p-k+k₀}` times the product over the `2`-cycles `(i, j)`

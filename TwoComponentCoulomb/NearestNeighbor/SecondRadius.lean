@@ -10,9 +10,9 @@ public import TwoComponentCoulomb.NearestNeighbor.Radius
 /-!
 # The second-neighbour radius of a configuration on a general index set
 
-Source: eq. (nn3) with `p = 2` (l. 367): `r̃₂(z_i) = (¼ min_{j ≠ i, φ₁(i)} |z_i - z_j|) ∨ λ`.
+Source: eq. (nn3) with `p = 2` (l. 370): `r̃₂(z_i) = (¼ min_{j ≠ i, φ₁(i)} |z_i - z_j|) ∨ λ`.
 The frozen `TwoComponentCoulomb.secondNeighborRadius` is indexed by `Fin N ⊕ Fin N`; Propositions
-3.9 and 3.10 use it for sub-configurations ("the distances are computed within `I`", l. 1538),
+3.8 and 3.9 use it for sub-configurations ("the distances are computed within `I`", l. 1446),
 so we define the same quantity over an arbitrary finite index type with at least three elements,
 with the nearest neighbour `nnMap key z i` of `NearestNeighbor/General.lean`.
 
@@ -45,7 +45,7 @@ theorem erase_erase_nonempty (h3 : 3 ≤ Fintype.card ι) (i j : ι) :
 
 open scoped Classical in
 /-- The second-neighbour radius `r̃₂(z_i) = (¼ min_{j ≠ i, φ₁(i)} |z_i - z_j|) ∨ λ` of eq. (nn3)
-with `p = 2` (source l. 367), for a configuration `z : ι → ℂ` indexed by a finite type with at
+with `p = 2` (source l. 370), for a configuration `z : ι → ℂ` indexed by a finite type with at
 least three elements, where `φ₁(i) = nnMap key z i`. -/
 noncomputable def nnRadius2 (h3 : 3 ≤ Fintype.card ι) (key : ι ↪ ℕ) (lam : ℝ) (z : ι → ℂ)
     (i : ι) : ℝ :=

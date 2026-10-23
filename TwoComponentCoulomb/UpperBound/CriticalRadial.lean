@@ -6,6 +6,7 @@ module
 
 public import TwoComponentCoulomb.Frozen.SmearedKernel
 public import TwoComponentCoulomb.UpperBound.IsolatedRadial
+public import TwoComponentCoulomb.UpperBound.CriticalMass
 import TwoComponentCoulomb.Gibbs.Measurability
 import TwoComponentCoulomb.Integrals.GaussianMass
 import TwoComponentCoulomb.Integrals.Radial
@@ -16,28 +17,26 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 /-!
 # Radial integrals of the critical case `β = 2` (Proposition 3.10, eq. (eq:critical upper))
 
-Source: l. 1682--1697 (proof of Proposition 3.10, `β = 2`), with the integrals of Lemma 3.3
-(`lem:critical radial`, l. 699--754). Write
+Source `source/dipole-formation.tex`, l. 1617–1625 (proof of Proposition 3.10, `β = 2`). Write
 `ℓ = |log λ|`, `g_λ = smearedKernel λ` and `a(u) = (|u|/4) ∨ λ` (`displacementScale λ u`).
 
 Conditional on the retained coordinates, the displacement `u` of an isolated pair is confined to
-the disc `|u| ≤ 4ρ`, where `ρ ≥ λ` is the radius of the pair (source l. 1670--1673). The source
+the disc `|u| ≤ 4ρ`, where `ρ ≥ λ` is the radius of the pair (source l. 1595–1597). The source
 bounds the integral of the pair weight over `u` by
 
-* `T_R = J_λ(1/ℓ) + C + (e - 1)(J_λ(1/ℓ;R) + C)` for a neutral pair (l. 1693--1696), where
+* `T_R = J_λ(1/ℓ) + C + (e - 1)(J_λ(1/ℓ;R) + C)` for a neutral pair (l. 1617–1624), where
   `J_λ(1/ℓ) = ∫ e^{2 g_λ(u) - |u|²/ℓ} du = 2π (ℓ + ½ log ℓ) + O(1)` (eq:critical-B) and
   `J_λ(1/ℓ;R) = ∫_{|u| ≥ R} e^{2 g_λ(u) - |u|²/ℓ} du = 2π (log (1/R) + ½ log ℓ) + O(1)`
   (eq:critical-BR);
-* `C` for a same-sign pair (l. 1697).
+* `C` for a same-sign pair.
 
 The pair weights are `TwoComponentCoulomb.critNeutralWeight` and
 `TwoComponentCoulomb.critSameSignWeight`, functions of `(u, ρ)`. Here the same-sign weight is
 `c · (|u| ∨ λ)² / ρ⁴` on `|u| ≤ 4ρ`: by `e^{-2 g_λ(u)} ≤ C (|u| ∨ λ)²` this dominates the source's
-`e^{2 g_λ(u)} (a/ρ)⁴ ≤ C'` integrand (l. 1687, 1697) after the energy bound, and its integral is
+`e^{2 g_λ(u)} (a/ρ)⁴ ≤ C'` integrand (l. 1625) after the energy bound, and its integral is
 bounded directly by `|u| ∨ λ ≤ 4ρ`. The quadratic correction of the neutral weight is
 handled by the pointwise bound `e^{2 g_λ(u)} (a/ρ)² ≤ C/ρ²` on the disc (since
-`a ≤ |u| ∨ λ`), which replaces the source's split at `2λ` (proof of (eq:critical-correction),
-l. 750--753).
+`a ≤ |u| ∨ λ`), which replaces the source's split at `2λ` in the proof of (eq:critical-correction).
 
 ## Main results
 
@@ -45,7 +44,7 @@ l. 750--753).
   `J_λ(1/ℓ;R) ≤ 2π (½ log ℓ + log (1/R) + ½)` for `2λ ≤ R ≤ 1` (the upper half of
   (eq:critical-BR)).
 * `TwoComponentCoulomb.exists_lintegral_critNeutralWeight_le`: the neutral pair contributes at most
-  `2π(ℓ + ½ log ℓ) + (e - 1) 2π(½ log ℓ + log (1/R) + ½) + C`, uniformly in `ρ ≥ λ`.
+  `J_λ(1/ℓ) + (e - 1) J_λ(1/ℓ; R) + C`, uniformly in `ρ ≥ λ`.
 * `TwoComponentCoulomb.lintegral_critSameSignWeight_le`: the same-sign pair contributes at most
   `256 π c`, uniformly in `ρ ≥ λ`.
 -/
@@ -60,7 +59,7 @@ namespace TwoComponentCoulomb
 /-! ### The pair weights -/
 
 /-- The weight of an isolated neutral pair with displacement `u` and radius `ρ` (source
-l. 1689--1692): on the disc `|u| ≤ 4ρ`, `exp (2 g_λ(u) - |u|²/ℓ + c (a(u)/ρ)² + 1_{|u| > R})`,
+l. 1622–1624): on the disc `|u| ≤ 4ρ`, `exp (2 g_λ(u) - |u|²/ℓ + c (a(u)/ρ)² + 1_{|u| > R})`,
 where `a(u) = (|u|/4) ∨ λ`; the Gaussian factor comes from the packing bound and `1_{|u| > R}`
 from the long-dipole count `D_R`. -/
 noncomputable def critNeutralWeight (lam ℓ R c : ℝ) (p : ℂ × ℝ) : ℝ≥0∞ :=
@@ -70,7 +69,7 @@ noncomputable def critNeutralWeight (lam ℓ R c : ℝ) (p : ℂ × ℝ) : ℝ�
   else 0
 
 /-- The weight of an isolated same-sign pair with displacement `u` and radius `ρ`: on the disc
-`|u| ≤ 4ρ`, `c (|u| ∨ λ)² / ρ⁴` (source l. 1676--1680, 1697). -/
+`|u| ≤ 4ρ`, `c (|u| ∨ λ)² / ρ⁴` . -/
 noncomputable def critSameSignWeight (lam c : ℝ) (p : ℂ × ℝ) : ℝ≥0∞ :=
   if ‖p.1‖ ≤ 4 * p.2 then ENNReal.ofReal (c * max ‖p.1‖ lam ^ 2 / p.2 ^ 4) else 0
 
@@ -126,7 +125,7 @@ theorem exp_two_mul_smearedKernel_le_div {C₀ lam : ℝ}
 
 /-! ### The Gaussian tail `J_λ(1/ℓ;R)` -/
 
-/-- **The tail `J_λ(1/ℓ;R)`** (eq:critical-BR, source l. 711--715, upper bound): for
+/-- **The tail `J_λ(1/ℓ;R)`** (eq:critical-BR, source l. 709–711, upper bound): for
 `0 < λ ≤ e⁻¹` and `2λ ≤ R ≤ 1`,
 `∫_{|u| > R} e^{2 g_λ(u) - |u|²/ℓ} du ≤ 2π (½ log ℓ + log (1/R) + ½)`, `ℓ = |log λ|`. -/
 theorem integral_tail_gaussianMass_le {lam R : ℝ} (hlam : 0 < lam) (hle : lam ≤ Real.exp (-1))
@@ -186,18 +185,15 @@ theorem integrable_tail_gaussianMass {lam R : ℝ} (hlam : 0 < lam) (hle : lam �
 
 /-! ### The neutral pair -/
 
-/-- **The neutral pair** (source l. 1689--1696, the bound
-`T_R = J_λ(1/ℓ) + C + (e-1)(J_λ(1/ℓ;R) + C)`): for every `c ≥ 0` there is `C` such that for
-`0 < λ ≤ e⁻¹`, `2λ ≤ R ≤ 1` and `ρ ≥ λ`,
-`∫ critNeutralWeight ≤ 2π (ℓ + ½ log ℓ) + (e - 1) · 2π (½ log ℓ + log (1/R) + ½) + C`. -/
+/-- **The neutral pair** ( "each neutral pair contributes at most
+`B + C + (e-1)(B_R + C)`"): for every `c ≥ 0` there is `C` such that for `0 < λ ≤ e⁻¹`,
+`2λ ≤ R ≤ 1` and `ρ ≥ λ`,
+`∫ critNeutralWeight ≤ J_λ(1/ℓ) + (e - 1) J_λ(1/ℓ; R) + C`. -/
 theorem exists_lintegral_critNeutralWeight_le {c : ℝ} (hc : 0 ≤ c) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ lam R ρ : ℝ, 0 < lam → lam ≤ Real.exp (-1) → 2 * lam ≤ R → R ≤ 1 →
       lam ≤ ρ →
         ∫⁻ u, critNeutralWeight lam |Real.log lam| R c (u, ρ) ≤
-          ENNReal.ofReal (2 * Real.pi * (|Real.log lam| + (1 / 2) * Real.log |Real.log lam|) +
-            (Real.exp 1 - 1) * (2 * Real.pi *
-              ((1 / 2) * Real.log |Real.log lam| + Real.log (1 / R) + 1 / 2)) + C) := by
-  obtain ⟨CB, hCB⟩ := exists_abs_gaussianMass_sub_le
+          ENNReal.ofReal (criticalCycleMass lam + (Real.exp 1 - 1) * criticalTailMass lam R + C) := by
   obtain ⟨C₀, hC₀⟩ := exists_abs_smearedKernel_sub_logKernel_le
   set K : ℝ := Real.exp 1 * (Real.exp c - 1) * Real.exp (2 * C₀) with hK
   have hK0 : 0 ≤ K := by
@@ -205,8 +201,7 @@ theorem exists_lintegral_critNeutralWeight_le {c : ℝ} (hc : 0 ≤ c) :
       have := Real.one_le_exp hc
       linarith
     positivity
-  have hCB0 : 0 ≤ CB := (abs_nonneg _).trans (hCB (Real.exp (-1)) (Real.exp_pos _) le_rfl)
-  refine ⟨CB + 16 * Real.pi * K, by positivity, fun lam R ρ hlam hle hR hR1 hρ => ?_⟩
+  refine ⟨16 * Real.pi * K, by positivity, fun lam R ρ hlam hle hR hR1 hρ => ?_⟩
   obtain ⟨h1, -⟩ := two_mul_le_sqrt_neg_log hlam hle
   have hab : |Real.log lam| = -Real.log lam := abs_of_neg (by linarith)
   have hρ0 : 0 < ρ := hlam.trans_le hρ
@@ -313,47 +308,29 @@ theorem exists_lintegral_critNeutralWeight_le {c : ℝ} (hc : 0 ≤ c) :
           (fun _ => ENNReal.ofReal (K / ρ ^ 2)) u := by
     refine (lintegral_mono hpt).trans (le_of_eq ?_)
     rw [lintegral_add_left (by fun_prop), lintegral_add_left (by fun_prop)]
-  have hB : ∫⁻ u, ENNReal.ofReal (X u) ≤ ENNReal.ofReal
-      (2 * Real.pi * (ℓ + (1 / 2) * Real.log ℓ) + CB) := by
-    rw [← ofReal_integral_eq_lintegral_ofReal (integrable_gaussianMass hlam hle)
-      (ae_of_all _ fun u => (Real.exp_pos _).le)]
-    refine ENNReal.ofReal_le_ofReal ?_
-    have := (abs_le.1 (hCB lam hlam hle)).2
-    linarith
-  have hBR : ∫⁻ u, ENNReal.ofReal ((Real.exp 1 - 1) * T u) ≤ ENNReal.ofReal
-      ((Real.exp 1 - 1) * (2 * Real.pi * ((1 / 2) * Real.log ℓ + Real.log (1 / R) + 1 / 2))) := by
-    have he1 : 0 ≤ Real.exp 1 - 1 := by have := Real.one_le_exp zero_le_one; linarith
-    have hTi : Integrable T := integrable_tail_gaussianMass hlam hle
-    have hTnn : ∀ u, 0 ≤ T u := fun u => by
-      rw [hT]
-      dsimp only
-      by_cases hRu : R < ‖u‖
-      · rw [ite_eq_left hRu]; exact (Real.exp_pos _).le
-      · rw [ite_eq_right hRu]
-    rw [← ofReal_integral_eq_lintegral_ofReal (hTi.const_mul _)
-      (ae_of_all _ fun u => mul_nonneg he1 (hTnn u))]
-    refine ENNReal.ofReal_le_ofReal ?_
-    rw [integral_const_mul]
-    exact mul_le_mul_of_nonneg_left (integral_tail_gaussianMass_le hlam hle hR hR1) he1
+  have hB : ∫⁻ u, ENNReal.ofReal (X u) = ENNReal.ofReal (criticalCycleMass lam) :=
+    (ofReal_criticalCycleMass hlam hle).symm
+  have hBR : ∫⁻ u, ENNReal.ofReal ((Real.exp 1 - 1) * T u) =
+      ENNReal.ofReal ((Real.exp 1 - 1) * criticalTailMass lam R) := by
+    have he1 : 0 ≤ Real.exp 1 - 1 := by linarith only [Real.one_le_exp zero_le_one]
+    rw [← ofReal_integral_eq_lintegral_ofReal
+      ((integrable_tail_gaussianMass hlam hle).const_mul _) (ae_of_all _ fun u => by
+        dsimp [T, X]
+        split_ifs <;> positivity), integral_const_mul]
+    rfl
   have hball := lintegral_indicator_closedBall_div_sq hρ0 hK0
   refine hint.trans ?_
   rw [hball]
-  have hlogs : 0 ≤ (1 / 2) * Real.log ℓ + Real.log (1 / R) + 1 / 2 := by positivity
-  have he1 : 0 ≤ Real.exp 1 - 1 := by have := Real.one_le_exp zero_le_one; linarith
-  calc (∫⁻ u, ENNReal.ofReal (X u)) + (∫⁻ u, ENNReal.ofReal ((Real.exp 1 - 1) * T u)) +
-        ENNReal.ofReal (16 * Real.pi * K)
-      ≤ ENNReal.ofReal (2 * Real.pi * (ℓ + (1 / 2) * Real.log ℓ) + CB) +
-          ENNReal.ofReal ((Real.exp 1 - 1) *
-            (2 * Real.pi * ((1 / 2) * Real.log ℓ + Real.log (1 / R) + 1 / 2))) +
-          ENNReal.ofReal (16 * Real.pi * K) := by gcongr
-    _ = _ := by
-        rw [← ENNReal.ofReal_add (by positivity) (by positivity),
-          ← ENNReal.ofReal_add (by positivity) (by positivity)]
-        ring_nf
+  rw [hB, hBR]
+  have ht := criticalTailMass_nonneg lam R
+  have hj := (criticalCycleMass_pos hlam hle).le
+  have he1 : 0 ≤ Real.exp 1 - 1 := by linarith only [Real.one_le_exp zero_le_one]
+  rw [← ENNReal.ofReal_add (criticalCycleMass_pos hlam hle).le (mul_nonneg he1 ht),
+    ← ENNReal.ofReal_add (by positivity) (by positivity)]
 
 /-! ### The same-sign pair -/
 
-/-- **The same-sign pair** (source l. 1697, "Its integral is at most `C`"): for `0 < λ ≤ ρ`
+/-- **The same-sign pair** ( "Its integral is at most `C`"): for `0 < λ ≤ ρ`
 and `c ≥ 0`, `∫ critSameSignWeight ≤ 256 π c`. -/
 theorem lintegral_critSameSignWeight_le {lam c ρ : ℝ} (hlam : 0 < lam) (hρ : lam ≤ ρ)
     (hc : 0 ≤ c) :

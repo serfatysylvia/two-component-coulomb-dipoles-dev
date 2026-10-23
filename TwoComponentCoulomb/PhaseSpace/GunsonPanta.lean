@@ -4,27 +4,27 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 module
 
-public import Mathlib.LinearAlgebra.Charpoly.Basic
-public import Mathlib.LinearAlgebra.Eigenspace.Zero
+public import Mathlib.LinearAlgebra.Matrix.Block
+public import Mathlib.LinearAlgebra.Complex.Module
 public import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-public import Mathlib.RingTheory.Nilpotent.Basic
 public import TwoComponentCoulomb.NearestNeighbor.GeneralStructure
 
 /-!
 # The Gunson--Panta map
 
-Source l. 641--658 (definition of the Gunson--Panta change of variables `Φ^GP_p`) and l. 822--826
+Source l. 657–671 (definition of the Gunson--Panta change of variables `Φ^GP_p`) and l. 740–743
 (its unit Jacobian on a nearest-neighbour cell). Fix a finite index type `ι`, a self-map
 `f : ι → ι` (the nearest-neighbour map of a configuration) and a set `R ⊆ ι` of *reference
-vertices* (one vertex of each 2-cycle of `f`; the source calls them `m_k'`). The Gunson--Panta map
+vertices* (one vertex of each 2-cycle of `f`; the source calls them m′ₖ). The Gunson--Panta map
 is the `ℝ`-linear map of `ι → ℂ` given by
 `(GP z)_i = z_i` for `i ∈ R` and `(GP z)_i = z_i - z_{f i}` for `i ∉ R`.
 
-The source performs the change of variables `Z ↦ U = Φ^GP(Z)` without proving that it is
-injective with unit Jacobian. It is: if every `f`-orbit reaches `R`, then `GP = 1 - N` where
-`(N z)_i = 0` for `i ∈ R` and `(N z)_i = z_{f i}` for `i ∉ R` is nilpotent, so `GP` is invertible
-with determinant `1` (`det (1 - N) = χ_N(1) = 1`), hence preserves Lebesgue measure.
+The paper, Section 3.1, orders parents before children after removing the
+outgoing edges of reference vertices. We use the first hitting time of the reference set as
+the depth of a vertex. The matrix is block triangular in this depth order, with identity
+diagonal blocks. Its determinant is therefore one, so the map is invertible and preserves
+Lebesgue measure.
 
 ## Main definitions and results
 
@@ -52,7 +52,7 @@ section Definition
 
 variable {ι : Type*} (f : ι → ι) (R : Set ι) [DecidablePred (· ∈ R)]
 
-/-- The **Gunson--Panta map** (source l. 641--658): `(GP z)_i = z_i` for a reference vertex
+/-- The **Gunson--Panta map** (source l. 645–660): `(GP z)_i = z_i` for a reference vertex
 `i ∈ R` and `(GP z)_i = z_i - z_{f i}` otherwise. -/
 def gpMap : (ι → ℂ) →ₗ[ℝ] (ι → ℂ) where
   toFun z i := if i ∈ R then z i else z i - z (f i)
@@ -79,69 +79,80 @@ theorem gpMap_apply_of_not_mem (z : ι → ℂ) {i : ι} (hi : i ∉ R) :
 
 variable (f R)
 
-/-- The nilpotent part of the Gunson--Panta map: `(N z)_i = 0` for `i ∈ R` and
-`(N z)_i = z_{f i}` otherwise, so that `gpMap f R = 1 - gpNil f R`. -/
-def gpNil : (ι → ℂ) →ₗ[ℝ] (ι → ℂ) where
-  toFun z i := if i ∈ R then 0 else z (f i)
-  map_add' z w := by
-    funext i
-    by_cases h : i ∈ R <;> simp [h]
-  map_smul' c z := by
-    funext i
-    by_cases h : i ∈ R <;> simp [h]
-
-theorem gpMap_eq_one_sub_gpNil : gpMap f R = 1 - gpNil f R := by
-  refine LinearMap.ext fun z => funext fun i => ?_
-  by_cases h : i ∈ R <;> simp [gpMap, gpNil, h]
-
-/-- Powers of the nilpotent part: `(N^k z)_i = z_{f^k i}` provided the first `k` points of the
-orbit of `i` are not reference vertices, and `0` otherwise. -/
-theorem gpNil_pow_apply (k : ℕ) (z : ι → ℂ) (i : ι) :
-    ((gpNil f R) ^ k) z i = if ∀ j < k, f^[j] i ∉ R then z (f^[k] i) else 0 := by
-  induction k generalizing i with
-  | zero => simp
-  | succ k ih =>
-    have hN : ∀ (w : ι → ℂ) (j : ι), gpNil f R w j = if j ∈ R then 0 else w (f j) :=
-      fun _ _ => rfl
-    rw [pow_succ', Module.End.mul_apply, hN]
-    by_cases hi : i ∈ R
-    · rw [ite_eq_left hi, ite_eq_right]
-      exact fun h => h 0 (Nat.succ_pos k) hi
-    · rw [ite_eq_right hi, ih (f i)]
-      have hiff : (∀ j < k + 1, f^[j] i ∉ R) ↔ ∀ j < k, f^[j] (f i) ∉ R := by
-        rw [Nat.forall_lt_succ_left]
-        simp [hi, Function.iterate_succ_apply]
-      by_cases h : ∀ j < k, f^[j] (f i) ∉ R
-      · rw [ite_eq_left h, ite_eq_left (hiff.2 h), Function.iterate_succ_apply]
-      · rw [ite_eq_right h, ite_eq_right (fun h' => h (hiff.1 h'))]
-
 variable [Fintype ι]
 
-/-- If every `f`-orbit reaches `R`, the nilpotent part `gpNil f R` is nilpotent. -/
-theorem isNilpotent_gpNil (hR : ∀ i, ∃ n, f^[n] i ∈ R) : IsNilpotent (gpNil f R) := by
-  choose n hn using hR
-  refine ⟨Finset.univ.sup n + 1, LinearMap.ext fun z => funext fun i => ?_⟩
-  rw [gpNil_pow_apply]
-  have hlt : n i < Finset.univ.sup n + 1 :=
-    Nat.lt_succ_of_le (Finset.le_sup (f := n) (Finset.mem_univ i))
-  have : ¬ ∀ j < Finset.univ.sup n + 1, f^[j] i ∉ R := fun h => h (n i) hlt (hn i)
-  rw [ite_eq_right this]
-  rfl
+omit [Fintype ι] in
+/-- A parent has smaller depth than a nonreference child. Depth is the first time
+its orbit reaches the reference set. -/
+private theorem gp_parent_depth_lt (hR : ∀ i, ∃ n, f^[n] i ∈ R) {i : ι} (hi : i ∉ R) :
+    Nat.find (hR (f i)) < Nat.find (hR i) := by
+  have hzero : Nat.find (hR i) ≠ 0 := by
+    intro h
+    have hmem := Nat.find_spec (hR i)
+    rw [h, Function.iterate_zero_apply] at hmem
+    exact hi hmem
+  obtain ⟨n, hn⟩ := Nat.exists_eq_succ_of_ne_zero hzero
+  have hmem : f^[n] (f i) ∈ R := by
+    rw [← Function.iterate_succ_apply, ← hn]
+    exact Nat.find_spec (hR i)
+  have hle := Nat.find_min' (hR (f i)) hmem
+  omega
 
-/-- The Gunson--Panta map is bijective as soon as every `f`-orbit reaches `R`
-(source l. 822--826, "injective on the cell"). -/
-theorem gpMap_bijective (hR : ∀ i, ∃ n, f^[n] i ∈ R) : Function.Bijective (gpMap f R) := by
-  have h : IsUnit (gpMap f R) := by
-    rw [gpMap_eq_one_sub_gpNil]
-    exact (isNilpotent_gpNil f R hR).isUnit_one_sub
-  exact (Module.End.isUnit_iff _).1 h
-
-/-- The Gunson--Panta map has determinant `1` (source l. 822--826, "unit Jacobian"). -/
+/-- The Gunson--Panta map has determinant `1`: ordering the rooted forest by depth
+makes the matrix triangular with identity diagonal blocks (`source/dipole-formation.tex` l. 662). -/
 theorem det_gpMap (hR : ∀ i, ∃ n, f^[n] i ∈ R) : LinearMap.det (gpMap f R) = 1 := by
-  have h := LinearMap.eval_charpoly (gpNil f R) 1
-  rw [(isNilpotent_gpNil f R hR).charpoly_eq_X_pow_finrank] at h
-  rw [gpMap_eq_one_sub_gpNil]
-  simpa using h.symm
+  classical
+  let b := Pi.basis (fun _ : ι => Complex.basisOneI)
+  let M := LinearMap.toMatrix b b (gpMap f R)
+  let depth : (Σ _ : ι, Fin 2) → ℕ := fun i => Nat.find (hR i.1)
+  have hentry : ∀ i j, depth i ≤ depth j → M i j = (1 : Matrix _ _ ℝ) i j := by
+    intro i j hij
+    dsimp only [M]
+    rw [LinearMap.toMatrix_apply, Pi.basis_repr]
+    have hb : ∀ k, Complex.basisOneI.repr ((b j) k) =
+        if k = j.1 then Finsupp.single j.2 1 else 0 := by
+      intro k
+      by_cases hk : k = j.1
+      · simp only [b, Pi.basis_apply, Pi.single_apply, hk, ite_true, Module.Basis.repr_self]
+      · simp only [b, Pi.basis_apply, Pi.single_apply, hk, ite_false, map_zero]
+    by_cases hi : i.1 ∈ R
+    · rw [gpMap_apply_of_mem _ hi, hb]
+      by_cases hij' : i.1 = j.1 <;>
+        simp [hij', Matrix.one_apply, Sigma.ext_iff, Finsupp.single_apply, eq_comm]
+    · have hparent : f i.1 ≠ j.1 := by
+        intro h
+        have hlt := gp_parent_depth_lt f R hR hi
+        change Nat.find (hR i.1) ≤ Nat.find (hR j.1) at hij
+        rw [← h] at hij
+        omega
+      rw [gpMap_apply_of_not_mem _ hi, map_sub, hb, hb, ite_eq_right hparent, sub_zero]
+      by_cases hij' : i.1 = j.1 <;>
+        simp [hij', Matrix.one_apply, Sigma.ext_iff, Finsupp.single_apply, eq_comm]
+  have htri : M.BlockTriangular (fun i => OrderDual.toDual (depth i)) := by
+    intro i j hij
+    have hlt : depth i < depth j := hij
+    rw [hentry i j hlt.le, Matrix.one_apply_ne]
+    intro heq
+    subst j
+    exact (lt_irrefl _ hlt)
+  have hblocks : ∀ d, M.toSquareBlock (fun i => OrderDual.toDual (depth i)) d = 1 := by
+    intro d
+    ext i j
+    change M i.1 j.1 = _
+    rw [hentry i.1 j.1 (le_of_eq (i.2.trans j.2.symm))]
+    simp [Matrix.one_apply, Subtype.ext_iff]
+  rw [← LinearMap.det_toMatrix b]
+  change M.det = 1
+  rw [htri.det]
+  simp_rw [hblocks, Matrix.det_one]
+  simp
+
+/-- The Gunson--Panta map is bijective since its triangular matrix has determinant one. -/
+theorem gpMap_bijective (hR : ∀ i, ∃ n, f^[n] i ∈ R) : Function.Bijective (gpMap f R) := by
+  apply (Module.End.isUnit_iff _).1
+  apply (LinearMap.isUnit_iff_isUnit_det _).2
+  rw [det_gpMap f R hR]
+  exact isUnit_one
 
 /-- The Gunson--Panta map preserves Lebesgue measure on `ι → ℂ`. -/
 theorem measurePreserving_gpMap (hR : ∀ i, ∃ n, f^[n] i ∈ R) :
@@ -187,7 +198,7 @@ variable {ι : Type*} (key : ι ↪ ℕ)
 
 /-- The **reference set** of a self-map `f` of the index set, relative to the tie-break key `key`:
 the vertices `i` lying on a 2-cycle `{i, f i}` that have the smaller key of the two
-(these are the vertices `m_k'` of source l. 641--658 that keep their absolute coordinate). -/
+(these are the vertices m′ₖ of source l. 645–660 that keep their absolute coordinate). -/
 def gpRefSet (f : ι → ι) : Set ι :=
   {i | f (f i) = i ∧ key i < key (f i)}
 

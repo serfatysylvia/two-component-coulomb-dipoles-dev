@@ -15,7 +15,7 @@ public import TwoComponentCoulomb.NearestNeighbor.Basic
 /-!
 # The nearest-neighbour map of an arbitrary finite configuration
 
-Source l. 642--644 (Gunson--Panta change of variables): "We use the notation introduced already
+Source l. 645–647 (Gunson--Panta change of variables): "We use the notation introduced already
 in Section 2, but we can apply it more generally to `p` points, and not necessarily an even number
 of points." The frozen `TwoComponentCoulomb.nearestNeighbor` is indexed by `Fin N ⊕ Fin N`; this
 file defines the same notion over an arbitrary finite index type `ι` with at least two elements,
@@ -47,8 +47,8 @@ variable {ι : Type*} [Fintype ι]
 
 open scoped Classical in
 /-- The nearest neighbour of `z i` among the *other* points `z j`, `j ≠ i`, of a configuration
-`z : ι → ℂ` indexed by a finite type `ι` with at least two elements (source l. 642--644,
-generalizing l. 217). Ties are broken by the smallest value of the injective key
+`z : ι → ℂ` indexed by a finite type `ι` with at least two elements (source l. 645–647,
+generalizing l. 202). Ties are broken by the smallest value of the injective key
 `key : ι ↪ ℕ` (ruling R4); the key is pulled back along `Function.invFun`, which is only ever
 evaluated at a value in the range of `key`. -/
 noncomputable def nnMap [Nontrivial ι] (key : ι ↪ ℕ) (z : ι → ℂ) (i : ι) : ι :=
@@ -142,7 +142,7 @@ end Measurability
 
 section Restriction
 
-/-- Restriction to a sub-configuration (source l. 642--644): let `e : κ ↪ ι` select a
+/-- Restriction to a sub-configuration (source l. 645–647): let `e : κ ↪ ι` select a
 sub-configuration `z ∘ e` of `z` (for instance a subset of the indices), with the induced
 tie-break key `e.trans key`. If the global nearest neighbour of `e k` lies in the sub-configuration,
 it is the image of the nearest neighbour of `k` computed inside the sub-configuration. -/
@@ -178,7 +178,7 @@ instance nontrivial_sum_fin [NeZero N] : Nontrivial (Fin N ⊕ Fin N) :=
   ⟨⟨Sum.inl 0, Sum.inr 0, by simp⟩⟩
 
 /-- Bridge to the frozen definition: on `Fin N ⊕ Fin N` the map `nnMap` with the source numbering
-`sumKey N` as tie-break key is the frozen `nearestNeighbor` (source l. 217, ruling R4). -/
+`sumKey N` as tie-break key is the frozen `nearestNeighbor` (source l. 202, ruling R4). -/
 theorem nearestNeighbor_eq_nnMap [Nontrivial (Fin N ⊕ Fin N)] (Z : Fin N ⊕ Fin N → ℂ)
     (i : Fin N ⊕ Fin N) : nearestNeighbor Z i = nnMap (sumKey N) Z i := by
   obtain ⟨h1, h2, h3⟩ := (nnMap_eq_iff (sumKey N) Z i _).1 rfl

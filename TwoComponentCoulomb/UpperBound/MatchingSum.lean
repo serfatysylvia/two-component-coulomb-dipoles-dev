@@ -9,9 +9,9 @@ public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 public import Mathlib.Data.Nat.Factorial.Basic
 
 /-!
-# The combinatorial sum in the upper bound of Lemma 3.6
+# The combinatorial sum in the upper bound of Lemma 3.5
 
-Source: l. 950--968 (proof of Lemma 3.6, upper bound). After integrating
+Source: l. 900–917 (proof of Lemma 3.5, upper bound). After integrating
 the Boltzmann weight of the reduced model against a sum over partial matchings of positive and
 negative charges, a matching of size `p` contributes
 `N ^ (2 N - p) A ^ p` (with `A` the mass of the pair weight), and there are
@@ -28,7 +28,7 @@ open scoped Nat
 
 namespace TwoComponentCoulomb
 
-/-- Termwise bound (source l. 963--964): with `d = N - p`, `N ! / p ! ≤ N ^ d`, so that the `p`-th
+/-- Termwise bound (source l. 912–913): with `d = N - p`, `N ! / p ! ≤ N ^ d`, so that the `p`-th
 term is at most `N ! N ^ N A ^ N (x ^ d / d !)²` with `x = N / √A`. -/
 theorem matching_term_le (N p : ℕ) (hp : p ≤ N) {A : ℝ} (hA : 0 < A) :
     ((N ! : ℝ) ^ 2 / (p ! * ((N - p) ! : ℝ) ^ 2)) * (N : ℝ) ^ (2 * N - p) * A ^ p ≤
@@ -70,7 +70,7 @@ theorem matching_term_le (N p : ℕ) (hp : p ≤ N) {A : ℝ} (hA : 0 < A) :
         field_simp
         ring
 
-/-- **Source l. 958--968.** The sum over the sizes `p` of the matchings:
+/-- **Source l. 907–917.** The sum over the sizes `p` of the matchings:
 `∑_{p ≤ N} (N !)² / (p ! ((N - p) !)²) · N ^ (2 N - p) · A ^ p ≤ N ! · N ^ N · A ^ N · e ^ {2 N / √A}`
 for `A > 0`. -/
 theorem sum_matchings_le (N : ℕ) {A : ℝ} (hA : 0 < A) :

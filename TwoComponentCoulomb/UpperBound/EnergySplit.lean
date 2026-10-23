@@ -11,10 +11,10 @@ public import TwoComponentCoulomb.Gibbs.Basic
 public import TwoComponentCoulomb.UpperBound.PairBlocks
 
 /-!
-# The energy split and the separation of variables in Proposition 3.10, Step 2
+# The energy split and the separation of variables in Proposition 3.9, Step 2
 
-Source: proof of Proposition 3.10, Step 2, l. 1513--1551: the insertion of
-Corollary 2.3 (gre1), the energies `F⁽¹⁾` (def:F(1)) and `F⁽²⁾` (def:F(2)), the lower bound
+Source: proof of Proposition 3.9, Step 2, l. 1421–1459: the insertion of
+Corollary 2.3 (gre1), the energies `F⁽¹⁾` the definition of F⁽¹⁾ and `F⁽²⁾` the definition of F⁽²⁾, the lower bound
 `F_λ ≥ F⁽¹⁾ + F⁽²⁾ - C(N - K)` and the separation of variables (gred3).
 
 Fix a marked graph `γ = (φ, T)`, with `I = I^pair` the vertices of the isolated 2-cycles of `φ`
@@ -29,7 +29,7 @@ configuration `Z` of the box with `γ_{2N}(Z) = γ`:
 * `F^nn(Z) = F^nn(Z|_I) + F^nn(Z|_{Iᶜ})`, and the radii `r̃₁, r̃₂` computed within `I` agree with
   the global ones at the marked vertices;
 * the additional quadratic terms `-C (r̃₁/r̃₂)²` of `F⁽¹⁾` on the unmarked isolated vertices are
-  nonpositive (l. 1542, `TwoComponentCoulomb.pairAssignedEnergy_le`).
+  nonpositive (l. 1450, `TwoComponentCoulomb.pairAssignedEnergy_le`).
 
 `F⁽¹⁾` is `TwoComponentCoulomb.pairAssignedEnergy` on the index type `I` with `S = I'` and `C` the
 constant of Corollary 2.3, and `F⁽²⁾` is `TwoComponentCoulomb.nnEnergy` on `Iᶜ`.
@@ -54,7 +54,7 @@ constant of Corollary 2.3, and `F⁽²⁾` is `TwoComponentCoulomb.nnEnergy` on 
   `TwoComponentCoulomb.lintegral_markedCell_le_mul_of_empty`,
   `TwoComponentCoulomb.lintegral_markedCell_le_full`,
   `TwoComponentCoulomb.lintegral_markedCell_le_full_of_empty`.
-* `TwoComponentCoulomb.exists_energy_split_separation`: the lower bound and (gred3) packaged with
+* The energy split: the lower bound and (gred3) packaged with
   the constant of Corollary 2.3.
 -/
 
@@ -73,7 +73,7 @@ variable {N : ℕ}
 
 open scoped Classical in
 /-- The first sum of Corollary 2.3 runs over the marked same-sign vertices `I'` (source
-l. 1521--1530). -/
+l. 1429–1438). -/
 theorem filter_corollary23_sameSign_eq (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → ℂ) :
     Finset.univ.filter (fun i => IsIsolatedPair Z i ∧ ¬ IsIsolatedDipole Z i ∧
         IsIsolatedPair Z (secondNearestNeighbor hN Z i) ∧
@@ -90,7 +90,7 @@ theorem filter_corollary23_sameSign_eq (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → �
 
 open scoped Classical in
 /-- The second sum of Corollary 2.3 runs over the marked neutral vertices (source
-l. 1521--1530). -/
+l. 1429–1438). -/
 theorem filter_corollary23_neutral_eq (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → ℂ) :
     Finset.univ.filter (fun i => IsIsolatedDipole Z i ∧
         IsIsolatedPair Z (secondNearestNeighbor hN Z i) ∧
@@ -119,7 +119,7 @@ section Corollary
 variable {N : ℕ}
 
 open scoped Classical in
-/-- The left side of Corollary 2.3 (coromino, source l. 452--464), with constant `C`: the
+/-- The left side of Corollary 2.3 (coromino, source l. 458–470), with constant `C`: the
 nearest-neighbour energy, the logarithmic terms of the marked same-sign vertices, the quadratic
 terms of the marked neutral vertices and `-C(N - K)`. -/
 noncomputable def corollary23Bound (hN : 2 ≤ N) (C lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) : ℝ :=
@@ -189,13 +189,9 @@ theorem secondNearestNeighbor_nearestNeighbor_mem_pairVerts {hN : 2 ≤ N}
     secondNearestNeighbor hN Z (nearestNeighbor Z i) ∈ pairVerts (nearestNeighbor Z) :=
   mem_pairVerts_nearestNeighbor.2 (isTwiceIsolated_of_mem hi).2.2
 
-/-- **The lower bound `F_λ ≥ F⁽¹⁾ + F⁽²⁾ - C(N - K)`** (source l. 1532--1545), for `m ≥ 2` and
-`Iᶜ ≠ ∅`. Here `F⁽¹⁾` (def:F(1)) is the pair-assigned energy of `Z|_I`, `I = I^pair`, with the
-logarithmic terms on the marked same-sign vertices `I'`, the quadratic terms on `I ∖ I'` and the
-radii computed within `I`, and `F⁽²⁾` (def:F(2)) is the nearest-neighbour energy of `Z|_{Iᶜ}`;
-`C` is any constant for which Corollary 2.3 holds. -/
-theorem le_energy_split {C : ℝ} (hC0 : 0 ≤ C) (hC : Corollary23Holds C) (hN : 2 ≤ N) {lam : ℝ}
-    (hlam : 0 < lam) {Z : Fin N ⊕ Fin N → ℂ} (hZ : ∀ i, Z i ∈ box N) (hgen : IsGeneric Z)
+/-! Algebraic comparison with the Corollary 2.3 expression. -/
+
+theorem pairAssignedEnergy_add_nnEnergy_le_corollary23Bound {C : ℝ} (hC0 : 0 ≤ C) (hN : 2 ≤ N) (lam : ℝ) {Z : Fin N ⊕ Fin N → ℂ}
     {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N} {T : Finset (Fin N ⊕ Fin N)}
     (hφ : nearestNeighbor Z = φ) (hT : twiceIsolatedSet hN Z = T)
     [Nontrivial {i // i ∈ pairVerts φ}] [Nontrivial {i // i ∉ pairVerts φ}]
@@ -204,10 +200,9 @@ theorem le_energy_split {C : ℝ} (hC0 : 0 ≤ C) (hC : Corollary23Holds C) (hN 
         (fun j : {i // i ∈ pairVerts φ} => Z j)
       + nnEnergy (subtypeKey (· ∉ pairVerts φ) (sumKey N)) lam
           (fun j : {i // i ∉ pairVerts φ} => Z j)
-      - C * ((N : ℝ) - numComponents Z) ≤ energy lam Z := by
+      - C * ((N : ℝ) - numComponents Z) ≤ corollary23Bound hN C lam Z := by
   classical
   subst hφ hT
-  refine le_trans ?_ (hC N hN lam hlam Z hZ hgen)
   unfold corollary23Bound
   rw [filter_corollary23_sameSign_eq, filter_corollary23_neutral_eq,
     neg_half_sum_smearedKernel_eq rfl lam]
@@ -251,6 +246,25 @@ theorem le_energy_split {C : ℝ} (hC0 : 0 ≤ C) (hC : Corollary23Holds C) (hN 
   rw [hB]
   linarith
 
+/-- **The lower bound `F_λ ≥ F⁽¹⁾ + F⁽²⁾ - C(N - K)`** (source l. 1440–1453), for `m ≥ 2` and
+`Iᶜ ≠ ∅`. Here `F⁽¹⁾` the definition of F⁽¹⁾ is the pair-assigned energy of `Z|_I`, `I = I^pair`, with the
+logarithmic terms on the marked same-sign vertices `I'`, the quadratic terms on `I ∖ I'` and the
+radii computed within `I`, and `F⁽²⁾` the definition of F⁽²⁾ is the nearest-neighbour energy of `Z|_{Iᶜ}`;
+`C` is any constant for which Corollary 2.3 holds. -/
+theorem le_energy_split {C : ℝ} (hC0 : 0 ≤ C) (hC : Corollary23Holds C) (hN : 2 ≤ N) {lam : ℝ}
+    (hlam : 0 < lam) {Z : Fin N ⊕ Fin N → ℂ} (hZ : ∀ i, Z i ∈ box N) (hgen : IsGeneric Z)
+    {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N} {T : Finset (Fin N ⊕ Fin N)}
+    (hφ : nearestNeighbor Z = φ) (hT : twiceIsolatedSet hN Z = T)
+    [Nontrivial {i // i ∈ pairVerts φ}] [Nontrivial {i // i ∉ pairVerts φ}]
+    (h3 : 3 ≤ Fintype.card {i // i ∈ pairVerts φ}) :
+    pairAssignedEnergy h3 (subtypeKey (· ∈ pairVerts φ) (sumKey N)) lam C (markedSameSignIn φ T)
+        (fun j : {i // i ∈ pairVerts φ} => Z j)
+      + nnEnergy (subtypeKey (· ∉ pairVerts φ) (sumKey N)) lam
+          (fun j : {i // i ∉ pairVerts φ} => Z j)
+      - C * ((N : ℝ) - numComponents Z) ≤ energy lam Z := by
+  exact (pairAssignedEnergy_add_nnEnergy_le_corollary23Bound hC0 hN lam hφ hT h3).trans
+    (hC N hN lam hlam Z hZ hgen)
+
 /-- Without marked pairs (`T = ∅`, which is the case when `m ≤ 1`), Corollary 2.3 is the bound
 `F_λ ≥ F^nn - C(N - K)`. -/
 theorem corollary23Bound_of_twiceIsolatedSet_eq_empty (hN : 2 ≤ N) (C lam : ℝ)
@@ -267,7 +281,7 @@ theorem corollary23Bound_of_twiceIsolatedSet_eq_empty (hN : 2 ≤ N) (C lam : �
   rw [h, filter_empty, sum_empty, sum_empty]
   ring
 
-/-- **The lower bound without marked pairs** (source l. 1542, "If `m ≤ 1`, there are no marked
+/-- **The lower bound without marked pairs** (source l. 1450, "If `m ≤ 1`, there are no marked
 pairs [...]. We then use only the nearest-neighbor term in `F⁽¹⁾`"): if there is no twice-isolated
 pair, then
 `F_λ ≥ F^nn(Z|_I) + F^nn(Z|_{Iᶜ}) - C(N - K)`. -/
@@ -304,20 +318,16 @@ theorem le_energy_full_of_empty [Nontrivial (Fin N ⊕ Fin N)] {C : ℝ} (hC : C
   rw [nnEnergy_sumKey]
   exact h
 
-/-- **The lower bound on all indices** (source l. 1532--1545 with `I` the whole index set, the case
-`Iᶜ = ∅`): `F_λ ≥ F⁽¹⁾ - C(N - K)`, where `F⁽¹⁾` is the pair-assigned energy of the whole
-configuration with the logarithmic terms on the marked same-sign vertices. It holds for every
-generic configuration of the box. -/
-theorem le_energy_full [Nontrivial (Fin N ⊕ Fin N)] {C : ℝ} (hC0 : 0 ≤ C)
-    (hC : Corollary23Holds C) (hN : 2 ≤ N) (h3 : 3 ≤ Fintype.card (Fin N ⊕ Fin N)) {lam : ℝ}
-    (hlam : 0 < lam) {Z : Fin N ⊕ Fin N → ℂ} (hZ : ∀ i, Z i ∈ box N) (hgen : IsGeneric Z)
+/-! Algebraic comparison with the Corollary 2.3 expression. -/
+
+theorem pairAssignedEnergy_le_corollary23Bound [Nontrivial (Fin N ⊕ Fin N)] {C : ℝ} (hC0 : 0 ≤ C)
+    (hN : 2 ≤ N) (h3 : 3 ≤ Fintype.card (Fin N ⊕ Fin N)) (lam : ℝ) {Z : Fin N ⊕ Fin N → ℂ}
     {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N} {T : Finset (Fin N ⊕ Fin N)}
     (hφ : nearestNeighbor Z = φ) (hT : twiceIsolatedSet hN Z = T) :
     pairAssignedEnergy h3 (sumKey N) lam C (markedSameSign φ T) Z
-      - C * ((N : ℝ) - numComponents Z) ≤ energy lam Z := by
+      - C * ((N : ℝ) - numComponents Z) ≤ corollary23Bound hN C lam Z := by
   classical
   subst hφ hT
-  refine le_trans ?_ (hC N hN lam hlam Z hZ hgen)
   unfold corollary23Bound
   rw [filter_corollary23_sameSign_eq, filter_corollary23_neutral_eq, ← nnEnergy_sumKey]
   set U := (twiceIsolatedSet hN Z).filter
@@ -330,13 +340,27 @@ theorem le_energy_full [Nontrivial (Fin N ⊕ Fin N)] {C : ℝ} (hC0 : 0 ≤ C)
     ← firstNeighborRadius_eq_nnRadius] at h1
   linarith
 
+/-- **The lower bound on all indices** (source l. 1440–1453 with `I` the whole index set, the case
+`Iᶜ = ∅`): `F_λ ≥ F⁽¹⁾ - C(N - K)`, where `F⁽¹⁾` is the pair-assigned energy of the whole
+configuration with the logarithmic terms on the marked same-sign vertices. It holds for every
+generic configuration of the box. -/
+theorem le_energy_full [Nontrivial (Fin N ⊕ Fin N)] {C : ℝ} (hC0 : 0 ≤ C)
+    (hC : Corollary23Holds C) (hN : 2 ≤ N) (h3 : 3 ≤ Fintype.card (Fin N ⊕ Fin N)) {lam : ℝ}
+    (hlam : 0 < lam) {Z : Fin N ⊕ Fin N → ℂ} (hZ : ∀ i, Z i ∈ box N) (hgen : IsGeneric Z)
+    {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N} {T : Finset (Fin N ⊕ Fin N)}
+    (hφ : nearestNeighbor Z = φ) (hT : twiceIsolatedSet hN Z = T) :
+    pairAssignedEnergy h3 (sumKey N) lam C (markedSameSign φ T) Z
+      - C * ((N : ℝ) - numComponents Z) ≤ energy lam Z := by
+  exact (pairAssignedEnergy_le_corollary23Bound hC0 hN h3 lam hφ hT).trans
+    (hC N hN lam hlam Z hZ hgen)
+
 end Split
 
 /-! ### Separation of variables -/
 
 section Separation
 
-/-- **Separation of variables** (source l. 1546--1551): if the domain `S` forces `Z|_P ∈ E₁` and
+/-- **Separation of variables** (source l. 1454–1459): if the domain `S` forces `Z|_P ∈ E₁` and
 `Z|_{Pᶜ} ∈ E₂`, the integral over `Λ^ι ∩ S` of a product `g₁(Z|_P) g₂(Z|_{Pᶜ})` is at most the
 product of the integrals over `Λ^P ∩ E₁` and `Λ^{Pᶜ} ∩ E₂` ("Enlarging the integration domain
 now separates the variables"). -/
@@ -397,7 +421,7 @@ section CellIntegrals
 
 variable {N : ℕ}
 
-/-- **Separation of variables (gred3)** (source l. 1546--1551), for `m ≥ 2` and `Iᶜ ≠ ∅`: for a
+/-- **Separation of variables (gred3)** (source l. 1454–1459), for `m ≥ 2` and `Iᶜ ≠ ∅`: for a
 marked graph `γ = (φ, T) ∈ D_{2N,K,p,p₀}` and any event `A`,
 `∫_{Λ^{2N} ∩ A ∩ {γ_{2N} = γ}} e^{-β F_λ} ≤ e^{β C (N - K)} ·
 ∫_{Λ^{2m} ∩ {γ_{2m} = γ¹}} e^{-β F⁽¹⁾} · ∫_{Λ^{2N-2m} ∩ {γ_{2N-2m} = γ²}} e^{-β F⁽²⁾}`,
@@ -454,7 +478,7 @@ theorem lintegral_markedCell_le_mul {C : ℝ} (hC0 : 0 ≤ C) (hC : Corollary23H
           (measurable_ofReal_exp_neg_mul (measurable_pairAssignedEnergy _ h3 lam C _) β)
           (measurable_ofReal_exp_neg_mul (measurable_nnEnergy _ lam) β)
 
-/-- **Separation of variables without marked pairs** (source l. 1542, 1546--1551; the case `m ≤ 1`,
+/-- **Separation of variables without marked pairs** (source l. 1450, 1454–1459; the case `m ≤ 1`,
 where `F⁽¹⁾` is only the nearest-neighbour term): if `T = ∅`, the cell integral is at most
 `e^{β C (N - K)} · ∫_{Λ^{2m} ∩ {γ_{2m} = γ¹}} e^{-β F^nn} ·
 ∫_{Λ^{2N-2m} ∩ {γ_{2N-2m} = γ²}} e^{-β F⁽²⁾}`. -/
@@ -587,52 +611,6 @@ end CellIntegrals
 /-! ### The packaged statement -/
 
 section Packaged
-
-/-- **Proposition 3.10, Step 2** (source l. 1513--1551), with the constant `C` of Corollary 2.3:
-for every marked graph `γ = (φ, T) ∈ D_{2N,K,p,p₀}` with `m ≥ 2` isolated pairs and `Iᶜ ≠ ∅`,
-
-* (`F_λ ≥ F⁽¹⁾ + F⁽²⁾ - C(N - K)`) every configuration of the box in the cell `{γ_{2N} = γ}`
-  satisfies `F_λ(Z) ≥ F⁽¹⁾(Z|_I) + F⁽²⁾(Z|_{Iᶜ}) - C(N - K)`;
-* (gred3) for every event `A` and `β ≥ 0`, `∫_{Λ^{2N} ∩ A ∩ {γ_{2N} = γ}} e^{-β F_λ} ≤
-  e^{β C (N - K)} ∫_{Λ^{2m} ∩ {γ_{2m} = γ¹}} e^{-β F⁽¹⁾}
-  ∫_{Λ^{2N-2m} ∩ {γ_{2N-2m} = γ²}} e^{-β F⁽²⁾}`.
-
-Here `I = I^pair` (`pairVerts φ`), `F⁽¹⁾` is the pair-assigned energy on `I` with the logarithmic
-terms on the marked same-sign vertices `I'` and the radii computed within `I` (def:F(1)), and
-`F⁽²⁾` is the nearest-neighbour energy on `Iᶜ` (def:F(2)). The cases without marked pair, `I = ∅`
-or `Iᶜ = ∅` are `TwoComponentCoulomb.lintegral_markedCell_le_mul_of_empty`,
-`TwoComponentCoulomb.lintegral_markedCell_le_full_of_empty` and
-`TwoComponentCoulomb.lintegral_markedCell_le_full`, with any `C` given by
-`TwoComponentCoulomb.exists_corollary23Holds`. -/
-theorem exists_energy_split_separation :
-    ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam →
-      ∀ (K p p₀ : ℕ) (φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (T : Finset (Fin N ⊕ Fin N)),
-        (φ, T) ∈ markedGraphs hN K p p₀ →
-        ∀ [Nontrivial {i // i ∈ pairVerts φ}] [Nontrivial {i // i ∉ pairVerts φ}]
-          (h3 : 3 ≤ Fintype.card {i // i ∈ pairVerts φ}),
-          (∀ Z ∈ markedCell hN φ T, (∀ i, Z i ∈ box N) →
-            pairAssignedEnergy h3 (subtypeKey (· ∈ pairVerts φ) (sumKey N)) lam C
-                (markedSameSignIn φ T) (fun j : {i // i ∈ pairVerts φ} => Z j)
-              + nnEnergy (subtypeKey (· ∉ pairVerts φ) (sumKey N)) lam
-                  (fun j : {i // i ∉ pairVerts φ} => Z j)
-              - C * ((N : ℝ) - K) ≤ energy lam Z) ∧
-          ∀ (β : ℝ), 0 ≤ β → ∀ A : Set (Fin N ⊕ Fin N → ℂ),
-            ∫⁻ Z in (Set.univ.pi fun _ : Fin N ⊕ Fin N => box N) ∩ A ∩ markedCell hN φ T,
-                ENNReal.ofReal (Real.exp (-β * energy lam Z)) ≤
-              ENNReal.ofReal (Real.exp (β * (C * ((N : ℝ) - K)))) *
-                ((∫⁻ x in (Set.univ.pi fun _ : {i // i ∈ pairVerts φ} => box N) ∩
-                    {x | nnMap (subtypeKey (· ∈ pairVerts φ) (sumKey N)) x = pairRestrict φ},
-                    ENNReal.ofReal (Real.exp (-β * pairAssignedEnergy h3
-                      (subtypeKey (· ∈ pairVerts φ) (sumKey N)) lam C (markedSameSignIn φ T) x))) *
-                  ∫⁻ y in (Set.univ.pi fun _ : {i // i ∉ pairVerts φ} => box N) ∩
-                    {y | nnMap (subtypeKey (· ∉ pairVerts φ) (sumKey N)) y = complRestrict φ},
-                    ENNReal.ofReal (Real.exp (-β *
-                      nnEnergy (subtypeKey (· ∉ pairVerts φ) (sumKey N)) lam y))) := by
-  obtain ⟨C, hC0, hC⟩ := exists_corollary23Holds
-  refine ⟨C, hC0, fun N hN lam hlam K p p₀ φ T hγ _ _ h3 => ⟨fun Z hZc hZ => ?_,
-    fun β hβ A => lintegral_markedCell_le_mul hC0.le hC hN hlam hβ hγ A h3⟩⟩
-  have h := le_energy_split hC0.le hC hN hlam hZ hZc.1 hZc.2.1 hZc.2.2 h3
-  rwa [numComponents_eq_of_mem_markedCell hγ hZc] at h
 
 end Packaged
 

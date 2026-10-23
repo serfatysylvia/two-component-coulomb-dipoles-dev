@@ -15,7 +15,7 @@ public import TwoComponentCoulomb.NearestNeighbor.Basic
 # Packing bound for nearest-neighbour distances
 
 Elementary packing estimate behind the bound `∑_cycles |u_j|² ≤ C N` of the source
-(l. 837 "disjoint balls … area", l. 897 "`s = 36N/π`", l. 957).
+(l. 799 "disjoint balls … area", l. 845 "`s = 36N/π`", ).
 
 If points `z_i` of the box `Λ = [0, √N]²` carry radii `ρ_i ≤ √(2N)` (the diameter of `Λ`) with
 `ρ_i ≤ |z_i - z_j|` for all `j ≠ i`, then the open discs `B(z_i, ρ_i / 2)` are pairwise disjoint
@@ -34,7 +34,7 @@ open MeasureTheory
 
 namespace TwoComponentCoulomb
 
-/-- The diameter of the box `Λ = [0, √N]²` is at most `√(2N)` (source l. 837). -/
+/-- The diameter of the box `Λ = [0, √N]²` is at most `√(2N)` (source l. 799). -/
 theorem norm_sub_le_of_mem_box {N : ℕ} {z w : ℂ} (hz : z ∈ box N) (hw : w ∈ box N) :
     ‖z - w‖ ≤ Real.sqrt (2 * N) := by
   rw [box, Complex.mem_reProdIm] at hz hw
@@ -68,7 +68,7 @@ theorem volume_reProdIm_Icc (a b : ℝ) :
     (measurableSet_Icc.prod measurableSet_Icc).nullMeasurableSet, Measure.volume_eq_prod,
     Measure.prod_prod, Real.volume_Icc, sq]
 
-/-- **Packing bound** (source l. 837, 897): points `z_i` of the box carrying radii
+/-- **Packing bound** (source l. 799, 845): points `z_i` of the box carrying radii
 `ρ_i ∈ [0, √(2N)]` with `ρ_i ≤ |z_i - z_j|` for all `i ≠ j` in a finite set `S` of indices
 satisfy `∑_{i ∈ S} ρ_i² ≤ 36 N / π`. Only the indices of `S` are constrained. -/
 theorem sum_sq_le_of_separated_finset {ι : Type*} {N : ℕ} (S : Finset ι) (z : ι → ℂ)
@@ -135,7 +135,7 @@ theorem sum_sq_le_of_separated_finset {ι : Type*} {N : ℕ} (S : Finset ι) (z 
     refine Finset.sum_congr rfl fun i _ => by ring
   linarith
 
-/-- **Packing bound** (source l. 837, 897): points `z_i` of the box carrying radii
+/-- **Packing bound** (source l. 799, 845): points `z_i` of the box carrying radii
 `ρ_i ∈ [0, √(2N)]` with `ρ_i ≤ |z_i - z_j|` for all `i ≠ j` satisfy `∑ ρ_i² ≤ 36 N / π`. -/
 theorem sum_sq_le_of_separated {ι : Type*} [Fintype ι] {N : ℕ} (z : ι → ℂ) (ρ : ι → ℝ)
     (hz : ∀ i, z i ∈ box N) (hρ0 : ∀ i, 0 ≤ ρ i) (hρd : ∀ i, ρ i ≤ Real.sqrt (2 * N))
@@ -145,7 +145,7 @@ theorem sum_sq_le_of_separated {ι : Type*} [Fintype ι] {N : ℕ} (z : ι → �
     (fun i _ => hρd i) fun i _ j _ hij => hsep i j hij
 
 /-- For every configuration of `2N` points in the box `Λ`, the squared nearest-neighbour
-distances sum to at most `36 N / π` (source l. 837, 897, 957). No genericity is needed:
+distances sum to at most `36 N / π` . No genericity is needed:
 coinciding points have distance `0`. -/
 theorem sum_sq_norm_sub_nearestNeighbor_le {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ)
     (hZ : ∀ i, Z i ∈ box N) :

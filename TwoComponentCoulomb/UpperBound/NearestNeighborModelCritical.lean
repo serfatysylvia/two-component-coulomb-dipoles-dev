@@ -18,7 +18,7 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The critical weight `exp (2 g_λ)`: integration under the packing constraint
 
-Source: l. 867--878 (Lemma 3.5, Step 3, `β = 2`) and l. 905--909 (Step 4,
+Source: (Lemma 3.4, Step 3, `β = 2`) and l. 854–857 (Step 4,
 `β = 4`), which use the Gaussian decoupling of Lemma 3.2 (`lem:gaussian decoupling`) and
 (eq:critical-gaussian) of Lemma 3.3.
 
@@ -38,13 +38,13 @@ inner region `|u| < 2λ` contributes an additive `O(1)` to the one-dimensional i
 * `TwoComponentCoulomb.exists_lintegral_ball_critical_le`: the ball integral of
   `∏ exp (2 g_λ(u_i))` over `|U|² ≤ s`, in terms of `ℓ = log (s / (4 λ² m))`.
 * `TwoComponentCoulomb.exists_lintegral_ball_tree_le_four`: the tree integral for `β = 4`
-  (source l. 905--909).
+  (source l. 854–857).
 * `TwoComponentCoulomb.exists_lintegral_ball_cycle_le_two`: the cycle integral for `β = 2`
-  (source l. 867--878), including the uniformity in `K/N` (the error `K log log (N/(λK)) /
+  , including the uniformity in `K/N` (the error `K log log (N/(λK)) /
   log (N/(λK))` is bounded directly by `N log log (1/λ) / log (1/λ)`).
 * `TwoComponentCoulomb.lintegral_cell_le_of_eq_two`, `TwoComponentCoulomb.lintegral_cell_le_of_eq_four`
-  and `TwoComponentCoulomb.lintegral_cell_le_of_two_lt`: Lemma 3.5 for `β = 2` (eq:est2), `β = 4`
-  (eq:estb4) and, in the single form of (eq:F(2)), for all `β > 2`.
+  and `TwoComponentCoulomb.lintegral_cell_le_of_two_lt`: Lemma 3.4 for `β = 2` the critical clause of Lemma 3.4, `β = 4`
+  the β = 4 clause of Lemma 3.4 and, in the single form of (eq:F(2)), for all `β > 2`.
 -/
 
 @[expose] public section
@@ -221,8 +221,7 @@ theorem lintegral_posSimplex_critical_le {c : ℝ}
 
 /-! ### The ball integral -/
 
-/-- **Lemma 3.2 and (eq:critical-gaussian) applied to `exp (2 g_λ)`** (source l. 867--878,
-905--909): for `m ≥ 1` variables, `s > 0` and `8 λ² m ≤ s`, with `ℓ = log (s / (4 λ² m))`,
+/-- **Lemma 3.2 and (eq:critical-gaussian) applied to `exp (2 g_λ)`** : for `m ≥ 1` variables, `s > 0` and `8 λ² m ≤ s`, with `ℓ = log (s / (4 λ² m))`,
 `∫_{|U|² ≤ s} ∏ exp (2 g_λ(u_i)) dU ≤ exp (m (log π + log ℓ + C (1 + log ℓ)/ℓ))`
 (each variable contributes `π` from the polar change `t = |u|²`). -/
 theorem exists_lintegral_ball_critical_le :
@@ -305,7 +304,7 @@ theorem eight_mul_le {N m : ℕ} {lam : ℝ} (hlam : 0 < lam) (hlam2 : lam ≤ 1
   linarith only [mul_le_mul_of_nonneg_right h5 Real.pi_pos.le,
     mul_le_mul_of_nonneg_left h3 h4, h4]
 
-/-- **Lemma 3.5, Step 4, `β = 4`** (source l. 905--909): the tree integral over the ball of
+/-- **Lemma 3.4, Step 4, `β = 4`** (source l. 854–857): the tree integral over the ball of
 `ℂ^{2q}` is at most `exp (2q log (|log λ| + log (N/q)) + C q)`, for `0 < λ ≤ e⁻¹`, `q ≤ N`. -/
 theorem exists_lintegral_ball_tree_le_four {β : ℝ} (hβ : β = 4) :
     ∃ C : ℝ, ∀ (N q m : ℕ), 0 < N → q ≤ N → m = 2 * q → ∀ lam : ℝ, 0 < lam →
@@ -381,7 +380,7 @@ theorem exists_lintegral_ball_tree_le_four {β : ℝ} (hβ : β = 4) :
 
 /-- The error per cycle in the case `β = 2`: for `L ≥ 2`,
 `κ/(2L) + C₁ (1 + log 2 + log L)/(2L) ≤ C₂ log L / L`, with
-`C₂ = (κ + C₁ (1 + log 2))/(2 log 2) + C₁/2` (source l. 876--878, uniformity in `K`). -/
+`C₂ = (κ + C₁ (1 + log 2))/(2 log 2) + C₁/2` ( uniformity in `K`). -/
 theorem critical_error_le {L κ C₁ : ℝ} (hL : 2 ≤ L) (hκ : 0 ≤ κ) (hC₁ : 0 ≤ C₁) :
     κ / (2 * L) + C₁ * (1 + Real.log 2 + Real.log L) / (2 * L) ≤
       ((κ + C₁ * (1 + Real.log 2)) / (2 * Real.log 2) + C₁ / 2) * (Real.log L / L) := by
@@ -404,7 +403,7 @@ theorem critical_error_le {L κ C₁ : ℝ} (hL : 2 ≤ L) (hκ : 0 ≤ κ) (hC�
   rw [e1, e2]
   exact div_le_div_of_nonneg_right (by linarith) (by positivity)
 
-/-- **Lemma 3.5, Step 3, `β = 2`** (source l. 867--878): for `1 ≤ K ≤ N` and `0 < λ ≤ e⁻²`, the
+/-- **Lemma 3.4, Step 3, `β = 2`** : for `1 ≤ K ≤ N` and `0 < λ ≤ e⁻²`, the
 cycle integral over the ball of `ℂ^K` satisfies
 `log ∫ ∏ e^{2 g_λ(u_k)} ≤ K log 2π + K log (|log λ| + log (N/K)) + C N log|log λ| / |log λ|`. -/
 theorem exists_lintegral_ball_cycle_le_two :
@@ -495,13 +494,13 @@ theorem exists_lintegral_ball_cycle_le_two :
         linarith
     _ = _ := by ring
 
-/-! ### Lemma 3.5 for `β = 4` and `β = 2` -/
+/-! ### Lemma 3.4 for `β = 4` and `β = 2` -/
 
 section Cases
 
 universe u
 
-/-- **Lemma 3.5, case `β = 4`** (source l. 799--803). For `f` the nearest-neighbour map of a
+/-- **Lemma 3.4, case `β = 4`** (source l. 767–770). For `f` the nearest-neighbour map of a
 configuration of `2p ≤ 2N` points in `Λ = [0, √N]²`, with `K` 2-cycles, and `0 < λ ≤ e⁻¹`,
 `log J(f) ≤ K log N + (2-β) K log λ + K log 𝒵_β + (2p-2K) log (|log λ| + log (N/(p-K))) +
 C_β (p-K)`. -/
@@ -538,7 +537,7 @@ theorem lintegral_cell_le_of_eq_four {β : ℝ} (hβ : β = 4) :
   refine le_of_eq ?_
   ring
 
-/-- **Lemma 3.5, case `β = 2`** (source l. 787--791). For `f` the nearest-neighbour map of a
+/-- **Lemma 3.4, case `β = 2`** . For `f` the nearest-neighbour map of a
 configuration of `2p ≤ 2N` points in `Λ = [0, √N]²`, with `K` 2-cycles, and `0 < λ ≤ e⁻²`,
 `log J(f) ≤ K log N + K log (|log λ| + log (N/K)) + K log 2π + (1 - β/4)(2p-2K) log (N/(p-K)) +
 C (p-K) + C N log|log λ| / |log λ|` (here `β = 2`; `C` is an absolute constant). -/
@@ -588,8 +587,8 @@ theorem lintegral_cell_le_of_eq_two {β : ℝ} (hβ : β = 2) :
   rw [add_sub_cancel_left, show 2 * ((K : ℝ) + q) - 2 * K = 2 * q by ring]
   linarith only [h1, h2]
 
-/-- **Lemma 3.5 for `β > 2`** (source l. 793--809, the three cases `β ∈ (2,4)`, `β = 4`, `β > 4`
-in the single form of (eq:F(2)), l. 1567--1573): for `0 < λ ≤ e⁻¹`,
+/-- **Lemma 3.4 for `β > 2`** (source l. 761–776, the three cases `β ∈ (2,4)`, `β = 4`, `β > 4`
+in the single form of (eq:F(2)), l. 1475–1481): for `0 < λ ≤ e⁻¹`,
 `log J(f) ≤ K (log N + (2-β) log λ + log 𝒵_β) +
   (2p-2K) ((1 - β/4) log (N/(p-K)) 1_{β<4} + log (|log λ| + log (N/(p-K))) 1_{β=4} +
   (2 - β/2) log λ 1_{β>4}) + C_β (p-K)`. -/

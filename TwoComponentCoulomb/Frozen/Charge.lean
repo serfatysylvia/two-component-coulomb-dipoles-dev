@@ -11,7 +11,7 @@ public import Mathlib.Basic.Real.Basic
 # Frozen: `TwoComponentCoulomb.charge`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 216.
+Source: l. 201.
 -/
 
 @[expose] public section
@@ -19,7 +19,7 @@ Source: l. 216.
 namespace TwoComponentCoulomb
 
 /-- The sign `d_i`: `+1` on the positive charges `x_i` (`inl`), `-1` on the negative charges
-`y_i` (`inr`) (source l. 216). -/
+`y_i` (`inr`) (source l. 201). -/
 def charge {N : ℕ} : Fin N ⊕ Fin N → ℝ := Sum.elim (fun _ => 1) (fun _ => -1)
 
 end TwoComponentCoulomb

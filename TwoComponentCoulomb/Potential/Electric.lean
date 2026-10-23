@@ -15,7 +15,7 @@ import TwoComponentCoulomb.Potential.PairIntegral
 # The electric potential and field of a configuration of disc charges
 
 For a finite family of real charges `d i`, centres `z i` and radii `α i > 0`, the electric potential
-`h_α = g * Σᵢ dᵢ δ_{zᵢ}^{(αᵢ)}` (source eq. (eq:heta) l. 192 and eq. (defhalpha) l. 361) is
+`h_α = g * Σᵢ dᵢ δ_{zᵢ}^{(αᵢ)}` (source eq. (eq:heta) l. 177 and eq. (defhalpha) l. 364) is
 implemented through the explicit radial disc potentials of `Potential/DiscField.lean`
 (ruling R12b): `h_α(x) = Σᵢ dᵢ discPotential αᵢ (x - zᵢ)` and its gradient
 `∇h_α(x) = Σᵢ dᵢ discField αᵢ (x - zᵢ)`.
@@ -99,6 +99,53 @@ theorem fderiv_electricPotential_apply (hα : ∀ i, 0 < α i) (x v : ℂ) :
     fderiv ℝ (electricPotential d z α) x v = ⟪electricField d z α x, v⟫_ℝ := by
   rw [(hasGradientAt_electricPotential hα x).hasFDerivAt.fderiv, toDual_apply_apply]
 
+/-- The field is globally Lipschitz for positive radii. Together with
+`contDiff_electricPotential`, this gives the local `C^{1,1}` regularity used in Lemma 2.4. -/
+theorem lipschitzWith_electricField (hα : ∀ i, 0 < α i) :
+    LipschitzWith (∑ i, |d i| * (α i ^ 2)⁻¹).toNNReal (electricField d z α) := by
+  have hK : 0 ≤ ∑ i, |d i| * (α i ^ 2)⁻¹ :=
+    Finset.sum_nonneg fun i _ => mul_nonneg (abs_nonneg _) (inv_nonneg.2 (sq_nonneg _))
+  apply LipschitzWith.of_dist_le_mul
+  intro x y
+  rw [dist_eq_norm, dist_eq_norm, Real.coe_toNNReal _ hK, electricField, electricField,
+    ← Finset.sum_sub_distrib, Finset.sum_mul]
+  refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
+  rw [← smul_sub, norm_smul, Real.norm_eq_abs, mul_assoc]
+  refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)
+  simpa only [Real.coe_toNNReal _ (inv_nonneg.2 (sq_nonneg _)),
+    sub_sub_sub_cancel_right] using
+    (lipschitzWith_discField (hα i)).norm_sub_le (x - z i) (y - z i)
+
+/-- By Newton's theorem the difference of potentials with two positive radius vectors
+has compact support (Lemma 2.4). Neutrality is not needed for this step. -/
+theorem hasCompactSupport_electricPotential_sub {τ : ι → ℝ}
+    (hτ : ∀ i, 0 < τ i) (hα : ∀ i, 0 < α i) :
+    HasCompactSupport (fun x => electricPotential d z τ x - electricPotential d z α x) := by
+  classical
+  let R : ℝ := ∑ i, (‖z i‖ + max (τ i) (α i))
+  apply HasCompactSupport.intro (isCompact_closedBall (0 : ℂ) R)
+  intro x hx
+  have hxR : R < ‖x‖ := by simpa only [mem_closedBall_zero_iff, not_le] using hx
+  have hfar : ∀ i, max (τ i) (α i) ≤ ‖x - z i‖ := by
+    intro i
+    have hi : ‖z i‖ + max (τ i) (α i) ≤ R :=
+      Finset.single_le_sum (fun j _ => add_nonneg (norm_nonneg _)
+        ((hτ j).le.trans (le_max_left _ _))) (Finset.mem_univ i)
+    have hn : ‖x‖ ≤ ‖x - z i‖ + ‖z i‖ := by
+      simpa only [sub_add_cancel] using norm_add_le (x - z i) (z i)
+    linarith
+  apply sub_eq_zero.mpr
+  unfold electricPotential
+  apply Finset.sum_congr rfl
+  intro i _
+  congr 1
+  rw [← integral_logKernel_sub_smearedCharge_eq_discPotential (hτ i) x (z i),
+    integral_logKernel_sub_smearedCharge_of_le x (z i) (hτ i)
+      ((le_max_left _ _).trans (hfar i)),
+    ← integral_logKernel_sub_smearedCharge_eq_discPotential (hα i) x (z i),
+    integral_logKernel_sub_smearedCharge_of_le x (z i) (hα i)
+      ((le_max_right _ _).trans (hfar i))]
+
 end Regularity
 
 section PairInteraction
@@ -126,7 +173,7 @@ variable {ι : Type*} [Fintype ι] {d : ι → ℝ} {z : ι → ℂ} {α : ι �
 
 /-- **The Green identity for a configuration of disc charges** (no neutrality needed):
 `∫ ∇ξ · ∇h_α = 2π Σᵢ dᵢ ∫ ξ dδ_{zᵢ}^{(αᵢ)}` for `ξ` of class `C¹` with compact support
-(source l. 1964-1988, Theorem 2, Step 1). -/
+(source l. 1842–1866, Theorem 2, Step 1). -/
 theorem integral_fderiv_apply_electricField {ξ : ℂ → ℝ} (hξ : ContDiff ℝ 1 ξ)
     (hc : HasCompactSupport ξ) (hα : ∀ i, 0 < α i) :
     ∫ x, fderiv ℝ ξ x (electricField d z α x) =

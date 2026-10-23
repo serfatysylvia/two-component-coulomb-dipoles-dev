@@ -14,7 +14,7 @@ public import TwoComponentCoulomb.NearestNeighbor.General
 /-!
 # Structure of the nearest-neighbour graph of an arbitrary finite configuration
 
-Source l. 642--644 and l. 217--222, 373--385: the cycle structure of the nearest-neighbour
+Source l. 645–647 and l. 202–207, 376–388: the cycle structure of the nearest-neighbour
 graph proved for `Fin N ⊕ Fin N` in `NearestNeighbor/Cycles.lean` and
 `NearestNeighbor/Components.lean`, redone for the map `TwoComponentCoulomb.nnMap key z` of an
 arbitrary finite configuration `z : ι → ℂ` with tie-break key `key : ι ↪ ℕ` (ruling R4). Thanks
@@ -92,7 +92,7 @@ private theorem nnMap_nnMap_eq_or_lexKey_lt (a : ι) :
 
 /-- All cycles of the nearest-neighbour map are 2-cycles: a periodic point `i` of `nnMap key z`
 satisfies `nnMap key z (nnMap key z i) = i`. This holds for every configuration, thanks to the
-tie-break key (source l. 217--222, ruling R4). -/
+tie-break key (source l. 202–207, ruling R4). -/
 theorem nnMap_nnMap_of_iterate_eq_self {i : ι} {n : ℕ} (hn : 0 < n)
     (h : (nnMap key z)^[n] i = i) : nnMap key z (nnMap key z i) = i := by
   have hper : Function.IsPeriodicPt (nnMap key z) n i := h
@@ -156,7 +156,7 @@ theorem exists_iterate_nnMap_two_cycle (i : ι) :
 
 /-! ### The nearest-neighbour graph and its components -/
 
-/-- The nearest-neighbour graph of a configuration (source l. 217--222, 375, 642--644): `i` and
+/-- The nearest-neighbour graph of a configuration (source l. 202–207, 378, 645–647): `i` and
 `j` are adjacent iff `nnMap key z i = j` or `nnMap key z j = i`. -/
 abbrev nnGraph : SimpleGraph ι :=
   SimpleGraph.fromRel fun i j => nnMap key z i = j
@@ -188,7 +188,7 @@ section Cycles
 open scoped Classical in
 /-- The vertices lying on a 2-cycle of the nearest-neighbour graph: `nnMap key z (nnMap key z i) =
 i`. By `nnMap_nnMap_of_iterate_eq_self` these are exactly the periodic points of `nnMap key z`.
-The other vertices are the "tree vertices" (source l. 466--470). -/
+The other vertices are the "tree vertices" (source l. 472–476). -/
 noncomputable def nnCycleVerts : Finset ι :=
   univ.filter fun i => nnMap key z (nnMap key z i) = i
 
@@ -313,8 +313,7 @@ variable (key z)
 /-! ### Counting components -/
 
 /-- Each connected component of the nearest-neighbour graph contains exactly one 2-cycle, so
-that the number of vertices on 2-cycles is twice the number of components (source l. 217--222,
-375--385). -/
+that the number of vertices on 2-cycles is twice the number of components (source l. 202–207, 378–388). -/
 theorem card_nnCycleVerts_eq_two_mul_card_components :
     (nnCycleVerts key z).card = 2 * Nat.card (nnGraph key z).ConnectedComponent := by
   have : Fintype (nnGraph key z).ConnectedComponent := Fintype.ofFinite _

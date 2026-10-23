@@ -14,8 +14,8 @@ import TwoComponentCoulomb.Gibbs.Basic
 /-!
 # Theorem 2, Steps 3--4: the per-cell splits of the `A₁` and `A₃` integrands
 
-Source: proof of Theorem 2 (`prop:linear`), Step 3 (l. 2091--2116) and Step 4 (l. 2125--2178),
-for `β > 2`. Both steps repeat Steps 2--3 of the proof of Proposition 3.10
+Source: proof of Theorem 2 (`prop:linear`), Step 3 (l. 1969–1994) and Step 4 (l. 2003–2056),
+for `β > 2`. Both steps repeat Steps 2--3 of the proof of Proposition 3.9
 on the marked graphs `γ = (φ, T) ∈ D_{2N,K,p,p₀}`. This file contains the parts shared by the two
 steps: the identification of the integrands on one cell with the block integrands of
 `Fluctuations/TiltedEnergy.lean`, the separation of variables, and the passage from per-cell bounds
@@ -26,7 +26,7 @@ Write `I = I^pair` (`pairVerts φ`, `|I| = 2m`), `I'` for the vertices of the ma
 (`markedSameSign φ T`, or `markedSameSignIn φ T` as a set of vertices of `I`), `Z|_I` and
 `Z|_{Iᶜ}` for the restrictions, and `α_i = alphaRadius hN λ γ Z i`.
 
-## The `A₁` integrand (Step 3, l. 2091--2100)
+## The `A₁` integrand (Step 3, l. 1969–1978)
 
 `A₁ - F_λ` cancels `F_λ` (`linearA1`): `β A₁ - β F_λ = -β G_α` with
 `G_α = -½ ∑_i g_λ(z_i - z_{φ₁ i}) + ∑_{i ∈ I'} (log (α_i / r̃₁(z_i)) - C)`. On a marked cell,
@@ -34,13 +34,13 @@ Write `I = I^pair` (`pairVerts φ`, `|I| = 2m`), `I'` for the vertices of the ma
 * `alphaPairRadius_subtype_eq`: for a vertex `i ∈ I` whose second neighbours `φ₂(i)`,
   `φ₂(φ₁ i)` lie in `I` (every marked vertex), the radius `α^I_i` computed within `I`
   (`alphaPairRadius`) is `α_i` ("at marked vertices, the second neighbor also lies in `I`",
-  l. 1542);
+  l. 1450);
 * `linearA1_sub_energy_eq_split`: `A₁ - F_λ = -(G⁽¹⁾_γ(Z|_I) + F⁽²⁾(Z|_{Iᶜ}))` exactly, with
   `G⁽¹⁾_γ = alphaBlockEnergy` and `F⁽²⁾ = nnEnergy` (no energy lower bound such as Corollary 2.3
-  is used: "the `F_λ` term of `A₁` cancels exactly", l. 2092);
+  is used: "the `F_λ` term of `A₁` cancels exactly", l. 1970);
 * `linearA1_sub_energy_eq_full`: the same on all indices (used when `Iᶜ = ∅` or `T = ∅`).
 
-## The `A₃` integrand (Step 4, l. 2132--2142)
+## The `A₃` integrand (Step 4, l. 2011–2020)
 
 * `linearA3_le_sum_pairVerts`: `A₃ ≤ ∑_{i ∈ I} ((r̃₁(z_i)/γ)² ∧ 1)` (the summands of `A₃` are
   nonnegative and indexed by isolated dipoles); `linearA3_eq_zero_of_twiceIsolatedSet_eq_empty`:
@@ -54,11 +54,11 @@ Write `I = I^pair` (`pairVerts φ`, `|I| = 2m`), `I'` for the vertices of the ma
 * `lintegral_markedCell_le_mul_of_le`, `lintegral_markedCell_le_full_of_le`: the separation of
   variables (gred3) for an arbitrary integrand bounded on the cell by a product of block integrands.
 * `exists_lintegral_gibbsMeasure_le_of_cellBound_rate`: for a rate `ω` satisfying `UpperRateHyp`
-  (`UpperBound/UpperOptimization.lean`) in place of `ω_λ`, the graph sum of Proposition 3.10
+  (`UpperBound/UpperOptimization.lean`) in place of `ω_λ`, the graph sum of Proposition 3.9
   (`UpperAssembly.lintegral_le_of_cellBound_rate`) and the lower bound of Proposition 4.1 give
   `𝔼_ℙ[f] ≤ exp (C N ω(λ) + C log (N + 1) + X)` for any `f` whose cell integrals
   `∫_{cell} f e^{-β F_λ}` satisfy `CellBoundRate` with extra exponent `X`
-  ("Subtracting the lower bound of Proposition 4.1", l. 2112--2116, 2173--2178). The rate
+  ("Subtracting the lower bound of Proposition 4.1", l. 1990–1994, 2051–2056). The rate
   `ω_λ = errorRate β λ` satisfies `UpperRateHyp` (`upperRateHyp_errorRate`).
 -/
 
@@ -79,7 +79,7 @@ variable {N : ℕ}
 
 section Bridge
 
-/-- **The radii `α` within `I`** (source l. 1542, 2092): for a vertex `i` of `I = I^pair` whose
+/-- **The radii `α` within `I`** (source l. 1450, 1970): for a vertex `i` of `I = I^pair` whose
 second nearest neighbours `φ₂(i)` and `φ₂(φ₁ i)` lie in `I`, the radius `α^I_i` computed within
 `I` (`alphaPairRadius`) is the radius `α_i` of Theorem 2, Step 2 (`alphaRadius`). -/
 theorem alphaPairRadius_subtype_eq (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N → ℂ}
@@ -115,12 +115,12 @@ theorem alphaPairRadius_sumKey_eq [Nontrivial (Fin N ⊕ Fin N)] (hN : 2 ≤ N)
 
 end Bridge
 
-/-! ### The `A₁` integrand on a marked cell (source l. 2091--2100) -/
+/-! ### The `A₁` integrand on a marked cell (source l. 1969–1978) -/
 
 section LinearA1
 
 open scoped Classical in
-/-- **`A₁ - F_λ` on a marked cell** (source l. 2091--2100, with (gred3)): if `φ₁(Z) = φ` and the
+/-- **`A₁ - F_λ` on a marked cell** (source l. 1969–1978, with (gred3)): if `φ₁(Z) = φ` and the
 marked vertices of `Z` are `T`, then
 `A₁ - F_λ = -(G⁽¹⁾_γ(Z|_I) + F⁽²⁾(Z|_{Iᶜ}))`, where `G⁽¹⁾_γ = alphaBlockEnergy` on `I = I^pair`
 with the logarithmic terms on the marked same-sign vertices, and `F⁽²⁾ = nnEnergy` on `Iᶜ`. -/
@@ -210,12 +210,12 @@ theorem measurable_alphaBlockEnergy {ι : Type*} [Fintype ι] [Nontrivial ι]
 
 end LinearA1
 
-/-! ### The `A₃` integrand on a marked cell (source l. 2132--2142) -/
+/-! ### The `A₃` integrand on a marked cell (source l. 2011–2020) -/
 
 section LinearA3
 
 open scoped Classical in
-/-- `A₃ ≤ ∑_{i ∈ I^pair} ((r̃₁(z_i)/γ)² ∧ 1)` (source l. 2134--2137): the summands of `A₃` are
+/-- `A₃ ≤ ∑_{i ∈ I^pair} ((r̃₁(z_i)/γ)² ∧ 1)` (source l. 2012–2015): the summands of `A₃` are
 nonnegative, and its indices are vertices of isolated dipoles. -/
 theorem linearA3_le_sum_pairVerts (hN : 2 ≤ N) (lam γ : ℝ) (Z : Fin N ⊕ Fin N → ℂ) :
     linearA3 hN lam γ Z ≤ ∑ i ∈ pairVerts (nearestNeighbor Z),
@@ -248,7 +248,7 @@ theorem sum_pairVerts_eq_sum_subtype {Z : Fin N ⊕ Fin N → ℂ} {φ : Fin N �
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [nnRadius_subtype_eq hφ (fun _ hj => apply_mem_pairVerts hj) lam i]
 
-/-- **The `A₃` integrand on a marked cell** (source l. 2132--2142): for `m ≥ 2`, `Iᶜ ≠ ∅`, `t ≥ 0`
+/-- **The `A₃` integrand on a marked cell** (source l. 2011–2020): for `m ≥ 2`, `Iᶜ ≠ ∅`, `t ≥ 0`
 and `β ≥ 0`, on the cell of `γ = (φ, T) ∈ D_{2N,K,p,p₀}`,
 `e^{t A₃} e^{-β F_λ} ≤ e^{β C (N - K)} e^{t ∑_{i ∈ I} ((r̃₁(z_i)/γ)² ∧ 1) - β F⁽¹⁾(Z|_I)}
 e^{-β F⁽²⁾(Z|_{Iᶜ})}`, with the radii computed within `I` and `C` the constant of Corollary 2.3. -/
@@ -313,7 +313,7 @@ end LinearA3
 
 section Separation
 
-/-- **(gred3) for an arbitrary integrand** (source l. 1546--1551): if on the cell of
+/-- **(gred3) for an arbitrary integrand** (source l. 1454–1459): if on the cell of
 `γ = (φ, T)` the integrand satisfies `F(Z) ≤ e^b g₁(Z|_I) g₂(Z|_{Iᶜ})`, then
 `∫_{Λ^{2N} ∩ E ∩ {γ_{2N} = γ}} F ≤ e^b ∫_{Λ^{2m} ∩ {γ_{2m} = γ¹}} g₁
   ∫_{Λ^{2N-2m} ∩ {γ_{2N-2m} = γ²}} g₂`. -/
@@ -382,8 +382,7 @@ end Separation
 
 section Gibbs
 
-/-- **From the per-cell bounds to the Gibbs expectation, generic rate** (source l. 2112--2124,
-2167--2178), for a rate `ω` satisfying `UpperRateHyp` in place of `ω_λ`, with cell integrals
+/-- **From the per-cell bounds to the Gibbs expectation, generic rate** (source l. 1990–2002, 2045–2056), for a rate `ω` satisfying `UpperRateHyp` in place of `ω_λ`, with cell integrals
 satisfying `CellBoundRate`. For `β > 2` and constants `A`, `c > 0`, `C_b ≥ 0` there are `C > 0` and
 `0 < λ₁ ≤ e⁻¹`, depending only on `β, ω, A, c, C_b`, such that for `N ≥ 2`, `0 < λ < λ₁`, every
 integrand `f ≥ 0` and every extra exponent `X`: if for every marked graph `γ ∈ D_{2N,K,p,p₀}` the
@@ -392,8 +391,8 @@ exponent `X`, then `𝔼_ℙ[f] ≤ exp (C N ω(λ) + C log (N + 1) + X)`.
 
 The division by the partition function uses the lower bound of Proposition 4.1. For `β > 2` its
 error rate (`λ^{β-2}`, `λ² ℓ²`, `λ² ℓ` for `2 < β < 4`, `β = 4`, `β > 4`) is the error rate of
-Proposition 3.9, which the field `UpperRateHyp.isolated_le` bounds by `ω(λ)` for `0 < λ ≤ e⁻¹`
-(source l. 1905--1911); no further property of `ω` is used. -/
+Proposition 3.8, which the field `UpperRateHyp.isolated_le` bounds by `ω(λ)` for `0 < λ ≤ e⁻¹`
+; no further property of `ω` is used. -/
 theorem exists_lintegral_gibbsMeasure_le_of_cellBound_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
     (hω : UpperRateHyp β hβ ω) (A c Cb : ℝ) (hc : 0 < c) (hCb : 0 ≤ Cb) :
     ∃ C lam₁ : ℝ, 0 < C ∧ 0 < lam₁ ∧ lam₁ ≤ Real.exp (-1) ∧

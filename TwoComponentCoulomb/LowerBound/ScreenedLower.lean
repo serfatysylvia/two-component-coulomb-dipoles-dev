@@ -13,8 +13,8 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # Step 1 of Proposition 4.1 integrated: the lower bound (minz3) and the case `β = 2`
 
-Source: Proposition 4.1, Step 1 (l. 1762--1825) and Step 2,
-eq. (minz3) (l. 1828--1834). The proof follows the source (ruling R22): the energy of a
+Source: Proposition 4.1, Step 1 (l. 1671–1734) and Step 2,
+eq. (minz3) (l. 1738–1744). The proof follows the source (ruling R22): the energy of a
 configuration of screened dipoles is bounded by eq. (majof),
 `F_λ(X_N, Y_N) ≤ -Σ_i g_λ(x_i - y_i) + Σ_i |x_i - y_i|² / ϱ_i²`
 (`energy_sum_elim_le_screened`, from the Neumann construction of `LowerBound/NeumannEnergy.lean`),
@@ -33,7 +33,7 @@ the lower bound on `Z`. The constant of the correction is `A_β = β` (the const
   `N! ∫_H ∏_i ∫_{a_i ≤ |u| ≤ b_i} exp(β g_λ(u) - β|u|²/ϱ_i²) du dX ≤ Z`.
 * `partitionFunction_ge_pairFactor` : eq. (minz3), `N! ∫_H ∏_i J_β(ϱ(x_i)) dX ≤ Z` with
   `H = H(N, N, 4λ, 8λ)` and `J_β = pairFactor β β λ`.
-* `partitionFunction_ge_placement_annulus` : the bound of l. 1820--1826 (stated for every
+* `partitionFunction_ge_placement_annulus` : the bound of l. 1730–1736 (stated for every
   `β ≥ 0`, used at `β = 2`): with the balls `B(x_i, t)`,
   `Z ≥ N! |H_t| (e^{-β t²} ∫_{2λ ≤ |u| ≤ t²} e^{β g_λ(u)} du)^N`, `H_t = H(N, N, t, 4t)`; the factor
   `e^{-β N t²}` is the energy error `Σ_i |x_i - y_i|²/t² ≤ N t²` of (majof).
@@ -89,7 +89,7 @@ theorem continuous_exp_screenedWeight {lam : ℝ} (hlam : 0 < lam) (β ρ : ℝ)
   (((continuous_smearedKernel hlam).const_mul β).sub
     (((continuous_norm.pow 2).const_mul β).div_const _)).rexp
 
-/-- **Eq. (majof) times `β`, integrated over the annuli** (source l. 1816 and l. 1833--1834). Let
+/-- **Eq. (majof) times `β`, integrated over the annuli** (source l. 1726 and l. 1743–1744). Let
 the discs `B(x_i, ϱ_i)` be disjoint with `ϱ_i ≥ 4λ`, and let `b_i ≤ ϱ_i / 2`. For `β ≥ 0`,
 `∏_i ∫_{a_i ≤ |u| ≤ b_i} exp(β g_λ(u) - β|u|²/ϱ_i²) du ≤
   ∫_{a_i ≤ |y_i - x_i| ≤ b_i} e^{-β F_λ(X, Y)} dY`. -/
@@ -144,7 +144,7 @@ theorem prod_integral_annulus_le_lintegral_exp_energy {lam β : ℝ} (hlam : 0 <
   rw [hprod]
   exact Real.exp_le_exp.2 (by nlinarith [hmajof])
 
-/-- **Step 1 integrated** (source l. 1816--1834, with the correction constant `β`). Let `H` be
+/-- **Step 1 integrated** (source l. 1726–1744, with the correction constant `β`). Let `H` be
 a measurable set of positions of the positive charges and `a, b, ϱ` radius functions, `a, b` measurable, such that, for `X ∈ H`, `b_i ≤ ϱ_i / 2`,
 `ϱ_i ≥ 4λ`, the discs `B(x_i, ϱ_i)` are disjoint and the closed discs `B̄(x_i, b_i)` lie in `Λ`.
 Then for `β ≥ 0`,
@@ -188,7 +188,7 @@ theorem pairFactor_le_integral_closedBall {β A lam r : ℝ} (hlam : 0 < lam) :
     (Filter.Eventually.of_forall fun _ => (Real.exp_pos _).le)
     (Filter.Eventually.of_forall Metric.ball_subset_closedBall)
 
-/-- **Eq. (minz3)** (source l. 1828--1834). For `β ≥ 0`, `0 < λ` and `4λ ≤ 1`, with
+/-- **Eq. (minz3)** (source l. 1738–1744). For `β ≥ 0`, `0 < λ` and `4λ ≤ 1`, with
 `H = H(N, N, 4λ, 8λ)` and `J_β(r) = ∫_{B(0, r/2)} exp(β g_λ(u) - β|u|²/r²) du`
 (`pairFactor β β λ`), `N! ∫_H ∏_i J_β(ϱ(x_i)) dX ≤ Z`. -/
 theorem partitionFunction_ge_pairFactor (hN : 2 ≤ N) {lam β : ℝ} (hlam : 0 < lam) (hβ : 0 ≤ β)
@@ -210,7 +210,7 @@ theorem partitionFunction_ge_pairFactor (hN : 2 ≤ N) {lam β : ℝ} (hlam : 0 
 
 /-! ### The case `β = 2` -/
 
-/-- **The lower bound of source l. 1820--1826** (stated for every `β ≥ 0`; the source uses it at
+/-- **The lower bound of source l. 1730–1736** (stated for every `β ≥ 0`; the source uses it at
 `β = 2`). Restrict the positive charges to `H_t = H(N, N, t, 4t)` and each displacement to
 `2λ ≤ |x_i - y_i| ≤ t²`, with Neumann balls `B(x_i, t)` (disjoint since `|x_i - x_j| ≥ 4t`). For
 `0 < t ≤ 1/2` and `2λ ≤ t²`, the energy error of (majof) is `Σ_i |x_i - y_i|²/t² ≤ N t²`, and

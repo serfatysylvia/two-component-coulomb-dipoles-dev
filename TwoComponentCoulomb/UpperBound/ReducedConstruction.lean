@@ -23,8 +23,8 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The lower-bound construction for the reduced partition function
 
-Source: l. 970--974 (`β = 2`) and 982--1001 (`β > 2`): proof of the lower
-bound in Lemma 3.6. Fix `t > 0`. Restrict the positive charges `X` to the set
+Source: l. 920–923 (`β = 2`) and 982--1001 (`β > 2`): proof of the lower
+bound in Lemma 3.5. Fix `t > 0`. Restrict the positive charges `X` to the set
 `H = placementSet N N t (4 t)` (boundary distance at least `t`, mutual distances at least `4 t`),
 let `σ` be a permutation of the labels of the negative charges, and put
 `Y (σ i) = X i + u_i` with `a ≤ |u_i| ≤ b ≤ t`. Then all points lie on `N` neutral `2`-cycles
@@ -111,7 +111,7 @@ theorem nearestNeighbor_inr_paired {X Y : Fin N → ℂ} {σ : Equiv.Perm (Fin N
     rw [← e, norm_sub_rev (X i) (Y (σ i))] at h4
     linarith
 
-/-- **Energy of a paired configuration** (source l. 974, 986): all `2N` points lie on `N`
+/-- **Energy of a paired configuration** : all `2N` points lie on `N`
 neutral `2`-cycles, so `F̃_λ(x, y) = -∑ᵢ g_λ(x_i - y_{σ i})`. -/
 theorem reducedEnergy_paired (lam : ℝ) {X Y : Fin N → ℂ} {σ : Equiv.Perm (Fin N)} {t : ℝ}
     (ht : 0 < t) (hX : X ∈ placementSet N N t (4 * t)) (hY : ∀ i, ‖Y (σ i) - X i‖ ≤ t) :
@@ -189,7 +189,7 @@ theorem lintegral_pairWeight (β lam a b : ℝ) :
 
 /-- The region `A_σ` of the pair space `(Fin N → ℂ) × (Fin N → ℂ)`: the positive charges `X` lie
 in `H = placementSet N N t (4 t)` and each negative charge `Y (σ i)` is at distance between `a`
-and `b` of `X i` (source l. 970, 982). -/
+and `b` of `X i` (source l. 920, 932). -/
 def pairingRegion (N : ℕ) (t a b : ℝ) (σ : Equiv.Perm (Fin N)) :
     Set ((Fin N → ℂ) × (Fin N → ℂ)) :=
   {p | p.1 ∈ placementSet N N t (4 * t) ∧ ∀ i, a ≤ ‖p.2 (σ i) - p.1 i‖ ∧ ‖p.2 (σ i) - p.1 i‖ ≤ b}
@@ -207,7 +207,7 @@ theorem measurableSet_pairingRegion (N : ℕ) (t a b : ℝ) (σ : Equiv.Perm (Fi
     exact (measurableSet_le measurable_const hm).inter (measurableSet_le hm measurable_const)
   exact h1.inter h2
 
-/-- The regions `A_σ` are disjoint for distinct `σ` (source l. 974, 986): each `y` lies
+/-- The regions `A_σ` are disjoint for distinct `σ` : each `y` lies
 within `t` of at most one `x_i`, the discs `B(x_i, t)` being disjoint. -/
 theorem pairwise_disjoint_pairingRegion {t a b : ℝ} (ht : 0 < t) (hb : b ≤ t) :
     Pairwise (Function.onFun Disjoint (pairingRegion N t a b)) := by
@@ -230,7 +230,7 @@ theorem pairwise_disjoint_pairingRegion {t a b : ℝ} (ht : 0 < t) (hb : b ≤ t
 /-! ### The integral over `A_σ` -/
 
 /-- On the fibre over `X ∈ H`, the Boltzmann weight restricted to `A_σ` is the product of the
-weights of the `N` dipoles (source l. 974, 986--990). -/
+weights of the `N` dipoles . -/
 theorem indicator_pairingRegion_eq_prod {β lam t a b : ℝ} {σ : Equiv.Perm (Fin N)}
     (ht : 0 < t) (hb : b ≤ t) {X : Fin N → ℂ} (hX : X ∈ placementSet N N t (4 * t))
     (Y : Fin N → ℂ) :
@@ -265,7 +265,7 @@ theorem indicator_pairingRegion_eq_prod {β lam t a b : ℝ} {σ : Equiv.Perm (F
     exact absurd (hi hmem.1) (not_lt.2 hmem.2)
 
 /-- The inner integral over the negative charges: for fixed `X`, the product of the dipole
-weights integrates to `(∫ pairWeight)^N` (Fubini, source l. 974, 991). -/
+weights integrates to `(∫ pairWeight)^N` (Fubini, source ). -/
 theorem lintegral_prod_pairWeight (β lam a b : ℝ) (σ : Equiv.Perm (Fin N)) (X : Fin N → ℂ) :
     ∫⁻ Y : Fin N → ℂ, ∏ i, pairWeight β lam a b (Y (σ i) - X i) =
       (∫⁻ u, pairWeight β lam a b u) ^ N := by
@@ -293,7 +293,7 @@ theorem measurable_weight_pair (β lam : ℝ) :
   exact ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp
     (((measurable_reducedEnergy lam).comp hZ).const_mul (-β)))
 
-/-- **The contribution of one permutation** (source l. 974, 991): the Boltzmann integral over
+/-- **The contribution of one permutation** : the Boltzmann integral over
 `A_σ` equals `vol(H) (∫ pairWeight)^N`. -/
 theorem lintegral_pairingRegion {β lam t a b : ℝ} (σ : Equiv.Perm (Fin N)) (ht : 0 < t)
     (hb : b ≤ t) :
@@ -334,7 +334,7 @@ theorem sumElim_mem_pi_box_of_mem_pairingRegion {t a b : ℝ} {σ : Equiv.Perm (
   · obtain ⟨i, rfl⟩ := σ.surjective m
     exact mem_box_of_norm_sub_le hp.1 ((hp.2 i).2.trans hb)
 
-/-- **Lemma 3.6, lower bound, construction** (source l. 970--974 and 982--995), in `[0, ∞]`:
+/-- **Lemma 3.5, lower bound, construction** (source l. 920–923, 932–945), in `[0, ∞]`:
 for `t > 0` and `b ≤ t`,
 `N! · vol(H) · (∫_{a ≤ |u| ≤ b} e^{β g_λ(u)} du)^N ≤ 𝒦_{N,β}^λ`, where
 `H = placementSet N N t (4 t)`. The `N!` assignments of negative labels give disjoint regions. -/
@@ -385,7 +385,7 @@ theorem integrableOn_annulus_exp_smearedKernel (β : ℝ) {lam : ℝ} (hlam : 0 
   exact (Real.continuous_exp.comp
     (continuous_const.mul (continuous_smearedKernel hlam))).continuousOn.integrableOn_compact hK
 
-/-- **Lemma 3.6, lower bound, construction** (source l. 970--974 and 982--995): for `λ > 0`,
+/-- **Lemma 3.5, lower bound, construction** (source l. 920–923, 932–945): for `λ > 0`,
 `t > 0` and `b ≤ t`,
 `N! · vol(H) · (∫_{a ≤ |u| ≤ b} e^{β g_λ(u)} du)^N ≤ 𝒦_{N,β}^λ`, where
 `H = placementSet N N t (4 t)` is the set of `t`-interior, `4t`-separated positions of the
@@ -402,7 +402,7 @@ theorem reducedPartitionFunction_ge_construction {β lam t a b : ℝ} (hlam : 0 
 
 /-! ### Explicit instances -/
 
-/-- **The `β = 2` dipole mass** (source l. 974): for `λ > 0` and `b ≥ 2λ`,
+/-- **The `β = 2` dipole mass** : for `λ > 0` and `b ≥ 2λ`,
 `∫_{2λ ≤ |u| ≤ b} e^{2 g_λ(u)} du = 2π log (b / (2λ))`, since `g_λ = g = -log |·|` on
 `|u| ≥ 2λ`. -/
 theorem integral_annulus_exp_two_smearedKernel {lam b : ℝ} (hlam : 0 < lam) (hb : 2 * lam ≤ b) :
@@ -438,7 +438,7 @@ theorem integral_annulus_exp_two_smearedKernel {lam b : ℝ} (hlam : 0 < lam) (h
     integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hb,
     integral_inv_of_pos (by linarith) (by linarith)]
 
-/-- **Lemma 3.6, lower bound, `β = 2`** (source l. 970--974): for `λ > 0`, `0 < t ≤ 1` and
+/-- **Lemma 3.5, lower bound, `β = 2`** (source l. 920–923): for `λ > 0`, `0 < t ≤ 1` and
 `2λ ≤ t²`, the displacements `2λ ≤ |u| ≤ t²` give
 `N! · vol(H) · (2π log (t² / (2λ)))^N ≤ 𝒦_{N,2}^λ`, with `H = placementSet N N t (4 t)`. -/
 theorem reducedPartitionFunction_two_ge_construction {lam t : ℝ} (hlam : 0 < lam) (ht : 0 < t)
@@ -450,7 +450,7 @@ theorem reducedPartitionFunction_two_ge_construction {lam t : ℝ} (hlam : 0 < l
     hlam ht (by nlinarith)
   rwa [integral_annulus_exp_two_smearedKernel hlam h2] at h
 
-/-- **Lemma 3.6, lower bound, `β > 2`** (source l. 982--995): there is `C > 0`, depending only on
+/-- **Lemma 3.5, lower bound, `β > 2`** (source l. 932–945): there is `C > 0`, depending only on
 `β`, such that for `λ > 0` and `t ≥ 2λ`, the displacements `|u| ≤ t` give
 `N! · vol(H) · (𝒵_β λ^{2-β} (1 - C (λ/t)^{β-2}))^N ≤ 𝒦_{N,β}^λ`, with
 `H = placementSet N N t (4 t)`. -/

@@ -10,43 +10,43 @@ public import TwoComponentCoulomb.UpperBound.AuxIntegration
 public import TwoComponentCoulomb.UpperBound.AuxOptimization
 
 /-!
-# Proposition 3.7: the nearest-neighbour model on a subset of `k` points
+# Proposition 3.6: the nearest-neighbour model on a subset of `k` points
 
-Source: Proposition 3.7 (`prop:auxk`, l. 1008--1031) and its proof
-(l. 1035--1140), in the weighted generality of ruling R12c: the integrand of the source,
+Source: Proposition 3.6 (`prop:auxk`, l. 958–980) and its proof
+(l. 984–1088), in the weighted generality of ruling R12c: the integrand of the source,
 `exp (-β F_k) ∏_{i ≤ k} (1 + log (r̃₁/λ))^δ ∏_{i ≤ k} (1 + |log r̃₁|)^{δ'}`, is
 `∏_{i<k} sourceWeight β δ δ' λ (r̃₁(z_i))` (the bridge `prod_sourceWeight_eq`).
 
 The proof assembles the three steps of the source:
 
-* *Step 1* (`RestrictedGraph.lean`; here the partition of `Λ^p`, l. 1054, 1081--1086): the cells
+* *Step 1* (`UpperBound/RestrictedGraph.lean`; here the partition of `Λ^p`, l. 1003, 1030–1034): the cells
   `Λ^p ∩ {γ'_p = g}` form a finite measurable partition, and the integral is the sum over the
   types `(k₀, k₁)` and the graphs `g ∈ D(k₀, k₁)` of the cell integrals.
 * *Step 2* (`AuxIntegration*.lean`): each cell integral is at most
   `C^k N^{p-k+k₀} I_cyc^{k₀} I_non^{k-2k₀}`; the radial integrals of the source weights are
   bounded by `C · cycleScale β λ` and `C · treeScale β δ λ` (`exists_radial_bounds`).
-* *Step 3* (`AuxOptimization.lean`): the entropy combination of the graph count with the cell
+* *Step 3* (`UpperBound/AuxOptimization.lean`): the entropy combination of the graph count with the cell
   bounds, the cost `(k+1)² ≤ 4^k` of the sum over `(k₀, k₁)`, and the maximization of the affine
   function `x log (k/N) + ψ_β(x)` on `[0, 1/2]`, whose maximum is `γ_{β,k}/2`.
 
 ## Main results
 
 * `TwoComponentCoulomb.lintegral_pi_box_eq_sum_cell`, `…_eq_sum_types`: the partition of `Λ^p`
-  (l. 1054).
-* `TwoComponentCoulomb.lintegral_pi_box_prod_fin_zero`: the case `k = 0` (`N^p`, l. 1036).
+  (l. 1003).
+* `TwoComponentCoulomb.lintegral_pi_box_prod_fin_zero`: the case `k = 0` (`N^p`, l. 985).
 * `TwoComponentCoulomb.lintegral_prod_le_of_scales`: Steps 2--3 for an abstract radial weight with
   cycle and non-cycle displacement integrals of sizes `C_a A` and `C_b B`.
-* `TwoComponentCoulomb.lintegral_auxk_le`: **Proposition 3.7** for `sourceWeight β δ δ' λ`, in the
+* `TwoComponentCoulomb.lintegral_auxk_le`: **Proposition 3.6** for `sourceWeight β δ δ' λ`, in the
   unified form with `γ_{β,k} = gammaBeta β δ λ k N`; `TwoComponentCoulomb.lintegral_auxk_abs`,
   `…_lt_two`, `…_two`, `…_two_lt_four`, `…_four`, `…_four_lt`: one theorem for each case of the
   source (`β = 0` with `δ' = 1`; `0 ≤ β < 2`; `β = 2`; `2 < β < 4`; `β = 4` with `δ ∈ {0, 1}`;
   `β > 4`) with the explicit `γ_{β,k}`.
-* `TwoComponentCoulomb.prop_auxk`: Proposition 3.7 in the source's own form, with
+* `TwoComponentCoulomb.prop_auxk`: Proposition 3.6 in the source's own form, with
   `exp (-β F_k)` (`TwoComponentCoulomb.auxEnergy`) and the factors
   `(1 + log (r̃₁/λ))^δ (1 + |log r̃₁|)^{δ'}`.
 * `TwoComponentCoulomb.lintegral_auxk_finset_le`, `…_finset_abs`, …: the same bounds for
   `∏_{i ∈ S}` with `S ⊆ Fin p`, `|S| = k` (via `lintegral_prod_finset_eq`: permutation invariance of
-  `Λ^p` and of Lebesgue measure, and equivariance of `nnRadius`); used by Propositions 3.8, 3.9.
+  `Λ^p` and of Lebesgue measure, and equivariance of `nnRadius`); used by Propositions 3.7, 3.8.
 
 The constants `C` are quantified before `N, p, k, λ` (ruling R11): they depend on `β` (and `δ`)
 only. The hypothesis `p ≥ 2` is the instance `Nontrivial (Fin p)`, and `p ≥ N/2` is `N ≤ 2p`;
@@ -60,7 +60,7 @@ open scoped ENNReal
 
 namespace TwoComponentCoulomb
 
-/-! ### Step 1: the partition of `Λ^p` by the restricted graph (source l. 1054, 1081--1086) -/
+/-! ### Step 1: the partition of `Λ^p` by the restricted graph (source l. 1003, 1030–1034) -/
 
 section Partition
 
@@ -80,7 +80,7 @@ theorem pi_box_eq_biUnion_cell (N : ℕ) :
   · rintro ⟨g, hz, -⟩
     exact hz
 
-/-- **Step 1, graph partition** (source l. 1054, 1081--1086): for any
+/-- **Step 1, graph partition** (source l. 1003, 1030–1034): for any
 function `f` the integral over `Λ^p` is the sum over the restricted graphs `g : Fin k → Fin p` of
 the integrals over the cells `Λ^p ∩ {γ'_p = g}`, which form a finite measurable partition. -/
 theorem lintegral_pi_box_eq_sum_cell (N : ℕ) (f : (Fin p → ℂ) → ℝ≥0∞) :
@@ -104,7 +104,7 @@ theorem cell_eq_empty_of_not_admissible (N : ℕ) {g : Fin k → Fin p}
   exact isAdmissibleRestriction_restrictedNnMap hk key z
 
 open scoped Classical in
-/-- **Step 1, sum over the graph types** (source l. 1054, 1081--1086, 1134): the integral over `Λ^p`
+/-- **Step 1, sum over the graph types** (source l. 1003, 1030–1034, 1082): the integral over `Λ^p`
 is the sum over `k₀, k₁ ≤ k` and the graphs `g ∈ D(k₀, k₁)` of the integrals over the cells
 `{γ'_p = g}`. -/
 theorem lintegral_pi_box_eq_sum_types (N : ℕ) (f : (Fin p → ℂ) → ℝ≥0∞) :
@@ -138,7 +138,7 @@ theorem lintegral_pi_box_eq_sum_types (N : ℕ) (f : (Fin p → ℂ) → ℝ≥0
   simp [restrictedGraphs, and_comm]
 
 
-/-- **Step 1 and Step 3, summation over the graph types** (source l. 1134): if the integral over
+/-- **Step 1 and Step 3, summation over the graph types** (source l. 1082): if the integral over
 every cell `{γ'_p = g}` with `g ∈ D(k₀, k₁)` is at most `B k₀ k₁`, then the integral over `Λ^p` is at
 most `∑_{k₀, k₁ ≤ k} |D(k₀, k₁)| · B k₀ k₁`. -/
 theorem lintegral_pi_box_le_sum_types_of_le (N : ℕ) (f : (Fin p → ℂ) → ℝ≥0∞)
@@ -164,7 +164,7 @@ open AuxIntegration
 
 variable {p k : ℕ} [Nontrivial (Fin p)] (hk : k ≤ p)
 
-/-- **Step 2 for one cell, in real form** (source l. 1087--1107): if the cycle and non-cycle
+/-- **Step 2 for one cell, in real form** (source l. 1035–1055): if the cycle and non-cycle
 displacement integrals of the weight `w` are at most `a` and `b`, the integral over the cell of
 `g ∈ D(k₀, k₁)` is at most `e^{2k} N^{p - k + k₀} a^{k₀} b^{k - 2 k₀}`. -/
 theorem lintegral_cell_le_ofReal (key : Fin p ↪ ℕ) {N k₀ k₁ : ℕ} (hN : (N : ℝ) ≤ 2 * p) (lam : ℝ)
@@ -181,7 +181,7 @@ theorem lintegral_cell_le_ofReal (key : Fin p ↪ ℕ) {N k₀ k₁ : ℕ} (hN :
     ENNReal.ofReal_pow ha, ENNReal.ofReal_pow hb, ENNReal.ofReal_natCast]
   gcongr
 
-/-- **Proposition 3.7 for an abstract radial weight** (source l. 1126--1140). Let `w` be a
+/-- **Proposition 3.6 for an abstract radial weight** (source l. 1074–1088). Let `w` be a
 measurable radial weight whose `2`-cycle displacement integral is at most `C_a A` and whose
 non-cycle displacement integral is at most `C_b B`. Then for `1 ≤ k ≤ p ≤ N ≤ 2p`
 `∫_{Λ^p} ∏_{i<k} w(r̃₁(z_i)) dz ≤ exp (p log N + C k + (k/2) log (max (A k / N) (B²)))`,
@@ -245,7 +245,7 @@ theorem ofReal_mul_le_ofReal_mul {C C' A : ℝ} (h : C ≤ C') (hA : 0 ≤ A) :
 theorem le_one_of_le_exp_neg_one {lam : ℝ} (h : lam ≤ Real.exp (-1)) : lam ≤ 1 :=
   h.trans (Real.exp_le_one_iff.2 (by norm_num))
 
-/-- **Step 2, radial integrals in all cases of the proposition** (source l. 1108--1118). For
+/-- **Step 2, radial integrals in all cases of the proposition** (source l. 1056–1065). For
 `β ≥ 0`, with `δ = 0` unless `β = 4` (where `δ ≤ 1`) and `δ' = 0` unless `β = 0` (where `δ' = 1`),
 there is `C > 0` depending on `β` and `δ` only such that, for `0 < λ ≤ e⁻¹`, the cycle displacement
 integral of `sourceWeight β δ δ' λ` is at most `C · cycleScale β λ` and its non-cycle displacement
@@ -355,7 +355,7 @@ theorem exists_radial_bounds (β : ℝ) (hβ : 0 ≤ β) (δ δ' : ℕ) (hδ : �
 end Radial
 
 
-/-! ### The case `k = 0` (source l. 1036) -/
+/-! ### The case `k = 0` (source l. 985) -/
 
 section KZero
 
@@ -367,7 +367,7 @@ theorem volume_pi_box_fin (N : ℕ) :
   rw [volume_pi_pi]
   simp [volume_box, Finset.prod_const]
 
-/-- **Case `k = 0` of Proposition 3.7** (source l. 1036): with no marked
+/-- **Case `k = 0` of Proposition 3.6** (source l. 985): with no marked
 point the integrand is `1` (`F_0 = 0`, empty products) and the integral equals `N^p`. -/
 theorem lintegral_pi_box_prod_fin_zero (N : ℕ) (f : (Fin p → ℂ) → Fin 0 → ℝ≥0∞) :
     ∫⁻ z in Set.univ.pi (fun _ : Fin p => box N), ∏ i : Fin 0, f z i = (N : ℝ≥0∞) ^ p := by
@@ -463,7 +463,7 @@ section Subset3
 
 variable {p k : ℕ} [Nontrivial (Fin p)]
 
-/-- **Selected subset = first `k` points** (needed for Propositions 3.8 and 3.9): the integral over
+/-- **Selected subset = first `k` points** (needed for Propositions 3.7 and 3.8): the integral over
 `Λ^p` of `∏_{i ∈ S} w(r̃₁(z_i))` depends only on the cardinality `|S| = k` of the selected set, by
 the invariance of `Λ^p` and of Lebesgue measure under permutations of the points and the
 equivariance of `r̃₁`. -/
@@ -491,7 +491,7 @@ open AuxIntegration
 
 variable {α : Type*}
 
-/-- **Bridge to the source's form** (eq. (defFaux), l. 1011--1017): for radii `ρ i ≥ λ`,
+/-- **Bridge to the source's form** (eq. (defFaux), l. 961–967): for radii `ρ i ≥ λ`,
 `∏_{i ∈ s} ρ_i^{-β/2} (1 + log (ρ_i/λ))^δ (1 + |log ρ_i|)^{δ'}` is
 `exp (-β · ½ ∑_{i ∈ s} log ρ_i) · ∏ (1 + log (ρ_i/λ))^δ · ∏ (1 + |log ρ_i|)^{δ'}`, i.e.
 `exp (-β F) ∏ (1 + log (r̃₁/λ))^δ ∏ (1 + |log r̃₁|)^{δ'}` for `ρ_i = r̃₁(z_i)`. -/
@@ -519,13 +519,13 @@ theorem prod_sourceWeight_eq (β : ℝ) (δ δ' : ℕ) {lam : ℝ} (hlam : 0 < l
 
 variable {p k : ℕ} [Nontrivial (Fin p)]
 
-/-- The energy `F_k(z_1, …, z_p) = ½ ∑_{i=1}^k log r̃₁(z_i)` of source eq. (defFaux), l. 1011--1014:
+/-- The energy `F_k(z_1, …, z_p) = ½ ∑_{i=1}^k log r̃₁(z_i)` of source eq. (defFaux), l. 961–964:
 the nearest-neighbour energy counted only for the first `k` of the `p` points. -/
 noncomputable def auxEnergy (hk : k ≤ p) (lam : ℝ) (z : Fin p → ℂ) : ℝ :=
   (1 / 2) * ∑ i : Fin k, Real.log (nnRadius lam z (Fin.castLE hk i))
 
 /-- The product of the source weights over the first `k` points is the integrand of
-Proposition 3.7: `exp (-β F_k) ∏ (1 + log (r̃₁/λ))^δ ∏ (1 + |log r̃₁|)^{δ'}`. -/
+Proposition 3.6: `exp (-β F_k) ∏ (1 + log (r̃₁/λ))^δ ∏ (1 + |log r̃₁|)^{δ'}`. -/
 theorem prod_sourceWeight_auxEnergy (β : ℝ) (δ δ' : ℕ) {lam : ℝ} (hlam : 0 < lam) (hk : k ≤ p)
     (z : Fin p → ℂ) :
     ∏ i : Fin k, sourceWeight β δ δ' lam (nnRadius lam z (Fin.castLE hk i)) =
@@ -538,13 +538,13 @@ theorem prod_sourceWeight_auxEnergy (β : ℝ) (δ δ' : ℕ) {lam : ℝ} (hlam 
 end Bridge
 
 
-/-! ### Proposition 3.7 for the weights of the source -/
+/-! ### Proposition 3.6 for the weights of the source -/
 
 section Main
 
 open AuxIntegration
 
-/-- **Proposition 3.7** (`prop:auxk`, source l. 1008--1031), in the weighted form
+/-- **Proposition 3.6** (`prop:auxk`, source l. 958–980), in the weighted form
 `∏_{i<k} sourceWeight β δ δ' λ (r̃₁(z_i))` (see `prod_sourceWeight_eq` for the identification with
 `exp (-β F_k) ∏ (1 + log (r̃₁/λ))^δ ∏ (1 + |log r̃₁|)^{δ'}`). For `β ≥ 0`, `δ = 0` unless `β = 4`
 (where `δ = 1` is allowed) and `δ' = 0` unless `β = 0` (where `δ' = 1` is allowed) there is
@@ -588,7 +588,7 @@ section Cases
 
 open AuxIntegration
 
-/-- **Proposition 3.7 for a selected subset** (needed by Propositions 3.8 and 3.9): the bound of
+/-- **Proposition 3.6 for a selected subset** (needed by Propositions 3.7 and 3.8): the bound of
 `lintegral_auxk_le` holds for `∏_{i ∈ S}` for every `S ⊆ Fin p` with `|S| = k`. -/
 theorem lintegral_auxk_finset_le (β : ℝ) (hβ : 0 ≤ β) (δ δ' : ℕ)
     (hδ : δ = 0 ∨ (β = 4 ∧ δ = 1)) (hδ' : δ' = 0 ∨ (β = 0 ∧ δ' = 1)) :
@@ -606,7 +606,7 @@ theorem lintegral_auxk_finset_le (β : ℝ) (hβ : 0 ≤ β) (δ δ' : ℕ)
   rw [lintegral_prod_finset_eq hk S hS lam N]
   exact h N p k hk hpN hN lam hlam hlam1
 
-/-- **Proposition 3.7**, the case `β = 0`, `δ = 0`, `δ' = 1` (weight `1 + |log r̃₁|`), where `γ_{0,k} = 0`.
+/-- **Proposition 3.6**, the case `β = 0`, `δ = 0`, `δ' = 1` (weight `1 + |log r̃₁|`), where `γ_{0,k} = 0`.
 There is `C > 0`, depending only on the parameters displayed, such that for integers
 `k ≤ p ≤ N ≤ 2 p` (`p ≥ 2`) and `0 < λ ≤ e⁻¹`,
 `∫_{Λ^p} ∏_{i<k} w(r̃₁(z_i)) dz ≤ exp (p log N + C k + (k/2) γ_{β,k})`, where
@@ -639,7 +639,7 @@ theorem lintegral_auxk_finset_abs :
   rw [lintegral_prod_finset_eq hk S hS lam N]
   exact h N p k hk hpN hN lam hlam hlam1
 
-/-- **Proposition 3.7**, the case `0 ≤ β < 2`, `δ = δ' = 0`, where `γ_{β,k} = 0`.
+/-- **Proposition 3.6**, the case `0 ≤ β < 2`, `δ = δ' = 0`, where `γ_{β,k} = 0`.
 There is `C > 0`, depending only on the parameters displayed, such that for integers
 `k ≤ p ≤ N ≤ 2 p` (`p ≥ 2`) and `0 < λ ≤ e⁻¹`,
 `∫_{Λ^p} ∏_{i<k} w(r̃₁(z_i)) dz ≤ exp (p log N + C k + (k/2) γ_{β,k})`, where
@@ -672,7 +672,7 @@ theorem lintegral_auxk_finset_lt_two (β : ℝ) (hβ0 : 0 ≤ β) (hβ : β < 2)
   rw [lintegral_prod_finset_eq hk S hS lam N]
   exact h N p k hk hpN hN lam hlam hlam1
 
-/-- **Proposition 3.7**, the critical case `β = 2`, `δ = δ' = 0`, where `γ_{2,k} = log (|log λ| k/N ∨ 1)`.
+/-- **Proposition 3.6**, the critical case `β = 2`, `δ = δ' = 0`, where `γ_{2,k} = log (|log λ| k/N ∨ 1)`.
 There is `C > 0`, depending only on the parameters displayed, such that for integers
 `k ≤ p ≤ N ≤ 2 p` (`p ≥ 2`) and `0 < λ ≤ e⁻¹`,
 `∫_{Λ^p} ∏_{i<k} w(r̃₁(z_i)) dz ≤ exp (p log N + C k + (k/2) γ_{β,k})`, where
@@ -707,7 +707,7 @@ theorem lintegral_auxk_finset_two :
   rw [lintegral_prod_finset_eq hk S hS lam N]
   exact h N p k hk hpN hN lam hlam hlam1
 
-/-- **Proposition 3.7**, the case `2 < β < 4`, `δ = δ' = 0`, where `γ_{β,k} = log (λ^{2-β} k/N ∨ 1)`.
+/-- **Proposition 3.6**, the case `2 < β < 4`, `δ = δ' = 0`, where `γ_{β,k} = log (λ^{2-β} k/N ∨ 1)`.
 There is `C > 0`, depending only on the parameters displayed, such that for integers
 `k ≤ p ≤ N ≤ 2 p` (`p ≥ 2`) and `0 < λ ≤ e⁻¹`,
 `∫_{Λ^p} ∏_{i<k} w(r̃₁(z_i)) dz ≤ exp (p log N + C k + (k/2) γ_{β,k})`, where
@@ -742,7 +742,7 @@ theorem lintegral_auxk_finset_two_lt_four (β : ℝ) (hβ2 : 2 < β) (hβ4 : β 
   rw [lintegral_prod_finset_eq hk S hS lam N]
   exact h N p k hk hpN hN lam hlam hlam1
 
-/-- **Proposition 3.7**, the case `β = 4`, `δ ∈ {0, 1}`, `δ' = 0`, where `γ_{4,k} = log (λ^{-2} k/N ∨ |log λ|^{2(1+δ)})`.
+/-- **Proposition 3.6**, the case `β = 4`, `δ ∈ {0, 1}`, `δ' = 0`, where `γ_{4,k} = log (λ^{-2} k/N ∨ |log λ|^{2(1+δ)})`.
 There is `C > 0`, depending only on the parameters displayed, such that for integers
 `k ≤ p ≤ N ≤ 2 p` (`p ≥ 2`) and `0 < λ ≤ e⁻¹`,
 `∫_{Λ^p} ∏_{i<k} w(r̃₁(z_i)) dz ≤ exp (p log N + C k + (k/2) γ_{β,k})`, where
@@ -777,7 +777,7 @@ theorem lintegral_auxk_finset_four (δ : ℕ) (hδ : δ = 0 ∨ δ = 1) :
   rw [lintegral_prod_finset_eq hk S hS lam N]
   exact h N p k hk hpN hN lam hlam hlam1
 
-/-- **Proposition 3.7**, the case `β > 4`, `δ = δ' = 0`, where `γ_{β,k} = log (λ^{2-β} k/N ∨ λ^{4-β})`.
+/-- **Proposition 3.6**, the case `β > 4`, `δ = δ' = 0`, where `γ_{β,k} = log (λ^{2-β} k/N ∨ λ^{4-β})`.
 There is `C > 0`, depending only on the parameters displayed, such that for integers
 `k ≤ p ≤ N ≤ 2 p` (`p ≥ 2`) and `0 < λ ≤ e⁻¹`,
 `∫_{Λ^p} ∏_{i<k} w(r̃₁(z_i)) dz ≤ exp (p log N + C k + (k/2) γ_{β,k})`, where
@@ -814,7 +814,7 @@ theorem lintegral_auxk_finset_four_lt (β : ℝ) (hβ : 4 < β) :
 
 end Cases
 
-/-- **Proposition 3.7 in the form of the source** (`prop:auxk`, l. 1008--1031; eq. (defZaux)): for
+/-- **Proposition 3.6 in the form of the source** (`prop:auxk`, l. 958–980; the definition of the auxiliary integral): for
 `β ≥ 0`, `δ = 0` unless `β = 4` (where `δ ∈ {0, 1}`), `δ' = 0` unless `β = 0` (where `δ' = 1`),
 there is `C_β > 0` such that for all integers `0 ≤ k ≤ p ≤ N` with `p ≥ max (2, N/2)` and
 `0 < λ ≤ e⁻¹`,

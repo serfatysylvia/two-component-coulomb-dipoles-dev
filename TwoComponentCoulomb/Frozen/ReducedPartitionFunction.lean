@@ -14,7 +14,7 @@ public import TwoComponentCoulomb.Frozen.ReducedEnergy
 # Frozen: `TwoComponentCoulomb.reducedPartitionFunction`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 922–930.
+Source: l. 870–877.
 -/
 
 open MeasureTheory
@@ -25,7 +25,7 @@ open scoped ENNReal
 namespace TwoComponentCoulomb
 
 /-- `𝒦_{N,β}^λ = ∫_{Λ^{2N}} exp(−β F̃_λ)`, the partition function of the reduced dipole model
-(Lemma 3.6, source l. 922–930), in `[0, ∞]`. -/
+(Lemma 3.5, source l. 870–877), in `[0, ∞]`. -/
 noncomputable def reducedPartitionFunction (N : ℕ) (β lam : ℝ) : ℝ≥0∞ :=
   ∫⁻ Z in Set.univ.pi fun _ : Fin N ⊕ Fin N => box N,
     ENNReal.ofReal (Real.exp (-β * reducedEnergy lam Z))

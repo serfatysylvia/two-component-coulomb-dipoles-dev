@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 module
 
 public import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
+import Mathlib.Analysis.Calculus.Deriv.MeanValue
 public import TwoComponentCoulomb.Frozen.DipoleConstant
 public import TwoComponentCoulomb.UpperBound.EnergySplit
 public import TwoComponentCoulomb.UpperBound.MarkedGraphCount
@@ -15,9 +16,9 @@ import TwoComponentCoulomb.Potential.PairIntegral
 import TwoComponentCoulomb.UpperBound.IsolatedReduction
 
 /-!
-# Proposition 3.10, Steps 2--3: the bound for one marked graph (`β > 2`)
+# Proposition 3.9, Steps 2--3: the bound for one marked graph (`β > 2`)
 
-Source: proof of Proposition 3.10, l. 1513--1620: (eq:F(1)), (eq:F(2)),
+Source: proof of Proposition 3.9, l. 1421–1524: (eq:F(1)), (eq:F(2)),
 (eq:2cases p) and (eq:quadra x3) for one marked graph `γ ∈ D_{2N,K,p,p₀}`.
 
 The file is organised so that the counting and the optimization are independent of the integrand
@@ -26,27 +27,28 @@ per-cell bound `TwoComponentCoulomb.UpperCellBound.CellBoundRate` for its cell i
 
 ## Real-variable part
 
-* `TwoComponentCoulomb.UpperCellBound.mul_log_shift_le` (l. 1553--1556):
+* `TwoComponentCoulomb.UpperCellBound.mul_log_shift_le` (l. 1461–1464):
   `m log m - (p₀ + m - p) log (p₀ + m - p) ≥ p log p - p₀ log p₀` for `p₀ ≤ p ≤ m`
-  (with `0 log 0 = 0`), by the convexity of `x ↦ x log x`.
-* The error rates `λ^{β-2}` (`2 < β < 4`), `λ² ℓ²` (`β = 4`), `λ² ℓ` (`β > 4`) of
-  Proposition 3.9 are at most `ω_λ` for `0 < λ ≤ e⁻¹` (l. 1564--1566): this is the field
-  `isolated_le` of the rate hypotheses `UpperRateHyp` (`UpperBound/UpperOptimization.lean`).
-* `TwoComponentCoulomb.UpperCellBound.cell_exponent_le` (l. 1575--1594): (eq:logD), the entropy
+  (with `0 log 0 = 0`), by differentiating the entropy increment.
+* `isolatedRate_le_errorRate` (l. 1472, 1513; stated in
+  `UpperBound/UpperOptimization.lean`, next to the rate hypotheses `UpperRateHyp`): the error rates
+  `λ^{β-2}` (`2 < β < 4`), `λ² ℓ²` (`β = 4`), `λ² ℓ` (`β > 4`) of Proposition 3.8 are at most
+  `ω_λ` for `0 < λ ≤ e⁻¹`.
+* `TwoComponentCoulomb.UpperCellBound.cell_exponent_le` (l. 1483–1502): (eq:logD), the entropy
   comparison, the main terms of (eq:F(1)) and (eq:F(2)), the tree terms and the entropy bound
   combine into `2N log N + N((2-β) log λ + log 𝒵_β - 1) + N χ_β(δ) + 60 log (N + 1)`.
 
 ## Generic per-graph layer
 
 * `TwoComponentCoulomb.UpperCellBound.entropy_mul_le_main_rate`,
-  `TwoComponentCoulomb.UpperCellBound.entropy_mul_le_crude` ((eq:F(1)), l. 1553--1565, 1595): a
-  bound of the shape of Proposition 3.9 for an abstract `I`-block integral at the pair counts
+  `TwoComponentCoulomb.UpperCellBound.entropy_mul_le_crude` ((eq:F(1)), l. 1461–1473, 1503): a
+  bound of the shape of Proposition 3.8 for an abstract `I`-block integral at the pair counts
   `(m, p₀ + m - p)` gives the bound with the entropy of (eq:logD), with an extra exponent `X`.
-* `TwoComponentCoulomb.UpperCellBound.exists_lintegral_nnEnergy_le` ((eq:F(2)), l. 1566--1573):
-  Lemma 3.5 on the block `Iᶜ`, and on all points.
+* `TwoComponentCoulomb.UpperCellBound.exists_lintegral_nnEnergy_le` ((eq:F(2)), l. 1474–1481):
+  Lemma 3.4 on the block `Iᶜ`, and on all points.
 * `TwoComponentCoulomb.UpperCellBound.CellBoundRate`: the per-cell bound (the right side of
   (eq:2cases p) before the count), main form or crude form (`p < N/2`), with an extra exponent.
-* `TwoComponentCoulomb.UpperCellBound.exists_card_mul_le_of_cellBound_rate` (l. 1580--1620): for
+* `TwoComponentCoulomb.UpperCellBound.exists_card_mul_le_of_cellBound_rate` (l. 1488–1524): for
   any cell integral satisfying `CellBoundRate`, `|D_{2N,K,p,p₀}| · J ≤ exp (2N log N
   + N((2-β) log λ + log 𝒵_β - 1) - c' (N - p₀)²/N + C' N ω(λ) + C' log (N + 1) + X)`
   (eq:quadra x3).
@@ -55,7 +57,7 @@ per-cell bound `TwoComponentCoulomb.UpperCellBound.CellBoundRate` for its cell i
 for a rate function `ω` satisfying `TwoComponentCoulomb.UpperRateHyp` in place of `ω_λ`; they are
 instantiated at `errorRate` in `UpperBound/UpperRate.lean`.
 
-## Separation of variables with events (l. 1542--1551, used in Step 4)
+## Separation of variables with events (l. 1450–1459, used in Step 4)
 
 * `TwoComponentCoulomb.UpperCellBound.lintegral_markedCell_le_mul_event`: (gred3) with an event on
   the block `I` and an arbitrary first-block energy; `lintegral_markedCell_le_event`: the case
@@ -70,38 +72,40 @@ namespace TwoComponentCoulomb
 
 namespace UpperCellBound
 
-/-! ### The entropy comparison (source l. 1553--1556) -/
+/-! ### The entropy comparison (source l. 1461–1464) -/
 
-/-- Convexity of `x ↦ x log x`: the increment over an interval of length `s` grows with the
-position, `φ(a) - φ(a - s) ≤ φ(b) - φ(b - s)` for `s ≤ a ≤ b`. -/
+/-- The entropy increment over an interval of length `s` is nondecreasing. Its derivative
+on `(s, ∞)` is `log (x / (x - s)) ≥ 0`, and continuity includes the endpoint `x = s`.
+This is the derivative argument of subsection 3.4 in the paper. -/
 theorem mul_log_sub_mul_log_le {a b s : ℝ} (hs : 0 ≤ s) (has : s ≤ a) (hab : a ≤ b) :
     a * Real.log a - (a - s) * Real.log (a - s) ≤ b * Real.log b - (b - s) * Real.log (b - s) := by
-  have hcv := Real.convexOn_mul_log
-  rcases hs.eq_or_lt with rfl | hs'
-  · simp
-  rcases hab.eq_or_lt with rfl | hab'
-  · exact le_rfl
-  have hm : ∀ x : ℝ, 0 ≤ x → x ∈ Set.Ici (0 : ℝ) := fun x hx => hx
-  have h1 := hcv.secant_mono (a := a - s) (x := a) (y := b) (hm _ (by linarith)) (hm _ (by linarith))
-    (hm _ (by linarith)) (by linarith) (by linarith) hab
-  have h2 := hcv.secant_mono (a := b) (x := a - s) (y := b - s) (hm _ (by linarith))
-    (hm _ (by linarith)) (hm _ (by linarith)) (by linarith) (by linarith) (by linarith)
-  have e1 : a - (a - s) = s := by ring
-  have e2 : b - s - b = -s := by ring
-  have e3 : ((a - s) * Real.log (a - s) - b * Real.log b) / (a - s - b) =
-      (b * Real.log b - (a - s) * Real.log (a - s)) / (b - (a - s)) := by
-    rw [← neg_div_neg_eq]
-    ring_nf
-  rw [e1] at h1
-  rw [e2, e3] at h2
-  have h3 : (a * Real.log a - (a - s) * Real.log (a - s)) / s ≤
-      (b * Real.log b - (b - s) * Real.log (b - s)) / s := by
-    refine h1.trans (h2.trans (le_of_eq ?_))
-    rw [div_neg, ← neg_div]
-    ring_nf
-  exact (div_le_div_iff_of_pos_right hs').1 h3
+  have hc : Continuous (fun x : ℝ => x * Real.log x - (x - s) * Real.log (x - s)) :=
+    Real.continuous_mul_log.sub
+      (Real.continuous_mul_log.comp (continuous_id.sub continuous_const))
+  have hd : ∀ x ∈ interior (Set.Ici s),
+      HasDerivAt (fun x : ℝ => x * Real.log x - (x - s) * Real.log (x - s))
+        (Real.log (x / (x - s))) x := by
+    intro x hx
+    rw [interior_Ici] at hx
+    have hx0 : 0 < x := hs.trans_lt hx
+    have hxs : 0 < x - s := sub_pos.2 hx
+    have hshift : HasDerivAt (fun y : ℝ => y - s) 1 x := (hasDerivAt_id x).sub_const s
+    have hcomp := (Real.hasDerivAt_mul_log (x := x - s) hxs.ne').comp x hshift
+    have h : HasDerivAt (fun y : ℝ => y * Real.log y - (y - s) * Real.log (y - s))
+        ((Real.log x + 1) - (Real.log (x - s) + 1) * 1) x :=
+      (Real.hasDerivAt_mul_log hx0.ne').sub hcomp
+    convert h using 1
+    rw [Real.log_div hx0.ne' hxs.ne']
+    ring
+  have hm := monotoneOn_of_hasDerivWithinAt_nonneg (convex_Ici s) hc.continuousOn
+    (fun x hx => (hd x hx).hasDerivWithinAt) (fun x hx => by
+      rw [interior_Ici] at hx
+      apply Real.log_nonneg
+      rw [le_div_iff₀ (sub_pos.2 hx)]
+      linarith only [hs])
+  exact hm has (has.trans hab) hab
 
-/-- **Entropy comparison** (source l. 1553--1556): for `p₀ ≤ p ≤ m`,
+/-- **Entropy comparison** (source l. 1461–1464): for `p₀ ≤ p ≤ m`,
 `m log m - (p₀ + m - p) log (p₀ + m - p) ≥ p log p - p₀ log p₀`, with `0 log 0 = 0`. -/
 theorem mul_log_shift_le {m p p₀ : ℝ} (hp₀ : 0 ≤ p₀) (hp : p₀ ≤ p) (hm : p ≤ m) :
     p * Real.log p - p₀ * Real.log p₀ ≤
@@ -112,7 +116,7 @@ theorem mul_log_shift_le {m p p₀ : ℝ} (hp₀ : 0 ≤ p₀) (hp : p₀ ≤ p)
   rw [e1, e2] at h
   exact h
 
-/-! ### The exponent of one marked graph (source l. 1575--1594) -/
+/-! ### The exponent of one marked graph (source l. 1483–1502) -/
 
 /-- `x log (x / n) = x log x - x log n` for `x ≥ 0`, `n > 0` (with `0 log 0 = 0`). -/
 theorem mul_log_div_eq {x n : ℝ} (hx : 0 ≤ x) (hn : 0 < n) :
@@ -123,7 +127,7 @@ theorem mul_log_div_eq {x n : ℝ} (hx : 0 ≤ x) (hn : 0 < n) :
     ring
 
 /-- For `ℓ ≥ 1` and `0 < δ ≤ 1`: `log (ℓ + log (1/δ)) ≤ log ℓ + log (1/δ)`, from
-`ℓ + log (1/δ) ≤ ℓ/δ` (source l. 1595). -/
+`ℓ + log (1/δ) ≤ ℓ/δ` (source l. 1503). -/
 theorem log_add_log_inv_le {ℓ δ : ℝ} (hℓ : 1 ≤ ℓ) (hδ : 0 < δ) (hδ1 : δ ≤ 1) :
     Real.log (ℓ + Real.log (1 / δ)) ≤ Real.log ℓ + Real.log (1 / δ) := by
   have hinv : 1 ≤ 1 / δ := by rw [le_div_iff₀ hδ]; linarith
@@ -134,13 +138,13 @@ theorem log_add_log_inv_le {ℓ δ : ℝ} (hℓ : 1 ≤ ℓ) (hδ : 0 < δ) (hδ
   rw [← Real.log_mul (by linarith) (by positivity)]
   exact Real.log_le_log (by linarith) hle
 
-/-- **The exponent of one marked graph** (source l. 1575--1594, the core of (eq:2cases p)): for
+/-- **The exponent of one marked graph** (source l. 1483–1502, the core of (eq:2cases p)): for
 `β > 2`, `N ≥ 1`, `p₀ ≤ p ≤ K ≤ N` with `K - p ≤ (M₀ + 2)(N - K)` (eq:K-p) and `0 < λ ≤ e⁻¹`, the sum
 of
 
 * the logarithmic count (eq:logD) with `C₀ = 60`,
 * minus the entropy `p log p - p₀ log p₀ - (p - p₀) log (p - p₀) + 60 (p - p₀)` (the entropy of
-  `f(p₀)` of Proposition 3.9 after the comparison of l. 1553--1556),
+  `f(p₀)` of Proposition 3.8 after the comparison of l. 1461–1464),
 * the main terms `K (log N + (2 - β) log λ + log 𝒵_β)` of (eq:F(1)) and (eq:F(2)),
 * the tree terms `(2N - 2K) (…)` of (eq:F(2)), and
 * any error `A (N - K)`,
@@ -335,7 +339,7 @@ theorem le_ofReal_exp_of_le_mul_one {X Y : ℝ≥0∞} {b e c t : ℝ}
 
 end Exp
 
-/-! ### Reference sets and the integrand of Lemma 3.5 -/
+/-! ### Reference sets and the integrand of Lemma 3.4 -/
 
 section RefSet
 
@@ -384,21 +388,21 @@ theorem exp_neg_mul_nnEnergy {ι : Type*} [Fintype ι] [Nontrivial ι] (key : ι
 
 end RefSet
 
-/-! ### (eq:F(1)) (source l. 1553--1565), for an abstract `I`-block integral -/
+/-! ### (eq:F(1)) (source l. 1461–1473), for an abstract `I`-block integral -/
 
 section F1
 
 open scoped ENNReal
 
-/-- **(eq:F(1)), main form** (source l. 1553--1565), for an abstract `I`-block integral `Y`: a bound
+/-- **(eq:F(1)), main form** (source l. 1461–1473), for an abstract `I`-block integral `Y`: a bound
 of the shape of (eq:n neutral conv) at the pair counts `(m, p₀')`, `p₀' = p₀ + m - p` (with an
-error rate `r ≤ ω_λ` and an extra exponent `X`), gives, by the entropy comparison of l. 1553--1556
+error rate `r ≤ ω_λ` and an extra exponent `X`), gives, by the entropy comparison of l. 1461–1464
 and `(p-p₀)²/m ≥ (p-p₀)²/N`, the bound with the entropy
 `p log p - p₀ log p₀ - (p - p₀) log (p - p₀) + 60 (p - p₀)` of (eq:logD):
 `e^{entropy} Y ≤ exp (m (log N + (2-β) log λ + log 𝒵_β) - c (p-p₀)²/N + C_b N ω_λ
   + C_b log (N + 1) + X)`.
 
-Here `ω` is any function: no property of `ω` is used, only `r ≤ ω λ` (l. 1559--1566). -/
+Here `ω` is any function: no property of `ω` is used, only `r ≤ ω λ` (l. 1467–1474). -/
 theorem entropy_mul_le_main_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) {c Cb r X : ℝ} (hc : 0 ≤ c)
     (hCb : 0 ≤ Cb) {N m p p₀ p₀' : ℕ} (hm : 0 < m) (hmN : m ≤ N) (hp₀ : p₀ ≤ p) (hpm : p ≤ m)
     (hp₀' : p₀' + p = p₀ + m) {lam : ℝ} (hr0 : 0 ≤ r) (hr : r ≤ ω lam)
@@ -443,8 +447,8 @@ theorem entropy_mul_le_main_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) {c
     linarith
   linarith
 
-/-- **(eq:F(1)), crude form** (source l. 1595): a bound of any shape `B` at the pair counts
-`(m, p₀')`, `p₀' = p₀ + m - p`, with the entropy of Proposition 3.9, gives the same bound with the
+/-- **(eq:F(1)), crude form** (source l. 1503): a bound of any shape `B` at the pair counts
+`(m, p₀')`, `p₀' = p₀ + m - p`, with the entropy of Proposition 3.8, gives the same bound with the
 smaller entropy `p log p - p₀ log p₀ - (p - p₀) log (p - p₀) + 60 (p - p₀)` of (eq:logD). -/
 theorem entropy_mul_le_crude {m p p₀ p₀' : ℕ} (hp₀ : p₀ ≤ p) (hpm : p ≤ m)
     (hp₀' : p₀' + p = p₀ + m) {B : ℝ} {Y : ℝ≥0∞}
@@ -472,7 +476,7 @@ theorem entropy_mul_le_crude {m p p₀ p₀' : ℕ} (hp₀ : p₀ ≤ p) (hpm : 
 
 end F1
 
-/-! ### (eq:F(2)) (source l. 1566--1573) and Lemma 3.5 on the whole configuration -/
+/-! ### (eq:F(2)) (source l. 1474–1481) and Lemma 3.4 on the whole configuration -/
 
 section F2
 
@@ -480,7 +484,7 @@ open scoped ENNReal
 
 variable {N : ℕ}
 
-/-- **(eq:F(2))** (source l. 1566--1573) and Lemma 3.5 on all `2N` points: for `β > 2` there is
+/-- **(eq:F(2))** (source l. 1474–1481) and Lemma 3.4 on all `2N` points: for `β > 2` there is
 `C₄`, depending only on `β`, such that for every configuration `Z₀` with nearest-neighbour map
 `φ`, `K` components and `m` isolated pairs, and `0 < λ ≤ e⁻¹`,
 
@@ -560,14 +564,14 @@ theorem exists_lintegral_nnEnergy_le {β : ℝ} (hβ : 2 < β) :
 
 end F2
 
-/-! ### The per-cell bound and Step 3 for one marked graph (source l. 1580--1620) -/
+/-! ### The per-cell bound and Step 3 for one marked graph (source l. 1488–1524) -/
 
 section CellBound
 
 open scoped ENNReal
 
-/-- **The per-cell bound with a generic rate** (Proposition 3.10, Step 2, eq:2cases p, source
-l. 1580--1595): the bound on the cell integral `J` of one
+/-- **The per-cell bound with a generic rate** (Proposition 3.9, Step 2, eq:2cases p, source
+l. 1488–1503): the bound on the cell integral `J` of one
 marked graph of `D_{2N,K,p,p₀}` obtained from (gred3), (eq:F(1)) and (eq:F(2)), before the count
 of the graphs, with the error rate `ω_λ` replaced by `ω λ` for an arbitrary `ω : ℝ → ℝ`. Either
 the main form
@@ -624,7 +628,7 @@ theorem constraints_of_nonempty {N : ℕ} {hN : 2 ≤ N} {K p p₀ : ℕ}
   · have := numComponents_sub_le_M0_add_two_mul hN hgen.1
     rwa [hK, hp] at this
 
-/-- **(eq:quadra x3) for one marked graph, generic rate** (source l. 1580--1620: (eq:logD),
+/-- **(eq:quadra x3) for one marked graph, generic rate** (source l. 1488–1524: (eq:logD),
 (eq:2cases p) with `χ_β`, and Step 3), for an arbitrary cell integral `J`
 satisfying the per-cell bound `CellBoundRate` with a rate `ω` satisfying `UpperRateHyp`: for
 `β > 2` and constants `A`, `c > 0`, `C_b ≥ 0` there are `c', C' > 0` and `0 < λ₀ ≤ e⁻¹`, depending
@@ -694,7 +698,7 @@ theorem exists_card_mul_le_of_cellBound_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ
 
 end CellBound
 
-/-! ### The separation of variables with an event on the block `I` (source l. 1546--1551) -/
+/-! ### The separation of variables with an event on the block `I` (source l. 1454–1459) -/
 
 section Split
 
@@ -819,6 +823,28 @@ theorem nnMap_eq_of_card_two {ι : Type} [Fintype ι] [Nontrivial ι] (key : ι 
   rcases hall i with rfl | rfl <;> rcases hall (nnMap key z i) with h | h <;>
     rcases hall (f i) with h' | h' <;> simp_all
 
+/-- **Direct integration of a single isolated pair**, the `m = 1` case of (gred3).
+The reference point contributes `N`, and the displacement contributes `𝒵_β λ^{2-β}`. -/
+theorem lintegral_nnEnergy_pair_le {β : ℝ} (hβ : 2 < β) {ι : Type} [Fintype ι]
+    [Nontrivial ι] (key : ι ↪ ℕ) {f : ι → ι} (hc : Fintype.card ι = 2)
+    (hf0 : ∀ i, f i ≠ i) (hf2 : ∀ i, f (f i) = i) {N : ℕ} (hN : 0 < N)
+    {lam : ℝ} (hlam : 0 < lam) (hlam1 : lam ≤ Real.exp (-1)) :
+    ∫⁻ z in (Set.univ.pi fun _ : ι => box N) ∩ {z | nnMap key z = f},
+        ENNReal.ofReal (Real.exp (-β * nnEnergy key lam z)) ≤
+      ENNReal.ofReal (Real.exp (Real.log N + (2 - β) * Real.log lam +
+        Real.log (dipoleConstant β hβ.le))) := by
+  classical
+  have hR : Fintype.card {i // i ∈ gpRefSet key f} = 1 := by
+    have h := two_mul_card_gpRefSet_eq (key := key) hf0
+    have he : Fintype.card {i // f (f i) = i} = 2 :=
+      (Fintype.card_congr (Equiv.subtypeUnivEquiv hf2)).trans hc
+    rw [he] at h
+    omega
+  obtain ⟨C, h⟩ := lintegral_cell_le_of_two_lt.{0} hβ
+  simp_rw [exp_neg_mul_nnEnergy]
+  have hpair := h ι key N 1 1 f hN hN hc hR lam hlam hlam1
+  simpa only [Nat.cast_one, one_mul, mul_one, sub_self, zero_mul, mul_zero, add_zero] using hpair
+
 /-- The mass of `e^{β g_λ}` on `{|u| > R}`, `R ≥ 2λ`, is at most `2π R^{2-β}/(β - 2)`. -/
 theorem lintegral_long_le {β : ℝ} (hβ : 2 < β) {lam Rl : ℝ} (hlam : 0 < lam)
     (hRl : 2 * lam ≤ Rl) :
@@ -847,7 +873,7 @@ theorem lintegral_long_le {β : ℝ} (hβ : 2 < β) {lam Rl : ℝ} (hlam : 0 < l
           (Filter.Eventually.of_forall fun u => (Real.exp_pos _).le)).symm
     _ = _ := by rw [integral_compl_ball_exp_smearedKernel hβ hlam hRl]
 
-/-- **The integral over one isolated pair required to be long** (source l. 1542, 1644--1649, the
+/-- **The integral over one isolated pair required to be long** (source l. 1450, 1548–1553, the
 case `m = 1`): for a two-element index type with the swap `f` and a vertex `j₀`, the integral of
 `e^{-β F^nn}` over the cell intersected with `{|z_{f j₀} - z_{j₀}| > R}` is at most
 `N · 2π R^{2-β}/(β - 2)` (one representative in `Λ`, one displacement outside `B(0, R)`). -/

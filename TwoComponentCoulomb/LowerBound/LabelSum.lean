@@ -10,8 +10,8 @@ public import TwoComponentCoulomb.Potential.PairIntegral
 /-!
 # The sum over the assignments of negative labels
 
-Source: Proposition 4.1, Step 1 (l. 1820--1826, the case
-`β = 2`) and Step 2, eq. (minz3) (l. 1828--1834): "the `N!` assignments of negative labels are
+Source: Proposition 4.1, Step 1 (l. 1730–1736, the case
+`β = 2`) and Step 2, eq. (minz3) (l. 1738–1744): "the `N!` assignments of negative labels are
 disjoint". The proof follows the source (ruling R22). This module is the generic part of that
 argument: if the positive charges `X` range over a set `H` and, for `X ∈ H`, the negative charge
 paired with `x_i` ranges over a closed annulus `a(X)_i ≤ |y - x_i| ≤ b(X)_i`, where the discs
@@ -127,7 +127,7 @@ theorem partitionFunction_eq_lintegral_prod (β lam : ℝ) :
 
 /-- The set `A_σ` of pairs `(X, Y)` of positive and negative charges such that `X ∈ H` and the
 `i`-th positive charge is paired with the `σ i`-th negative charge, which lies in the closed
-annulus `a(X)_i ≤ |y_{σ i} - x_i| ≤ b(X)_i` (source l. 1820, 1833: "the `N!` assignments of
+annulus `a(X)_i ≤ |y_{σ i} - x_i| ≤ b(X)_i` (source l. 1730, 1743: "the `N!` assignments of
 negative labels"). -/
 def labelSet (H : Set (Fin N → ℂ)) (a b : (Fin N → ℂ) → Fin N → ℝ) (σ : Equiv.Perm (Fin N)) :
     Set ((Fin N → ℂ) × (Fin N → ℂ)) :=
@@ -162,7 +162,7 @@ theorem measurableSet_labelSet {H : Set (Fin N → ℂ)} {a b : (Fin N → ℂ) 
   · exact measurableSet_le ((ha i).comp measurable_fst) (by fun_prop)
   · exact measurableSet_le (by fun_prop) ((hb i).comp measurable_fst)
 
-/-- **The `N!` assignments of negative labels are disjoint** (source l. 1820, 1833): if the
+/-- **The `N!` assignments of negative labels are disjoint** (source l. 1730, 1743): if the
 closed discs `B̄(x_i, b_i)` about the points of `X ∈ H` are disjoint
 (`b_i + b_j < |x_i - x_j|`), then a negative charge lies in at most one of them. -/
 theorem pairwise_disjoint_labelSet {H : Set (Fin N → ℂ)} {a b : (Fin N → ℂ) → Fin N → ℝ}
@@ -264,7 +264,7 @@ theorem labelSet_subset {H : Set (Fin N → ℂ)} {a b : (Fin N → ℂ) → Fin
     rwa [Metric.mem_closedBall, dist_eq_norm]
 
 /-- **The partition function dominates the sum over the assignments of negative labels**
-(source l. 1820 and eq. (minz3), l. 1833--1834). Let `H` be a measurable set of positions of the
+(source l. 1730 and eq. (minz3), l. 1743–1744). Let `H` be a measurable set of positions of the
 positive charges and `a, b` measurable radius functions such that, for `X ∈ H`, the closed discs
 `B̄(x_i, b_i)` lie in `Λ` and are disjoint. If `f(X)` bounds from below the integral of the
 Boltzmann weight over the negative charges `y_i` in the annuli `a_i ≤ |y_i - x_i| ≤ b_i`, for every

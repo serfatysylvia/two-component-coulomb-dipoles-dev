@@ -14,12 +14,12 @@ public import TwoComponentCoulomb.Frozen.IsolatedDipoles
 public import TwoComponentCoulomb.Frozen.LongIsolatedDipoles
 public import TwoComponentCoulomb.Frozen.PartitionFunction
 public import TwoComponentCoulomb.Frozen.SmearedKernel
-import TwoComponentCoulomb.UpperBound.Proposition310
+import TwoComponentCoulomb.UpperBound.Proposition39And310
 
 /-!
-# Frozen: `TwoComponentCoulomb.proposition_3_10`
+# Frozen: `TwoComponentCoulomb.proposition_3_9_and_3_10`
 
-Frozen statement, approved by the authors in this exact form (RULINGS.md R20). Source: l. 1423–1455.
+Frozen statement, approved by the authors in this exact form (RULINGS.md R20). Source: l. 1340–1363, 1575–1584.
 -/
 
 open MeasureTheory
@@ -29,8 +29,9 @@ open scoped ENNReal
 
 namespace TwoComponentCoulomb
 
-/-- **Proposition 3.10** (`prop:upper bound`, source l. 1423–1455). -/
-theorem proposition_3_10 (β : ℝ) (hβ : 2 ≤ β) :
+/-- **Propositions 3.9 and 3.10** (`prop:upper bound` and `prop:critical upper`,
+source l. 1340–1363, 1575–1584), with the consequences at β = 2 stated at l. 1584. -/
+theorem proposition_3_9_and_3_10 (β : ℝ) (hβ : 2 ≤ β) :
     ∃ lam₀ : ℝ, 0 < lam₀ ∧ lam₀ ≤ Real.exp (-2) ∧
       (∃ C c : ℝ, 0 < C ∧ 0 < c ∧
         ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
@@ -75,7 +76,7 @@ theorem proposition_3_10 (β : ℝ) (hβ : 2 ≤ β) :
                 + C * N * (errorRate β hβ lam + Real.log (1 / R) / |Real.log lam|)
                 + C * Real.log (N + 1)))) :=
 -- FROZEN_ANCHOR_PROOF_BEGIN
-  by exact TwoComponentCoulomb.UpperBound.proposition_3_10
+  by exact TwoComponentCoulomb.UpperBound.proposition_3_9_and_3_10
 -- FROZEN_ANCHOR_PROOF_END
 -- FROZEN_ANCHOR_SUFFIX_BEGIN
 

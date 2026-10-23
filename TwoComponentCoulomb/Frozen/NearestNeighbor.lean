@@ -13,7 +13,7 @@ public import Mathlib.Logic.Equiv.Fin.Basic
 # Frozen: `TwoComponentCoulomb.nearestNeighbor`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 217.
+Source: l. 202.
 -/
 
 @[expose] public section
@@ -21,7 +21,7 @@ Source: l. 217.
 namespace TwoComponentCoulomb
 
 /-- `φ₁(i)`: the nearest neighbour of `z_i` among the other points, ties broken by the smallest
-index in the source numbering `x₁, …, x_N, y₁, …, y_N` (source l. 217, ruling R4). -/
+index in the source numbering `x₁, …, x_N, y₁, …, y_N` (source l. 202, ruling R4). -/
 noncomputable def nearestNeighbor {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) (i : Fin N ⊕ Fin N) :
     Fin N ⊕ Fin N :=
   finSumFinEquiv.symm <|

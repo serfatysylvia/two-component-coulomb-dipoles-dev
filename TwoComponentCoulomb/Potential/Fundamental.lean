@@ -18,8 +18,8 @@ import Mathlib.MeasureTheory.Group.Integral
 /-!
 # The fundamental solution of the Laplacian in `ℝ² ≅ ℂ`
 
-The kernel `g(x) = -log |x|` has gradient `∇g(u) = -u / |u|²` (source l. 137–139, 191–200).
-Theorem 2, Step 1 (source l. 1964–1988) needs Green's formula `∫ ξ dμ = (1 / 2π) ∫ ∇ξ · ∇h`
+The kernel `g(x) = -log |x|` has gradient `∇g(u) = -u / |u|²` (source l. 123, 176–185).
+Theorem 2, Step 1 (source l. 1842–1866) needs Green's formula `∫ ξ dμ = (1 / 2π) ∫ ∇ξ · ∇h`
 for compactly supported test functions `ξ`; here we prove its single-charge form without
 Green's theorem. For `ξ` of class `C¹` with compact support and every `y ∈ ℂ`,
 

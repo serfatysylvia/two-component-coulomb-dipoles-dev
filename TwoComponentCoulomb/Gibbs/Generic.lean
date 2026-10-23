@@ -13,7 +13,7 @@ public import TwoComponentCoulomb.Frozen.IsGeneric
 /-!
 # Non-generic configurations form a null set
 
-Source: l. 217 and l. 348 ("We exclude the Lebesgue null set"): the set of
+Source: l. 202 and l. 351 ("We exclude the Lebesgue null set"): the set of
 configurations `Z : Fin N ⊕ Fin N → ℂ` that are not `IsGeneric` (two coinciding points, or two
 distinct unordered pairs of points at the same distance) has Lebesgue measure zero.
 
@@ -171,7 +171,7 @@ theorem measurableSet_isGeneric : MeasurableSet {Z : Fin N ⊕ Fin N → ℂ | I
   unfold IsGeneric Function.Injective
   fun_prop
 
-/-- The non-generic configurations form a Lebesgue-null set (source l. 217 and l. 348). -/
+/-- The non-generic configurations form a Lebesgue-null set (source l. 202 and l. 351). -/
 theorem volume_not_isGeneric :
     volume {Z : Fin N ⊕ Fin N → ℂ | ¬ IsGeneric Z} = 0 := by
   have hsub : {Z : Fin N ⊕ Fin N → ℂ | ¬ IsGeneric Z} ⊆

@@ -11,9 +11,9 @@ public import TwoComponentCoulomb.NearestNeighbor.General
 /-!
 # The first-neighbour radius of a configuration on a general index set
 
-Source: eq. (nn2) (l. 365) and the proof of Proposition 3.7
-(l. 1037: "`r(z_i) = ¼ min_{j ≠ i} |z_i - z_j|` and `r̃₁(z_i) = r(z_i) ∨ λ`"). The frozen
-`TwoComponentCoulomb.firstNeighborRadius` is indexed by `Fin N ⊕ Fin N`; Proposition 3.7 applies
+Source: eq. (nn2) (l. 368) and the proof of Proposition 3.6
+(l. 986: "`r(z_i) = ¼ min_{j ≠ i} |z_i - z_j|` and `r̃₁(z_i) = r(z_i) ∨ λ`"). The frozen
+`TwoComponentCoulomb.firstNeighborRadius` is indexed by `Fin N ⊕ Fin N`; Proposition 3.6 applies
 it to `p` points, so we define the same quantity over an arbitrary finite index type with at
 least two elements.
 
@@ -44,7 +44,7 @@ theorem erase_nonempty (i : ι) : (Finset.univ.erase i).Nonempty := by
 
 open scoped Classical in
 /-- The first-neighbour radius `r̃₁(z_i) = (¼ min_{j ≠ i} |z_i - z_j|) ∨ λ` of eq. (nn2)
-(source l. 365), for a configuration `z : ι → ℂ` indexed by a finite type with at least two
+(source l. 368), for a configuration `z : ι → ℂ` indexed by a finite type with at least two
 elements. -/
 noncomputable def nnRadius (lam : ℝ) (z : ι → ℂ) (i : ι) : ℝ :=
   max ((Finset.univ.erase i).inf' (erase_nonempty i) (fun j => ‖z i - z j‖) / 4) lam

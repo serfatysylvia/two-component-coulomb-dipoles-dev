@@ -12,14 +12,14 @@ public import TwoComponentCoulomb.Frozen.Charge
 # Frozen: `TwoComponentCoulomb.fluct`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 298.
+Source: l. 295.
 -/
 
 @[expose] public section
 
 namespace TwoComponentCoulomb
 
-/-- `Fluct_N(ξ) = ∫_Λ ξ d(∑ᵢ (δ_{xᵢ} - δ_{yᵢ}))` (source l. 298). -/
+/-- `Fluct_N(ξ) = ∫_Λ ξ d(∑ᵢ (δ_{xᵢ} - δ_{yᵢ}))` (source l. 295). -/
 noncomputable def fluct {N : ℕ} (ξ : ℂ → ℝ) (Z : Fin N ⊕ Fin N → ℂ) : ℝ :=
   ∑ i, charge i * (box N).indicator ξ (Z i)
 

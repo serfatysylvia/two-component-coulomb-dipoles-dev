@@ -15,13 +15,13 @@ public import TwoComponentCoulomb.Gibbs.Basic
 public import TwoComponentCoulomb.LowerBound.PolarPi
 
 /-!
-# Volume and radial estimates for Proposition 3.7, Step 2
+# Volume and radial estimates for Proposition 3.6, Step 2
 
-Source: proof of Proposition 3.7 (`prop:auxk`), l. 1087--1118. This file
+Source: proof of Proposition 3.6 (`prop:auxk`), l. 1035–1065. This file
 collects the elementary real-analysis inputs of Step 2 (integration over one restricted graph,
-`AuxIntegration.lean`).
+`UpperBound/AuxIntegration.lean`).
 
-## Volume available to the trivial vertices (l. 1087--1093)
+## Volume available to the trivial vertices (l. 1035–1041)
 
 Once the coordinates of the nontrivial components are fixed, every remaining vertex `z_t` avoids
 the balls `B(z_i, 4 r(z_i))`, `i < k`, where `r(z_i) = |z_i - z_{φ(i)}| / 4`; the balls
@@ -40,7 +40,7 @@ least `r(z_i)²`. Hence the volume available to one trivial vertex is at most `N
 * `AuxIntegration.volume_pi_diff_iUnion_ball_le`: the corresponding bound for the product
   set of `n` trivial vertices.
 
-## The displacement integrals (l. 1095--1118)
+## The displacement integrals (l. 1043–1065)
 
 After the Gunson--Panta change of variables each selected displacement `u` is integrated over `ℂ`
 against the Gaussian factor `e^{-c|u|²}` left by the trivial vertices, with `c = 1/64`
@@ -48,7 +48,7 @@ against the Gaussian factor `e^{-c|u|²}` left by the trivial vertices, with `c 
 contributes `w²` (`AuxIntegration.cycleIntegral`) and any other displacement `w`
 (`AuxIntegration.noncycleIntegral`). For the weights of the source,
 `w(r) = r^{-β/2} (1 + log (r/λ))^δ (1 + |log r|)^{δ'}` (`AuxIntegration.sourceWeight`), the
-integrals are estimated by polar coordinates (the split at `λ` and `1` of the source l. 1097--1103):
+integrals are estimated by polar coordinates (the split at `λ` and `1` of the source l. 1045–1051):
 with `ℓ = |log λ|` and `C` depending on `β` (and `δ`) only,
 
 * `AuxIntegration.cycleIntegral_sourceWeight_le_of_lt_two`, `…_le_two`,
@@ -90,7 +90,7 @@ theorem exists_Icc_subset_near {s t x : ℝ} (hx : x ∈ Set.Icc 0 s) (ht : 0 �
     constructor <;> linarith [hy.1, hy.2]
 
 /-- A ball of radius `ρ ≤ √N` centred at a point of the box `Λ = [0, √N]²` meets `Λ` in a set of
-area at least `ρ² / 4` (it contains a square of side `ρ / 2` lying in `Λ`; source l. 1087,
+area at least `ρ² / 4` (it contains a square of side `ρ / 2` lying in `Λ`; source l. 1035,
 "a quarter of a disc"). -/
 theorem ofReal_sq_div_four_le_volume_box_inter_ball {N : ℕ} {x : ℂ} (hx : x ∈ box N) {ρ : ℝ}
     (hρ0 : 0 ≤ ρ) (hρN : ρ ≤ Real.sqrt N) :
@@ -125,7 +125,7 @@ theorem ofReal_sq_div_four_le_volume_box_inter_ball {N : ℕ} {x : ℂ} (hx : x 
   congr 1
   ring
 
-/-- **Available volume** (source l. 1087--1091): if the balls `B(c_i, d_i)` have centres in the box
+/-- **Available volume** (source l. 1035–1039): if the balls `B(c_i, d_i)` have centres in the box
 and `d_i ≤ |c_i - c_j|` for `i ≠ j`, then the balls `B(c_i, d_i / 2)` are pairwise disjoint, so
 `∑ d_i² / 16 ≤ N` and the box minus the union of the balls `B(c_i, d_i)` has area at most
 `N - ∑ d_i² / 16`. -/
@@ -207,7 +207,7 @@ theorem sub_pow_le_pow_mul_exp (n : ℕ) {N σ : ℝ} (hN : 0 < N) (hσN : σ �
         rw [← mul_pow]; congr 1; field_simp
     _ ≤ N ^ n * Real.exp (-(n * σ / N)) := by gcongr
 
-/-- The case split of source l. 1089--1093: if `n ≥ p - 2k` trivial vertices remain, `N ≤ 2p`,
+/-- The case split of source l. 1037–1041: if `n ≥ p - 2k` trivial vertices remain, `N ≤ 2p`,
 `k ≤ p` and `0 ≤ σ ≤ N`, then `(N - σ)ⁿ ≤ e^{2k} Nⁿ e^{-σ/4}`. For `4k ≤ p` this follows from
 `n ≥ N/4`; for `4k > p` the Gaussian factor is inserted at the cost `e^{σ/4} ≤ e^{N/4} ≤ e^{2k}`. -/
 theorem sub_pow_le_exp_mul {p k n N : ℕ} (hn : p ≤ n + 2 * k) (hN : (N : ℝ) ≤ 2 * p)
@@ -244,7 +244,7 @@ theorem sub_pow_le_exp_mul {p k n N : ℕ} (hn : p ≤ n + 2 * k) (hN : (N : ℝ
 
 /-! ### The product set of the trivial vertices -/
 
-/-- **Volume of the trivial-vertex section** (source l. 1087--1093): the product over `n` trivial
+/-- **Volume of the trivial-vertex section** (source l. 1035–1041): the product over `n` trivial
 vertices of `Λ \ ⋃ B(c_i, d_i)` has volume at most `e^{2k} Nⁿ e^{-σ/4}` with
 `σ = ∑ d_i² / 16`, whenever `n ≥ p - 2k` and `N ≤ 2p`. -/
 theorem volume_pi_diff_iUnion_ball_le {I T : Type*} [Fintype I] [Fintype T] {p k N : ℕ}
@@ -790,7 +790,7 @@ theorem gaussRadialAbs_le {c : ℝ} (hc : 0 < c) (q : ℕ) :
 
 /-! ### The weights of the source -/
 
-/-- The radial weight of the source (Proposition 3.7, l. 1008--1031) evaluated at the
+/-- The radial weight of the source (Proposition 3.6, l. 958–980) evaluated at the
 first-neighbour radius: `w(r) = r^{-β/2} (1 + log (r/λ))^δ (1 + |log r|)^{δ'}`. -/
 noncomputable def sourceWeight (β : ℝ) (δ δ' : ℕ) (lam r : ℝ) : ℝ≥0∞ :=
   ENNReal.ofReal (r ^ (-(β / 2)) * (1 + Real.log (r / lam)) ^ δ * (1 + |Real.log r|) ^ δ')
@@ -850,7 +850,7 @@ theorem cycleIntegral_sourceWeight_abs {lam : ℝ} (hlam : 0 < lam) :
 
 /-! ### The radial integrals for the source weights -/
 
-/-- **Cycle displacement, `β < 2`** (source l. 1097--1117): `∫ w² e^{-c|u|²} ≤ C`, uniformly in
+/-- **Cycle displacement, `β < 2`** (source l. 1045–1065): `∫ w² e^{-c|u|²} ≤ C`, uniformly in
 `0 < λ ≤ 1`. -/
 theorem cycleIntegral_sourceWeight_le_of_lt_two {β : ℝ} (hβ : β < 2) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ lam : ℝ, 0 < lam → lam ≤ 1 →

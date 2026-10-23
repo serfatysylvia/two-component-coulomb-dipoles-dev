@@ -25,56 +25,56 @@ import TwoComponentCoulomb.Main.Theorem1AssemblyBounds
 import TwoComponentCoulomb.NearestNeighbor.Isolated
 
 /-!
-# Theorem 1 from Lemma 3.6 and Propositions 3.10 and 4.1
+# Theorem 1 from Lemma 3.5 and Propositions 3.9, 3.10 and 4.1
 
-Source: proof of Theorem 1 (l. 1904--1959); the statement is l. 235--274. The proof of the
+Source: proof of Theorem 1 (l. 1808–1837); the statement is l. 220–266. The proof of the
 theorem consists of two ingredients:
 
-* the upper bounds, Lemma 3.6 (`lemma:part nn`, l. 922--946) and Proposition 3.10
-  (`prop:upper bound`, l. 1423--1455), and
-* the lower bound of Proposition 4.1 (`prop:lower bound`, l. 1745--1759), which is sealed
+* the upper bounds, Lemma 3.5 (`lemma:part nn`, l. 870–896) and Propositions 3.9 and 3.10
+  (`prop:upper bound`, `prop:critical upper`, l. 1340–1363, 1575–1584), and
+* the lower bound of Proposition 4.1 (`prop:lower bound`, l. 1657–1668), which is sealed
   (`TwoComponentCoulomb.proposition_4_1`).
 
 The assembly is proved once, for a general error rate `ω : ℝ → ℝ` and a general error term
 `E λ R` of the `β = 2` long-dipole bound (`theorem_1_of_gates_rate`). Its hypotheses on `ω` and
 `E` are the elementary comparisons that the source proof uses: `0 ≤ ω`, the error rates of
-Proposition 4.1 and of Lemma 3.6 are at most `ω` (l. 1905--1911, 1937), and `0 ≤ E`; its other
-hypotheses are the statement of Lemma 3.6 and the statement of Proposition 3.10 with the rate `ω`
+Proposition 4.1 and of Lemma 3.5 are at most `ω`, and `0 ≤ E`; its other
+hypotheses are the statement of Lemma 3.5 and the joint statement of Propositions 3.9 and 3.10 with the rate `ω`
 and the error `E` (without the bound `λ₀ ≤ e⁻²`, and with a separate threshold for the `β = 2`
 bound). Its conclusion is the statement of Theorem 1 with the rate `ω` and the error `E`. The
 instance used for Theorem 1 is
 
 * `theorem_1_of_gates` (`ω = errorRate`, `E = log (1/R) / |log λ|`): the hypotheses are
-  `Lemma36Statement` (the type of the sealed `lemma_3_6`) and `Proposition310Statement` (the type
-  of the frozen `proposition_3_10`), and the conclusion is `Theorem1Statement` (the type of
+  `Lemma35Statement` (the type of the sealed `lemma_3_5`) and `Proposition39And310Statement` (the type
+  of the frozen `proposition_3_9_and_3_10`), and the conclusion is `Theorem1Statement` (the type of
   the frozen `theorem_1`), all three copied verbatim from the frozen files. This module imports
-  neither `Frozen/Proposition310.lean` nor `Frozen/Theorem1.lean` (the provider of `theorem_1`
+  neither `Frozen/Proposition39And310.lean` nor `Frozen/Theorem1.lean` (the provider of `theorem_1`
   imports this module). The provider `Main/Theorem1.lean` applies `theorem_1_of_gates` to the
-  anchors `lemma_3_6` and `proposition_3_10` and states the frozen type of `theorem_1`, so the
+  anchors `lemma_3_5` and `proposition_3_9_and_3_10` and states the frozen type of `theorem_1`, so the
   elaborator checks that the copies agree with the frozen types.
 
 Both `theorem_1_of_gates_rate` and `theorem_1_of_gates` are *conditional helpers*: they are not
 frozen statements and never stand in for one; the provider of `theorem_1` applies
-`theorem_1_of_gates` to the anchors of Lemma 3.6 and Proposition 3.10.
+`theorem_1_of_gates` to the anchors of Lemma 3.5 and Propositions 3.9 and 3.10.
 
 The assembly follows the source proof:
 
-* `0 < Z < ∞` and (eq:devlogz): the upper bound of Proposition 3.10 and the lower bound of
+* `0 < Z < ∞` and (eq:devlogz): the upper bound of Propositions 3.9 and 3.10 and the lower bound of
   Proposition 4.1, with the error comparisons of `Main/ErrorRateBounds.lean` and the elementary
   bounds of `Main/Theorem1AssemblyBounds.lean`;
 * (eq:momexp): `𝔼[e^{β(F - F̃)}] = 𝒦 / Z` (`lintegral_gibbsMeasure_exp_energy_sub_reducedEnergy`),
-  Lemma 3.6 for `𝒦` and the lower bound for `Z`;
-* (eq:b1): the Boltzmann integral over `{#dipoles = p₀}` (Proposition 3.10) divided by the lower
+  Lemma 3.5 for `𝒦` and the lower bound for `Z`;
+* (eq:b1): the Boltzmann integral over `{#dipoles = p₀}` (Propositions 3.9 and 3.10) divided by the lower
   bound for `Z`;
-* (eq:b2) for `β > 2` (l. 1949--1958): the same for `{D_R ≥ p₀'}`, with the tail
+* (eq:b2) for `β > 2` (l. 1827–1836): the same for `{D_R ≥ p₀'}`, with the tail
   `μ_β([R/λ, ∞)) = 2π (λ/R)^{β-2} / (𝒵_β (β - 2))` computed by
   `integral_Ici_exp_smearedKernel_one`, and the threshold chosen so that the hypothesis of
-  Proposition 3.10 holds and `log (x₀/α_μ) ≥ ½ log (x₀/α)` (`tail_threshold`), where
+  Proposition 3.9 holds and `log (x₀/α_μ) ≥ ½ log (x₀/α)` (the threshold comparison), where
   `α = (λ/R)^{β-2}` and `α_μ = μ_β([R/λ, ∞))`; the errors of both bounds are `O(N ω)`;
 * (eq:critical lengths) for `β = 2`: Markov's inequality using `N - |I^dip|/2 ≥ 0`
-  (`isolatedDipoles_card_le`), the last clause of Proposition 3.10, and the lower bound.
+  (`isolatedDipoles_card_le`), Proposition 3.10, and the lower bound.
 
-Main declarations: `Lemma36Statement`, `Proposition310Statement`, `Theorem1Statement`,
+Main declarations: `Lemma35Statement`, `Proposition39And310Statement`, `Theorem1Statement`,
 `theorem_1_of_gates_rate`, `theorem_1_of_gates`.
 -/
 
@@ -143,7 +143,7 @@ private theorem ite_main (β : ℝ) (hβ : 2 ≤ β) (x y : ℝ) :
     simp [h, h']
 
 /-- Proposition 4.1, with its error term replaced by a rate `ω` that dominates it on
-`0 < λ < e⁻¹` (source l. 1905--1911). -/
+`0 < λ < e⁻¹` . -/
 private theorem exists_partitionFunction_ge_rate (β : ℝ) (hβ : 2 ≤ β) (ω : ℝ → ℝ)
     (hlower : ∀ lam : ℝ, 0 < lam → lam < Real.exp (-1) →
       (if β = 2 then |Real.log lam| ^ (-(1 / 5 : ℝ))
@@ -176,7 +176,7 @@ private theorem gibbsMeasure_le_inv_mul {N : ℕ} {β lam : ℝ} {s t : Set (Fin
   rw [gibbsMeasure_apply']
   exact mul_le_mul' le_rfl (lintegral_mono_set (Set.inter_subset_inter_right _ hst))
 
-/-- Markov's inequality for the number of long isolated dipoles at `β = 2` (source l. 1958):
+/-- Markov's inequality for the number of long isolated dipoles at `β = 2` (source l. 1836):
 on `{D_R = p}` one has `N - |I^dip|/2 + D_R ≥ p`, because there are at most `N` isolated
 dipoles. -/
 private theorem gibbsMeasure_long_le {N : ℕ} {β lam R : ℝ} (hb : β = 2) (p : ℕ) :
@@ -212,7 +212,7 @@ private theorem gibbsMeasure_long_le {N : ℕ} {β lam R : ℝ} (hb : β = 2) (p
 /-! ### The tail of `μ_β` and the threshold of (eq:b2) -/
 
 /-- `μ_β`-tail: for `β > 2` and `R ≥ 2λ`,
-`∫_{R/λ}^∞ e^{β g₁(r)} r dr = (λ/R)^{β-2} / (β - 2)` (source l. 1440, 1949--1953). -/
+`∫_{R/λ}^∞ e^{β g₁(r)} r dr = (λ/R)^{β-2} / (β - 2)` (source l. 1357, 1827–1831). -/
 private theorem integral_tail_eq {β lam R : ℝ} (hβ : 2 < β) (hlam : 0 < lam) (hR : 2 * lam ≤ R) :
     ∫ r in Set.Ici (R / lam), Real.exp (β * smearedKernel 1 r) * r =
       (lam / R) ^ (β - 2) / (β - 2) := by
@@ -223,8 +223,8 @@ private theorem integral_tail_eq {β lam R : ℝ} (hβ : 2 < β) (hlam : 0 < lam
   rw [show (2 - β) = -(β - 2) by ring, Real.rpow_neg (by positivity),
     ← Real.inv_rpow (by positivity), inv_div]
 
-/-- Choice of the threshold constant of (eq:b2) (source l. 1954--1957): if
-`x ≥ max (C κ) (max κ² 2) α`, then `x > 0`, the hypothesis `C κ α ≤ x` of Proposition 3.10
+/-- Choice of the threshold constant of (eq:b2) (source l. 1832–1835): if
+`x ≥ max (C κ) (max κ² 2) α`, then `x > 0`, the hypothesis `C κ α ≤ x` of Proposition 3.9
 holds, and `log (x / (κ α)) ≥ ½ log (x / α)`, so that the main term with `α_μ = κ α` is
 dominated by the one with `α`. -/
 private theorem tail_threshold {κ α x C c N : ℝ} (hκ : 0 < κ) (hα : 0 < α)
@@ -266,11 +266,11 @@ private theorem exists_pos_and_imp {p : Prop} {Q : ℝ → ℝ → Prop}
     exact ⟨lam₁, hlam₁, fun _ => ⟨C, hC, hQ⟩⟩
   · exact ⟨1, one_pos, fun h => absurd h hp⟩
 
-/-! ### The statements of Lemma 3.6, Proposition 3.10 and Theorem 1 -/
+/-! ### The statements of Lemma 3.5, Propositions 3.9 and 3.10, and Theorem 1 -/
 
-/-- The statement of Lemma 3.6 (`lemma:part nn`, source l. 922--946): the type of the sealed
-anchor `TwoComponentCoulomb.lemma_3_6 β hβ`, copied verbatim from `Frozen/Lemma36.lean`. -/
-def Lemma36Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
+/-- The statement of Lemma 3.5 (`lemma:part nn`, source l. 870–896): the type of the sealed
+anchor `TwoComponentCoulomb.lemma_3_5 β hβ`, copied verbatim from `Frozen/Lemma35.lean`. -/
+def Lemma35Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
         0 < reducedPartitionFunction N β lam ∧ reducedPartitionFunction N β lam < ∞ ∧
@@ -282,10 +282,11 @@ def Lemma36Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
           ≤ C * (N * (if β = 2 then |Real.log lam| ^ (-(1 / 2 : ℝ)) else lam ^ min ((β - 2) / 2) 1)
             + Real.log (N + 1))
 
-/-- The statement of Proposition 3.10 (`prop:upper bound`, source l. 1423--1455): the type of
-the frozen anchor `TwoComponentCoulomb.proposition_3_10 β hβ`, copied verbatim from
-`Frozen/Proposition310.lean`. -/
-def Proposition310Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
+/-- The joint statement of Propositions 3.9 and 3.10 (`prop:upper bound`,
+`prop:critical upper`, source l. 1340–1363, 1575–1584): the type of
+the frozen anchor `TwoComponentCoulomb.proposition_3_9_and_3_10 β hβ`, copied verbatim from
+`Frozen/Proposition39And310.lean`. -/
+def Proposition39And310Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
     ∃ lam₀ : ℝ, 0 < lam₀ ∧ lam₀ ≤ Real.exp (-2) ∧
       (∃ C c : ℝ, 0 < C ∧ 0 < c ∧
         ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
@@ -330,7 +331,7 @@ def Proposition310Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
                 + C * N * (errorRate β hβ lam + Real.log (1 / R) / |Real.log lam|)
                 + C * Real.log (N + 1))))
 
-/-- The statement of Theorem 1 (`theorem:th1`, source l. 235--274): the type of the frozen
+/-- The statement of Theorem 1 (`theorem:th1`, source l. 220–266): the type of the frozen
 anchor `TwoComponentCoulomb.theorem_1 β hβ`, copied verbatim from `Frozen/Theorem1.lean`. -/
 def Theorem1Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
     ∃ lamβ : ℝ, 0 < lamβ ∧ lamβ < Real.exp (-1) ∧
@@ -367,12 +368,12 @@ def Theorem1Statement (β : ℝ) (hβ : 2 ≤ β) : Prop :=
 
 /-! ### Theorem 1 for a general rate -/
 
-/-- **Theorem 1 from Lemma 3.6 and Propositions 3.10 and 4.1, for a general error rate**
-(source l. 1904--1959). Conditional helper. The rate `ω` and the error term `E λ R` of the `β = 2`
+/-- **Theorem 1 from Lemma 3.5 and Propositions 3.9 and 4.1, for a general error rate**
+(source l. 1808–1837). Conditional helper. The rate `ω` and the error term `E λ R` of the `β = 2`
 long-dipole bound are arbitrary functions with the comparisons used by the source proof, on
-`0 < λ < e⁻¹`: `0 ≤ ω`, the error rates of Proposition 4.1 and of Lemma 3.6 are at most `ω`, and
-`0 ≤ E λ R` for `2λ ≤ R ≤ 1`. The hypothesis `h36` is the statement of Lemma 3.6 and `h310` is the
-statement of the frozen `proposition_3_10` with `errorRate β hβ` replaced by `ω` and the `β = 2`
+`0 < λ < e⁻¹`: `0 ≤ ω`, the error rates of Proposition 4.1 and of Lemma 3.5 are at most `ω`, and
+`0 ≤ E λ R` for `2λ ≤ R ≤ 1`. The hypothesis `h35` is the statement of Lemma 3.5 and `h39` is the
+statement of the frozen `proposition_3_9_and_3_10` with `errorRate β hβ` replaced by `ω` and the `β = 2`
 error `log (1/R) / |log λ|` replaced by `E`, without the bound `λ₀ ≤ e⁻²` and with a separate
 threshold for the `β = 2` bound. The conclusion is the statement of the frozen `theorem_1` with
 `errorRate β hβ` replaced by `ω` and the `β = 2` error `log (1/R) / |log λ|` replaced by `E`. The
@@ -387,8 +388,8 @@ theorem theorem_1_of_gates_rate (β : ℝ) (hβ : 2 ≤ β) (ω : ℝ → ℝ) (
     (hreduced : ∀ lam : ℝ, 0 < lam → lam < Real.exp (-1) →
       (if β = 2 then |Real.log lam| ^ (-(1 / 2 : ℝ)) else lam ^ min ((β - 2) / 2) 1) ≤ ω lam)
     (hE : ∀ lam R : ℝ, 0 < lam → lam < Real.exp (-1) → 2 * lam ≤ R → R ≤ 1 → 0 ≤ E lam R)
-    (h36 : Lemma36Statement β hβ)
-    (h310 :
+    (h35 : Lemma35Statement β hβ)
+    (h39 :
     ∃ lam₀ : ℝ, 0 < lam₀ ∧
       (∃ C c : ℝ, 0 < C ∧ 0 < c ∧
         ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
@@ -464,8 +465,8 @@ theorem theorem_1_of_gates_rate (β : ℝ) (hβ : 2 ≤ β) (ω : ℝ → ℝ) (
           gibbsMeasure N β lam {Z | (longIsolatedDipoles Z R).card = p₀'}
             ≤ ENNReal.ofReal (((N : ℝ) + 1) ^ C * Real.exp (-(p₀' : ℝ) + C * N *
                 (ω lam + E lam R)))) := by
-  obtain ⟨lam₅, C₅, hlam₅, hC₅, h5⟩ := h36
-  obtain ⟨lam₃, hlam₃, ⟨C₃, c₃, hC₃, hc₃, h3a⟩, h3b, h3c⟩ := h310
+  obtain ⟨lam₅, C₅, hlam₅, hC₅, h5⟩ := h35
+  obtain ⟨lam₃, hlam₃, ⟨C₃, c₃, hC₃, hc₃, h3a⟩, h3b, h3c⟩ := h39
   obtain ⟨lam₆, hlam₆, h6⟩ := exists_pos_and_imp h3c
   obtain ⟨lam₄, C₄, hlam₄, hC₄, h4⟩ := exists_partitionFunction_ge_rate β hβ ω hlower
   have key : ∀ lam : ℝ, lam < min (min lam₃ lam₄) (min lam₅ (min lam₆ (Real.exp (-1) / 2))) →
@@ -601,15 +602,15 @@ theorem theorem_1_of_gates_rate (β : ℝ) (hβ : 2 ≤ β) (ω : ℝ → ℝ) (
 
 /-! ### Theorem 1 from the frozen statements -/
 
-/-- **Theorem 1 from the statements of Lemma 3.6 and Proposition 3.10** (source l. 1904--1959).
-Conditional helper: the hypotheses are `Lemma36Statement β hβ`, the type of the sealed anchor
-`lemma_3_6 β hβ`, and `Proposition310Statement β hβ`, the type of the frozen anchor
-`proposition_3_10 β hβ`; the conclusion `Theorem1Statement β hβ` is the type of the frozen anchor
+/-- **Theorem 1 from the statements of Lemma 3.5 and Propositions 3.9 and 3.10** (source l. 1808–1837).
+Conditional helper: the hypotheses are `Lemma35Statement β hβ`, the type of the sealed anchor
+`lemma_3_5 β hβ`, and `Proposition39And310Statement β hβ`, the type of the frozen anchor
+`proposition_3_9_and_3_10 β hβ`; the conclusion `Theorem1Statement β hβ` is the type of the frozen anchor
 `theorem_1 β hβ`. It is `theorem_1_of_gates_rate` for `ω = errorRate β hβ` and
 `E = log (1/R) / |log λ|`. -/
-theorem theorem_1_of_gates (β : ℝ) (hβ : 2 ≤ β) (h36 : Lemma36Statement β hβ)
-    (h310 : Proposition310Statement β hβ) : Theorem1Statement β hβ := by
-  obtain ⟨lam₀, hlam₀, -, hA, hB, hC⟩ := h310
+theorem theorem_1_of_gates (β : ℝ) (hβ : 2 ≤ β) (h35 : Lemma35Statement β hβ)
+    (h39 : Proposition39And310Statement β hβ) : Theorem1Statement β hβ := by
+  obtain ⟨lam₀, hlam₀, -, hA, hB, hC⟩ := h39
   exact theorem_1_of_gates_rate β hβ (errorRate β hβ)
     (fun lam R => Real.log (1 / R) / |Real.log lam|)
     (fun _ h0 h1 => (errorRate_pos β hβ h0 h1).le)
@@ -617,7 +618,7 @@ theorem theorem_1_of_gates (β : ℝ) (hβ : 2 ≤ β) (h36 : Lemma36Statement �
     (fun _ h0 h1 => reducedRate_le_errorRate β hβ h0 h1)
     (fun _ R _ _ hR hR1 => div_nonneg
       (Real.log_nonneg (by rw [le_div_iff₀ (by linarith)]; linarith)) (abs_nonneg _))
-    h36 ⟨lam₀, hlam₀, hA, hB, fun hb => (hC hb).imp fun _ hC' => ⟨lam₀, hC'.1, hlam₀, hC'.2⟩⟩
+    h35 ⟨lam₀, hlam₀, hA, hB, fun hb => (hC hb).imp fun _ hC' => ⟨lam₀, hC'.1, hlam₀, hC'.2⟩⟩
 
 end TwoComponentCoulomb
 

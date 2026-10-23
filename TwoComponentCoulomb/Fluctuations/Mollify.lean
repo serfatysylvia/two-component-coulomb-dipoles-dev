@@ -11,7 +11,7 @@ public import Mathlib.Analysis.Calculus.ContDiff.Convolution
 /-!
 # Smooth approximation of Lipschitz functions and smooth cutoffs on `ℂ`
 
-Auxiliary tools for Theorem 2, Step 1 (source l. 1966-1999). The
+Auxiliary tools for Theorem 2, Step 1 (source l. 1844–1876). The
 argument there applies Green's formula to a Lipschitz test function; in the formalization Green's
 formula is available for `C¹` functions only (`integral_fderiv_apply_electricField`), so a
 Lipschitz test function is first replaced by a mollification.

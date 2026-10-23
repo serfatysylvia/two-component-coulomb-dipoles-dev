@@ -26,7 +26,7 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The energy lower bound of the critical case `β = 2` (Proposition 3.10, eq. (eq:critical upper))
 
-Source: l. 1668--1680 (proof of Proposition 3.10, `β = 2`).
+Source: l. 1595–1610 (proof of Proposition 3.10, `β = 2`).
 
 Fix a nearest-neighbour map `f` (a self-map of `Fin N ⊕ Fin N`). Its *isolated pairs* are the
 2-cycles `{i, f i}` into which no other vertex points (`TwoComponentCoulomb.IsIsoPairOf`; for
@@ -43,10 +43,10 @@ points are all the others. The radius of the pair `s ∈ S` is
   `s ∈ S` of the two endpoint terms.
 * `TwoComponentCoulomb.norm_sub_le_four_mul_isoRadius`,
   `TwoComponentCoulomb.isoRadius_le_two_mul_secondNeighborRadius`,
-  `TwoComponentCoulomb.isoRadius_le_three_mul_secondNeighborRadius` (source l. 1670--1674):
+  `TwoComponentCoulomb.isoRadius_le_three_mul_secondNeighborRadius` (source l. 1595–1597):
   `|u_j| ≤ 4ρ_j` and `ρ_j ≤ 3 r₂(z)` for either endpoint `z` of the pair (in fact `ρ_j ≤ 2 r₂`
   at the retained endpoint).
-* `TwoComponentCoulomb.exists_neg_two_mul_energy_le` (source l. 1674--1680): from
+* `TwoComponentCoulomb.exists_neg_two_mul_energy_le` (source l. 1605–1610): from
   Proposition 2.2, for generic configurations in `Λ`,
   `-2 F_λ + N - |I^dip|/2 + D_R ≤ ∑_{i ∉ I^pair} (g_λ(z_i - z_{φ₁ i}) + c₁) + ∑_{s ∈ S} E_s`,
   where `E_s = 2 g_λ(u_s) + c₂ (a_s/ρ_s)² + 1_{|u_s| > R}` for a neutral pair and
@@ -203,7 +203,7 @@ def isoPartner (s : {s // s ∈ isoSecondVerts f}) : {i // i ∉ isoSecondVerts 
 /-! ### The radius of a pair -/
 
 variable (f) in
-/-- The radius `ρ` of a retained point `r` (source l. 1670--1672): the first-neighbour radius
+/-- The radius `ρ` of a retained point `r` (source l. 1595): the first-neighbour radius
 `(¼ min_{k retained, k ≠ r} |y_r - y_k|) ∨ λ` of `r` inside the retained configuration `y`. -/
 noncomputable def isoRadius (hN : 2 ≤ N) (lam : ℝ) (y : {i // i ∉ isoSecondVerts f} → ℂ)
     (r : {i // i ∉ isoSecondVerts f}) : ℝ :=
@@ -253,7 +253,7 @@ theorem nearestNeighbor_apply_of_mem {s : Fin N ⊕ Fin N} (hs : s ∈ isoSecond
   rw [hf]
   exact (mem_isoSecondVerts.1 hs).1.1
 
-/-- **`|u_j| ≤ 4ρ_j`** (source l. 1672). -/
+/-- **`|u_j| ≤ 4ρ_j`** . -/
 theorem norm_sub_le_four_mul_isoRadius (hN : 2 ≤ N) (lam : ℝ) (s : {s // s ∈ isoSecondVerts f}) :
     ‖Z s - Z (f s)‖ ≤ 4 * isoRadius f hN lam (fun k => Z k) (isoPartner s) := by
   obtain ⟨D, hρ, -, hD⟩ := isoRadius_spec hN lam (fun k => Z k) (isoPartner s)
@@ -268,7 +268,7 @@ theorem norm_sub_le_four_mul_isoRadius (hN : 2 ≤ N) (lam : ℝ) (s : {s // s �
   have := le_max_left (D / 4) lam
   linarith
 
-/-- **`ρ_j ≤ 2 r₂(w_j)`** at the retained endpoint `w_j = z_{f s}` (source l. 1672--1674). -/
+/-- **`ρ_j ≤ 2 r₂(w_j)`** at the retained endpoint `w_j = z_{f s}` (source l. 1597). -/
 theorem isoRadius_le_two_mul_secondNeighborRadius (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
     (s : {s // s ∈ isoSecondVerts f}) :
     isoRadius f hN lam (fun k => Z k) (isoPartner s) ≤
@@ -299,7 +299,7 @@ theorem isoRadius_le_two_mul_secondNeighborRadius (hN : 2 ≤ N) {lam : ℝ} (hl
   rw [mul_max_of_nonneg _ _ (by norm_num : (0 : ℝ) ≤ 2)]
   exact max_le_max (by linarith) (by linarith)
 
-/-- **`ρ_j ≤ 3 r₂(w_j + u_j)`** at the non-retained endpoint `s` (source l. 1672--1674). -/
+/-- **`ρ_j ≤ 3 r₂(w_j + u_j)`** at the non-retained endpoint `s` (source l. 1597). -/
 theorem isoRadius_le_three_mul_secondNeighborRadius (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
     (s : {s // s ∈ isoSecondVerts f}) :
     isoRadius f hN lam (fun k => Z k) (isoPartner s) ≤
@@ -344,7 +344,7 @@ end Radii
 /-! ### The exponent of an isolated pair -/
 
 /-- The exponent `E_s` of the isolated pair of the non-retained endpoint `s` (source
-l. 1676--1680): with `u = z_s - z_{f s}` and `ρ = ρ_s`, `2 g_λ(u) + c₂ (a(u)/ρ)² + 1_{|u| > R}`
+l. 1606–1610): with `u = z_s - z_{f s}` and `ρ = ρ_s`, `2 g_λ(u) + c₂ (a(u)/ρ)² + 1_{|u| > R}`
 for a neutral pair and `2 log (|u| ∨ λ) - 4 log ρ + c₃` for a same-sign pair. -/
 noncomputable def critPairExponent (hN : 2 ≤ N) (lam R c₂ c₃ : ℝ) (Z : Fin N ⊕ Fin N → ℂ)
     (s : {s // s ∈ isoSecondVerts f}) : ℝ :=
@@ -424,7 +424,7 @@ theorem sq_div_le_of_le_mul {a ρ r k : ℝ} (ha : 0 ≤ a) (hρ : 0 < ρ) (hr :
     _ = k ^ 2 * (a / ρ) ^ 2 := by ring
 
 /-- The two cycle terms of an isolated neutral pair:
-`-T_s - T_{f s} ≤ 2 g_λ(u_s) + 13 C (a/ρ)²` (source l. 1676--1678). -/
+`-T_s - T_{f s} ≤ 2 g_λ(u_s) + 13 C (a/ρ)²` (source l. 1606). -/
 theorem neutral_pair_term_le (hN : 2 ≤ N) {C : ℝ} (hC : 0 ≤ C) {lam : ℝ} (hlam : 0 < lam)
     (Z : Fin N ⊕ Fin N → ℂ) (s : {s // s ∈ isoSecondVerts (nearestNeighbor Z)})
     (hn : charge (s : Fin N ⊕ Fin N) * charge (nearestNeighbor Z s) = -1) :
@@ -491,7 +491,7 @@ theorem neutral_pair_term_le (hN : 2 ≤ N) {C : ℝ} (hC : 0 ≤ C) {lam : ℝ}
   linarith only [e1, e2]
 
 /-- The two cycle terms of an isolated same-sign pair:
-`-T_s - T_{f s} ≤ 2 log (|u_s| ∨ λ) - 4 log ρ + C'` (source l. 1676--1678, with
+`-T_s - T_{f s} ≤ 2 log (|u_s| ∨ λ) - 4 log ρ + C'` (source l. 1606, with
 `-g_λ(u) ≤ log (|u| ∨ λ) + C` and `r₂ ≥ ρ/3` at both endpoints). -/
 theorem sameSign_pair_term_le (hN : 2 ≤ N) {Cg C : ℝ}
     (hCg : ∀ lam : ℝ, 0 < lam → ∀ z : ℂ, -Real.log (max ‖z‖ lam) - Cg ≤ smearedKernel lam z)
@@ -587,7 +587,7 @@ theorem card_filter_isIsolatedDipole_long (Z : Fin N ⊕ Fin N → ℂ) (R : ℝ
     (fun i hi => ⟨hi.1.1, isIsolatedDipole_nearestNeighbor hi.1, by
       rw [hi.1.1, norm_sub_rev]; exact hi.2⟩)
 
-/-- **The energy lower bound of the critical case** (source l. 1674--1680, from
+/-- **The energy lower bound of the critical case** (source l. 1605–1610, from
 Proposition 2.2). There are constants `c₁, c₂ ≥ 0` and `c₃` such that for `N ≥ 2`, `λ > 0`,
 `R ∈ ℝ` and every generic configuration `Z` in `Λ`, with `f = φ₁(Z)`,
 `-2 F_λ(Z) + N - |I^dip|/2 + D_R ≤ ∑_{i ∉ I^pair} (g_λ(z_i - z_{f i}) + c₁) + ∑_{s ∈ S} E_s`,

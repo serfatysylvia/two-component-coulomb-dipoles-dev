@@ -20,12 +20,12 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The screened dipole on a disc (Proposition 4.1, Step 1)
 
-Source: Proposition 4.1, Step 1 (l. 1762–1825), as ruled in
+Source: Proposition 4.1, Step 1 (l. 1671–1734), as ruled in
 R22. On the disc `B(c, ρ)` (source `B(x_i, ϱ(x_i))`) with a negative charge at `y`
 (source `y_i`, `|y - c| ≤ ρ/2`) and smearing radius `λ` (`4λ ≤ ρ`), the source lets `u_i` solve the
 Neumann problem `-Δu_i = 2π(δ_c^{(λ)} - δ_y^{(λ)})` in `B(c, ρ)`, `∂_ν u_i = 0` on `∂B(c, ρ)`
-(l. 1779–1783), and decomposes `u_i = g*δ_c^{(λ)} - g*δ_y^{(λ)} + v_i` with `v_i` harmonic
-(l. 1798–1806). Under ruling R22a, `u_i` is the explicit image-charge solution of this Neumann
+(l. 1688–1689), and decomposes `u_i = g*δ_c^{(λ)} - g*δ_y^{(λ)} + v_i` with `v_i` harmonic
+(l. 1708–1716). Under ruling R22a, `u_i` is the explicit image-charge solution of this Neumann
 problem: with `ζ = z - c` and `a = y - c`,
 `v(z) = log |1 - ζ conj(a) / ρ²|`, the potential of the image of `y` in the circle `∂B(c, ρ)`
 (the image point `c + ρ² / conj(a)` lies outside `B(c, 2ρ)`).
@@ -45,14 +45,14 @@ Main results (standing hypotheses `0 < λ`, `4λ ≤ ρ`, `|y - c| ≤ ρ/2`):
   `neumannCorrectionField_eq_conj`, `differentiableAt_neumannCorrectionHolo`,
   `contDiffOn_neumannField_annulus` : the holomorphic structure off the charges.
 * `inner_neumannField_eq_zero` : the Neumann condition `∇u · (z - c) = 0` on `∂B(c, ρ)`
-  (l. 1779–1783).
-* `norm_neumannCorrectionField_le` : eq. (estimatesv) (l. 1804–1806), with the constant `2`:
+  (l. 1688–1689).
+* `norm_neumannCorrectionField_le` : eq. (estimatesv) (l. 1714–1716), with the constant `2`:
   `|∇v| ≤ 2 |y - c| / ρ²` on `B(c, 3ρ/4)`; `norm_neumannCorrection_sub_le` is the resulting
   Lipschitz bound for `v` on `B(c, 3ρ/4)`.
 * `abs_integral_neumannCorrection_sub_le` : `|∫ v d(δ_c^{(λ)} - δ_y^{(λ)})| ≤ 2 |y - c|² / ρ²`
-  (l. 1807–1814), by translation of `δ_c^{(λ)}` to `δ_y^{(λ)}` and the mean value theorem.
+  (l. 1717–1724), by translation of `δ_c^{(λ)}` to `δ_y^{(λ)}` and the mean value theorem.
 * `integrable_neumannCorrection`, `integrable_neumannPotential`, `integral_neumannPotential_sub` :
-  the pair-energy identity of l. 1807–1814,
+  the pair-energy identity of l. 1717–1724,
   `∫ u d(δ_c^{(λ)} - δ_y^{(λ)}) = 2 (g(λ) + κ) - 2 g_λ(y - c) + ∫ v d(δ_c^{(λ)} - δ_y^{(λ)})`.
 
 The weak form of the Neumann problem (`∫_B ∇ξ · ∇u = 2π ∫ ξ d(δ_c^{(λ)} - δ_y^{(λ)})`, by the
@@ -66,7 +66,7 @@ open MeasureTheory Metric Set InnerProductSpace Filter Topology ComplexConjugate
 namespace TwoComponentCoulomb
 
 /-- The harmonic correction `v(z) = log |1 - (z - c) conj(y - c) / ρ²|` of the screened dipole
-(source `v_i`, l. 1798–1806); it is `log` of the image-charge factor. -/
+(source `v_i`, l. 1708–1716); it is `log` of the image-charge factor. -/
 noncomputable def neumannCorrection (ρ : ℝ) (c y z : ℂ) : ℝ :=
   Real.log ‖1 - (z - c) * (starRingEnd ℂ) (y - c) / (ρ : ℂ) ^ 2‖
 
@@ -79,7 +79,7 @@ it is the complex derivative of `log (1 - (z - c) conj(y - c) / ρ²)`. -/
 noncomputable def neumannCorrectionHolo (ρ : ℝ) (c y z : ℂ) : ℂ :=
   -((starRingEnd ℂ) (y - c) / ((ρ : ℂ) ^ 2 - (z - c) * (starRingEnd ℂ) (y - c)))
 
-/-- The screened dipole `u = g*δ_c^{(λ)} - g*δ_y^{(λ)} + v` (source `u_i`, l. 1779–1783). -/
+/-- The screened dipole `u = g*δ_c^{(λ)} - g*δ_y^{(λ)} + v` (source `u_i`, l. 1688–1689). -/
 noncomputable def neumannPotential (lam ρ : ℝ) (c y z : ℂ) : ℝ :=
   discPotential lam (z - c) - discPotential lam (z - y) + neumannCorrection ρ c y z
 
@@ -404,7 +404,7 @@ theorem mul_neumannHolo_eq_sub_conj {ρ : ℝ} {ζ a : ℂ} (hζ : ζ ≠ 0) (h�
   field_simp
   ring
 
-/-- **The Neumann condition** (source l. 1779–1783): `∇u · (z - c) = 0` on `∂B(c, ρ)`. -/
+/-- **The Neumann condition** (source l. 1688–1689): `∇u · (z - c) = 0` on `∂B(c, ρ)`. -/
 theorem inner_neumannField_eq_zero {lam ρ : ℝ} {c y z : ℂ} (hlam : 0 < lam) (hρ : 4 * lam ≤ ρ)
     (hy : ‖y - c‖ ≤ ρ / 2) (hz : ‖z - c‖ = ρ) :
     inner ℝ (neumannField lam ρ c y z) (z - c) = 0 := by
@@ -431,7 +431,7 @@ section Estimate
 
 variable {lam ρ : ℝ} {c y z : ℂ}
 
-/-- **Eq. (estimatesv)** (l. 1804–1806): `|∇v| ≤ 2 |y - c| / ρ²` on `B(c, 3ρ/4)`. -/
+/-- **Eq. (estimatesv)** (l. 1714–1716): `|∇v| ≤ 2 |y - c| / ρ²` on `B(c, 3ρ/4)`. -/
 theorem norm_neumannCorrectionField_le (hρ : 0 < ρ) (hy : ‖y - c‖ ≤ ρ / 2)
     (hz : z ∈ ball c (3 * ρ / 4)) :
     ‖neumannCorrectionField ρ c y z‖ ≤ 2 * ‖y - c‖ / ρ ^ 2 := by
@@ -499,7 +499,7 @@ theorem integrable_neumannPotential (hlam : 0 < lam) (hρ : 4 * lam ≤ ρ)
     ((contDiffOn_neumannPotential hlam hρ hy).continuousOn.mono
       (closedBall_subset_ball_of_norm_sub_le_half hlam hρ hw₀))
 
-/-- **The coupling bound** (l. 1807–1814): `|∫ v d(δ_c^{(λ)} - δ_y^{(λ)})| ≤ 2 |y - c|² / ρ²`. -/
+/-- **The coupling bound** (l. 1717–1724): `|∫ v d(δ_c^{(λ)} - δ_y^{(λ)})| ≤ 2 |y - c|² / ρ²`. -/
 theorem abs_integral_neumannCorrection_sub_le (hlam : 0 < lam) (hρ : 4 * lam ≤ ρ)
     (hy : ‖y - c‖ ≤ ρ / 2) :
     |(∫ w, neumannCorrection ρ c y w ∂smearedCharge c lam) -
@@ -567,7 +567,7 @@ theorem integral_discPotential_smearedCharge (hlam : 0 < lam) (z w : ℂ) :
     ∫ x, discPotential lam (x - w) ∂smearedCharge z lam = smearedKernel lam (w - z) := by
   rw [← pairInteraction_eq_integral_discPotential z w hlam, pairInteraction_eq_smearedKernel]
 
-/-- **The pair energy of the screened dipole** (l. 1807–1814):
+/-- **The pair energy of the screened dipole** (l. 1717–1724):
 `∫ u d(δ_c^{(λ)} - δ_y^{(λ)}) = 2 (g(λ) + κ) - 2 g_λ(y - c) + ∫ v d(δ_c^{(λ)} - δ_y^{(λ)})`. -/
 theorem integral_neumannPotential_sub (hlam : 0 < lam) (hρ : 4 * lam ≤ ρ)
     (hy : ‖y - c‖ ≤ ρ / 2) :

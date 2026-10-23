@@ -13,12 +13,12 @@ import TwoComponentCoulomb.Integrals.Radial
 /-!
 # Theorem 2, Steps 3--4: the tilted isolated-pair block energies and their pair reduction
 
-Source: proof of Theorem 2 (`prop:linear`), Step 3 (l. 2091--2120) and
-Step 4 (l. 2129--2165), for `β > 2`. Both steps repeat Steps 2--3 of the proof of Proposition 3.10
+Source: proof of Theorem 2 (`prop:linear`), Step 3 (l. 1969–1998) and
+Step 4 (l. 2007–2043), for `β > 2`. Both steps repeat Steps 2--3 of the proof of Proposition 3.9
 on a marked nearest-neighbour graph: the configuration is split into the block `I = I^pair` of the
 isolated `2`-cycles and its complement (gred3), and the block `I` is integrated as in the proof of
-Proposition 3.9, with modified pair factors. This file defines the tilted block integrands and
-carries out Steps 1--2 of the proof of Proposition 3.9 for them (the pointwise bound by a product
+Proposition 3.8, with modified pair factors. This file defines the tilted block integrands and
+carries out Steps 1--2 of the proof of Proposition 3.8 for them (the pointwise bound by a product
 of pair weights, and the reduction to an integral over one representative of each pair).
 
 As in `UpperBound/Isolated.lean`, the block is a finite index type `ι` (the vertices of `I`), the
@@ -28,16 +28,16 @@ source's `I'`). All radii are computed within the block (`nnRadius`, `nnRadius2`
 
 ## The block energies
 
-* **Step 3** (`A₁`, l. 2091--2100). `A₁ - F_λ` cancels `F_λ` (`linearA1`), and
+* **Step 3** (`A₁`, l. 1969–1978). `A₁ - F_λ` cancels `F_λ` (`linearA1`), and
   `e^{β A₁ - β F_λ} = e^{-β G_α}` with
   `G_α = -½ ∑_i g_λ(z_i - z_{φ₁ i}) + ∑_{i ∈ I'} (log (α_i / r̃₁(z_i)) - C)`,
   `α_i = (τ_i ∧ γ) ∨ r̃₁(z_i)`, `τ_i = r̃₂(z_i) ∧ r̃₂(z_{φ₁ i})` (`alphaRadius`). On a marked cell,
   `G_α = G⁽¹⁾_γ(z_I) + F⁽²⁾(z_{Iᶜ})` exactly, where `G⁽¹⁾_γ = alphaBlockEnergy` is
   `F^nn + ∑_{i ∈ S} (log (α^I_i / r̃₁(z_i)) - C)` and `α^I_i = alphaPairRadius` is `α_i` with `r̃₂`
   computed within `I`: for `i ∈ I'` both `φ₂(i)` and `φ₂(φ₁ i)` lie in `I^pair`, so `r̃₂` within `I`
-  equals `r̃₂` (source l. 1542: at marked vertices the second neighbour also lies in `I`), and
+  equals `r̃₂` (source l. 1450: at marked vertices the second neighbour also lies in `I`), and
   `r̃₁` is the same within `I` for every `i ∈ I^pair`.
-* **Step 4** (`A₃`, l. 2132--2149). On a marked cell
+* **Step 4** (`A₃`, l. 2011–2027). On a marked cell
   `A₃ ≤ ∑_{i ∈ I} ((r̃₁(z_i)/γ)² ∧ 1)` (distances within `I`), and the block integrand is
   `exp (t ∑_{i ∈ I} ((r̃₁(z_i)/γ)² ∧ 1) - β F⁽¹⁾)`, with `F⁽¹⁾ = pairAssignedEnergy`.
 
@@ -46,14 +46,14 @@ source's `I'`). All radii are computed within the block (`nnRadius`, `nnRadius2`
 * `alphaPairRadius`, `alphaBlockEnergy`: `α^I_i` and `G⁽¹⁾_γ`.
 * `TiltedReduction.ofReal_exp_neg_mul_alphaBlockEnergy_le`: Step 1 for `G⁽¹⁾_γ`; the same-sign
   pair factor is `C₂ e^{β g_λ(u)} (a/((ρ ∧ γ) ∨ a))^{2β}` (`alphaPairWeight`), from
-  `α ≥ ((ρ ∧ γ) ∨ a)/3` (`ρ ≤ 3 r̃₂`, `mainclaimr1r2`).
+  `α ≥ ((ρ ∧ γ) ∨ a)/3` (`ρ ≤ 3 r̃₂`, the comparison of pair radii in Step 1).
 * `TiltedReduction.ofReal_exp_tilt_sub_le`: Step 1 for the `A₃`-tilted integrand; the tilt of the
   pair `j` is `exp (2t ((a_j/γ)² ∧ 1))`.
 * `lintegral_alphaBlockCell_le`: (pred3) for `G⁽¹⁾_γ`, with the same-sign factor
-  `C' ((λ/ρ)^{β-2} + (λ/γ)^{β-2})` (`lintegral_sameSignPair_cutoff_le`, source l. 2092--2100).
+  `C' ((λ/ρ)^{β-2} + (λ/γ)^{β-2})` (`lintegral_sameSignPair_cutoff_le`, source l. 1970–1978).
 * `lintegral_tiltedCell_le`: (pred3) for the `A₃`-tilted integrand: every pair factor gains at most
   `1 + C_t φ_β(γ)` (`lintegral_neutralTilt_le` after `e^{c s} ≤ 1 + (e^c - 1) s` on `[0, 1]`, source
-  l. 2143--2149), and the same-sign tilt `e^{2t}` is absorbed into the constant `C'`.
+  l. 2021–2027), and the same-sign tilt `e^{2t}` is absorbed into the constant `C'`.
 -/
 
 @[expose] public section
@@ -72,8 +72,8 @@ section Definitions
 variable {ι : Type*} [Fintype ι] [Nontrivial ι]
 
 /-- The radius `α^I_i = ((r̃₂(z_i) ∧ r̃₂(z_{φ₁ i})) ∧ γ) ∨ r̃₁(z_i)` of the isolated-pair block,
-with the radii computed within the block (source (eq:def alphai), l. 2004--2006, restricted to
-`I` as in l. 1542–1546 and l. 2092). On a twice-isolated pair of a configuration it is the radius
+with the radii computed within the block (source the definition of αᵢ in Step 2, l. 1882–1883, restricted to
+`I` as in l. 1450–1454 and l. 1970). On a twice-isolated pair of a configuration it is the radius
 `α_i` of Theorem 2, Step 2 (`alphaRadius`). -/
 noncomputable def alphaPairRadius (h3 : 3 ≤ Fintype.card ι) (key : ι ↪ ℕ) (lam γ : ℝ)
     (z : ι → ℂ) (i : ι) : ℝ :=
@@ -82,8 +82,8 @@ noncomputable def alphaPairRadius (h3 : 3 ≤ Fintype.card ι) (key : ι ↪ ℕ
 
 /-- The `A₁`-block energy
 `G⁽¹⁾_γ(z) = -½ ∑_i g_λ(z_i - z_{φ₁ i}) + ∑_{i ∈ S} (log (α^I_i / r̃₁(z_i)) - C)` of
-Theorem 2, Step 3 (source l. 2091--2100: the energy `G` of (eq:alt) with `α_i` in place of
-`r̃₂(z_i) ∧ r̃₂(z_{φ₁ i})`, restricted to the isolated-pair block as in (def:F(1)), l. 1545--1552).
+Theorem 2, Step 3 (source l. 1969–1978: the energy `G` of (eq:alt) with `α_i` in place of
+`r̃₂(z_i) ∧ r̃₂(z_{φ₁ i})`, restricted to the isolated-pair block as in the definition of F⁽¹⁾, l. 1453–1459).
 `S` is the set of vertices of the marked same-sign pairs. -/
 noncomputable def alphaBlockEnergy (h3 : 3 ≤ Fintype.card ι) (key : ι ↪ ℕ) (lam γ C : ℝ)
     (S : Finset ι) (z : ι → ℂ) : ℝ :=
@@ -126,7 +126,7 @@ section AlphaStepOne
 variable {ι : Type*} [Fintype ι] [Nontrivial ι] {key : ι ↪ ℕ} {f : ι → ι} {z : ι → ℂ}
   {R : Set ι} [DecidablePred (· ∈ R)]
 
-/-- **The cut-off logarithmic term** (source l. 2092--2100, as in l. 1273--1276): on the cell
+/-- **The cut-off logarithmic term** (source l. 1970–1978, as in l. 1217–1220): on the cell
 `{nnMap key z = f}`, for both endpoints `i` of the pair `j`,
 `-(log (α^I_i / r̃₁(z_i)) - C) ≤ log (3 a_j / ((ρ_j ∧ γ) ∨ a_j)) + C`, since `r̃₁(z_i) = a_j` and
 `α^I_i ≥ ((ρ_j ∧ γ) ∨ a_j)/3` (from `ρ_j ≤ 3 r̃₂` at both endpoints). -/
@@ -297,10 +297,10 @@ theorem sum_min_sq_eq (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) = i)
     nnRadius_eq_displacementScale lam hz hf2 (Or.inr rfl)]
   ring
 
-/-- **Step 1, the integrand bound for the `A₃`-tilted block** (source l. 2132--2149): on the cell
+/-- **Step 1, the integrand bound for the `A₃`-tilted block** (source l. 2011–2027): on the cell
 `{nnMap key z = f}`,
 `exp (t ∑_i ((r̃₁(z_i)/γ)² ∧ 1) - β F⁽¹⁾(z)) ≤ ∏_{j ∈ R} W_j(u_j, ρ_j) e^{2t ((a_j/γ)² ∧ 1)}`,
-with the pair weights `pairWeight` of Proposition 3.9. -/
+with the pair weights `pairWeight` of Proposition 3.8. -/
 theorem ofReal_exp_tilt_sub_le (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) = i)
     (hRf : ∀ i, i ∈ R ↔ f i ∉ R) [Nontrivial {i // i ∈ R}] (h3 : 3 ≤ Fintype.card ι)
     {S : Finset ι} (hS : ∀ i, f i ∈ S ↔ i ∈ S) {β C lam : ℝ} (hβ : 0 ≤ β) (hC : 0 ≤ C)
@@ -341,8 +341,8 @@ theorem TiltedReduction.measurableSet_pairCell {ι : Type*} [Fintype ι] [Nontri
     (MeasurableSet.iInter fun i => measurableSet_nnMap_eq key i (f i))
 
 open scoped Classical in
-/-- **`(pred3)` for `G⁽¹⁾_γ`** (Theorem 2, Step 3, source l. 2092--2100 with Steps 1--2 of the proof
-of Proposition 3.9). For `β > 2` and `C ∈ ℝ` there is `C' > 0`, depending only on `β` and `C`,
+/-- **`(pred3)` for `G⁽¹⁾_γ`** (Theorem 2, Step 3, source l. 1970–1978 with Steps 1--2 of the proof
+of Proposition 3.8). For `β > 2` and `C ∈ ℝ` there is `C' > 0`, depending only on `β` and `C`,
 such that for every block `ι` with graph `f` (a fixed-point-free involution), set of
 representatives `R`, `f`-invariant same-sign set `S`, `N`, `0 < λ ≤ e^{-1}` and `γ ≥ λ`,
 `∫_{Λ^ι ∩ {nnMap key z = f}} e^{-β G⁽¹⁾_γ(z)} dz ≤ (𝒵_β λ^{2-β})^p ∫_{Λ^R} ∏_{j ∈ R ∖ S}
@@ -471,8 +471,8 @@ theorem lintegral_alphaBlockCell_le {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (C
         exact lintegral_const_mul' _ _ (ENNReal.pow_ne_top ENNReal.ofReal_ne_top)
 
 open scoped Classical in
-/-- **`(pred3)` for the `A₃`-tilted block** (Theorem 2, Step 4, source l. 2132--2158 with Steps 1--2
-of the proof of Proposition 3.9). For `β > 2`, `C ≥ 0` and `t ≥ 0` there are `C' > 0` and
+/-- **`(pred3)` for the `A₃`-tilted block** (Theorem 2, Step 4, source l. 2011–2036 with Steps 1--2
+of the proof of Proposition 3.8). For `β > 2`, `C ≥ 0` and `t ≥ 0` there are `C' > 0` and
 `C_t ≥ 0`, depending only on `β`, `C`, `t`, such that for every block `ι` with graph `f`, set of
 representatives `R`, `f`-invariant same-sign set `S`, `N`, `0 < λ ≤ e^{-1}` and `γ ≥ λ`,
 `∫_{Λ^ι ∩ {nnMap key z = f}} exp (t ∑_i ((r̃₁(z_i)/γ)² ∧ 1) - β F⁽¹⁾(z)) dz
@@ -480,7 +480,7 @@ representatives `R`, `f`-invariant same-sign set `S`, `N`, `0 < λ ≤ e^{-1}` a
     ∏_{j ∈ R ∩ S} C' (λ/ρ_j)^{β-2} dW`,
 with `F⁽¹⁾ = pairAssignedEnergy`. For an auxiliary neutral pair the tilt costs
 `∫ e^{β g_λ} ((a/γ)² ∧ 1) ≤ C 𝒵_β λ^{2-β} φ_β(γ)` (`lintegral_neutralTilt_le`); for a same-sign
-pair the tilt is at most `e^{2t}`, absorbed into `C'` (the source absorbs it into `C₀`, l. 2158). -/
+pair the tilt is at most `e^{2t}`, absorbed into `C'` (the source absorbs it into `C₀`, l. 2036). -/
 theorem lintegral_tiltedCell_le {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) {C : ℝ} (hC : 0 ≤ C) {t : ℝ}
     (ht : 0 ≤ t) :
     ∃ C' Ct : ℝ, 0 < C' ∧ 0 ≤ Ct ∧ ∀ (ι : Type u) [Fintype ι] [Nontrivial ι] (key : ι ↪ ℕ)

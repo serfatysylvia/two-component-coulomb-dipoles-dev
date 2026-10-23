@@ -15,8 +15,8 @@ public import TwoComponentCoulomb.Potential.SmearedCharge
 # The pair integral of two uniform disc measures
 
 Identities for the double integrals `∬ f(x - y) dδ_z^{(a)}(x) dδ_w^{(b)}(y)` occurring in the
-definitions of `smearedKernel` (source eq. (eq:defgeta), l. 162–163), `kappa` and `energy`
-(eq. (eq:F3), l. 155–158).
+definitions of `smearedKernel` (source eq. (eq:defgeta), l. 147–148), `kappa` and `energy`
+(eq. (eq:F3), l. 140–143).
 
 * `integral_prod_smearedCharge_sub` : translation invariance of the pair integral.
 * `integral_logKernel_prod_smearedCharge` : the pair integral of `logKernel` is

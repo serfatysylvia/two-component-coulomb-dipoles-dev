@@ -43,5 +43,5 @@ jobs:
           scripts/print_axioms.sh TwoComponentCoulomb \
             TwoComponentCoulomb.theorem_1 TwoComponentCoulomb.theorem_2 \
             TwoComponentCoulomb.proposition_2_2 TwoComponentCoulomb.corollary_2_3 \
-            TwoComponentCoulomb.lemma_3_6 TwoComponentCoulomb.proposition_3_10 \
+            TwoComponentCoulomb.lemma_3_5 TwoComponentCoulomb.proposition_3_9_and_3_10 \
             TwoComponentCoulomb.proposition_4_1

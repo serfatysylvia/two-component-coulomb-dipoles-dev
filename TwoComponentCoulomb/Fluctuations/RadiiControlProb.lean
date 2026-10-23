@@ -16,11 +16,11 @@ import TwoComponentCoulomb.NearestNeighbor.Isolated
 /-!
 # Theorem 2, Step 5: the probability of `A_Mᶜ` (eq. (eq:PAM))
 
-Source: proof of Theorem 2, Step 5 (l. 2182--2198). With a rate function `ω` in place of `ω_λ`
+Source: proof of Theorem 2, Step 5 (l. 2060–2072). With a rate function `ω` in place of `ω_λ`
 and `R₀ = R0Rate β ω λ`, the event of the source is `A_M = {N - ½|I^dip| + D_{R₀} ≤ M N √ω}`
 (`eventARate`). A union bound over the counts of isolated dipoles (Theorem 1, (b1)) and of long
 isolated dipoles (Theorem 1, (b2) for `β > 2` and the critical-lengths bound for `β = 2`) gives,
-for `M` large, `ℙ(A_Mᶜ) ≤ C (N+1)^C e^{-c M N ω}` (eq. (eq:PAM), l. 2195--2198).
+for `M` large, `ℙ(A_Mᶜ) ≤ C (N+1)^C e^{-c M N ω}` (eq. (eq:PAM), l. 2070–2072).
 
 The statements of Theorem 1 enter only as the hypotheses `hb1`, `hb2`, `hb3` of the conditional
 helpers below: the three clauses of Theorem 1 used in Step 5, stated with `ω` in the form of
@@ -179,7 +179,7 @@ theorem measure_le_two_mul_of_subset_union {X : Type*} [MeasurableSpace X] (μ :
 /-! ### The deficit of isolated dipoles (Theorem 1, (b1)) -/
 
 /-- Union bound over the counts `p₀` of isolated dipoles with `N - p₀ > M N √ω / 2`, using
-Theorem 1, (b1) (source l. 2191, 2195), for a general rate function `ω`. -/
+Theorem 1, (b1) , for a general rate function `ω`. -/
 theorem gibbsMeasure_isolatedDipoles_deficit_le_rate (β : ℝ) (ω : ℝ → ℝ) {lam₀ C c : ℝ}
     (hC : 0 < C) (hc : 0 < c)
     (hb1 : ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ → ∀ p₀ : ℕ, p₀ ≤ N →
@@ -226,7 +226,7 @@ theorem gibbsMeasure_isolatedDipoles_deficit_le_rate (β : ℝ) (ω : ℝ → �
 
 /-- Union bound over the counts `p'` of isolated dipoles of length larger than `R` with
 `p' > M N √ω / 2`, for `β > 2`, using Theorem 1, (b2), when `(λ/R)^{β-2} = √ω`
-(source l. 2191, 2195), for a general rate function `ω`. -/
+, for a general rate function `ω`. -/
 theorem gibbsMeasure_longIsolatedDipoles_le_of_two_lt_rate (β : ℝ) (ω : ℝ → ℝ)
     {lam₀ c' C₁ C₂ : ℝ}
     (hC₁ : 0 < C₁)
@@ -290,7 +290,7 @@ theorem gibbsMeasure_longIsolatedDipoles_le_of_two_lt_rate (β : ℝ) (ω : ℝ 
 
 /-- Union bound over the counts `p'` of isolated dipoles of length larger than `R` with
 `p' > M N √ω / 2`, for `β = 2`, using the critical-lengths bound (Theorem 1, third clause) with
-`R = R₀` (source l. 2191--2194), for a general rate function `ω`. -/
+`R = R₀` , for a general rate function `ω`. -/
 theorem gibbsMeasure_longIsolatedDipoles_le_of_eq_two_rate (β : ℝ) (ω : ℝ → ℝ) {lam₃ C : ℝ}
     (hC : 0 < C)
     (hb3 : ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₃ →
@@ -341,7 +341,7 @@ theorem gibbsMeasure_longIsolatedDipoles_le_of_eq_two_rate (β : ℝ) (ω : ℝ 
 /-! ### The event `A_M` and (eq:PAM) -/
 
 /-- The event `A_M = {N - ½|I^dip| + D_{R₀} ≤ M N √ω(λ)}` of Step 5 for a general rate function
-`ω` (source l. 2183--2190), with `R₀ = R0Rate β ω λ`. -/
+`ω` (source l. 2061–2068), with `R₀ = R0Rate β ω λ`. -/
 def eventARate (β : ℝ) (ω : ℝ → ℝ) (N : ℕ) (lam M : ℝ) : Set (Fin N ⊕ Fin N → ℂ) :=
   {Z | (N : ℝ) - (isolatedDipoles Z).card + (longIsolatedDipoles Z (R0Rate β ω lam)).card
     ≤ M * N * Real.sqrt (ω lam)}
@@ -361,7 +361,7 @@ theorem eventARate_compl_subset (β : ℝ) (ω : ℝ → ℝ) (N : ℕ) (lam M :
   push Not at h
   linarith [h.1, h.2]
 
-/-- **(eq:PAM) for a general rate function `ω`** (source l. 2195--2198): if
+/-- **(eq:PAM) for a general rate function `ω`** (source l. 2070–2072): if
 `ω` has the rate properties `Theorem2RateHyp β hβ ω`, then for `M` large and `λ` small,
 `ℙ(A_Mᶜ) ≤ 2 (N+1)^{C} e^{-c M N ω(λ)}`. The hypotheses `hb1`, `hb2`, `hb3` are the three
 clauses of Theorem 1 used in Step 5, stated with `ω` (as in `Theorem1ShapeRate`): (b1), (b2) for

@@ -10,16 +10,16 @@ import TwoComponentCoulomb.UpperBound.Isolated
 /-!
 # Theorem 2, Steps 3--4: the crude bounds for the tilted isolated-pair blocks
 
-Source: proof of Theorem 2 (`prop:linear`), Step 3 (l. 2112: "For
-`p < N/2`, the same crude bound applies, including `m ≤ 1`") and Step 4 (l. 2167: "For `p < N/2`,
+Source: proof of Theorem 2 (`prop:linear`), Step 3 (l. 1990: "For
+`p < N/2`, the same crude bound applies, including `m ≤ 1`") and Step 4 (l. 2045: "For `p < N/2`,
 the crude bound suffices as in Step 3 of the upper-bound proof"). These are the analogues of
-(eq:crude) (`isolated_crude`) for the two tilted block integrands of `TiltedEnergy.lean`.
+(eq:crude) (`isolated_crude`) for the two tilted block integrands of `Fluctuations/TiltedEnergy.lean`.
 
 Both follow from `isolated_crude` itself:
 
 * for the `A₁`-block energy `G⁽¹⁾_γ = alphaBlockEnergy`, the logarithmic terms satisfy
   `log (α^I_i / r̃₁(z_i)) ≥ 0`, so `G⁽¹⁾_γ ≥ F^nn - C |S|`, and `F^nn` is the energy of
-  Proposition 3.9 with no assigned pair and `C = 0` (`isolated_crude` does not tie `S` to `p₀`);
+  Proposition 3.8 with no assigned pair and `C = 0` (`isolated_crude` does not tie `S` to `p₀`);
 * for the `A₃`-tilt, `t ∑_i ((r̃₁(z_i)/γ)² ∧ 1) ≤ 2 t p`.
 
 The extra costs `e^{2βC p}` and `e^{2tp}` are absorbed into `C_β N`
@@ -75,7 +75,7 @@ theorem TiltedReduction.ofReal_exp_mul_lintegral_le {α : Type*} [MeasurableSpac
         have : a * (p : ℝ) ≤ a * N := mul_le_mul_of_nonneg_left (by exact_mod_cast hpN) ha
         linarith
 
-/-- **Theorem 2, Step 3: (eq:crude) for the `A₁`-block** (source l. 2112). For `β ≥ 2`, `C ≥ 0` and
+/-- **Theorem 2, Step 3: (eq:crude) for the `A₁`-block** (source l. 1990). For `β ≥ 2`, `C ≥ 0` and
 `C₀ ∈ ℝ` there is `C_β > 0` (depending only on `β`, `C`, `C₀`) such that for every finite index
 type `ι` with `|ι| = 2p`, tie-break key, graph `γ ∈ G_{p,p₀}` (a fixed-point-free involution `f`),
 every `f`-invariant `S`, every `2 ≤ p ≤ N`, `p₀ ≤ p`, `0 < λ ≤ e^{-1}` and every `γ`:
@@ -114,7 +114,7 @@ theorem alphaBlock_crude {β : ℝ} (hβ : 2 ≤ β) {C : ℝ} (hC : 0 ≤ C) (C
   have h2 : β * C * S.card ≤ β * C * (2 * p) := mul_le_mul_of_nonneg_left hS2 (mul_nonneg hβ0 hC)
   linarith
 
-/-- **Theorem 2, Step 4: (eq:crude) with the `A₃` tilt** (source l. 2167). For `β ≥ 2`, `C ≥ 0`,
+/-- **Theorem 2, Step 4: (eq:crude) with the `A₃` tilt** (source l. 2045). For `β ≥ 2`, `C ≥ 0`,
 `C₀ ∈ ℝ` and `t ≥ 0` there is `C_{β,t} > 0` (depending only on `β`, `C`, `C₀`, `t`) such that for
 every finite index type `ι` with `|ι| = 2p`, tie-break key, graph `γ ∈ G_{p,p₀}`, every
 `f`-invariant `S`, every `2 ≤ p ≤ N`, `p₀ ≤ p`, `0 < λ ≤ e^{-1}` and every `γ`:

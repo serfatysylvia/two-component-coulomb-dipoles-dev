@@ -13,17 +13,17 @@ public import Mathlib.MeasureTheory.Constructions.Pi
 import TwoComponentCoulomb.Gibbs.Basic
 
 /-!
-# Proposition 3.9, Step 3: integration of the representatives
+# Proposition 3.8, Step 3: integration of the representatives
 
-Source: proof of Proposition 3.9 (`prop:isolated`), Step 3, l. 1337--1387.
-After Steps 1--2 (`IsolatedReduction.lean`, `(pred3)`), the cell integral `I(γ)` is bounded by
+Source: proof of Proposition 3.8 (`prop:isolated`), Step 3, l. 1269–1314.
+After Steps 1--2 (`UpperBound/IsolatedReduction.lean`, `(pred3)`), the cell integral `I(γ)` is bounded by
 `(𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}))^p` times the integral over the representatives
 `W_p ∈ Λ^p` of
 `∏_{j neutral} (1 + C' φ_β(ρ_j)) ∏_{j same-sign} C' (ℓ^{-1} 1_{β=2} + (λ/ρ_j)^{β-2} 1_{β>2})`,
 with `ρ_j = r̃₁(w_j)` computed among the representatives. This file expands the first product,
-with `k` selected neutral factors, and reduces each term to an integral of Proposition 3.7 or 3.8
+with `k` selected neutral factors, and reduces each term to an integral of Proposition 3.6 or 3.7
 type over `Λ^p` with the `k + q` selected points as marked points
-(source l. 1343--1387).
+(source l. 1275–1314).
 
 ## Main results
 
@@ -37,7 +37,7 @@ type over `Λ^p` with the `k + q` selected points as marked points
 * `IsolatedIntegration.lintegral_prod_ite_le`: the expansion
   `∏_{j ∈ T} b(ρ_j) ∏_{j ∉ T} (1 + a(ρ_j)) ≤ ∑_{A ⊆ Tᶜ} M₁^{|A|} M₂^{|T|} ∏_{j ∈ A} w₁(ρ_j) ∏_{j ∈ T} w₂(ρ_j)`
   integrated over `Λ^p`, with the sum over `A` grouped by `k = |A|` (binomial multiplicity).
-* The comparison of the factors of `(pred3)` with the weights of Propositions 3.7 and 3.8 in the
+* The comparison of the factors of `(pred3)` with the weights of Propositions 3.6 and 3.7 in the
   four ranges of `β` (`ofReal_isolatedPhi_le_of_eq_two`, …), and the bounds of `γ_{β, k}` with
   `p ≤ N` (`gammaBeta_le_of_lt_four`, `gammaBeta_four_le`, …).
 -/
@@ -169,7 +169,7 @@ theorem exists_relabel_ref {ι : Type*} [Fintype ι] {f : ι → ι} {R : Set ι
 
 /-! ### Expansion of the neutral product -/
 
-/-- **Expansion of the neutral product** (source l. 1343). Let `T ⊆ Fin p` (the same-sign
+/-- **Expansion of the neutral product** (source l. 1275). Let `T ⊆ Fin p` (the same-sign
 representatives) and suppose `a ≤ M₁ w₁`, `b ≤ M₂ w₂` on `[λ, ∞)`. Then
 `∫_{Λ^p} ∏_{j ∈ T} b(ρ_j) ∏_{j ∉ T} (1 + a(ρ_j)) ≤ ∑_{k ≤ |Tᶜ|} C(|Tᶜ|, k) M₁^k M₂^{|T|} B(k)`
 whenever `B(|A|)` bounds the integral of `∏_{j ∈ A} w₁(ρ_j) ∏_{j ∈ T} w₂(ρ_j)` for every
@@ -231,7 +231,7 @@ theorem lintegral_prod_ite_le {p : ℕ} [Nontrivial (Fin p)] (N : ℕ) (lam : �
         rw [Finset.sum_powerset_apply_card (fun k => M₁ ^ k * M₂ ^ T.card * B k)]
         simp only [nsmul_eq_mul]
 
-/-! ### The factors of `(pred3)` against the weights of Propositions 3.7 and 3.8 -/
+/-! ### The factors of `(pred3)` against the weights of Propositions 3.6 and 3.7 -/
 
 section Weights
 
@@ -260,8 +260,8 @@ theorem div_rpow_eq_mul_rpow_neg (hlam : 0 < lam) {ρ : ℝ} (hρ : 0 < ρ) (s :
     (lam / ρ) ^ s = lam ^ s * ρ ^ (-s) := by
   rw [Real.div_rpow hlam.le hρ.le, Real.rpow_neg hρ.le, div_eq_mul_inv]
 
-/-- **`β = 2`** (source l. 1360): `C' φ_2(ρ) = (C'/ℓ)(1 + |log ρ|)` is the weight of
-Proposition 3.7 with `β = 0`, `δ' = 1`, with the constant `C'/ℓ`. -/
+/-- **`β = 2`** : `C' φ_2(ρ) = (C'/ℓ)(1 + |log ρ|)` is the weight of
+Proposition 3.6 with `β = 0`, `δ' = 1`, with the constant `C'/ℓ`. -/
 theorem ofReal_isolatedPhi_le_of_eq_two {β : ℝ} (hβ : 2 ≤ β) (h : β = 2) {C' : ℝ} (hC' : 0 ≤ C')
     (ρ : ℝ) :
     ENNReal.ofReal (C' * isolatedPhi β hβ lam ρ) ≤
@@ -271,7 +271,7 @@ theorem ofReal_isolatedPhi_le_of_eq_two {β : ℝ} (hβ : 2 ≤ β) (h : β = 2)
   simp only [neg_zero, zero_div, Real.rpow_zero, pow_zero, pow_one, one_mul]
   ring
 
-/-- **`β = 2`** (source l. 1360): the same-sign factor `C' ℓ^{-1} ≤ (C'/ℓ)(1 + |log ρ|)`. -/
+/-- **`β = 2`** : the same-sign factor `C' ℓ^{-1} ≤ (C'/ℓ)(1 + |log ρ|)`. -/
 theorem ofReal_isolatedTail_le_of_eq_two {β : ℝ} (hβ : 2 ≤ β) (h : β = 2) {C' : ℝ}
     (hC' : 0 ≤ C') (ρ : ℝ) :
     ENNReal.ofReal (C' * isolatedTail β hβ lam ρ) ≤
@@ -284,9 +284,9 @@ theorem ofReal_isolatedTail_le_of_eq_two {β : ℝ} (hβ : 2 ≤ β) (h : β = 2
   rw [← div_eq_mul_inv]
   nlinarith [abs_nonneg (Real.log ρ)]
 
-/-- **`β > 2`, the same-sign factor** (source l. 1364, 1380): `C' (λ/ρ)^{β-2}` is the weight of
-Proposition 3.7 (for `2 < β < 4`, l. 1364) or of the second species of Proposition 3.8 (for
-`β > 4`, l. 1380) with parameter `2(β - 2)`, with the constant `C' λ^{β-2}`. -/
+/-- **`β > 2`, the same-sign factor** (source l. 1291, 1307): `C' (λ/ρ)^{β-2}` is the weight of
+Proposition 3.6 (for `2 < β < 4`, l. 1291) or of the second species of Proposition 3.7 (for
+`β > 4`, l. 1307) with parameter `2(β - 2)`, with the constant `C' λ^{β-2}`. -/
 theorem ofReal_isolatedTail_le_of_two_lt {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (hlam : 0 < lam)
     {C' : ℝ} (hC' : 0 ≤ C') {ρ : ℝ} (hρ : lam ≤ ρ) :
     ENNReal.ofReal (C' * isolatedTail β hβ lam ρ) ≤
@@ -298,7 +298,7 @@ theorem ofReal_isolatedTail_le_of_two_lt {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < �
     show 2 * (β - 2) / 2 = β - 2 by ring]
   ring
 
-/-- **`2 < β < 4`, the neutral factor** (source l. 1364): `C' φ_β(ρ) = C' (λ/ρ)^{β-2}`. -/
+/-- **`2 < β < 4`, the neutral factor** (source l. 1291): `C' φ_β(ρ) = C' (λ/ρ)^{β-2}`. -/
 theorem ofReal_isolatedPhi_le_of_two_lt_of_lt_four {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β)
     (h4 : β < 4) (hlam : 0 < lam) {C' : ℝ} (hC' : 0 ≤ C') {ρ : ℝ} (hρ : lam ≤ ρ) :
     ENNReal.ofReal (C' * isolatedPhi β hβ lam ρ) ≤
@@ -308,8 +308,8 @@ theorem ofReal_isolatedPhi_le_of_two_lt_of_lt_four {β : ℝ} (hβ : 2 ≤ β) (
   rw [hφ]
   exact ofReal_isolatedTail_le_of_two_lt hβ h2 hlam hC' hρ
 
-/-- **`β = 4`, the neutral factor** (source l. 1374--1375): `C' φ_4(ρ) = C' λ² ρ^{-2} (1 + log (ρ/λ))`
-is the weight of Proposition 3.7 with parameter `4`, `δ = 1`, with the constant `C' λ²`. -/
+/-- **`β = 4`, the neutral factor** (source l. 1301–1302): `C' φ_4(ρ) = C' λ² ρ^{-2} (1 + log (ρ/λ))`
+is the weight of Proposition 3.6 with parameter `4`, `δ = 1`, with the constant `C' λ²`. -/
 theorem ofReal_isolatedPhi_le_of_eq_four {β : ℝ} (hβ : 2 ≤ β) (h4 : β = 4) (hlam : 0 < lam)
     {C' : ℝ} (hC' : 0 ≤ C') {ρ : ℝ} (hρ : lam ≤ ρ) :
     ENNReal.ofReal (C' * isolatedPhi β hβ lam ρ) ≤
@@ -321,8 +321,8 @@ theorem ofReal_isolatedPhi_le_of_eq_four {β : ℝ} (hβ : 2 ≤ β) (h4 : β = 
     show -((4 : ℝ) / 2) = -2 by norm_num, Real.rpow_neg hρ0.le, Real.rpow_two, div_pow]
   field_simp
 
-/-- **`β = 4`, the same-sign factor** (source l. 1374): `C' (λ/ρ)² ≤ C' (λ/ρ)² (1 + log (ρ/λ))`,
-the weight of Proposition 3.7 with parameter `4`, `δ = 1`. -/
+/-- **`β = 4`, the same-sign factor** (source l. 1301): `C' (λ/ρ)² ≤ C' (λ/ρ)² (1 + log (ρ/λ))`,
+the weight of Proposition 3.6 with parameter `4`, `δ = 1`. -/
 theorem ofReal_isolatedTail_le_of_eq_four {β : ℝ} (hβ : 2 ≤ β) (h4 : β = 4) (hlam : 0 < lam)
     {C' : ℝ} (hC' : 0 ≤ C') {ρ : ℝ} (hρ : lam ≤ ρ) :
     ENNReal.ofReal (C' * isolatedTail β hβ lam ρ) ≤
@@ -339,8 +339,8 @@ theorem ofReal_isolatedTail_le_of_eq_four {β : ℝ} (hβ : 2 ≤ β) (h4 : β =
   gcongr
   linarith
 
-/-- **`β > 4`, the neutral factor** (source l. 1380): `C' φ_β(ρ) = C' λ² ρ^{-2}` is the weight of
-the first species of Proposition 3.8 (parameter `4`, `δ = 0`), with the constant `C' λ²`. -/
+/-- **`β > 4`, the neutral factor** (source l. 1307): `C' φ_β(ρ) = C' λ² ρ^{-2}` is the weight of
+the first species of Proposition 3.7 (parameter `4`, `δ = 0`), with the constant `C' λ²`. -/
 theorem ofReal_isolatedPhi_le_of_four_lt {β : ℝ} (hβ : 2 ≤ β) (h4 : 4 < β) (hlam : 0 < lam)
     {C' : ℝ} (hC' : 0 ≤ C') {ρ : ℝ} (hρ : lam ≤ ρ) :
     ENNReal.ofReal (C' * isolatedPhi β hβ lam ρ) ≤
@@ -353,13 +353,13 @@ theorem ofReal_isolatedPhi_le_of_four_lt {β : ℝ} (hβ : 2 ≤ β) (h4 : 4 < �
 
 end Weights
 
-/-! ### The exponents `γ` with `p ≤ N` (source l. 1373, 1378, 1383--1385) -/
+/-! ### The exponents `γ` with `p ≤ N` (source l. 1300, 1305, 1310–1312) -/
 
 section Gamma
 
 variable {lam : ℝ}
 
-/-- The fractions `k/N ≤ k/p` for `p ≤ N` (source l. 1373, "we used `p/N ≤ 1`"). -/
+/-- The fractions `k/N ≤ k/p` for `p ≤ N` (source l. 1300, "we used `p/N ≤ 1`"). -/
 theorem div_le_div_of_le_nat {k p N : ℕ} (hp : 0 < p) (hpN : p ≤ N) :
     (k : ℝ) / N ≤ (k : ℝ) / p := by
   have hP : (0 : ℝ) < p := by exact_mod_cast hp
@@ -373,37 +373,78 @@ theorem abs_log_le_inv (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1)) :
   rw [Real.log_inv] at h
   linarith
 
-/-- **`2 < β < 4`** (source l. 1366--1373): for `b = β - 2 ∈ [0, 2)` and `p ≤ N`,
-`γ_{2b, k} ≤ log (max (λ^{-b} k/p) 1)` in the three regimes `b < 1`, `b = 1`, `b > 1`. -/
+/-- The cycle scale in the three subcritical regimes of the paper,
+lines 1293–1299. For `β < 3` the correction is zero and `k/p ≤ 1`. -/
+noncomputable def subcriticalCycleScale (β lam : ℝ) : ℝ :=
+  if β < 3 then 1 else if β = 3 then |Real.log lam| else lam ^ (6 - 2 * β)
+
+/-- The three subcritical cycle scales are positive. -/
+theorem subcriticalCycleScale_pos (β : ℝ) (hlam : 0 < lam)
+    (hl1 : lam ≤ Real.exp (-1)) : 0 < subcriticalCycleScale β lam := by
+  have := one_le_abs_log hlam hl1
+  unfold subcriticalCycleScale
+  split_ifs <;> positivity
+
+/-- Keep the three regimes `b < 1`, `b = 1`, `b > 1`, where `b = β - 2`,
+through the representative integral. Only `p/N ≤ 1` is used here. -/
 theorem gammaBeta_le_of_lt_four {β : ℝ} (h4 : β < 4)
-    (hb : 0 ≤ 2 * (β - 2)) (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1)) {k p N : ℕ} (hp : 0 < p)
+    (hb : 0 ≤ 2 * (β - 2)) (hlam : 0 < lam) {k p N : ℕ} (hp : 0 < p)
     (hpN : p ≤ N) :
     gammaBeta (2 * (β - 2)) hb 0 lam k N ≤
-      Real.log (max (lam ^ (-(β - 2)) * ((k : ℝ) / p)) (1 ^ 2)) := by
-  have hl1' : lam ≤ 1 := hl1.trans (by rw [Real.exp_le_one_iff]; norm_num)
+      Real.log (max (subcriticalCycleScale β lam * ((k : ℝ) / p)) (1 ^ 2)) := by
   have hkN := div_le_div_of_le_nat (k := k) hp hpN
-  have hpos : 0 < max (lam ^ (-(β - 2)) * ((k : ℝ) / p)) (1 ^ 2) :=
-    lt_max_of_lt_right (by norm_num)
-  have hge : 0 ≤ Real.log (max (lam ^ (-(β - 2)) * ((k : ℝ) / p)) (1 ^ 2)) :=
-    Real.log_nonneg (le_max_of_le_right (by norm_num))
-  unfold gammaBeta
-  split_ifs with ha hb2 hc
-  · exact hge
-  · -- `2b = 2`, i.e. `β = 3`
-    have hβ3 : β - 2 = 1 := by linarith
-    refine Real.log_le_log (lt_max_of_lt_right one_pos) (max_le_max ?_ (by norm_num))
-    rw [hβ3, Real.rpow_neg_one, mul_div_assoc]
-    exact mul_le_mul (abs_log_le_inv hlam hl1) hkN (by positivity) (by positivity)
-  · refine Real.log_le_log (lt_max_of_lt_right one_pos) (max_le_max ?_ (by norm_num))
-    rw [mul_div_assoc]
-    refine mul_le_mul ?_ hkN (by positivity) (by positivity)
-    exact Real.rpow_le_rpow_of_exponent_ge hlam hl1' (by linarith)
-  · exfalso
-    linarith
-  · exfalso
-    linarith
+  by_cases h3 : β < 3
+  · rw [gammaBeta_of_lt_two (by linarith)]
+    exact Real.log_nonneg (le_max_of_le_right (by norm_num))
+  by_cases he : β = 3
+  · have hpar : 2 * (β - 2) = 2 := by rw [he]; norm_num
+    simp only [gammaBeta, hpar, lt_self_iff_false, ite_false, ite_true]
+    rw [subcriticalCycleScale, ite_eq_right h3, ite_eq_left he, mul_div_assoc]
+    exact Real.log_le_log (lt_max_of_lt_right one_pos)
+      (max_le_max (mul_le_mul_of_nonneg_left hkN (abs_nonneg _)) (by norm_num))
+  · have hgt : 3 < β := lt_of_le_of_ne (not_lt.1 h3) (Ne.symm he)
+    rw [gammaBeta_of_two_lt_of_lt_four (by linarith) (by linarith)]
+    rw [subcriticalCycleScale, ite_eq_right h3, ite_eq_right he,
+      show 2 - 2 * (β - 2) = 6 - 2 * β by ring, mul_div_assoc]
+    exact Real.log_le_log (lt_max_of_lt_right one_pos)
+      (max_le_max (mul_le_mul_of_nonneg_left hkN (Real.rpow_pos_of_pos hlam _).le)
+        (by norm_num))
 
-/-- **`β = 4`** (source l. 1378): for `p ≤ N`,
+/-- The second branch after optimization is `λ² ℓ` at `β = 3` and `λ²`
+for `3 < β < 4`. These are the sharper contributions of manuscript lines 1365–1367. -/
+theorem subcriticalCycleScale_mul_sq {β : ℝ} (h3 : 3 ≤ β) (hlam : 0 < lam) :
+    subcriticalCycleScale β lam * (lam ^ (β - 2)) ^ 2 =
+      if β = 3 then lam ^ 2 * |Real.log lam| else lam ^ 2 := by
+  rw [subcriticalCycleScale, ite_eq_right (not_lt.2 h3)]
+  split_ifs with he
+  · rw [he]
+    norm_num [mul_comm]
+  · rw [← Real.rpow_natCast, ← Real.rpow_mul hlam.le, ← Real.rpow_add hlam]
+    norm_num
+    ring_nf
+    rw [Real.rpow_two]
+
+/-- Absorb the sharper branch contributions only after optimization.
+The zero-correction regime also allows `λ^{2b} ≤ λ^b`. -/
+theorem subcriticalCycleScale_mul_sq_le {β : ℝ} (h2 : 2 < β) (h4 : β < 4)
+    (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1)) :
+    subcriticalCycleScale β lam * (lam ^ (β - 2)) ^ 2 ≤ lam ^ (β - 2) := by
+  have hl : lam ≤ 1 := hl1.trans (by rw [Real.exp_le_one_iff]; norm_num)
+  by_cases h3 : β < 3
+  · rw [subcriticalCycleScale, ite_eq_left h3, one_mul, ← Real.rpow_natCast,
+      ← Real.rpow_mul hlam.le]
+    exact Real.rpow_le_rpow_of_exponent_ge hlam hl (by norm_num; linarith)
+  · rw [subcriticalCycleScale_mul_sq (not_lt.1 h3) hlam]
+    split_ifs with he
+    · rw [he]
+      norm_num
+      calc lam ^ 2 * |Real.log lam| ≤ lam ^ 2 * lam⁻¹ :=
+            mul_le_mul_of_nonneg_left (abs_log_le_inv hlam hl1) (sq_nonneg lam)
+        _ = lam := by field_simp
+    · rw [← Real.rpow_two]
+      exact Real.rpow_le_rpow_of_exponent_ge hlam hl (by linarith)
+
+/-- **`β = 4`** (source l. 1305): for `p ≤ N`,
 `γ_{4, k} = log (max (λ^{-2} k/N) ℓ^4) ≤ log (max (λ^{-2} k/p) (ℓ²)²)` (`δ = 1`). -/
 theorem gammaBeta_four_le (h : 0 ≤ (4 : ℝ)) (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1))
     {k p N : ℕ} (hp : 0 < p) (hpN : p ≤ N) :
@@ -418,7 +459,7 @@ theorem gammaBeta_four_le (h : 0 ≤ (4 : ℝ)) (hlam : 0 < lam) (hl1 : lam ≤ 
   exact Real.log_le_log (lt_max_of_lt_right hℓ)
     (max_le_max (mul_le_mul_of_nonneg_left hkN (by positivity)) le_rfl)
 
-/-- **`β > 4`, the first species** (source l. 1385, `δ = 0`): for `p ≤ N`,
+/-- **`β > 4`, the first species** (source l. 1312, `δ = 0`): for `p ≤ N`,
 `γ_{4, k} = log (max (λ^{-2} k/N) ℓ²) ≤ log (max (λ^{-2} k/p) ℓ²)`. -/
 theorem gammaBeta_four_zero_le (h : 0 ≤ (4 : ℝ)) (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1))
     {k p N : ℕ} (hp : 0 < p) (hpN : p ≤ N) :
@@ -432,7 +473,7 @@ theorem gammaBeta_four_zero_le (h : 0 ≤ (4 : ℝ)) (hlam : 0 < lam) (hl1 : lam
   exact Real.log_le_log (lt_max_of_lt_right hℓ)
     (max_le_max (mul_le_mul_of_nonneg_left hkN (by positivity)) le_rfl)
 
-/-- **`β > 4`, the second species** (source l. 1383--1384): for `β' = 2(β - 2) > 4` and `p ≤ N`,
+/-- **`β > 4`, the second species** (source l. 1310–1311): for `β' = 2(β - 2) > 4` and `p ≤ N`,
 `γ_{β', q} = log (max (λ^{2-β'} q/N) λ^{4-β'}) ≤ log (max (λ^{2-β'} q/p) (λ^{4-β})²)`. -/
 theorem gammaBeta_four_lt_le {β : ℝ} (h4 : 4 < β) (hb : 0 ≤ 2 * (β - 2)) (hlam : 0 < lam)
     {q p N : ℕ} (hp : 0 < p) (hpN : p ≤ N) :

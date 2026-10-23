@@ -10,9 +10,9 @@ public import TwoComponentCoulomb.UpperBound.PairAssignedEnergy
 import TwoComponentCoulomb.Potential.PairIntegral
 
 /-!
-# Proposition 3.9, Step 1: comparison of the radii and the pointwise integrand bound
+# Proposition 3.8, Step 1: comparison of the radii and the pointwise integrand bound
 
-Source: proof of Proposition 3.9 (`prop:isolated`), Step 1, l. 1263--1277.
+Source: proof of Proposition 3.8 (`prop:isolated`), Step 1, l. 1209–1220.
 Fix a finite index type `ι`, a fixed-point-free involution `f : ι → ι` (the nearest-neighbour graph
 `γ` of the cell, all of whose components are `2`-cycles) and a set `R ⊆ ι` of *representatives*,
 containing exactly one endpoint of each `2`-cycle (`i ∈ R ↔ f i ∉ R`; for the Gunson--Panta
@@ -31,11 +31,11 @@ For a configuration `z : ι → ℂ` in the cell `{nnMap key z = f}` and a repre
 * `TwoComponentCoulomb.IsolatedReduction.displacementScale_le_nnRadius_ref`: `a_j ≤ ρ_j`
   (and hence `|u_j| ≤ 4ρ_j`, `norm_le_four_mul_nnRadius_ref`).
 * `TwoComponentCoulomb.IsolatedReduction.nnRadius_ref_le_three_mul_nnRadius2`:
-  `ρ_j ≤ 3 r̃₂(z_i)` for both endpoints `i` (source l. 1266--1270).
+  `ρ_j ≤ 3 r̃₂(z_i)` for both endpoints `i` (source l. 1211–1213).
 * `TwoComponentCoulomb.IsolatedReduction.nnRadius_div_nnRadius2_le`:
-  `r̃₁(z_i)/r̃₂(z_i) ≤ 3 a_j/ρ_j` (`mainclaimr1r2`, l. 1270--1272).
+  `r̃₁(z_i)/r̃₂(z_i) ≤ 3 a_j/ρ_j` (the comparison of pair radii in Step 1, ).
 * `TwoComponentCoulomb.IsolatedReduction.neg_mul_pairAssignedEnergy_le`: the pointwise bound
-  on the pair-assigned energy (l. 1272--1276): `-β E ≤ ∑_{j ∈ R} (β g_λ(u_j) + …)`.
+  on the pair-assigned energy (l. 1217–1220): `-β E ≤ ∑_{j ∈ R} (β g_λ(u_j) + …)`.
 * `TwoComponentCoulomb.IsolatedReduction.pairWeight`,
   `TwoComponentCoulomb.IsolatedReduction.ofReal_exp_neg_mul_pairAssignedEnergy_le`: the integrand
   bound `e^{-β E} ≤ ∏_{j ∈ R} W_j(u_j, ρ_j)` with the pair weights
@@ -120,7 +120,7 @@ theorem norm_sub_refPt_le (hz : nnMap key z = f) {i k : ι} (hik : i ≠ k) :
   · exact norm_sub_f_le hz hik
 
 /-- The representative of the pair containing `k` is within `3 |z_i - z_k|` of the representative
-`z_j` of the pair of `i`, for `k` outside the pair of `i` (source l. 1267--1269: the distance
+`z_j` of the pair of `i`, for `k` outside the pair of `i` (source l. 1211–1213: the distance
 from `v` to `w_l` and from `z` to `w_j` are at most `|z - v|`). -/
 theorem norm_sub_refPt_le_three (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) = i) {j i k : ι}
     (hi : i = j ∨ i = f j) (hki : k ≠ i) :
@@ -154,7 +154,7 @@ theorem refPt_ne (hf2 : ∀ i, f (f i) = i) {j i k : ι} (hi : i = j ∨ i = f j
 
 variable (lam : ℝ)
 
-/-- `r̃₁(z_i) = a_j` for both endpoints `i` of the pair `{j, f j}` (source l. 1269). -/
+/-- `r̃₁(z_i) = a_j` for both endpoints `i` of the pair `{j, f j}` (source l. 1213). -/
 theorem nnRadius_eq_displacementScale (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) = i) {j i : ι}
     (hi : i = j ∨ i = f j) : nnRadius lam z i = displacementScale lam (z (f j) - z j) := by
   rw [nnRadius_eq key lam z i, hz]
@@ -163,7 +163,7 @@ theorem nnRadius_eq_displacementScale (hz : nnMap key z = f) (hf2 : ∀ i, f (f 
   · rw [norm_sub_rev]
   · rw [hf2]
 
-/-- `a_j ≤ ρ_j` (source l. 1268). -/
+/-- `a_j ≤ ρ_j` . -/
 theorem displacementScale_le_nnRadius_ref (hz : nnMap key z = f) [Nontrivial {i // i ∈ R}]
     (j : {i // i ∈ R}) :
     displacementScale lam (z (f j) - z j) ≤ nnRadius lam (fun l : {i // i ∈ R} => z l) j := by
@@ -174,7 +174,7 @@ theorem displacementScale_le_nnRadius_ref (hz : nnMap key z = f) [Nontrivial {i 
   rw [norm_sub_rev (z (f j))]
   linarith
 
-/-- `|u_j| ≤ 4 ρ_j` (source l. 1268). -/
+/-- `|u_j| ≤ 4 ρ_j` . -/
 theorem norm_le_four_mul_nnRadius_ref (hz : nnMap key z = f) [Nontrivial {i // i ∈ R}]
     (j : {i // i ∈ R}) :
     ‖z (f j) - z j‖ ≤ 4 * nnRadius lam (fun l : {i // i ∈ R} => z l) j := by
@@ -182,7 +182,7 @@ theorem norm_le_four_mul_nnRadius_ref (hz : nnMap key z = f) [Nontrivial {i // i
   have h2 : ‖z (f j) - z j‖ / 4 ≤ displacementScale lam (z (f j) - z j) := le_max_left _ _
   linarith
 
-/-- `ρ_j ≤ 3 r̃₂(z_i)` for both endpoints `i` of the pair `j` (source l. 1266--1270). -/
+/-- `ρ_j ≤ 3 r̃₂(z_i)` for both endpoints `i` of the pair `j` (source l. 1211–1213). -/
 theorem nnRadius_ref_le_three_mul_nnRadius2 (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) = i)
     (hRf : ∀ i, i ∈ R ↔ f i ∉ R) [Nontrivial {i // i ∈ R}] (h3 : 3 ≤ Fintype.card ι)
     (hlam : 0 ≤ lam) (j : {i // i ∈ R}) {i : ι} (hi : i = j ∨ i = f j) :
@@ -205,7 +205,7 @@ theorem nnRadius_ref_le_three_mul_nnRadius2 (hz : nnMap key z = f) (hf2 : ∀ i,
   · have := le_max_right (m₀ / 12) lam
     linarith
 
-/-- **`mainclaimr1r2`** (source l. 1270--1272): `r̃₁(z_i)/r̃₂(z_i) ≤ 3 a_j/ρ_j` for both endpoints
+/-- **the comparison of pair radii in Step 1** : `r̃₁(z_i)/r̃₂(z_i) ≤ 3 a_j/ρ_j` for both endpoints
 `i` of the pair `j`. -/
 theorem nnRadius_div_nnRadius2_le (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) = i)
     (hRf : ∀ i, i ∈ R ↔ f i ∉ R) [Nontrivial {i // i ∈ R}] (h3 : 3 ≤ Fintype.card ι)
@@ -221,7 +221,7 @@ theorem nnRadius_div_nnRadius2_le (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) =
   rw [mul_div_assoc', div_le_div_iff₀ (lt_of_lt_of_le hlam (le_nnRadius2 h3 key lam z i)) hρ0]
   nlinarith
 
-/-- The logarithmic pair term (source l. 1273--1276): for both endpoints `i` of the pair `j`,
+/-- The logarithmic pair term (source l. 1217–1220): for both endpoints `i` of the pair `j`,
 `-(log((r̃₂(z_i) ∧ r̃₂(z_{φ₁ i}))/r̃₁(z_i)) - C) ≤ log(3 a_j/ρ_j) + C`. -/
 theorem neg_logTerm_le (hz : nnMap key z = f) (hf2 : ∀ i, f (f i) = i)
     (hRf : ∀ i, i ∈ R ↔ f i ∉ R) [Nontrivial {i // i ∈ R}] (h3 : 3 ≤ Fintype.card ι)
@@ -282,7 +282,7 @@ theorem sum_eq_sum_ref (hf2 : ∀ i, f (f i) = i) (hRf : ∀ i, i ∈ R ↔ f i 
     (fun i : {i // i ∉ R} => H i) fun j => rfl).symm
 
 /-- The nearest-neighbour energy of a cell with graph `f` is `-∑_{j ∈ R} g_λ(u_j)` (each pair is
-counted twice in `F^nn`, source l. 827, 1274; `g_λ` is even). -/
+counted twice in `F^nn`, source l. 789, 1218; `g_λ` is even). -/
 theorem nnEnergy_eq_neg_sum {key : ι ↪ ℕ} [Nontrivial ι] {z : ι → ℂ} (hz : nnMap key z = f)
     (hf2 : ∀ i, f (f i) = i) (hRf : ∀ i, i ∈ R ↔ f i ∉ R) (lam : ℝ) :
     nnEnergy key lam z = -∑ j : {i // i ∈ R}, smearedKernel lam (z (f j) - z j) := by
@@ -307,7 +307,7 @@ variable {ι : Type*} [Fintype ι] [Nontrivial ι] {key : ι ↪ ℕ} {f : ι �
   {R : Set ι} [DecidablePred (· ∈ R)]
 
 open scoped Classical in
-/-- **Step 1, pointwise energy bound** (source l. 1272--1276): on the cell `{nnMap key z = f}`,
+/-- **Step 1, pointwise energy bound** (source l. 1217–1220): on the cell `{nnMap key z = f}`,
 for an `f`-invariant set `S` of assigned pairs, `β ≥ 0` and `C ≥ 0`,
 `-β E(z) ≤ ∑_{j ∈ R} (β g_λ(u_j) + c_j)` where `c_j = 2βC + 2β log(3 a_j/ρ_j)` if the pair `j` is
 assigned the logarithmic term (`j ∈ S`) and `c_j = 18 β C (a_j/ρ_j)²` otherwise. -/
@@ -400,7 +400,7 @@ variable {ι : Type*}
 
 open scoped Classical in
 /-- The weight of the pair `j` as a function of its displacement `u` and the radius `ρ = ρ_j`
-(source l. 1273--1276): for a pair assigned the logarithmic term (`j ∈ S`),
+(source l. 1217–1220): for a pair assigned the logarithmic term (`j ∈ S`),
 `C₂ e^{β g_λ(u)} (a(u)/ρ)^{2β}` with `C₂ = e^{2βC} 3^{2β}`; for the other pairs,
 `e^{β g_λ(u)} e^{18 β C (a(u)/ρ)²}` (the neutral pair factor). -/
 noncomputable def pairWeight (β C lam : ℝ) (S : Finset ι) (j : ι) (u : ℂ) (ρ : ℝ) : ℝ≥0∞ :=
@@ -439,7 +439,7 @@ open scoped ENNReal
 variable {ι : Type*} [Fintype ι] [Nontrivial ι] {key : ι ↪ ℕ} {f : ι → ι} {z : ι → ℂ}
   {R : Set ι} [DecidablePred (· ∈ R)]
 
-/-- **Step 1, the integrand bound** (source l. 1272--1276): on the cell `{nnMap key z = f}`, for an
+/-- **Step 1, the integrand bound** (source l. 1217–1220): on the cell `{nnMap key z = f}`, for an
 `f`-invariant set `S` of pairs assigned the logarithmic term, `β ≥ 0` and `C ≥ 0`,
 `exp(-β E(z)) ≤ ∏_{j ∈ R} W_j(u_j, ρ_j)` with the pair weights `pairWeight`: the neutral pair
 factor is at most `e^{β g_λ(u_j)} e^{18 β C (a_j/ρ_j)²}` and the same-sign pair factor at most

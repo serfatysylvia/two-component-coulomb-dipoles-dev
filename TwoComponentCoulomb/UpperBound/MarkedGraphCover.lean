@@ -10,14 +10,13 @@ public import TwoComponentCoulomb.Frozen.Box
 public import TwoComponentCoulomb.Frozen.Charge
 public import TwoComponentCoulomb.Frozen.IsGeneric
 public import TwoComponentCoulomb.NearestNeighbor.TwiceIsolated
-public import TwoComponentCoulomb.UpperBound.InvolutionCover
+public import TwoComponentCoulomb.UpperBound.MarkedPairings
 
 /-!
 # The set of marked graphs and its combinatorial cover
 
-Source: l. 1219, 1421 (twice-isolated cycles and the definition of `D_{2N,K,p,p₀}`, written
-`D_{2N,K,p,p̂₀}` in the source) and Step 1 of the proof of Proposition 3.10, l. 1462--1488
-(enumeration of the graphs).
+Source `source/dipole-formation.tex`,  (definition of `D_{2N,K,p,p₀}`) and Step 1 of the
+proof of Proposition 3.9, l. 1370–1396 (enumeration of the graphs).
 
 `TwoComponentCoulomb.markedGraphs hN K p p₀` is the set `D_{2N,K,p,p₀}`: the pairs `(f, T)` of a
 nearest-neighbour map `f = φ₁(Z)` of a generic configuration `Z` in the box and the set `T` of
@@ -29,22 +28,24 @@ the vertices of 2-cycles and fixes the tree vertices is built from
 
 * the `p₀` neutral twice-isolated pairs (an injective partial map from positive to negative
   vertices),
-* the other `K - p₀` pairs (a set of representatives and an injection into the remaining vertices),
+* the other `K - p₀` unordered pairs on the remaining vertices,
 * the marking of `p - p₀` of the latter pairs,
 
 and `f` is then an arbitrary map on the `2N - 2K` tree vertices. This gives
-`TwoComponentCoulomb.card_markedGraphs_le`:
-`|D_{2N,K,p,p₀}| ≤ C(N,p₀) (N)_{p₀} · C(2N-2p₀, K-p₀) (2N-p₀-K)_{K-p₀} · C(K-p₀, p-p₀) ·
-(2N)^{2N-2K}` (with falling factorials `(n)_k`). The counting uses
-`TwoComponentCoulomb.involutionCover` (`UpperBound/InvolutionCover.lean`).
+`TwoComponentCoulomb.card_markedGraphs_le_sharp`:
+`|D_{2N,K,p,p₀}| ≤ C(N,p₀) (N)_{p₀} ·
+(2N-2p₀)! / ((2N-2K)! 2^{K-p₀} (K-p₀)!) · C(K-p₀, p-p₀) · (2N)^{2N-2K}`.
+The power of two accounts for reversing the endpoints of each unordered pair. The cover uses
+`TwoComponentCoulomb.involutionCover` (`UpperBound/InvolutionCover.lean`), and its unordered
+pairings are counted in `UpperBound/MarkedPairings.lean`.
 
 * `TwoComponentCoulomb.markedGraphs hN K p p₀`: the set `D_{2N,K,p,p₀}`.
 * `TwoComponentCoulomb.cycleInvolution Z`: the involution of the 2-cycles of `φ₁(Z)`.
 * `TwoComponentCoulomb.IsMarkedInvolution`,
   `TwoComponentCoulomb.isMarkedInvolution_cycleInvolution`.
 * `TwoComponentCoulomb.markedCover`, `TwoComponentCoulomb.mem_markedCover`,
-  `TwoComponentCoulomb.card_markedCover_le`.
-* `TwoComponentCoulomb.markedGraphs_subset`, `TwoComponentCoulomb.card_markedGraphs_le`.
+  `TwoComponentCoulomb.card_markedCover_le_sharp`.
+* `TwoComponentCoulomb.markedGraphs_subset`, `TwoComponentCoulomb.card_markedGraphs_le_sharp`.
 -/
 
 @[expose] public section
@@ -52,13 +53,14 @@ and `f` is then an arbitrary map on the `2N - 2K` tree vertices. This gives
 namespace TwoComponentCoulomb
 
 open Finset
+open scoped Nat
 
 section Definitions
 
 variable {N : ℕ}
 
 open scoped Classical in
-/-- `D_{2N,K,p,p₀}` (source l. 1421): the nearest-neighbour graphs `φ₁(Z)` of generic
+/-- `D_{2N,K,p,p₀}` (source l. 1338): the nearest-neighbour graphs `φ₁(Z)` of generic
 configurations `Z` of the box `Λ`, marked at their twice-isolated 2-cycles, with `K` connected
 components, `p` marked cycles and `p₀` neutral marked cycles. A marked graph is a pair `(f, T)`
 of the map `f = φ₁` and the set `T` of vertices of the marked 2-cycles. -/
@@ -395,12 +397,11 @@ theorem card_moved_of_mem_markedCover {K p p₀ : ℕ}
   obtain ⟨T₁, -, rfl⟩ := mem_image.1 h2
   exact (mem_filter.1 hh₁).2.2.2
 
-/-- The size of the cover: the count of Step 1 (source l. 1464--1481), before the application of
-Stirling's formula. -/
-theorem card_markedCover_le {K p p₀ : ℕ} :
+/-- **The sharper unordered count** (`source/dipole-formation.tex`, subsections 3.4 and 3.5).
+The other `K-p₀` cycles are unordered pairs, retaining the factor `2^{K-p₀}`. -/
+theorem card_markedCover_le_sharp {K p p₀ : ℕ} (hp₀K : p₀ ≤ K) (hKN : K ≤ N) :
     (markedCover N K p p₀).card ≤ N.choose p₀ * N.descFactorial p₀ *
-      ((2 * N - 2 * p₀).choose (K - p₀) *
-        (2 * N - 2 * p₀ - (K - p₀)).descFactorial (K - p₀)) * (K - p₀).choose (p - p₀) := by
+      ((2 * N - 2 * p₀)! / ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!)) * (K - p₀).choose (p - p₀) := by
   classical
   have hB₀ : (neutralCover N p₀).card ≤ N.choose p₀ * N.descFactorial p₀ := by
     refine (card_le_card (filter_subset _ _)).trans ?_
@@ -408,19 +409,21 @@ theorem card_markedCover_le {K p p₀ : ℕ} :
       (fun A _ _ => card_negVerts N)
     rwa [card_posVerts] at this
   have hB₁ : ∀ h₀ ∈ neutralCover N p₀, (otherCover N K p₀ h₀).card ≤
-      (2 * N - 2 * p₀).choose (K - p₀) *
-        (2 * N - 2 * p₀ - (K - p₀)).descFactorial (K - p₀) := by
+      (2 * N - 2 * p₀)! / ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!) := by
     intro h₀ hh₀
     have hcard₀ : (movedPoints h₀).card = 2 * p₀ := (mem_filter.1 hh₀).2.2
     have hS : ((univ : Finset (Fin N ⊕ Fin N)) \ movedPoints h₀).card = 2 * N - 2 * p₀ := by
       rw [card_sdiff_of_subset (subset_univ _), card_univ, hcard₀]
       simp [two_mul]
-    refine (card_le_card (filter_subset _ _)).trans ?_
-    have := card_involutionCover_le ((univ : Finset (Fin N ⊕ Fin N)) \ movedPoints h₀)
-      (fun A => ((univ : Finset (Fin N ⊕ Fin N)) \ movedPoints h₀) \ A) (K - p₀)
-      (2 * N - 2 * p₀ - (K - p₀)) (fun A hA hAk => by
-        rw [card_sdiff_of_subset hA, hS, hAk])
-    rwa [hS] at this
+    have hsub : otherCover N K p₀ h₀ ⊆ partialPairings (univ \ movedPoints h₀) (K - p₀) := by
+      intro h₁ hh₁
+      obtain ⟨hcover, hinv, hcard, -⟩ := mem_filter.1 hh₁
+      exact mem_filter.2 ⟨mem_univ _, hinv, movedPoints_subset_of_mem_involutionCover hcover, hcard⟩
+    refine (card_le_card hsub).trans ?_
+    rw [Nat.le_div_iff_mul_le (by positivity)]
+    have h := card_partialPairings_mul_le (univ \ movedPoints h₀) (K - p₀)
+    rw [hS, show 2 * N - 2 * p₀ - 2 * (K - p₀) = 2 * N - 2 * K by omega] at h
+    exact h
   have hc₂ : ∀ h₀ ∈ neutralCover N p₀, ∀ h₁ ∈ otherCover N K p₀ h₀,
       ((pairClosures (minRep (finSumFinEquiv : Fin N ⊕ Fin N → Fin (N + N)) h₁) h₁
         (p - p₀)).image fun T₁ => (combineInv h₀ h₁, movedPoints h₀ ∪ T₁)).card ≤
@@ -440,16 +443,14 @@ theorem card_markedCover_le {K p p₀ : ℕ} :
         (pairClosures (minRep (finSumFinEquiv : Fin N ⊕ Fin N → Fin (N + N)) h₁) h₁
           (p - p₀)).image fun T₁ => (combineInv h₀ h₁, movedPoints h₀ ∪ T₁)).card :=
         card_biUnion_le
-    _ ≤ ∑ h₀ ∈ neutralCover N p₀, ((2 * N - 2 * p₀).choose (K - p₀) *
-        (2 * N - 2 * p₀ - (K - p₀)).descFactorial (K - p₀)) * (K - p₀).choose (p - p₀) := by
+    _ ≤ ∑ h₀ ∈ neutralCover N p₀, ((2 * N - 2 * p₀)! / ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!)) * (K - p₀).choose (p - p₀) := by
         refine sum_le_sum fun h₀ hh₀ => card_biUnion_le.trans ?_
         calc _ ≤ ∑ h₁ ∈ otherCover N K p₀ h₀, (K - p₀).choose (p - p₀) :=
               sum_le_sum fun h₁ hh₁ => hc₂ h₀ hh₀ h₁ hh₁
           _ = (otherCover N K p₀ h₀).card * (K - p₀).choose (p - p₀) := by
               rw [sum_const]; rfl
           _ ≤ _ := Nat.mul_le_mul_right _ (hB₁ h₀ hh₀)
-    _ = (neutralCover N p₀).card * (((2 * N - 2 * p₀).choose (K - p₀) *
-        (2 * N - 2 * p₀ - (K - p₀)).descFactorial (K - p₀)) * (K - p₀).choose (p - p₀)) := by
+    _ = (neutralCover N p₀).card * (((2 * N - 2 * p₀)! / ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!)) * (K - p₀).choose (p - p₀)) := by
         rw [sum_const]; rfl
     _ ≤ _ := (Nat.mul_le_mul_right _ hB₀).trans_eq (mul_assoc _ _ _).symm
 
@@ -497,13 +498,11 @@ theorem markedGraphs_subset (hN : 2 ≤ N) (K p p₀ : ℕ) :
       exact fun h' => h' rfl
     simp only [this, ↓reduceIte, mem_univ]
 
-/-- **The graph count of Step 1** (source l. 1462--1488), before Stirling's formula:
-`|D_{2N,K,p,p₀}| ≤ C(N,p₀) (N)_{p₀} · C(2N-2p₀, K-p₀) (2N-p₀-K)_{K-p₀} · C(K-p₀, p-p₀) ·
-(2N)^{2N-2K}` (falling factorials `(n)_k`). -/
-theorem card_markedGraphs_le (hN : 2 ≤ N) {K p p₀ : ℕ} :
+/-- The marked-graph count with the unordered orientation factor retained. -/
+theorem card_markedGraphs_le_sharp (hN : 2 ≤ N) {K p p₀ : ℕ}
+    (hp₀K : p₀ ≤ K) (hKN : K ≤ N) :
     (markedGraphs hN K p p₀).card ≤ N.choose p₀ * N.descFactorial p₀ *
-      ((2 * N - 2 * p₀).choose (K - p₀) *
-        (2 * N - 2 * p₀ - (K - p₀)).descFactorial (K - p₀)) * (K - p₀).choose (p - p₀) *
+      ((2 * N - 2 * p₀)! / ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!)) * (K - p₀).choose (p - p₀) *
       (2 * N) ^ (2 * N - 2 * K) := by
   refine (card_le_card (markedGraphs_subset hN K p p₀)).trans (card_biUnion_le.trans ?_)
   have hfib : ∀ γ ∈ markedCover N K p p₀,
@@ -513,7 +512,7 @@ theorem card_markedGraphs_le (hN : 2 ≤ N) {K p p₀ : ℕ} :
     rw [card_product, card_singleton, mul_one, card_piFinset_unmoved,
       card_moved_of_mem_markedCover hγ]
   rw [sum_congr rfl hfib, sum_const]
-  exact Nat.mul_le_mul_right _ card_markedCover_le
+  exact Nat.mul_le_mul_right _ (card_markedCover_le_sharp hp₀K hKN)
 
 end Counting
 

@@ -3,7 +3,7 @@
 `dipole-formation.tex` is the authors' revised LaTeX manuscript of J. Boursier and S. Serfaty,
 *Dipole Formation in the Two-component Plasma* (arXiv:2410.01025), the version formalized in
 this repository. It is pinned at SHA-256
-`2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6`; line numbers in the Lean
+`f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91`; line numbers in the Lean
 docstrings, `RULINGS.md` and `manifest/frozen_anchors.json` refer to this file.
 
 The manuscript is © its authors and is included for reference only; it is not covered by the

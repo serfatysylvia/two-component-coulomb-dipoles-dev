@@ -16,7 +16,7 @@ public import TwoComponentCoulomb.Frozen.PartitionFunction
 # Frozen: `TwoComponentCoulomb.gibbsMeasure`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 172–174.
+Source: l. 157–159.
 -/
 
 open MeasureTheory
@@ -25,7 +25,7 @@ open MeasureTheory
 
 namespace TwoComponentCoulomb
 
-/-- The Gibbs measure `ℙ_{N,β}^λ`, eq. (defP) (source l. 172–174). -/
+/-- The Gibbs measure `ℙ_{N,β}^λ`, eq. (defP) (source l. 157–159). -/
 noncomputable def gibbsMeasure (N : ℕ) (β lam : ℝ) : Measure (Fin N ⊕ Fin N → ℂ) :=
   (partitionFunction N β lam)⁻¹ •
     (volume.restrict (Set.univ.pi fun _ : Fin N ⊕ Fin N => box N)).withDensity

@@ -14,11 +14,11 @@ public import TwoComponentCoulomb.NearestNeighbor.Second
 /-!
 # Counting the exceptional indices in Corollary 2.3
 
-Source l. 466--470 (proof of Corollary 2.3). Write `I^pair` for the set of indices in an isolated
+Source l. 472–476 (proof of Corollary 2.3). Write `I^pair` for the set of indices in an isolated
 pair (`IsIsolatedPair`), `K` for the number of components (`numComponents`) and `φ₂` for the second
 nearest neighbour. There are at most `6 (N - K)` indices outside `I^pair`
 (`card_not_isIsolatedPair_le`); a point is the second nearest neighbour of at most twelve points
-(Remark 2.1); and an isolated pair is exchanged by `φ₁`, so passing to partners at most doubles a
+(Lemma 2.1); and an isolated pair is exchanged by `φ₁`, so passing to partners at most doubles a
 count. Consequently, for a generic configuration (in fact for any configuration of distinct
 points), the number of indices `i` such that `i ∉ I^pair`, or `φ₂ i ∉ I^pair`, or
 `φ₂ (φ₁ i) ∉ I^pair`, is at most `150 (N - K)`.
@@ -85,7 +85,7 @@ theorem card_filter_isIsolatedPair_not_secondNearestNeighbor_nearestNeighbor_le 
     rw [← hi', hij', hj']
 
 open scoped Classical in
-/-- Counting the exceptional indices of the proof of Corollary 2.3 (source l. 470): at most
+/-- Counting the exceptional indices of the proof of Corollary 2.3 (source l. 476): at most
 `150 (N - K)` indices fail to satisfy `i ∈ I^pair`, `φ₂ i ∈ I^pair`, `φ₂ (φ₁ i) ∈ I^pair`. -/
 theorem card_not_isolated_and_second_le (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N → ℂ}
     (hZ : IsGeneric Z) :

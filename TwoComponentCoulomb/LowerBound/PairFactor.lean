@@ -11,7 +11,7 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The pair factor `J_β(r)` of the lower bound (Proposition 4.1, Step 2)
 
-Source: Proposition 4.1, Step 2 (l. 1828--1851), eqs. (minz3)
+Source: Proposition 4.1, Step 2 (l. 1738–1760), eqs. (minz3)
 and (align57), following ruling R22 (with the correction `-A s²/r²` in the exponent).
 
 For `r ≥ 4λ` the pair factor is
@@ -80,7 +80,7 @@ theorem pairFactor_pos {β A lam r : ℝ} (hlam : 0 < lam) (hr : 0 < r) :
 /-! ### The upper bound `J_β(r) ≤ 𝒵_β λ^{2-β}` -/
 
 /-- `J_β(r) ≤ 𝒵_β λ^{2-β}` for `β > 2`, `A ≥ 0`, `λ > 0` (drop the correction and extend the
-disc to the plane, eq. (3.20b)). -/
+disc to the plane, the planar pair-mass identity). -/
 theorem pairFactor_le {β A lam r : ℝ} (hβ : 2 < β) (hA : 0 ≤ A) (hlam : 0 < lam) :
     pairFactor β A lam r ≤ dipoleConstant β hβ.le * lam ^ (2 - β) := by
   rw [← integral_exp_smearedKernel hβ hlam]
@@ -95,7 +95,7 @@ theorem pairFactor_le {β A lam r : ℝ} (hβ : 2 < β) (hA : 0 ≤ A) (hlam : 0
 
 /-! ### The lower bound `J_β(r) ≥ c_β 𝒵_β λ^{2-β}` -/
 
-/-- `J_β(r) ≥ c_β 𝒵_β λ^{2-β}` for `β > 2`, `A ≥ 0` and `r ≥ 4λ` (source l. 1837--1840, restricting
+/-- `J_β(r) ≥ c_β 𝒵_β λ^{2-β}` for `β > 2`, `A ≥ 0` and `r ≥ 4λ` (source l. 1747–1750, restricting
 the radial integral to `[0, 2λ]`, where `A s²/r² ≤ A/4`). -/
 theorem exists_pairFactor_ge {β : ℝ} (hβ : 2 < β) {A : ℝ} (hA : 0 ≤ A) :
     ∃ c > 0, ∀ lam r : ℝ, 0 < lam → 4 * lam ≤ r →
@@ -143,7 +143,7 @@ theorem exists_pairFactor_ge {β : ℝ} (hβ : 2 < β) {A : ℝ} (hA : 0 ≤ A) 
 
 /-! ### The quadratic correction for `β > 2` -/
 
-/-- **Quadratic correction** for `β > 2` (source l. 1305--1309, used at l. 1842--1847): for
+/-- **Quadratic correction** for `β > 2` (source l. 1241–1245, used at l. 1752–1757): for
 `0 < λ ≤ ρ`, `∫_{|u| ≤ 4ρ} e^{β g_λ(u)} (a(u)/ρ)² du ≤ C λ^{2-β} φ_β(ρ)`, with
 `a(u) = (|u|/4) ∨ λ`. This is the `β > 2` part of `exists_integral_closedBall_exp_mul_sq_le`, whose
 hypothesis `λ ≤ e^{-1}` is needed only for `β = 2`; the proof is the same. -/
@@ -283,7 +283,7 @@ theorem isolatedPhi_div_four_le {β : ℝ} (hβ : 2 < β) {lam r : ℝ} (hlam : 
 
 /-! ### The defect bound -/
 
-/-- **Defect bound** (source l. 1842--1847): for `β > 2` and `A ≥ 0` there is `C > 0` with
+/-- **Defect bound** (source l. 1752–1757): for `β > 2` and `A ≥ 0` there is `C > 0` with
 `0 ≤ 𝒵_β λ^{2-β} - J_β(r) ≤ C 𝒵_β λ^{2-β} φ_β(r)` for all `λ > 0`, `r ≥ 4λ`. The defect is the
 exact tail `2π (r/2)^{2-β}/(β - 2)` of `e^{β g_λ}` outside `B(0, r/2)` plus
 `∫_{B(0,r/2)} e^{β g_λ} (1 - e^{-A|u|²/r²}) ≤ (A/r²) ∫_{B(0,r/2)} |u|² e^{β g_λ}`. -/
@@ -386,7 +386,7 @@ theorem exists_sub_pairFactor_le {β : ℝ} (hβ : 2 < β) {A : ℝ} (hA : 0 ≤
 
 /-! ### (align57) -/
 
-/-- **(align57)** (source l. 1848--1850): for `β > 2` and `A ≥ 0` there is `C > 0` with
+/-- **(align57)** (source l. 1758–1760): for `β > 2` and `A ≥ 0` there is `C > 0` with
 `log (J_β(r) / (𝒵_β λ^{2-β})) ≥ -C φ_β(r)` for all `λ > 0`, `r ≥ 4λ`. If the relative defect
 `x = 1 - J_β(r) / (𝒵_β λ^{2-β}) ≤ C₁ φ_β(r)` is at most `1/2`, then `log (1 - x) ≥ -2x`; otherwise
 `2 C₁ φ_β(r) > 1` and the lower bound `J_β(r) ≥ c 𝒵_β λ^{2-β}` gives `log ≥ log c`. -/

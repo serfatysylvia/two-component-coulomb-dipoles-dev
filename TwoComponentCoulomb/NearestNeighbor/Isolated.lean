@@ -16,8 +16,7 @@ public import TwoComponentCoulomb.NearestNeighbor.Components
 # Isolated pairs and isolated dipoles
 
 An *isolated pair* is a 2-cycle `{i, φ₁ i}` of the nearest-neighbour graph into which no other
-vertex points; an *isolated dipole* is an isolated pair of opposite charges (source l. 222--230,
-373--385, ruling R5). This file proves the structural facts needed for the counting of dipoles:
+vertex points; an *isolated dipole* is an isolated pair of opposite charges (source l. 207–215, 376–388, ruling R5). This file proves the structural facts needed for the counting of dipoles:
 
 * `TwoComponentCoulomb.isIsolatedPair_iff_component` (ruling R5): `i` is in an isolated pair iff
   its connected component in the nearest-neighbour graph is exactly `{i, φ₁ i}`.
@@ -26,7 +25,7 @@ vertex points; an *isolated dipole* is an isolated pair of opposite charges (sou
   many as the isolated dipoles; `TwoComponentCoulomb.isolatedDipoles_card_le` bounds the number
   of dipoles by `N`.
 * `TwoComponentCoulomb.card_not_isIsolatedPair_le`: `|(I^pair)^c| ≤ 6 (N - K)` (source
-  l. 466--470: there are `2 (N - K)` tree vertices and at most `2 (N - K)` nonisolated
+  l. 472–476: there are `2 (N - K)` tree vertices and at most `2 (N - K)` nonisolated
   components, each containing at most two vertices on its 2-cycle).
 * Measurability of the events `{i ∈ I^pair}`, `{#dipoles = p}` and `{p ≤ #long dipoles}`.
 
@@ -169,7 +168,7 @@ theorem card_filter_eq_two_mul_card_image_pair (Z : Fin N ⊕ Fin N → ℂ)
   rw [Finset.sum_congr rfl hfib, Finset.sum_const, smul_eq_mul]
   ring
 
-/-- Source l. 375--385 (set `I^pair`): the vertices of isolated pairs are twice as many as the
+/-- Source l. 378–388 (set `I^pair`): the vertices of isolated pairs are twice as many as the
 isolated pairs `{i, φ₁ i}`. -/
 theorem card_filter_isIsolatedPair (Z : Fin N ⊕ Fin N → ℂ) [DecidablePred (IsIsolatedPair Z)] :
     (univ.filter (IsIsolatedPair Z)).card =
@@ -215,7 +214,7 @@ theorem longIsolatedDipoles_card_le (Z : Fin N ⊕ Fin N → ℂ) (R : ℝ) :
     (longIsolatedDipoles Z R).card ≤ N :=
   (Finset.card_le_card (longIsolatedDipoles_subset Z R)).trans (isolatedDipoles_card_le Z)
 
-/-- Source l. 466--470 (proof of Corollary 2.3): there are `2 (N - K)` tree vertices and at most
+/-- Source l. 472–476 (proof of Corollary 2.3): there are `2 (N - K)` tree vertices and at most
 `2 (N - K)` nonisolated components, each of which has at most two vertices on its 2-cycle, so
 `|(I^pair)^c| ≤ 6 (N - K)`. -/
 theorem card_not_isIsolatedPair_le (Z : Fin N ⊕ Fin N → ℂ) [DecidablePred (IsIsolatedPair Z)] :

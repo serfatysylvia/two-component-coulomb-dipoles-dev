@@ -19,7 +19,7 @@ import TwoComponentCoulomb.Fluctuations.Theorem2RateInstance
 
 Registered implementation module of `TwoComponentCoulomb/Frozen/Theorem2.lean`. Its export
 `TwoComponentCoulomb.Main.theorem_2` states and proves exactly the frozen statement (Theorem 2,
-source l. 297–305; proof l. 1964–2247) by applying the rate-generic assembly
+source l. 294–302; proof l. 1842–2121) by applying the rate-generic assembly
 `theorem_2_of_moment_rate` (`Fluctuations/Theorem2Assembly.lean`) at the rate
 `ω = errorRate β hβ`, with
 

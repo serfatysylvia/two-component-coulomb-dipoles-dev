@@ -13,7 +13,7 @@ public import TwoComponentCoulomb.Frozen.SmearedCharge
 # Frozen: `TwoComponentCoulomb.kappa`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 149–150.
+Source: l. 135.
 -/
 
 open MeasureTheory
@@ -22,7 +22,7 @@ open MeasureTheory
 
 namespace TwoComponentCoulomb
 
-/-- `κ = ∬ g(x - y) dδ₀^{(1)}(x) dδ₀^{(1)}(y)` (source eq. (defkappa), l. 149–150). -/
+/-- `κ = ∬ g(x - y) dδ₀^{(1)}(x) dδ₀^{(1)}(y)` (source the definition of κ, l. 135). -/
 noncomputable def kappa : ℝ :=
   ∫ p : ℂ × ℂ, logKernel (p.1 - p.2) ∂(smearedCharge 0 1).prod (smearedCharge 0 1)
 

@@ -16,17 +16,17 @@ public import TwoComponentCoulomb.NearestNeighbor.TwiceIsolated
 public import TwoComponentCoulomb.UpperBound.MarkedGraphCover
 
 /-!
-# The logarithmic count of the marked graphs (Proposition 3.10, Step 1)
+# The logarithmic count of the marked graphs (Proposition 3.9, Step 1)
 
-Source: l. 1462--1510: the enumeration of `D_{2N,K,p,p₀}` and its
+Source `source/dipole-formation.tex`, l. 1370–1418: the enumeration of `D_{2N,K,p,p₀}` and its
 logarithmic form (eq:logD), which uses the geometric constraint `K - p ≤ (M₀ + 2)(N - K)` of
 eq. (eq:K-p) (`TwoComponentCoulomb.numComponents_le_numTwiceIsolated_add`).
 
 * `TwoComponentCoulomb.mul_log_sub_le_log_factorial`, `TwoComponentCoulomb.log_factorial_le_add`:
   `n log n - n ≤ log n! ≤ n log n - n + log (n + 1) + 1`.
-* `TwoComponentCoulomb.card_markedGraphs_mul_le`: the count of
-  `TwoComponentCoulomb.card_markedGraphs_le` in the factorial form
-  `|D| · p₀! ((N-p₀)!)² (2N-2K)! (p-p₀)! (K-p)! ≤ (N!)² (2N-2p₀)! (2N)^{2N-2K}`.
+* `TwoComponentCoulomb.card_markedGraphs_mul_pow_le`: the count of
+  `TwoComponentCoulomb.card_markedGraphs_le_sharp` in the factorial form
+  `|D| · p₀! ((N-p₀)!)² (2N-2K)! (p-p₀)! (K-p)! 2^{K-p₀} ≤ (N!)² (2N-2p₀)! (2N)^{2N-2K}`.
 * `TwoComponentCoulomb.card_markedGraphs_le_exp` (eq:logD): for `N ≥ 2` and `p₀ ≤ p ≤ K ≤ N`,
   `|D_{2N,K,p,p₀}| ≤ exp (2N log N - (2N-2K) log ((N-K)/N) - p₀ log p₀ - (p-p₀) log (p-p₀)
     - (K-p) log (K-p) - N + C₀ log (N+1) + C₀ (N-K) + C₀ (p-p₀))` with `C₀ = 60`.
@@ -79,39 +79,41 @@ theorem log_factorial_le_add (n : ℕ) :
 
 variable {N : ℕ}
 
-/-- The count of Step 1 (source l. 1464--1488) in factorial form:
-`|D_{2N,K,p,p₀}| · p₀! ((N-p₀)!)² (2N-2K)! (p-p₀)! (K-p)! ≤ (N!)² (2N-2p₀)! (2N)^{2N-2K}`. -/
-theorem card_markedGraphs_mul_le (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ ≤ p) (hpK : p ≤ K)
-    (hKN : K ≤ N) :
-    (markedGraphs hN K p p₀).card *
-        (p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)!) ≤
+/-- Internal factorial bookkeeping for the unordered graph count. -/
+theorem sharp_count_mul_le {K p p₀ D : ℕ} (hp₀ : p₀ ≤ p) (hpK : p ≤ K) (hKN : K ≤ N)
+    (hD : D ≤ N.choose p₀ * N.descFactorial p₀ *
+      ((2 * N - 2 * p₀)! / ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!)) *
+        (K - p₀).choose (p - p₀) * (2 * N) ^ (2 * N - 2 * K)) :
+    D * (p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! *
+      2 ^ (K - p₀)) ≤
       (N !) ^ 2 * (2 * N - 2 * p₀)! * (2 * N) ^ (2 * N - 2 * K) := by
-  have hc := card_markedGraphs_le hN (K := K) (p := p) (p₀ := p₀)
-  refine (Nat.mul_le_mul_right _ hc).trans (le_of_eq ?_)
   have e1 : N.choose p₀ * p₀ ! * (N - p₀)! = N ! :=
     Nat.choose_mul_factorial_mul_factorial (by omega)
   have e2 : (N - p₀)! * N.descFactorial p₀ = N ! := Nat.factorial_mul_descFactorial (by omega)
-  have e3 : (2 * N - 2 * p₀).choose (K - p₀) * (K - p₀)! * (2 * N - 2 * p₀ - (K - p₀))! =
-      (2 * N - 2 * p₀)! := Nat.choose_mul_factorial_mul_factorial (by omega)
-  have e4 : (2 * N - 2 * p₀ - (K - p₀) - (K - p₀))! *
-      (2 * N - 2 * p₀ - (K - p₀)).descFactorial (K - p₀) = (2 * N - 2 * p₀ - (K - p₀))! :=
-    Nat.factorial_mul_descFactorial (by omega)
-  have e5 : (K - p₀).choose (p - p₀) * (p - p₀)! * (K - p₀ - (p - p₀))! = (K - p₀)! :=
-    Nat.choose_mul_factorial_mul_factorial (by omega)
-  have h4 : 2 * N - 2 * p₀ - (K - p₀) - (K - p₀) = 2 * N - 2 * K := by omega
-  have h5 : K - p₀ - (p - p₀) = K - p := by omega
-  rw [h4] at e4
-  rw [h5] at e5
+  have e3 : (K - p₀).choose (p - p₀) * (p - p₀)! * (K - p)! = (K - p₀)! := by
+    have h := Nat.choose_mul_factorial_mul_factorial (by omega : p - p₀ ≤ K - p₀)
+    rwa [show K - p₀ - (p - p₀) = K - p by omega] at h
+  let q := (2 * N - 2 * p₀)! / ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!)
+  refine (Nat.mul_le_mul_right _ hD).trans ?_
   calc _ = (N.choose p₀ * p₀ ! * (N - p₀)!) * ((N - p₀)! * N.descFactorial p₀) *
-        ((2 * N - 2 * p₀).choose (K - p₀) * ((2 * N - 2 * K)! *
-          (2 * N - 2 * p₀ - (K - p₀)).descFactorial (K - p₀))) *
-        ((K - p₀).choose (p - p₀) * (p - p₀)! * (K - p)!) * (2 * N) ^ (2 * N - 2 * K) := by
-        ring
-    _ = N ! * N ! * ((2 * N - 2 * p₀).choose (K - p₀) * (2 * N - 2 * p₀ - (K - p₀))!) *
-        (K - p₀)! * (2 * N) ^ (2 * N - 2 * K) := by rw [e1, e2, e4, e5]
-    _ = _ := by
-        rw [← e3]
-        ring
+        (q * ((2 * N - 2 * K)! * 2 ^ (K - p₀))) *
+        ((K - p₀).choose (p - p₀) * (p - p₀)! * (K - p)!) *
+        (2 * N) ^ (2 * N - 2 * K) := by ring
+    _ = (N !) ^ 2 * (q * ((2 * N - 2 * K)! * 2 ^ (K - p₀) * (K - p₀)!)) *
+        (2 * N) ^ (2 * N - 2 * K) := by rw [e1, e2, e3]; ring
+    _ ≤ _ := by
+        gcongr
+        exact Nat.div_mul_le_self _ _
+
+/-- **The raw marked-graph count** of subsection 3.4, retaining `2^{K-p₀}`.
+The factorials of the neutral labels, the remaining pairs, and the tree parents are
+collected before Stirling's formula is applied. -/
+theorem card_markedGraphs_mul_pow_le (hN : 2 ≤ N) {K p p₀ : ℕ}
+    (hp₀ : p₀ ≤ p) (hpK : p ≤ K) (hKN : K ≤ N) :
+    (markedGraphs hN K p p₀).card *
+      (p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! * 2 ^ (K - p₀)) ≤
+      (N !) ^ 2 * (2 * N - 2 * p₀)! * (2 * N) ^ (2 * N - 2 * K) :=
+  sharp_count_mul_le hp₀ hpK hKN (card_markedGraphs_le_sharp hN (hp₀.trans hpK) hKN)
 
 /-! ### The Stirling analysis -/
 
@@ -136,13 +138,13 @@ theorem log_three_gt_one : 1 < Real.log 3 := by
 theorem factorial_cast_pos (n : ℕ) : (0 : ℝ) < ((n ! : ℕ) : ℝ) := by
   exact_mod_cast Nat.factorial_pos n
 
-/-- The Stirling analysis of the count (source l. 1489--1510), in the form `log A - log D ≤ R` for
-the numerator `A` and the denominator `D` of `card_markedGraphs_mul_le`. The geometric constraint
-`K ≤ p + 38 (N - K)` of eq. (eq:K-p) is used to absorb the factors `2^{N-p₀}`. -/
-theorem log_count_sub_le (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ ≤ p) (hpK : p ≤ K) (hKN : K ≤ N)
+/-- The Stirling analysis of the unordered graph count. The factor `2^{K-p₀}`
+remains in the denominator throughout the logarithmic calculation. The geometric
+constraint `K-p ≤ 38(N-K)` absorbs the remaining powers of two. -/
+theorem log_count_sharp_sub_le (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ ≤ p) (hpK : p ≤ K) (hKN : K ≤ N)
     (h38 : K ≤ p + 38 * (N - K)) :
     Real.log (((N !) ^ 2 * (2 * N - 2 * p₀)! * (2 * N) ^ (2 * N - 2 * K) : ℕ) : ℝ) -
-      Real.log ((p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! : ℕ) : ℝ) ≤
+      Real.log ((p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! * 2 ^ (K - p₀) : ℕ) : ℝ) ≤
     2 * N * Real.log N - (2 * N - 2 * K) * Real.log (((N : ℝ) - K) / N)
       - p₀ * Real.log p₀ - ((p : ℝ) - p₀) * Real.log ((p : ℝ) - p₀)
       - ((K : ℝ) - p) * Real.log ((K : ℝ) - p) - N + 60 * Real.log (N + 1)
@@ -182,7 +184,7 @@ theorem log_count_sub_le (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ ≤ p) (h
       Real.log_mul two_ne_zero hNpos.ne']
     push_cast
     rw [hc3]
-  have hlD : Real.log ((p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! : ℕ) : ℝ)
+  have hlD₀ : Real.log ((p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! : ℕ) : ℝ)
       = Real.log ((p₀ ! : ℕ) : ℝ) + 2 * Real.log (((N - p₀)! : ℕ) : ℝ) +
         Real.log (((2 * N - 2 * K)! : ℕ) : ℝ) + Real.log (((p - p₀)! : ℕ) : ℝ) +
         Real.log (((K - p)! : ℕ) : ℝ) := by
@@ -197,6 +199,15 @@ theorem log_count_sub_le (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ ≤ p) (h
       Real.log_mul (mul_ne_zero h1 h2) h3, Real.log_mul h1 h2, Real.log_pow]
     push_cast
     ring
+  have hlD : Real.log ((p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! *
+      (p - p₀)! * (K - p)! * 2 ^ (K - p₀) : ℕ) : ℝ) =
+      Real.log ((p₀ ! : ℕ) : ℝ) + 2 * Real.log (((N - p₀)! : ℕ) : ℝ) +
+        Real.log (((2 * N - 2 * K)! : ℕ) : ℝ) + Real.log (((p - p₀)! : ℕ) : ℝ) +
+        Real.log (((K - p)! : ℕ) : ℝ) + (K - p₀) * Real.log 2 := by
+    rw [Nat.cast_mul, Real.log_mul (by positivity) (by positivity), hlD₀]
+    simp only [Nat.cast_pow, Nat.cast_ofNat, Real.log_pow, Nat.cast_sub (hp₀.trans hpK)]
+  have hsym : 0 ≤ ((K : ℝ) - p₀) * Real.log 2 :=
+    mul_nonneg (sub_nonneg.2 (hp₀R.trans hpR)) (Real.log_nonneg (by norm_num))
   -- Stirling bounds
   have u₁ := log_factorial_le_add N
   have u₂ := log_factorial_le_add (2 * N - 2 * p₀)
@@ -228,7 +239,7 @@ theorem log_count_sub_le (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ ≤ p) (h
 
 /-! ### The logarithmic count (eq:logD) -/
 
-/-- **Equation (eq:logD)** (source l. 1507--1510). For `N ≥ 2` and `p₀ ≤ p ≤ K ≤ N`, the number of
+/-- **Equation (eq:logD)** (source l. 1415–1418). For `N ≥ 2` and `p₀ ≤ p ≤ K ≤ N`, the number of
 marked graphs satisfies
 `|D_{2N,K,p,p₀}| ≤ exp (2N log N - (2N-2K) log ((N-K)/N) - p₀ log p₀ - (p-p₀) log (p-p₀)
   - (K-p) log (K-p) - N + C₀ log (N+1) + C₀ (N-K) + C₀ (p-p₀))` with `C₀ = 60`, where
@@ -250,10 +261,11 @@ theorem card_markedGraphs_le_exp (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ �
   have h38 : K ≤ p + 38 * (N - K) := by
     have := numComponents_le_numTwiceIsolated_add hN hZ.1
     rwa [hK, hp] at this
-  have hmul := card_markedGraphs_mul_le hN hp₀ hpK hKN
-  have hlog := log_count_sub_le hN hp₀ hpK hKN h38
+  have hmul := card_markedGraphs_mul_pow_le hN hp₀ hpK hKN
+  have hlog := log_count_sharp_sub_le hN hp₀ hpK hKN h38
   set A : ℕ := (N !) ^ 2 * (2 * N - 2 * p₀)! * (2 * N) ^ (2 * N - 2 * K) with hA
-  set D : ℕ := p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! with hD
+  set D : ℕ := p₀ ! * ((N - p₀)!) ^ 2 * (2 * N - 2 * K)! * (p - p₀)! * (K - p)! *
+    2 ^ (K - p₀) with hD
   have hDpos : (0 : ℝ) < (D : ℝ) := by
     have : 0 < D := by
       rw [hD]
@@ -271,16 +283,6 @@ theorem card_markedGraphs_le_exp (hN : 2 ≤ N) {K p p₀ : ℕ} (hp₀ : p₀ �
   refine hcard.trans ?_
   rw [← Real.exp_log (div_pos hApos hDpos), Real.log_div hApos.ne' hDpos.ne']
   exact Real.exp_le_exp.2 hlog
-
-/-- Equation (eq:logD) with an absolute constant `C₀` (source l. 1507--1510). -/
-theorem exists_card_markedGraphs_le_exp :
-    ∃ C₀ : ℝ, 0 < C₀ ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (K p p₀ : ℕ), p₀ ≤ p → p ≤ K → K ≤ N →
-      ((markedGraphs hN K p p₀).card : ℝ) ≤ Real.exp
-        (2 * N * Real.log N - (2 * N - 2 * K) * Real.log (((N : ℝ) - K) / N)
-          - p₀ * Real.log p₀ - ((p : ℝ) - p₀) * Real.log ((p : ℝ) - p₀)
-          - ((K : ℝ) - p) * Real.log ((K : ℝ) - p) - N + C₀ * Real.log (N + 1)
-          + C₀ * (N - K) + C₀ * (p - p₀)) :=
-  ⟨60, by norm_num, fun _ hN _ _ _ h1 h2 h3 => card_markedGraphs_le_exp hN h1 h2 h3⟩
 
 end TwoComponentCoulomb
 

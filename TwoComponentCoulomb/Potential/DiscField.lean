@@ -16,6 +16,7 @@ import TwoComponentCoulomb.Potential.DiscPotential
 import TwoComponentCoulomb.Potential.Fundamental
 import TwoComponentCoulomb.Potential.SmearedCharge
 import Mathlib.Analysis.Complex.MeanValue
+import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.MeasureTheory.Constructions.HaarToSphere
@@ -25,7 +26,7 @@ import Mathlib.MeasureTheory.Group.Integral
 # The potential and the field of a uniform disc
 
 For `a > 0` let `δ_z^{(a)} = smearedCharge z a` be the uniform probability measure on the disc
-`B(z, a)` and `g(x) = -log |x|`. By Newton's theorem (source l. 143-167, 493-513) the potential
+`B(z, a)` and `g(x) = -log |x|`. By Newton's theorem (source l. 128–152, 499–518) the potential
 `g * δ_0^{(a)}` is the explicit radial function `discPotential a`, and its gradient is the explicit
 field `discField a` (ruling R12b: the electric formulation is implemented through these
 explicit radial disc potentials).
@@ -44,7 +45,7 @@ Main results (for `a > 0`):
   `y ↦ 1 / (u - y)` (the point field is `-conj (1 / (x - y))`): the circle average is `-1/conj u`
   for a circle not enclosing `u` and `0` for a circle enclosing it.
 * `integral_fderiv_apply_discField` : the single-charge Green identity used in Theorem 2, Step 1
-  (source l. 1964-1988): for `ξ` of class `C¹` with compact support,
+  (source l. 1842–1866): for `ξ` of class `C¹` with compact support,
   `∫ ∇ξ(x) · discField a (x - z) dx = 2π ∫ ξ dδ_z^{(a)}`. It follows from
   `integral_fderiv_apply_gradLogKernel` (`Potential/Fundamental.lean`) by Fubini.
 
@@ -428,7 +429,7 @@ theorem integrable_fderiv_apply_gradLogKernel_sub_smearedCharge {ξ : ℂ → �
         simp [hvanish x hx]
 
 /-- **The smeared Green identity** (the single-charge identity used in Theorem 2, Step 1,
-source l. 1964-1988): for `ξ` of class `C¹` with compact support,
+source l. 1842–1866): for `ξ` of class `C¹` with compact support,
 `∫ ∇ξ(x) · discField a (x - z) dx = 2π ∫ ξ dδ_z^{(a)}`. -/
 theorem integral_fderiv_apply_discField {ξ : ℂ → ℝ} (hξ : ContDiff ℝ 1 ξ)
     (hc : HasCompactSupport ξ) {a : ℝ} (ha : 0 < a) (z : ℂ) :
@@ -568,6 +569,80 @@ theorem contDiff_discPotential {a : ℝ} (ha : 0 < a) : ContDiff ℝ 1 (discPote
     funext fun u => (hasFDerivAt_discPotential ha u).fderiv
   rw [this]
   exact (toDual ℝ ℂ).continuous.comp (continuous_discField ha)
+
+/-! ### Lipschitz continuity of the gradient -/
+
+private lemma discField_one_mixed {x y : ℂ} (hx : ‖x‖ ≤ 1) (hy : 1 ≤ ‖y‖) :
+    ‖discField 1 x - discField 1 y‖ ≤ ‖x - y‖ := by
+  have hb : 0 < ‖y‖ := lt_of_lt_of_le one_pos hy
+  have hq : 0 ≤ (‖y‖ ^ 2)⁻¹ := by positivity
+  have hq1 : (‖y‖ ^ 2)⁻¹ ≤ 1 := (inv_le_one₀ (by positivity)).2 (by nlinarith)
+  have hc : inner ℝ x y ≤ ‖y‖ :=
+    (real_inner_le_norm x y).trans (by nlinarith [norm_nonneg y])
+  have hp : 0 ≤ ‖y‖ ^ 2 + 1 - 2 * inner ℝ x y := by
+    nlinarith [sq_nonneg (‖y‖ - 1)]
+  have he : ‖x - y‖ ^ 2 - ‖x - (‖y‖ ^ 2)⁻¹ • y‖ ^ 2 =
+      (1 - (‖y‖ ^ 2)⁻¹) * (‖y‖ ^ 2 + 1 - 2 * inner ℝ x y) := by
+    simp only [norm_sub_sq_real, norm_smul, Real.norm_eq_abs, abs_of_nonneg hq,
+      real_inner_smul_right]
+    field_simp
+    ring
+  have hs : ‖x - (‖y‖ ^ 2)⁻¹ • y‖ ≤ ‖x - y‖ := by
+    have := mul_nonneg (sub_nonneg.2 hq1) hp
+    rw [← he] at this
+    nlinarith [norm_nonneg (x - (‖y‖ ^ 2)⁻¹ • y), norm_nonneg (x - y)]
+  simpa only [discField, max_eq_left hx, max_eq_right hy, one_pow, inv_one,
+    neg_smul, one_smul, neg_sub_neg, norm_sub_rev] using hs
+
+/-- The gradient of the unit-disc potential is `1`-Lipschitz (source (idg1)). -/
+theorem lipschitzWith_discField_one : LipschitzWith 1 (discField 1) := by
+  rw [lipschitzWith_iff_norm_sub_le]
+  intro x y
+  simp only [NNReal.coe_one, one_mul]
+  by_cases hx : ‖x‖ ≤ 1
+  · by_cases hy : ‖y‖ ≤ 1
+    · simp only [discField, max_eq_left hx, max_eq_left hy, one_pow, inv_one,
+        neg_one_smul, neg_sub_neg, norm_sub_rev, le_refl]
+    · exact discField_one_mixed hx (le_of_not_ge hy)
+  · by_cases hy : ‖y‖ ≤ 1
+    · simpa only [norm_sub_rev] using discField_one_mixed hy (le_of_not_ge hx)
+    · have hx0 : x ≠ 0 := norm_pos_iff.1 (by linarith [lt_of_not_ge hx])
+      have hy0 : y ≠ 0 := norm_pos_iff.1 (by linarith [lt_of_not_ge hy])
+      have he : ∀ u : ℂ, 1 ≤ ‖u‖ → discField 1 u = -(starRingEnd ℂ) u⁻¹ := by
+        intro u hu
+        simpa only [discField, max_eq_right hu] using gradLogKernel_eq_neg_conj_inv u
+      rw [he x (le_of_not_ge hx), he y (le_of_not_ge hy), neg_sub_neg,
+        ← map_sub, Complex.norm_conj]
+      have hd := dist_inv_inv₀ hx0 hy0
+      rw [dist_eq_norm, dist_eq_norm] at hd
+      rw [norm_sub_rev, hd]
+      exact div_le_self (norm_nonneg _) (by nlinarith [lt_of_not_ge hx, lt_of_not_ge hy])
+
+/-- Scaling the disc field to radius one. -/
+theorem discField_eq_smul_one {a : ℝ} (ha : 0 < a) (u : ℂ) :
+    discField a u = a⁻¹ • discField 1 (a⁻¹ • u) := by
+  have hm : max 1 (a⁻¹ * ‖u‖) = a⁻¹ * max a ‖u‖ := by
+    rw [mul_max_of_nonneg _ _ (inv_nonneg.2 ha.le), inv_mul_cancel₀ ha.ne']
+  simp only [discField, norm_smul, Real.norm_of_nonneg (inv_nonneg.2 ha.le), hm,
+    smul_smul]
+  congr 1
+  field_simp
+
+/-- Positive-radius disc potentials have Lipschitz gradients, hence are locally `C^{1,1}`. -/
+theorem lipschitzWith_discField {a : ℝ} (ha : 0 < a) :
+    LipschitzWith ((a ^ 2)⁻¹).toNNReal (discField a) := by
+  rw [lipschitzWith_iff_norm_sub_le]
+  intro x y
+  simp only [Real.coe_toNNReal _ (inv_nonneg.2 (sq_nonneg a))]
+  rw [discField_eq_smul_one ha x, discField_eq_smul_one ha y, ← smul_sub, norm_smul,
+    Real.norm_of_nonneg (inv_nonneg.2 ha.le)]
+  calc a⁻¹ * ‖discField 1 (a⁻¹ • x) - discField 1 (a⁻¹ • y)‖
+      ≤ a⁻¹ * ‖a⁻¹ • x - a⁻¹ • y‖ := by
+        gcongr
+        simpa using lipschitzWith_discField_one.norm_sub_le (a⁻¹ • x) (a⁻¹ • y)
+    _ = (a ^ 2)⁻¹ * ‖x - y‖ := by
+        rw [← smul_sub, norm_smul, Real.norm_of_nonneg (inv_nonneg.2 ha.le)]
+        ring
 
 end TwoComponentCoulomb
 

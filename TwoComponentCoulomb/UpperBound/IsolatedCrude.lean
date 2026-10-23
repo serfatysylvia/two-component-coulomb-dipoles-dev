@@ -12,25 +12,33 @@ import TwoComponentCoulomb.Gibbs.Basic
 import TwoComponentCoulomb.PhaseSpace.Packing
 
 /-!
-# Proposition 3.9, the crude case: the integral over the representatives
+# Proposition 3.8, the crude case: the integral over the representatives
 
-Source: proof of Proposition 3.9 (`prop:isolated`), l. 1410--1415 (the
-case `p < N/2`). After Steps 1--2 (`(pred3)`, which holds for every
-`p ≤ N`), the cell integral `I(γ, S)` is bounded by `(𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}))^p` times
+Source `source/dipole-formation.tex`, proof of Proposition 3.8 (`prop:isolated`),  (the
+case `p < N/2`, `prop:isolated#crude-case-*`). After Steps 1--2 (`(pred3)`, which holds for every
+`p ≤ N`), the cell integral `I(γ)` is bounded by `(𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}))^p` times
 the integral over the representatives `W_p ∈ Λ^p` of
 `∏_{j neutral} (1 + C' φ_β(ρ_j)) ∏_{j same-sign} C' (ℓ^{-1} 1_{β=2} + (λ/ρ_j)^{β-2} 1_{β>2})`.
-This file bounds that integral by `N^p (1 + 2C')^p e^{2N}`, as in the source:
+For `β > 2`, the paper l. 1332 bounds this integral by
+`N^p (1 + C')^p`, using `lintegral_ref_le_of_two_lt`. The paper counterpart is
+`source/dipole-formation.tex`, l. 1330. The critical extension retained
+from the pinned sources uses `N^p (1 + 2C')^p e^{2N}`:
 
-* for `β > 2` every factor is at most `1 + C'` (`φ_β ≤ 1` and `(λ/ρ)^{β-2} ≤ 1` on `[λ, ∞)`;
-  l. 1410);
-* for `β = 2` the factor `1 + C' (1 + |log ρ|)/ℓ` is at most `(1 + 2C') e^{log⁺ ρ}` (l. 1410), and
-  the packing bound `∑_j ρ_j² ≤ 2N` (the representatives lie in `Λ`), with
-  `log⁺ ρ ≤ (p/(2N)) ρ² + ½ log (N/p)` and `p log (N/p) ≤ N` (l. 1411--1414), gives
-  `∑_j log⁺ ρ_j ≤ (p/(2N)) ∑_j ρ_j² + (p/2) log (N/p) ≤ 2N`.
+* for `β > 2` every factor is at most `1 + C'` (`φ_β ≤ 1` and `(λ/ρ)^{β-2} ≤ 1` on `[λ, ∞)`); this
+  is the source's "integrating the displacements over `ℝ²`", the quadratic terms
+  and the negative parts of the same-sign terms costing `e^{C_β p}`;
+* for `β = 2` the factor `1 + C' (1 + |log ρ|)/ℓ` is at most `(1 + 2C') e^{log⁺ ρ}`, and the packing
+  bound `∑_j ρ_j² ≤ 2N` (the representatives lie in `Λ`) gives
+  `∑_j log⁺ ρ_j ≤ (p/(2N)) ∑_j ρ_j² + (p/2) log (N/p) ≤ 2N`. This replaces the source's insertion of
+  the Gaussian factor `e^{-(p/N) ∑_j |u_j|²}` and the bound `C(ℓ + 1 + log (N/p))` of each
+  displacement integral: `log⁺ ρ ≤ (p/(2N)) ρ² + ½ log (N/p)` is the same
+  Gaussian-versus-logarithm comparison, made pointwise; and `p log (1 + log (N/p)) ≤ CN` becomes
+  `p log (N/p) ≤ N`.
 
 ## Main results
 
-* `IsolatedCrude.factor_le`: each factor of `(pred3)` is at most `(1 + 2C') e^{max (log ρ) 0}`.
+* `IsolatedCrude.lintegral_ref_le_of_two_lt`: integrate the constant bound `1 + C'` for `β > 2`.
+* `IsolatedCrude.factor_le`: each critical factor of `(pred3)` is at most `(1 + 2C') e^{max (log ρ) 0}`.
 * `IsolatedCrude.sum_nnRadius_sq_le`: the packing bound `∑_j r̃₁(w_j)² ≤ N + p λ²`.
 * `IsolatedCrude.lintegral_ref_le_crude`: `∫_{Λ^p} ∏_j (factor) ≤ N^p (1 + 2C')^p e^{2N}` for
   `p ≤ N`.
@@ -66,6 +74,42 @@ theorem isolatedTail_le_one (hβ : 2 ≤ β) (hlam : 0 < lam) (hl1 : lam ≤ Rea
   · exact inv_le_one_of_one_le₀ (one_le_abs_log hlam hl1)
   · exact Real.rpow_le_one (by positivity) ((div_le_one hρ0).2 hρ) (by linarith)
 
+/-- Each representative factor is at most `1 + A` for `β > 2`, as in the current
+manuscript, proof of `prop:isolated`, line 1375. -/
+theorem factor_le_of_two_lt (hβ : 2 ≤ β) (h2 : 2 < β) (hlam : 0 < lam)
+    (hl1 : lam ≤ Real.exp (-1)) {A : ℝ} (hA : 0 ≤ A) {ρ : ℝ} (hρ : lam ≤ ρ)
+    (P : Prop) [Decidable P] :
+    (if P then A * isolatedTail β hβ lam ρ else 1 + A * isolatedPhi β hβ lam ρ) ≤
+      1 + A := by
+  split_ifs
+  · linarith [mul_le_mul_of_nonneg_left (isolatedTail_le_one hβ hlam hl1 hρ) hA]
+  · linarith [mul_le_mul_of_nonneg_left (isolatedPhi_le_one hβ h2 hlam hρ) hA]
+
+/-- Integrating the constant bound of each factor over the box gives `N^p (1 + A)^p`.
+This is the representative integral at line 1375 of the paper. -/
+theorem lintegral_ref_le_of_two_lt {κ : Type*} [Fintype κ] [Nontrivial κ] (N : ℕ)
+    (hβ : 2 ≤ β) (h2 : 2 < β) (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1))
+    {A : ℝ} (hA : 0 ≤ A) (S : Set κ) [DecidablePred (· ∈ S)] :
+    ∫⁻ w in Set.univ.pi (fun _ : κ => box N), ∏ j, ENNReal.ofReal
+        (if j ∈ S then A * isolatedTail β hβ lam (nnRadius lam w j)
+          else 1 + A * isolatedPhi β hβ lam (nnRadius lam w j)) ≤
+      (N : ℝ≥0∞) ^ Fintype.card κ * ENNReal.ofReal ((1 + A) ^ Fintype.card κ) := by
+  calc
+    _ ≤ (∫⁻ _ : κ → ℂ in Set.univ.pi (fun _ : κ => box N),
+        ENNReal.ofReal ((1 + A) ^ Fintype.card κ)) := by
+      apply lintegral_mono
+      intro w
+      calc
+        _ ≤ ∏ _j : κ, ENNReal.ofReal (1 + A) :=
+          Finset.prod_le_prod fun j _ => ENNReal.ofReal_le_ofReal
+            (factor_le_of_two_lt hβ h2 hlam hl1 hA (le_nnRadius lam w j) (j ∈ S))
+        _ = _ := by rw [Finset.prod_const, Finset.card_univ,
+          ENNReal.ofReal_pow (by positivity)]
+    _ = _ := by
+      rw [setLIntegral_const, volume_pi_pi]
+      simp only [volume_box, Finset.prod_const, Finset.card_univ]
+      rw [mul_comm]
+
 /-- `|log ρ| ≤ ℓ + max (log ρ) 0` for `ρ ≥ λ`, `ℓ = |log λ|`. -/
 theorem abs_log_le (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1)) {ρ : ℝ} (hρ : lam ≤ ρ) :
     |Real.log ρ| ≤ |Real.log lam| + max (Real.log ρ) 0 := by
@@ -79,7 +123,7 @@ theorem abs_log_le (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1)) {ρ : ℝ} (h�
     have := Real.log_le_log hlam hρ
     linarith
 
-/-- **Each factor of `(pred3)` is at most `(1 + 2C') e^{log⁺ ρ}`** (source l. 1410): for
+/-- **Each factor of `(pred3)` is at most `(1 + 2C') e^{log⁺ ρ}`** : for
 `β > 2` the factors are at most `1 + C'`; for `β = 2`,
 `1 + C' (1 + |log ρ|)/ℓ ≤ 1 + 2C' + C' log⁺ ρ ≤ (1 + 2C') (1 + log⁺ ρ)`. -/
 theorem factor_le (hβ : 2 ≤ β) (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1)) {C' : ℝ}
@@ -112,7 +156,7 @@ theorem factor_le (hβ : 2 ≤ β) (hlam : 0 < lam) (hl1 : lam ≤ Real.exp (-1)
 
 /-! ### The packing bound and the sum of the logarithms -/
 
-/-- **Packing** (source l. 1410): for points `w_j` of the box,
+/-- **Packing** : for points `w_j` of the box,
 `∑_j r̃₁(w_j)² ≤ 2N + p λ²` (the open discs of radius half the nearest-neighbour distance are
 disjoint, `sum_sq_le_of_separated`). -/
 theorem sum_nnRadius_sq_le {κ : Type*} [Fintype κ] [Nontrivial κ] {N : ℕ} (w : κ → ℂ)
@@ -149,7 +193,7 @@ theorem sum_nnRadius_sq_le {κ : Type*} [Fintype κ] [Nontrivial κ] {N : ℕ} (
           div_le_div_of_nonneg_right hpack (by norm_num)
         linarith
 
-/-- `log⁺ ρ ≤ (P/(2N)) ρ² + ½ log (N/P)` for `ρ > 0` and `0 < P ≤ N` (source l. 1411--1413). -/
+/-- `log⁺ ρ ≤ (P/(2N)) ρ² + ½ log (N/P)` for `ρ > 0` and `0 < P ≤ N` . -/
 theorem max_log_le {ρ P N : ℝ} (hρ : 0 < ρ) (hP : 0 < P) (hPN : P ≤ N) :
     max (Real.log ρ) 0 ≤ P / N * ρ ^ 2 / 2 + Real.log (N / P) / 2 := by
   have hN : 0 < N := hP.trans_le hPN
@@ -161,7 +205,7 @@ theorem max_log_le {ρ P N : ℝ} (hρ : 0 < ρ) (hP : 0 < P) (hPN : P ≤ N) :
   rw [Real.log_div hN.ne' hP.ne']
   linarith
 
-/-- **The sum of the logarithms** (source l. 1410--1414): for `p ≤ N` points of the box,
+/-- **The sum of the logarithms** : for `p ≤ N` points of the box,
 `∑_j log⁺ r̃₁(w_j) ≤ 2N` (for `λ ≤ 1`). -/
 theorem sum_max_log_le {κ : Type*} [Fintype κ] [Nontrivial κ] {N : ℕ}
     (hpN : Fintype.card κ ≤ N) (w : κ → ℂ) (hw : ∀ j, w j ∈ box N) {lam : ℝ} (hlam : 0 < lam)
@@ -199,7 +243,7 @@ theorem sum_max_log_le {κ : Type*} [Fintype κ] [Nontrivial κ] {N : ℕ}
 
 /-! ### The integral over the representatives -/
 
-/-- **The crude bound of the integral over the representatives** (source l. 1410--1415): for
+/-- **The crude bound of the integral over the representatives** : for
 `p = |κ| ≤ N`, `0 < λ ≤ e^{-1}` and `C' ≥ 0`, the integral over `Λ^κ` of the product of `(pred3)`
 (with any assignment `a` of the representatives to the same-sign type) is at most
 `N^p (1 + 2C')^p e^{2N}`. -/

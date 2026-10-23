@@ -14,13 +14,13 @@ public import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Analysis.Complex.Exponential
 
 /-!
-# Proposition 3.9, Steps 3--4: the entropy and optimization calculus
+# Proposition 3.8, Steps 3--4: the entropy and optimization calculus
 
-Source: proof of Proposition 3.9 (`prop:isolated`), l. 1337--1415:
-the elementary entropy inequalities of Step 3 (l. 1344--1352), the supremum inequality of Step 4
-(l. 1392--1395) and its application to the bounds of Step 3 (l. 1396--1408), and the entropy
-bookkeeping of the crude case (l. 1415). Nothing in this file refers to configurations:
-it is pure real analysis, consumed by `Isolated.lean`.
+Source: proof of Proposition 3.8 (`prop:isolated`), l. 1269–1330:
+the elementary entropy inequalities of Step 3 (l. 1277–1284), the supremum inequality of Step 4
+ and its application to the bounds of Step 3 (l. 1319–1330), and the entropy
+bookkeeping of the crude case. Nothing in this file refers to configurations:
+it is pure real analysis, consumed by `NearestNeighbor/Isolated.lean`.
 
 Throughout, `p = p₀ + q` is the number of pairs, `p₀` the number of neutral pairs (the pairs
 *not* assigned the logarithmic term), `q` the number of same-sign pairs, `k ≤ p₀` the number of
@@ -30,22 +30,22 @@ selected neutral factors, and `x₀ = q/p`, `x₁ = k/p`, `t = x₀ + x₁`. The
 ## Main results
 
 * `IsolatedOptimization.mul_sub_log_le_exp`: the supremum inequality
-  `sup_{0 < s ≤ 1} s (A - log s) ≤ e^{A - 1}` (the case `η = 1` of l. 1392--1395),
+  `sup_{0 < s ≤ 1} s (A - log s) ≤ e^{A - 1}` (the case `η = 1` of ),
   valid for every `s ≥ 0`; the general form
   `s (A + B log (1/s)) ≤ B e^{A/B - 1}` is `TwoComponentCoulomb.mul_add_mul_log_inv_le`.
 * `IsolatedOptimization.mul_sub_log_add_log_max_le`: the supremum inequality applied to both
   branches of a maximum, `s (A - log s) + (s/2) log (max (X s) (Y²)) ≤ X e^{2A} + Y e^A`
-  (the branches of l. 1396--1405).
+  (the branches of l. 1319–1327).
 * `IsolatedOptimization.log_choose_le`, `IsolatedOptimization.entropy_le`,
-  `IsolatedOptimization.mul_log_add_le`: the entropy inequalities of l. 1344--1352.
+  `IsolatedOptimization.mul_log_add_le`: the entropy inequalities of l. 1277–1284.
 * `IsolatedOptimization.exponent_le_single`, `IsolatedOptimization.exponent_le_two`: the
-  exponent of the term `k` of Step 3, divided by `p`, plus the quadratic gain `x₀²` (l. 1407),
-  is bounded by the optimized error, for one marked species (`β ≤ 4`, Proposition 3.7) and two
-  species (`β > 4`, Proposition 3.8).
+  exponent of the term `k` of Step 3, divided by `p`, plus the quadratic gain `x₀²` (l. 1329),
+  is bounded by the optimized error, for one marked species (`β ≤ 4`, Proposition 3.6) and two
+  species (`β > 4`, Proposition 3.7).
 * `IsolatedOptimization.sum_le_ofReal_exp`: the sum over `0 ≤ k ≤ p₀` costs at most `log (N + 1)`
-  beyond its largest term (l. 1343).
+  beyond its largest term (l. 1275).
 * `IsolatedOptimization.entropy_le_crude`: the entropy of `f(p₀)` is at most `(1 + |C₀|) p`
-  (l. 1415).
+ .
 -/
 
 @[expose] public section
@@ -57,9 +57,9 @@ namespace TwoComponentCoulomb
 
 namespace IsolatedOptimization
 
-/-! ### The supremum inequality (source l. 1392--1395) -/
+/-! ### The supremum inequality  -/
 
-/-- `s (a - log s) ≤ e^{a-1}` for every `s ≥ 0`: the supremum inequality of source l. 1392--1395
+/-- `s (a - log s) ≤ e^{a-1}` for every `s ≥ 0`: the supremum inequality of source 
 with `η = 1`. -/
 theorem mul_sub_log_le_exp (a : ℝ) {s : ℝ} (hs : 0 ≤ s) :
     s * (a - Real.log s) ≤ Real.exp (a - 1) := by
@@ -73,7 +73,7 @@ theorem mul_sub_log_le_exp (a : ℝ) {s : ℝ} (hs : 0 ≤ s) :
           mul_le_mul_of_nonneg_left h' hs.le
       _ = Real.exp (a - 1) := by field_simp
 
-/-- **The supremum inequality on both branches of a maximum** (source l. 1396--1405): for `s ≥ 0`,
+/-- **The supremum inequality on both branches of a maximum** (source l. 1319–1327): for `s ≥ 0`,
 `X, Y > 0` and `Γ ≤ log (max (X s) (Y²))`,
 `s (A - log s) + (s/2) Γ ≤ X e^{2A} + Y e^{A}`. On the branch `X s` the inequality is applied with
 `η = 1/2`, on the branch `Y²` with `η = 1`. -/
@@ -120,7 +120,7 @@ theorem mul_sub_log_div_add_le (A : ℝ) {P M X Y Γ : ℝ} (hP : 0 < P) (hM : 0
   rw [e]
   exact mul_le_mul_of_nonneg_left h hP.le
 
-/-! ### The entropy inequalities (source l. 1344--1352) -/
+/-! ### The entropy inequalities (source l. 1277–1284) -/
 
 /-- `x log (x/y) = x log x - x log y` for `y ≠ 0`, including `x = 0`. -/
 theorem mul_log_div (x : ℝ) {y : ℝ} (hy : y ≠ 0) :
@@ -142,7 +142,7 @@ theorem sub_le_mul_log_sub (a : ℝ) {s : ℝ} (ha : 0 ≤ a) (hs : 0 < s) :
     rw [mul_sub, mul_sub, mul_div_cancel₀ _ ha.ne', mul_one] at this
     linarith
 
-/-- **Concavity of the entropy** (source l. 1350, `-x₀ log x₀ - x₁ log x₁ ≤ t log (2/t)`):
+/-- **Concavity of the entropy** (source l. 1282, `-x₀ log x₀ - x₁ log x₁ ≤ t log (2/t)`):
 for `a, b ≥ 0`, `(a + b) log ((a + b)/2) ≤ a log a + b log b`. -/
 theorem mul_log_add_le {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
     (a + b) * Real.log ((a + b) / 2) ≤ a * Real.log a + b * Real.log b := by
@@ -156,7 +156,7 @@ theorem mul_log_add_le {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
     have h2 := sub_le_mul_log_sub b hb hs
     linarith only [h1, h2]
 
-/-- **The binomial bound** (source l. 1346): `log C(n, k) ≤ k log n - k log k + k` for `k ≤ n`,
+/-- **The binomial bound** (source l. 1278): `log C(n, k) ≤ k log n - k log k + k` for `k ≤ n`,
 i.e. `log C(p₀, k) ≤ k log (p₀/k) + k`. -/
 theorem log_choose_le {n k : ℕ} (hk : k ≤ n) :
     Real.log (n.choose k) ≤ k * Real.log n - k * Real.log k + k := by
@@ -181,7 +181,7 @@ theorem log_choose_le {n k : ℕ} (hk : k ≤ n) :
     Real.log_pow, Real.log_pow, Real.log_exp] at h4
   linarith
 
-/-- **The entropy of `f(p₀)` with the binomial factor** (source l. 1344--1352): for `k ≤ p₀`,
+/-- **The entropy of `f(p₀)` with the binomial factor** (source l. 1277–1284): for `k ≤ p₀`,
 `p = p₀ + q > 0`,
 `p log p - p₀ log p₀ - q log q + log C(p₀, k) ≤ q + q log p - q log q + k log p - k log k + k`
 (the first step uses `-(1 - x₀) log (1 - x₀) ≤ x₀`). -/
@@ -200,7 +200,7 @@ theorem entropy_le {p p₀ q k : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) (hk : k 
   have e : (p : ℝ) * Real.log p = p₀ * Real.log p + q * Real.log p := by rw [hpq']; ring
   linarith
 
-/-- **The crude entropy bound** (source l. 1415):
+/-- **The crude entropy bound** :
 `p log p - p₀ log p₀ - q log q + C₀ q ≤ (1 + |C₀|) p` for `p = p₀ + q > 0`. -/
 theorem entropy_le_crude {p p₀ q : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) (C₀ : ℝ) :
     p * Real.log p - p₀ * Real.log p₀ - q * Real.log q + C₀ * q ≤ (1 + |C₀|) * p := by
@@ -218,9 +218,9 @@ theorem entropy_le_crude {p p₀ q : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) (C�
 
 /-! ### The exponent of the term `k` (Step 3) and its optimization (Step 4) -/
 
-/-- **Steps 3--4 for one marked species** (source l. 1337--1379 and l. 1392--1408, the cases
+/-- **Steps 3--4 for one marked species** (source l. 1269–1306 and l. 1319–1330, the cases
 `2 ≤ β ≤ 4`). Let `p = p₀ + q > 0`, `k ≤ p₀`, `M = k + q`, and suppose that the integral of
-the `M` selected factors is bounded by Proposition 3.7 with exponent
+the `M` selected factors is bounded by Proposition 3.6 with exponent
 `p log N + C₆ M + (M/2) Γ`, where `Γ ≤ log (max (X M/p) (Y²))` (this is `γ_{β, M}` with `p ≤ N`),
 and that each selected factor carries the constant `m = e^L`. Then the exponent of the term `k`
 (entropy, binomial factor, constants, `γ`), plus the quadratic gain `p (q/p)²`, is at most
@@ -256,9 +256,9 @@ theorem exponent_le_single {p p₀ q k : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) 
   have e4 : M * Real.log p = k * Real.log p + q * Real.log p := by rw [hM]; ring
   linarith only [hE, hconc, hsq, hC₀, e1, e2, e4, hopt, hM, hk0, hq0]
 
-/-- **Steps 3--4 for two marked species** (source l. 1380--1387 and l. 1392--1408, the case
+/-- **Steps 3--4 for two marked species** (source l. 1307–1314 and l. 1319–1330, the case
 `β > 4`). Let `p = p₀ + q > 0`, `k ≤ p₀`, and suppose that the integral of the selected factors is
-bounded by Proposition 3.8 with exponent `p log N + C₇ (k + q) + (k/2) Γ₁ + (q/2) Γ₂`, where
+bounded by Proposition 3.7 with exponent `p log N + C₇ (k + q) + (k/2) Γ₁ + (q/2) Γ₂`, where
 `Γ₁ ≤ log (max (X₁ k/p) (Y₁²))` and `Γ₂ ≤ log (max (X₂ q/p) (Y₂²))`, and that the `k` neutral
 (resp. `q` same-sign) factors carry the constant `e^{L₁}` (resp. `e^{L₂}`). Then the exponent of the
 term `k`, plus the quadratic gain `p (q/p)²`, is at most
@@ -290,9 +290,9 @@ theorem exponent_le_two {p p₀ q k : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) (hk
     exact mul_le_mul_of_nonneg_left (by linarith [abs_nonneg C₀]) hk0
   linarith only [hE, hsq, hC₀, e1, e2, h1, h2, hk1]
 
-/-! ### The sum over `k` (source l. 1343) -/
+/-! ### The sum over `k` (source l. 1275) -/
 
-/-- **The sum over `0 ≤ k ≤ n` costs at most `log (N + 1)`** (source l. 1343): if every term
+/-- **The sum over `0 ≤ k ≤ n` costs at most `log (N + 1)`** (source l. 1275): if every term
 `e^E · (Z · F k)` is at most `e^Y`, then `e^E · (Z · ∑_{k ≤ n} F k) ≤ e^{Y + log (N + 1)}` for
 `n ≤ N`. -/
 theorem sum_le_ofReal_exp {n N : ℕ} (hn : n ≤ N) (E Y : ℝ) (Z : ℝ≥0∞) (F : ℕ → ℝ≥0∞)
@@ -333,7 +333,7 @@ theorem ofReal_exp_mul_eq {E F Z m₁ m₂ : ℝ} (hZ : 0 < Z) (hm₁ : 0 < m₁
 
 /-! ### Assembly of Steps 3--4 -/
 
-/-- **Steps 3--4 assembled, one marked species** (source l. 1337--1408, `2 ≤ β ≤ 4`). Let
+/-- **Steps 3--4 assembled, one marked species** (source l. 1269–1330, `2 ≤ β ≤ 4`). Let
 `p = p₀ + q`, `0 < p ≤ N`, and let `W` (the integral over the representatives) be bounded by the
 expansion `∑_{k ≤ p₀} C(p₀, k) m^{k+q} e^{p log N + C₆ (k+q) + ((k+q)/2) Γ(k+q)}` of Step 3, where
 `Γ(k + q) ≤ log (max (X (k+q)/p) (Y²))`. Then, with the entropy of `f(p₀)`,
@@ -369,10 +369,10 @@ theorem ofReal_exp_mul_le_single {N p p₀ q : ℕ} (hpq : p₀ + q = p) (hp : 0
           push_cast; ring
         linarith
 
-/-- **Steps 3--4 assembled, two marked species** (source l. 1380--1408, `β > 4`). As
+/-- **Steps 3--4 assembled, two marked species** (source l. 1307–1330, `β > 4`). As
 `ofReal_exp_mul_le_single`, with the `k` neutral factors carrying `m₁` and the exponent
 `(k/2) Γ₁(k)`, and the `q` same-sign factors carrying `m₂` and the exponent `(q/2) Γ₂`
-(Proposition 3.8). -/
+(Proposition 3.7). -/
 theorem ofReal_exp_mul_le_two {N p p₀ q : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) (hpN : p ≤ N)
     (C₀ C₇ : ℝ) {Z m₁ m₂ X₁ Y₁ X₂ Y₂ : ℝ} (hZ : 0 < Z) (hm₁ : 0 < m₁) (hm₂ : 0 < m₂)
     (hX₁ : 0 < X₁) (hY₁ : 0 < Y₁) (hX₂ : 0 < X₂) (hY₂ : 0 < Y₂) (Γ₁ : ℕ → ℝ) (Γ₂ : ℝ)

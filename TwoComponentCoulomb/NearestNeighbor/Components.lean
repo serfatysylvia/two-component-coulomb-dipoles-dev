@@ -12,9 +12,9 @@ public import TwoComponentCoulomb.NearestNeighbor.Cycles
 /-!
 # Connected components of the nearest-neighbour graph
 
-The nearest-neighbour graph `γ_{2N}(Z)` of a configuration `Z` (source l. 217--222 and l. 373--375)
+The nearest-neighbour graph `γ_{2N}(Z)` of a configuration `Z` (source l. 202–207 and l. 376–378)
 has an edge between `i` and `φ₁ i`. Its connected components are 2-cycles with trees attached
-(source l. 217--222, 375--385): since every orbit of `φ = nearestNeighbor Z` reaches a 2-cycle
+(source l. 202–207, 378–388): since every orbit of `φ = nearestNeighbor Z` reaches a 2-cycle
 (`TwoComponentCoulomb.exists_iterate_nearestNeighbor_two_cycle`), and every cycle is a 2-cycle
 (`TwoComponentCoulomb.nearestNeighbor_nearestNeighbor_of_iterate_eq_self`), each component
 contains exactly one 2-cycle. Because of the index tie-break of the frozen definition (ruling R4)
@@ -31,7 +31,7 @@ all statements here hold for *every* configuration `Z`.
   same 2-cycle.
 * `TwoComponentCoulomb.card_cycleVerts_eq_two_mul_numComponents`: `|cycleVerts Z| = 2 K`.
 * `TwoComponentCoulomb.numComponents_le`.
-* `TwoComponentCoulomb.card_tree_vertices`: the `2 (N - K)` tree vertices (source l. 466--470).
+* `TwoComponentCoulomb.card_tree_vertices`: the `2 (N - K)` tree vertices (source l. 472–476).
 -/
 
 @[expose] public section
@@ -42,7 +42,7 @@ open Finset
 
 variable {N : ℕ}
 
-/-- The nearest-neighbour graph `γ_{2N}(Z_{2N})` on the index set (source l. 217--222, 375): `i`
+/-- The nearest-neighbour graph `γ_{2N}(Z_{2N})` on the index set (source l. 202–207, 378): `i`
 and `j` are adjacent iff `φ₁ i = j` or `φ₁ j = i`. This is the graph whose connected components
 are counted by `numComponents`. -/
 abbrev nearestNeighborGraph (Z : Fin N ⊕ Fin N → ℂ) : SimpleGraph (Fin N ⊕ Fin N) :=
@@ -80,7 +80,7 @@ theorem reachable_iterate_nearestNeighbor (Z : Fin N ⊕ Fin N → ℂ) (i : Fin
 
 /-- The vertices lying on a 2-cycle of the nearest-neighbour graph: `φ₁ (φ₁ i) = i`. By
 `nearestNeighbor_nearestNeighbor_of_iterate_eq_self` these are exactly the periodic points of
-`φ₁`. The other `2 (N - K)` vertices are the "tree vertices" (source l. 466--470). -/
+`φ₁`. The other `2 (N - K)` vertices are the "tree vertices" (source l. 472–476). -/
 noncomputable def cycleVerts (Z : Fin N ⊕ Fin N → ℂ) : Finset (Fin N ⊕ Fin N) :=
   univ.filter fun i => nearestNeighbor Z (nearestNeighbor Z i) = i
 
@@ -200,8 +200,7 @@ theorem eq_or_eq_nearestNeighbor_of_reachable {Z : Fin N ⊕ Fin N → ℂ} {c d
 /-! ### Counting components -/
 
 /-- Each connected component of the nearest-neighbour graph contains exactly one 2-cycle, so
-that the number of vertices on 2-cycles is twice the number `K` of components (source l. 217--222,
-375--385). -/
+that the number of vertices on 2-cycles is twice the number `K` of components (source l. 202–207, 378–388). -/
 theorem card_cycleVerts_eq_two_mul_numComponents (Z : Fin N ⊕ Fin N → ℂ) :
     (cycleVerts Z).card = 2 * numComponents Z := by
   classical
@@ -244,7 +243,7 @@ theorem numComponents_le (Z : Fin N ⊕ Fin N → ℂ) : numComponents Z ≤ N :
   have h2 := card_cycleVerts_le Z
   omega
 
-/-- There are `2 (N - K)` tree vertices, i.e. vertices not on a 2-cycle (source l. 466--470). -/
+/-- There are `2 (N - K)` tree vertices, i.e. vertices not on a 2-cycle (source l. 472–476). -/
 theorem card_tree_vertices (Z : Fin N ⊕ Fin N → ℂ) :
     (univ.filter fun i => nearestNeighbor Z (nearestNeighbor Z i) ≠ i).card =
       2 * (N - numComponents Z) := by

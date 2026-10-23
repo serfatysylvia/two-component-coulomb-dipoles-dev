@@ -16,7 +16,7 @@ import TwoComponentCoulomb.Main.Theorem2
 /-!
 # Frozen: `TwoComponentCoulomb.theorem_2`
 
-Frozen statement, approved by the authors in this exact form (RULINGS.md R20). Source: l. 297–305.
+Frozen statement, approved by the authors in this exact form (RULINGS.md R20). Source: l. 294–302.
 -/
 
 open scoped NNReal
@@ -25,7 +25,7 @@ open scoped NNReal
 
 namespace TwoComponentCoulomb
 
-/-- **Theorem 2** (`prop:linear`, source l. 297–305). -/
+/-- **Theorem 2** (`prop:linear`, source l. 294–302). -/
 theorem theorem_2 (β : ℝ) (hβ : 2 ≤ β) :
     ∃ lamβ Mβ Cβ : ℝ, 0 < lamβ ∧ lamβ < Real.exp (-1) ∧ 0 < Mβ ∧ 0 < Cβ ∧
       ∀ M : ℝ, Mβ < M → ∃ c : ℝ, 0 < c ∧

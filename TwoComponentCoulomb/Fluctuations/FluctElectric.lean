@@ -17,7 +17,7 @@ import TwoComponentCoulomb.Potential.SmearedCharge
 /-!
 # Theorem 2, Step 1: the electric energy bounds the fluctuations
 
-Source: proof of Theorem 2, Step 1 (l. 1966-1999), eq. (eq1): for a
+Source: proof of Theorem 2, Step 1 (l. 1844–1876), the final fluctuation estimate of Step 1: for a
 neutral configuration, with `h_α` the electric potential of the smeared charges
 `Σᵢ dᵢ δ_{zᵢ}^{(αᵢ)}`, and `ξ(x) = ξ₀(x / √N)` for a Lipschitz `ξ₀`,
 
@@ -37,12 +37,12 @@ replaced by a smooth `K`-Lipschitz mollification (`exists_contDiff_lipschitz_app
 used.
 
 * `abs_sub_integral_smearedCharge_le` : the smearing error `|f(z) - ∫ f dδ_z^{(a)}| ≤ A a` of an
-  `A`-Lipschitz function (source l. 1977-1980).
+  `A`-Lipschitz function (source l. 1855–1858).
 * `norm_fderiv_cutoff_mul_le` : `‖∇((η - η(0)) χ)‖ ≤ (1 + 2 Kχ) K` for a `K`-Lipschitz `η` and a
-  cutoff `χ` at scale `R` (source l. 1969-1972).
+  cutoff `χ` at scale `R` (source l. 1847–1850).
 * `sq_sum_mul_le_core` : the estimate for a `C¹` `K`-Lipschitz test function.
 * `exists_sq_sum_mul_le_of_lipschitz` : the estimate for a merely `K`-Lipschitz test function.
-* `exists_fluct_sq_le` : eq. (eq1) for `Fluct_N`.
+* `exists_fluct_sq_le` : the final fluctuation estimate of Step 1 for Fluctₙ.
 -/
 
 @[expose] public section
@@ -78,7 +78,7 @@ theorem abs_sub_le_of_norm_fderiv_le {f : ℂ → ℝ} {A : ℝ} (hA : 0 ≤ A)
 
 /-! ### The smearing error -/
 
-/-- **The smearing error** (source l. 1977-1980): for an `A`-Lipschitz function `f`,
+/-- **The smearing error** (source l. 1855–1858): for an `A`-Lipschitz function `f`,
 `|f(z) - ∫ f dδ_z^{(a)}| ≤ A a`. -/
 theorem abs_sub_integral_smearedCharge_le {f : ℂ → ℝ} {A : ℝ}
     (hf : ∀ x y, |f x - f y| ≤ A * ‖x - y‖) (hc : Continuous f) (z : ℂ) {a : ℝ} (ha : 0 < a) :
@@ -143,7 +143,7 @@ theorem norm_fderiv_cutoff_mul_le {η χ : ℂ → ℝ} {K Kχ R : ℝ} (hK : 0 
           field_simp
           ring
 
-/-- **The estimate for a `C¹` Lipschitz test function** (source l. 1969-1983): with universal
+/-- **The estimate for a `C¹` Lipschitz test function** (source l. 1847–1861): with universal
 constant `1 + 2 Kχ` from the cutoff of `exists_cutoff`, for `η` of class `C¹` and `K`-Lipschitz,
 a neutral configuration of charges `|dᵢ| ≤ 1` in `B̄(0, R)` and positive radii `αᵢ`,
 `(Σᵢ dᵢ η(zᵢ))² ≤ 2 ((1 + 2Kχ) K)² (R² ∫ |∇h_α|² + (Σᵢ αᵢ)²)`. -/
@@ -268,7 +268,7 @@ end Core
 
 universe u
 
-/-- **The estimate for a Lipschitz test function** (source l. 1969-1988): there is a universal
+/-- **The estimate for a Lipschitz test function** (source l. 1847–1866): there is a universal
 constant `C₁` such that for every `K`-Lipschitz `η`, every neutral configuration of charges
 `|dᵢ| ≤ 1` located in `B̄(0, R)` and all radii `αᵢ > 0`,
 `(Σᵢ dᵢ η(zᵢ))² ≤ C₁ K² (R² ∫ |∇h_α|² + (Σᵢ αᵢ)²)`.
@@ -327,10 +327,10 @@ theorem exists_sq_sum_mul_le_of_lipschitz :
     _ = B := Real.sq_sqrt hB0
     _ = _ := by rw [hB]
 
-/-! ### Eq. (eq1) for `Fluct_N` -/
+/-! ### Eq. the final fluctuation estimate of Step 1 for Fluctₙ -/
 
-/-- **Theorem 2, Step 1: the electric energy bounds the fluctuations** (source l. 1966-1999,
-eq. (eq1)): there is an absolute constant `C` such that for every `N ≥ 1`, every Lipschitz
+/-- **Theorem 2, Step 1: the electric energy bounds the fluctuations** (source l. 1844–1876,
+the final fluctuation estimate of Step 1): there is an absolute constant `C` such that for every `N ≥ 1`, every Lipschitz
 `ξ₀ : ℂ → ℝ` with Lipschitz constant `L` (ruling R8), every configuration `Z` in the box `Λ^{2N}`
 and every positive radii `α`, writing `ξ(x) = ξ₀(x / √N)`,
 `Fluct_N(ξ)² ≤ C L² (∫ |∇h_α|² + N⁻¹ (Σᵢ αᵢ)²)`. -/

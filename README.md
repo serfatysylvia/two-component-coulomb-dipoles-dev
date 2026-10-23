@@ -8,7 +8,7 @@ A Lean 4 / Mathlib formalization of the main results of
 > [arXiv:2410.01025](https://arxiv.org/abs/2410.01025).
 
 The formalized text is the authors' revised manuscript in `source/dipole-formation.tex`,
-pinned at SHA-256 `2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6`. Its
+pinned at SHA-256 `f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91`. Its
 statements and numbering differ from arXiv version 1. Line numbers in this repository, in
 `RULINGS.md` and in the Lean docstrings refer to that file.
 
@@ -20,13 +20,13 @@ custom axioms.
 
 | Result | Source (l.) | Lean declaration | Statement file |
 |---|---|---|---|
-| Theorem 1 | 235–274 | `TwoComponentCoulomb.theorem_1` | `TwoComponentCoulomb/Frozen/Theorem1.lean` |
-| Theorem 2 | 297–305 | `TwoComponentCoulomb.theorem_2` | `TwoComponentCoulomb/Frozen/Theorem2.lean` |
-| Proposition 2.2 | 434–443 | `TwoComponentCoulomb.proposition_2_2` | `TwoComponentCoulomb/Frozen/Proposition22.lean` |
-| Corollary 2.3 | 452–464 | `TwoComponentCoulomb.corollary_2_3` | `TwoComponentCoulomb/Frozen/Corollary23.lean` |
-| Lemma 3.6 | 922–946 | `TwoComponentCoulomb.lemma_3_6` | `TwoComponentCoulomb/Frozen/Lemma36.lean` |
-| Proposition 3.10 | 1423–1455 | `TwoComponentCoulomb.proposition_3_10` | `TwoComponentCoulomb/Frozen/Proposition310.lean` |
-| Proposition 4.1 | 1745–1759 | `TwoComponentCoulomb.proposition_4_1` | `TwoComponentCoulomb/Frozen/Proposition41.lean` |
+| Theorem 1 | 220–266 | `TwoComponentCoulomb.theorem_1` | `TwoComponentCoulomb/Frozen/Theorem1.lean` |
+| Theorem 2 | 294–302 | `TwoComponentCoulomb.theorem_2` | `TwoComponentCoulomb/Frozen/Theorem2.lean` |
+| Proposition 2.2 | 440–449 | `TwoComponentCoulomb.proposition_2_2` | `TwoComponentCoulomb/Frozen/Proposition22.lean` |
+| Corollary 2.3 | 458–470 | `TwoComponentCoulomb.corollary_2_3` | `TwoComponentCoulomb/Frozen/Corollary23.lean` |
+| Lemma 3.5 | 870–896 | `TwoComponentCoulomb.lemma_3_5` | `TwoComponentCoulomb/Frozen/Lemma35.lean` |
+| Propositions 3.9 and 3.10 | 1340–1363, 1575–1584 | `TwoComponentCoulomb.proposition_3_9_and_3_10` | `TwoComponentCoulomb/Frozen/Proposition39And310.lean` |
+| Proposition 4.1 | 1657–1668 | `TwoComponentCoulomb.proposition_4_1` | `TwoComponentCoulomb/Frozen/Proposition41.lean` |
 
 Theorem 1 gives `0 < Z < ∞` and the free-energy expansion of `log Z` up to
 `O(N ω_λ) + O(log(N+1))`; the exponential moment bound showing that the energy reduces to the
@@ -34,8 +34,8 @@ nearest-neighbour interactions of dipoles; and the bounds on the number of isola
 on the number of long isolated dipoles for β > 2, and on dipole lengths at β = 2. Theorem 2 is
 the tail bound for fluctuations of linear statistics with Lipschitz test functions.
 The intermediate results are the paper's nearest-neighbour energy decomposition (Prop 2.2,
-Cor 2.3), the free energy of the reduced dipole model (Lemma 3.6), and the upper and lower
-bounds on the partition function (Props 3.10 and 4.1).
+Cor 2.3), the free energy of the reduced dipole model (Lemma 3.5), and the upper and lower
+bounds on the partition function (Props 3.9, 3.10 and 4.1).
 
 ## How to read the statements
 
@@ -52,12 +52,17 @@ modelled by `ℂ` (R1), every `O_β(·)` becomes an explicit constant quantified
 ‖∇ξ₀‖_∞ is read as a Lipschitz constant (R8). Quantities that the paper defines only for
 β ≥ 2 take `2 ≤ β` as an argument (R6).
 
-Before release, independent reviewers compared every frozen statement and definition with the
-source and checked the proofs' axioms (`reviews/statement_audit.md`), and checked the release
-itself: its derivation from the development repository, a clean build and its documentation
-(`reviews/release_review.md`). The later update of the proof of Proposition 4.1 was reviewed in
-`reviews/update_review.md`.
+Independent reviewers compared every frozen statement and definition with the source and
+checked the proofs' axioms (`reviews/statement_audit.md`), checked the release
+(`reviews/release_review.md`), and reviewed the update of the proof of Proposition 4.1
+(`reviews/update_review.md`). These three reports refer to the revision of 2026-10-18,
+SHA-256 `2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6`, preserved in
+this repository at commit `3d96e40`. The fourth report,
+`reviews/statement_audit_2026-10-22.md`, compares all 32 frozen declarations with the current
+source and finds that all match. `reviews/README.md` records the reports' scopes.
 
+The proofs of Sections 2, 3 and 5 follow the written arguments, with the local implementation
+choices recorded in R23.
 The proof of Proposition 4.1 is the paper's argument (R22). In its Step 1 (the construction of
 the screened dipoles), the Neumann problem on each disc is solved explicitly by an image charge,
 and the estimate (estimatesv) is proved from that formula (R22a). The other implementation
@@ -74,9 +79,10 @@ The docstrings use a few terms for how the proofs are organized.
   (for example `TwoComponentCoulomb.Main.theorem_1`) that proves exactly the frozen statement. The
   frozen theorem is **sealed**: its proof is `by exact` the provider, checked by
   `scripts/check_frozen_anchors.py`.
-* The **gates** are the frozen intermediate results (Proposition 2.2, Corollary 2.3, Lemma 3.6,
-  Propositions 3.10 and 4.1). For example, `theorem_1_of_gates` derives Theorem 1 from the
-  statements of Lemma 3.6 and Proposition 3.10; the frozen proofs then supply those statements.
+* The **gates** are the frozen intermediate results (Proposition 2.2, Corollary 2.3, Lemma 3.5,
+  the joint upper bound of Propositions 3.9 and 3.10, and Proposition 4.1). For example,
+  `theorem_1_of_gates` derives Theorem 1 from the statements of Lemma 3.5 and the joint upper
+  bound. The frozen proofs then supply those statements.
 * A **conditional helper** is an internal lemma with extra hypotheses that is applied only after
   those hypotheses are proved; it never stands in for a frozen statement.
 
@@ -97,7 +103,7 @@ gives the seven results. To audit their axioms:
 scripts/print_axioms.sh TwoComponentCoulomb \
   TwoComponentCoulomb.theorem_1 TwoComponentCoulomb.theorem_2 \
   TwoComponentCoulomb.proposition_2_2 TwoComponentCoulomb.corollary_2_3 \
-  TwoComponentCoulomb.lemma_3_6 TwoComponentCoulomb.proposition_3_10 \
+  TwoComponentCoulomb.lemma_3_5 TwoComponentCoulomb.proposition_3_9_and_3_10 \
   TwoComponentCoulomb.proposition_4_1
 ```
 

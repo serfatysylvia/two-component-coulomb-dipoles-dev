@@ -28,7 +28,7 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # From the right-hand side of Proposition 2.2 to that of Corollary 2.3
 
-Source l. 466--489 (proof of Corollary 2.3). The theorem `mino_rhs_ge_coromino_rhs` is a pure
+Source l. 472–494 (proof of Corollary 2.3). The theorem `mino_rhs_ge_coromino_rhs` is a pure
 inequality between the explicit sums that bound the energy in Proposition 2.2 (from below) and
 in Corollary 2.3: for every constant `C₀` of Proposition 2.2 there is a constant `C'` such that,
 for every generic configuration, the right-hand side of Corollary 2.3 (with constant `C'`) is at
@@ -42,7 +42,7 @@ with `i ∉ I^pair`, or `φ₂ i ∉ I^pair`, or `φ₂ (φ₁ i) ∉ I^pair`) w
 * a neutral 2-cycle contributes `-g_λ(z_i - z_{φ₁ i}) - C₀ (r₁/r₂)²`, and `(r₁/r₂)² ≤ 1`;
 * a same-sign 2-cycle contributes `g_λ - 2 (g(τ) + κ) - C₀ (r₁/r₂)²`, which is at least
   `-g_λ + 2 log (τ / r₁) - C` because `τ = r₂ ∧ r₂' ≥ r₁` and
-  `g_λ(u) + log r₁ ≥ -C` (eq. (gr2r1), source l. 472--476);
+  `g_λ(u) + log r₁ ≥ -C` (the nonneutral-pair comparison in Corollary 2.3, source l. 478–481);
 * a tree vertex contributes `-(g(r₂) + κ) ≥ -g_λ(z_i - z_{φ₁ i}) - C` as `r₂ ≥ r₁`.
 -/
 
@@ -60,7 +60,7 @@ open scoped Classical in
 /-- The termwise comparison. The left-hand side is the term of index `i` in the right-hand side of
 Corollary 2.3 (the constant `C' * (N - K)` aside), minus the cost `c` charged to an exceptional
 index (`i ∉ I^pair`, or `φ₂ i ∉ I^pair`, or `φ₂ (φ₁ i) ∉ I^pair`); the right-hand side is the term
-of index `i` in the right-hand side of Proposition 2.2 (source l. 466--489). -/
+of index `i` in the right-hand side of Proposition 2.2 (source l. 472–494). -/
 private theorem termwise_le (hN : 2 ≤ N) {C₀ Cg c C' : ℝ} (hC₀ : 0 < C₀)
     (hCg : ∀ lam : ℝ, 0 < lam → ∀ z : ℂ, -Real.log (max ‖z‖ lam) - Cg ≤ smearedKernel lam z)
     (hc : |Cg| + Real.log 4 + |kappa| + C₀ / 2 ≤ c) (hcC' : c ≤ C') {lam : ℝ} (hlam : 0 < lam)
@@ -191,7 +191,7 @@ private theorem termwise_le (hN : 2 ≤ N) {C₀ Cg c C' : ℝ} (hC₀ : 0 < C�
 /-! ### The comparison -/
 
 open scoped Classical in
-/-- **From Proposition 2.2 to Corollary 2.3** (source l. 466--489). For every constant `C₀` of
+/-- **From Proposition 2.2 to Corollary 2.3** (source l. 472–494). For every constant `C₀` of
 the right-hand side of Proposition 2.2 there is a constant `C'` such that the right-hand side of
 Corollary 2.3 with constant `C'` is at most the right-hand side of Proposition 2.2 with constant
 `C₀`, for every generic configuration. Both sides are written out as in the frozen statements

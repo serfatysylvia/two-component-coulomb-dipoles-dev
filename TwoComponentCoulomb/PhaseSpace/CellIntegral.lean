@@ -15,17 +15,17 @@ public import TwoComponentCoulomb.PhaseSpace.Packing
 /-!
 # Integrals over a nearest-neighbour cell in Gunson--Panta variables
 
-Source l. 815--859 (Lemma 3.5, Steps 1 and 2). Fix a finite index type `ι`, a tie-break key
+Source l. 781–820 (Lemma 3.4, Steps 1 and 2). Fix a finite index type `ι`, a tie-break key
 `key`, a self-map `f` (the nearest-neighbour map of the cell) and a set `R` of reference
 vertices such that every `f`-orbit reaches `R`. The cell is
 `Λ^ι ∩ {z | nnMap key z = f}` (`Λ = box N`).
 
 On the cell the Gunson--Panta map `GP` (`TwoComponentCoulomb.gpLinearEquiv`) takes values in the
-set `B` of the source (l. 833--836): `u_r ∈ Λ` for `r ∈ R` and `∑_{i ∉ R} |u_i|² ≤ 36 N / π`
-(packing, l. 837). Since `GP` has determinant `1`, the integral of any `F ≥ 0` over the cell is
+set `B` of the source (l. 795–798): `u_r ∈ Λ` for `r ∈ R` and `∑_{i ∉ R} |u_i|² ≤ 36 N / π`
+(packing, l. 799). Since `GP` has determinant `1`, the integral of any `F ≥ 0` over the cell is
 at most the integral of `F ∘ GP⁻¹` over `B` (`lintegral_cell_le`). Integrating out the reference
 coordinates (each gives the area `N` of `Λ`) reduces the integral to the ball integral of the
-non-reference coordinates, to which the polar reduction of `RadialSimplex.lean` applies.
+non-reference coordinates, to which the polar reduction of `PhaseSpace/RadialSimplex.lean` applies.
 
 ## Main results
 
@@ -48,7 +48,7 @@ variable {ι : Type*} [Fintype ι]
 /-! ### The image of a cell -/
 
 /-- On the cell `Λ^ι ∩ {nnMap key z = f}` the Gunson--Panta map takes values in the set `B` of the
-source (l. 833--837): reference coordinates stay in `Λ` and the non-reference coordinates
+source (l. 795–799): reference coordinates stay in `Λ` and the non-reference coordinates
 satisfy `∑_{i ∉ R} |u_i|² ≤ 36 N / π` by the packing bound. -/
 theorem gpMap_mem_of_mem_cell [Nontrivial ι] {N : ℕ} (key : ι ↪ ℕ) {f : ι → ι} (R : Set ι)
     [DecidablePred (· ∈ R)] {z : ι → ℂ} (hz : z ∈ Set.univ.pi fun _ : ι => box N)
@@ -68,7 +68,7 @@ theorem gpMap_mem_of_mem_cell [Nontrivial ι] {N : ℕ} (key : ι ↪ ℕ) {f : 
 
 /-! ### Transfer to Gunson--Panta variables -/
 
-/-- **Lemma 3.5, Steps 1--2** (source l. 819--837): for every nonnegative function `F`, the
+/-- **Lemma 3.4, Steps 1--2** (source l. 785–799): for every nonnegative function `F`, the
 integral of `F` over the nearest-neighbour cell `Λ^ι ∩ {nnMap key z = f}` is at most the integral
 of `F ∘ GP⁻¹` over the set `B` (reference coordinates in `Λ`, non-reference coordinates in the ball
 `∑ |u_i|² ≤ 36 N / π`). No Jacobian factor appears since `GP` has determinant `1`. -/
@@ -90,7 +90,7 @@ theorem lintegral_cell_le [Nontrivial ι] {N : ℕ} (key : ι ↪ ℕ) {f : ι �
 
 /-! ### Integrating out the reference coordinates -/
 
-/-- **Reference coordinates** (source l. 839--840, "integrating a reference point in each connected
+/-- **Reference coordinates** (source l. 802, "integrating a reference point in each connected
 component in the box `Λ` of volume `N`"): for an integrand depending only on the non-reference
 coordinates, the integral over `B = {u_r ∈ Λ (r ∈ R), ∑_{i ∉ R} |u_i|² ≤ s}` is `N^|R|` times the
 integral over the ball `{v : {i // i ∉ R} → ℂ | ∑ |v_i|² ≤ s}`. -/
@@ -125,7 +125,7 @@ theorem lintegral_gpBall_comp (N : ℕ) (R : Set ι) [DecidablePred (· ∈ R)] 
 
 /-! ### Cell integrals of functions of the non-reference coordinates -/
 
-/-- **Lemma 3.5, Steps 1--2** (source l. 819--845): if `F ∘ GP⁻¹` depends only on the
+/-- **Lemma 3.4, Steps 1--2** (source l. 785–807): if `F ∘ GP⁻¹` depends only on the
 non-reference coordinates `(u_i)_{i ∉ R}` through a measurable `H`, then the cell integral of `F`
 is at most `N^|R|` times the integral of `H` over the ball `∑ |v_i|² ≤ 36 N / π`. -/
 theorem lintegral_cell_le_comp [Nontrivial ι] {N : ℕ} (key : ι ↪ ℕ) {f : ι → ι} (R : Set ι)
@@ -139,7 +139,7 @@ theorem lintegral_cell_le_comp [Nontrivial ι] {N : ℕ} (key : ι ↪ ℕ) {f :
   simp only [hFH]
   exact lintegral_gpBall_comp N R _ H hH
 
-/-- **Lemma 3.5, Step 2** (source l. 839--845, product form): if
+/-- **Lemma 3.4, Step 2** (source l. 802–807, product form): if
 `F (GP⁻¹ u) = ∏_{i ∉ R} G_i(u_i)` with measurable `G_i ≥ 0`, then the cell integral of `F` is at
 most `N^|R|` times the integral of `∏_{i ∉ R} G_i(v_i)` over the ball `∑ |v_i|² ≤ 36 N / π`. -/
 theorem lintegral_cell_le_prod [Nontrivial ι] {N : ℕ} (key : ι ↪ ℕ) {f : ι → ι} (R : Set ι)

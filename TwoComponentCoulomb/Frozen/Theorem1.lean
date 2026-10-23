@@ -19,7 +19,7 @@ import TwoComponentCoulomb.Main.Theorem1
 /-!
 # Frozen: `TwoComponentCoulomb.theorem_1`
 
-Frozen statement, approved by the authors in this exact form (RULINGS.md R20). Source: l. 235–274.
+Frozen statement, approved by the authors in this exact form (RULINGS.md R20). Source: l. 220–266.
 -/
 
 open MeasureTheory
@@ -29,7 +29,7 @@ open scoped ENNReal
 
 namespace TwoComponentCoulomb
 
-/-- **Theorem 1** (`theorem:th1`, source l. 235–274). -/
+/-- **Theorem 1** (`theorem:th1`, source l. 220–266). -/
 theorem theorem_1 (β : ℝ) (hβ : 2 ≤ β) :
     ∃ lamβ : ℝ, 0 < lamβ ∧ lamβ < Real.exp (-1) ∧
       (∃ C c : ℝ, 0 < C ∧ 0 < c ∧

@@ -17,8 +17,8 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The nearest-neighbour model: the tree integrals and the cases `β ∈ (2,4)` and `β > 4`
 
-Source: l. 884--914 (Lemma 3.5, Step 4) and l. 858--865 (Step 3, `β > 2`).
-The reduction of `NearestNeighborModel.lean` leaves the integrals, over the balls
+Source: l. 832–862 (Lemma 3.4, Step 4) and l. 819–825 (Step 3, `β > 2`).
+The reduction of `UpperBound/NearestNeighborModel.lean` leaves the integrals, over the balls
 `|U|² ≤ 36N/π` of `ℂ^K` and `ℂ^{2p-2K}`, of the weights `exp (β g_λ (u_k))` (cycles) and
 `exp ((β/2) g_λ (u_i))` (tree vertices).
 
@@ -27,15 +27,15 @@ The reduction of `NearestNeighborModel.lean` leaves the integrals, over the ball
   `exp ((1 - β/4) (2q) log (N/q) + C q)`, `q = p - K` (source (eq:reD) and (eq:bound dir)); the
   proof removes the cutoff, goes to polar coordinates and uses the Dirichlet estimate of Lemma 3.1.
 * `exists_lintegral_ball_tree_le_of_four_lt`: for `β > 4`, the tree integral is at most
-  `exp ((2q)(2 - β/2) log λ + C q)` (source l. 911--914, "Arguing as in (3.20b)").
+  `exp ((2q)(2 - β/2) log λ + C q)` (source l. 859–862, "Arguing as in the planar pair-mass identity").
 * `natCast_pow_mul_le`, `lintegral_cell_eq_zero_of_not_exists`, `dipoleConstant_mul_rpow_pow`:
   the arithmetic of the final assembly and the empty cell.
 * `lintegral_cell_le_of_two_lt_of_lt_four`, `lintegral_cell_le_of_four_lt`: the cases `β ∈ (2,4)`
-  and `β > 4` of Lemma 3.5, in the form `J(f) ≤ exp (RHS)` with `RHS` as in the source (l. 793--797,
+  and `β > 4` of Lemma 3.4, in the form `J(f) ≤ exp (RHS)` with `RHS` as in the source (l. 761–764,
   805--809); the constant depends only on `β`, and the bounds hold for every `λ > 0`.
 
 The cases `β = 2` and `β = 4` (the critical weight `exp (2 g_λ)`) and the combined statement for
-`β > 2` are in `NearestNeighborModelCritical.lean`.
+`β > 2` are in `UpperBound/NearestNeighborModelCritical.lean`.
 -/
 
 @[expose] public section
@@ -58,7 +58,7 @@ theorem exists_smearedKernel_le_neg_log :
   have h2 : Real.log ‖z‖ ≤ Real.log (max ‖z‖ lam) := Real.log_le_log hz0 (le_max_left _ _)
   linarith
 
-/-- The pointwise bound of the tree weight (source l. 884--887): for `t > 0`,
+/-- The pointwise bound of the tree weight (source l. 832–835): for `t > 0`,
 `exp (γ g_λ(√t)) ≤ exp (γ C) t^{-γ/2}`. -/
 theorem exp_mul_smearedKernel_sqrt_le {C : ℝ}
     (hC : ∀ lam : ℝ, 0 < lam → ∀ z : ℂ, z ≠ 0 → smearedKernel lam z ≤ -Real.log ‖z‖ + C)
@@ -87,7 +87,7 @@ theorem lintegral_ball_prod_le_one_of_eq_zero {m : ℕ} (hm : m = 0) (s : ℝ) (
       rw [lintegral_const, one_mul, volume_pi, Measure.pi_univ]
       simp
 
-/-- **Source (eq:reD) and (eq:bound dir)** (l. 884--903): for `β ∈ [2,4)` the integral of the
+/-- **Source (eq:reD) and (eq:bound dir)** (l. 832–851): for `β ∈ [2,4)` the integral of the
 tree weights over the ball `|U|² ≤ 36N/π` of `ℂ^{2q}` is at most
 `exp ((1 - β/4)(2q) log (N/q) + C q)` (here `q = p - K`; the weight is first compared with
 `|u|^{-β/2}`, then polar coordinates and the Dirichlet estimate of Lemma 3.1 are used). -/
@@ -237,7 +237,7 @@ theorem exists_lintegral_ball_tree_le {β : ℝ} (hβ2 : 2 ≤ β) (hβ4 : β < 
 
 /-! ### The tree integral for `β > 4` -/
 
-/-- **Source l. 911--914** (`β > 4`, "Arguing as in (3.20b)"): the tree integral over the ball of
+/-- **Source l. 859–862** (`β > 4`, "Arguing as in the planar pair-mass identity"): the tree integral over the ball of
 `ℂ^{2q}` is at most `exp ((2q)(2 - β/2) log λ + C q)`. -/
 theorem exists_lintegral_ball_tree_le_of_four_lt {β : ℝ} (hβ : 4 < β) :
     ∃ C : ℝ, ∀ (q m : ℕ), m = 2 * q → ∀ lam : ℝ, 0 < lam → ∀ s : ℝ,
@@ -277,7 +277,7 @@ theorem natCast_pow_mul_le {N K : ℕ} (hN : 0 < N) {A B : ℝ≥0∞} {a b : �
           ← ENNReal.ofReal_mul (by positivity), Real.exp_add, Real.exp_add, Real.exp_nat_mul,
           Real.exp_log hN']
 
-/-! ### Lemma 3.5 for `β ∈ (2, 4)` and `β > 4` -/
+/-! ### Lemma 3.4 for `β ∈ (2, 4)` and `β > 4` -/
 
 section Cases
 
@@ -305,7 +305,7 @@ theorem dipoleConstant_mul_rpow_pow {γ : ℝ} (hγ : 2 < γ) {lam : ℝ} (hlam 
     rw [Real.log_mul hZ.ne' (Real.rpow_pos_of_pos hlam _).ne', Real.log_rpow hlam]
   rw [← hlog, Real.exp_nat_mul, Real.exp_log hpos]
 
-/-- **Lemma 3.5, case `β ∈ (2, 4)`** (source l. 793--797). For `f` the nearest-neighbour map of a
+/-- **Lemma 3.4, case `β ∈ (2, 4)`** (source l. 761–764). For `f` the nearest-neighbour map of a
 configuration of `2p` points in `Λ = [0, √N]²`, with `K` 2-cycles,
 `log J(f) ≤ K log N + (2-β) K log λ + K log 𝒵_β + (1 - β/4)(2p-2K) log (N/(p-K)) + C_β (p-K)`. The
 constant `C` depends only on `β`; the bound holds for every `λ > 0` and every `0 < N`. -/
@@ -340,7 +340,7 @@ theorem lintegral_cell_le_of_two_lt_of_lt_four {β : ℝ} (hβ2 : 2 < β) (hβ4 
   refine le_of_eq ?_
   ring
 
-/-- **Lemma 3.5, case `β > 4`** (source l. 805--809). For `f` the nearest-neighbour map of a
+/-- **Lemma 3.4, case `β > 4`** (source l. 773–776). For `f` the nearest-neighbour map of a
 configuration of `2p` points in `Λ`, with `K` 2-cycles,
 `log J(f) ≤ K log N + (2-β) K log λ + K log 𝒵_β + (2p-2K)(2 - β/2) log λ + C_β (p-K)`,
 for every `λ > 0` and `0 < N`. -/

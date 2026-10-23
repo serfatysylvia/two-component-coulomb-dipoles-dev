@@ -18,7 +18,7 @@ public import TwoComponentCoulomb.Potential.SmearedCharge
 
 Newton's theorem (`setIntegral_log_norm_sub_ball_of_le` and `setIntegral_log_norm_sub_ball_of_ge`)
 rephrased for the probability measure `δ_z^{(a)} = smearedCharge z a` and the kernel
-`g = logKernel` (source l. 143–167, 493–513).
+`g = logKernel` (source l. 128–152, 499–518).
 
 * `integral_logKernel_sub_smearedCharge_of_le` : outside the disc (`a ≤ |x - z|`) the potential is
   `g(x - z)`.

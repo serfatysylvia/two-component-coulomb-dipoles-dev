@@ -15,14 +15,14 @@ import TwoComponentCoulomb.LowerBound.RadiusTail
 /-!
 # Assembly of Proposition 4.1 for `β > 2`
 
-Source: Proposition 4.1, end of the proof (l. 1889--1899): the
+Source: Proposition 4.1, end of the proof (l. 1793–1803): the
 bound `Z ≥ N! N^N (𝒵_β λ^{2-β})^N exp(-C N ε_λ - C √N η_λ)` of `partitionFunction_ge_of_two_lt`
 is turned, by Stirling's formula and the arithmetic--geometric mean inequality
 `C √N η ≤ C N ε + C η² / (4 ε)` together with `η_λ² / ε_λ → 0`, into the frozen form of the
 proposition.
 
-* `lowerEps_eq_ite` : `ε_λ` is, literally, the error term of the frozen statement for `β > 2`.
-* `exists_mul_lowerEta_sq_le_lowerEps` : for every `K > 0` and small `λ`, `K η_λ² ≤ ε_λ`
+* the definition of ε_λ : `ε_λ` is, literally, the error term of the frozen statement for `β > 2`.
+* the small-λ comparison : for every `K > 0` and small `λ`, `K η_λ² ≤ ε_λ`
   (that is, `η_λ² / ε_λ → 0`, in each range of `β`).
 * `proposition_4_1_of_two_lt` : the frozen expression of Proposition 4.1 for `β > 2`.
 
@@ -145,7 +145,7 @@ private theorem exists_mul_lowerEta_sq_le_lowerEps (β : ℝ) (hβ : 2 < β) {K 
       _ ≤ lam ^ 2 * |Real.log lam| :=
         mul_le_mul_of_nonneg_left (by linarith only [hL, hK]) (sq_nonneg lam)
 
-/-- **Proposition 4.1 for `β > 2`, in the form of the frozen statement** (source l. 1892--1899):
+/-- **Proposition 4.1 for `β > 2`, in the form of the frozen statement** (source l. 1796–1803):
 the expressions of `proposition_4_1` for `β ≠ 2`, with the `if β = 2` branches resolved.
 The constant is `2 C` for the constant `C` of `partitionFunction_ge_of_two_lt`. -/
 theorem proposition_4_1_of_two_lt (β : ℝ) (hβ : 2 < β) :

@@ -15,7 +15,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 /-!
 # Radial integrals of the smeared kernel (the constant `𝒵_β`)
 
-Source l. 203--213 (`eq:defmu`, `def:Cbeta`), l. 854--864 (eq. (3.20b)) and l. 1440--1447 (the
+Source l. 188–198 (the definition of μ_β, `def:Cbeta`), l. 816–825 (the planar pair-mass identity) and l. 1357–1362 (the
 tails of `μ_β` used in (eq:u bound)).
 
 * `integral_comp_norm_complex`, `integrable_comp_norm_complex_iff` : polar coordinates for radial
@@ -24,8 +24,8 @@ tails of `μ_β` used in (eq:u bound)).
   integrable on `(0, ∞)`, since `g₁(r) = -log r` for `r ≥ 2`.
 * `integral_Ici_exp_smearedKernel_one` : the explicit tail `∫_s^∞ exp(β g₁(r)) r dr = s^{2-β}/(β-2)`
   for `s ≥ 2`.
-* `dipoleConstant_pos` : `𝒵_β > 0` for `β ≥ 2` (source l. 214).
-* `integrable_exp_smearedKernel`, `integral_exp_smearedKernel` : eq. (3.20b),
+* `dipoleConstant_pos` : `𝒵_β > 0` for `β ≥ 2` (source l. 199).
+* `integrable_exp_smearedKernel`, `integral_exp_smearedKernel` : the planar pair-mass identity,
   `∫_{ℝ²} exp(β g_λ(u)) du = 𝒵_β λ^{2-β}` for `β > 2`, `λ > 0`.
 * `integral_ball_exp_smearedKernel` and `exists_integral_ball_exp_smearedKernel_ge` : the same
   integral over the disc `B(0, t)`, `t ≥ 2λ`, with the exact missing tail
@@ -111,7 +111,7 @@ theorem integrableOn_Ioi_exp_smearedKernel_one {β : ℝ} (hβ : 2 < β) {s : �
   exact (exp_mul_smearedKernel_mul_of_le β one_pos (by linarith [mem_Ioi.1 hr])).symm
 
 /-- The density `exp(β g_1(r)) r` of `μ_β` is integrable on `(0, ∞)` for `β > 2`
-(source l. 203--213). -/
+(source l. 188–198). -/
 theorem integrableOn_exp_smearedKernel_one {β : ℝ} (hβ : 2 < β) :
     IntegrableOn (fun r : ℝ => Real.exp (β * smearedKernel 1 r) * r) (Ioi 0) := by
   have h1 : IntegrableOn (fun r : ℝ => Real.exp (β * smearedKernel 1 (r : ℂ)) * r) (Ioc 0 2) :=
@@ -129,7 +129,7 @@ theorem integral_Ici_rpow_one_sub {β t : ℝ} (hβ : 2 < β) (ht : 0 < t) :
   rw [e, neg_div, ← div_neg, neg_sub]
 
 /-- The tail of `μ_β`: `∫_{r ≥ s} exp(β g_1(r)) r dr = s^{2-β} / (β - 2)` for `s ≥ 2`
-(source l. 1440--1447, since `g_1(r) = -log r` for `r ≥ 2`). -/
+(source l. 1357–1362, since `g_1(r) = -log r` for `r ≥ 2`). -/
 theorem integral_Ici_exp_smearedKernel_one {β : ℝ} (hβ : 2 < β) {s : ℝ} (hs : 2 ≤ s) :
     ∫ r in Ici s, Real.exp (β * smearedKernel 1 r) * r = s ^ (2 - β) / (β - 2) := by
   rw [← integral_Ici_rpow_one_sub hβ (by linarith : 0 < s)]
@@ -158,7 +158,7 @@ theorem integral_exp_smearedKernel_one_pos {β : ℝ} (hβ : 2 < β) :
     exact (mul_pos (Real.exp_pos _) hr).le
   · exact integrableOn_exp_smearedKernel_one hβ
 
-/-- `𝒵_β > 0` for `β ≥ 2` (source l. 214). -/
+/-- `𝒵_β > 0` for `β ≥ 2` (source l. 199). -/
 theorem dipoleConstant_pos (β : ℝ) (hβ : 2 ≤ β) : 0 < dipoleConstant β hβ := by
   by_cases h : β = 2
   · simp [dipoleConstant, h, Real.pi_pos]
@@ -217,7 +217,7 @@ theorem integrable_exp_smearedKernel {β lam : ℝ} (hβ : 2 < β) (hlam : 0 < l
   rw [hf]
   exact (integrable_comp_norm_complex_iff _).2 (integrableOn_mul_exp_smearedKernel hβ hlam)
 
-/-- Source eq. (3.20b), l. 854--864: `∫_{ℝ²} exp(β g_λ(u)) du = 𝒵_β λ^{2-β}` for `β > 2`. -/
+/-- Source the planar pair-mass identity, l. 816–825: `∫_{ℝ²} exp(β g_λ(u)) du = 𝒵_β λ^{2-β}` for `β > 2`. -/
 theorem integral_exp_smearedKernel {β lam : ℝ} (hβ : 2 < β) (hlam : 0 < lam) :
     ∫ u : ℂ, Real.exp (β * smearedKernel lam u) = dipoleConstant β hβ.le * lam ^ (2 - β) := by
   have hf : (fun u : ℂ => Real.exp (β * smearedKernel lam u)) =
@@ -272,7 +272,7 @@ theorem integral_ball_exp_smearedKernel {β lam t : ℝ} (hβ : 2 < β) (hlam : 
   rw [integral_exp_smearedKernel hβ hlam, integral_compl_ball_exp_smearedKernel hβ hlam ht] at h
   linarith
 
-/-- Truncated version of eq. (3.20b), used for the lower bound in Lemma 3.6:
+/-- Truncated version of the planar pair-mass identity, used for the lower bound in Lemma 3.5:
 `∫_{B(0,t)} exp(β g_λ) ≥ 𝒵_β λ^{2-β} (1 - C_β (λ/t)^{β-2})` for `t ≥ 2λ`, with the explicit
 constant `C_β = 2π / ((β - 2) 𝒵_β)`. -/
 theorem exists_integral_ball_exp_smearedKernel_ge {β : ℝ} (hβ : 2 < β) :

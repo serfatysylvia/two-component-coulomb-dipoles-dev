@@ -12,30 +12,32 @@ public import TwoComponentCoulomb.UpperBound.IsolatedRadial
 public import TwoComponentCoulomb.UpperBound.IsolatedReduction
 public import TwoComponentCoulomb.UpperBound.IsolatedIntegration
 public import TwoComponentCoulomb.UpperBound.IsolatedOptimization
+public import TwoComponentCoulomb.UpperBound.IsolatedSubcritical
 public import TwoComponentCoulomb.UpperBound.IsolatedCrude
 public import TwoComponentCoulomb.UpperBound.AuxNearestNeighbor
 public import TwoComponentCoulomb.UpperBound.AuxTwoSpecies
 import TwoComponentCoulomb.Integrals.Radial
 
 /-!
-# Proposition 3.9: quadratic error terms for isolated `2`-cycles
+# Proposition 3.8: quadratic error terms for isolated `2`-cycles
 
-Source: Proposition 3.9 (`prop:isolated`, l. 1223--1254) and its proof
-(l. 1257--1416): the bounds (eq:n neutral), (eq:n neutral conv) and (eq:crude).
+Source `source/dipole-formation.tex`, Proposition 3.8 (`prop:isolated`, l. 1171–1199) and its proof
+(l. 1202–1333): the bounds (eq:n neutral), (eq:n neutral conv) and (eq:crude).
 
 ## The objects
 
-A graph `γ ∈ G_p` of `p` `2`-cycles on a finite index set `ι` with `|ι| = 2p` is a
-fixed-point-free involution `f : ι → ι`. `S` is the `f`-invariant set of the `2q` vertices of
-`q = p - p₀` of its `2`-cycles (the set `I_S` of the source, l. 1225). As in the source, the
-statement and proof use only these *assigned* pair terms, not the charges, so `S` is arbitrary.
-The integral `I(γ, S)` of the source (l. 1227--1230) is
+A graph `γ ∈ G_{p,p₀}` of `p` `2`-cycles on a finite index set `ι` with `|ι| = 2p` is a
+fixed-point-free involution `f : ι → ι`. The pairs are split into `p₀` neutral pairs and
+`q = p - p₀` same-sign pairs; `S` is the `f`-invariant set of the `2q` vertices of the same-sign
+pairs. As the source notes, the proof uses only the *assigned* pair terms, not the
+charges, so `S` is arbitrary . The integral `I(γ)` of
+the source (l. 1173–1175) is
 `∫_{Λ^ι ∩ {nnMap key z = f}} exp (-β E(z)) dz`, with
 `E = pairAssignedEnergy h3 key λ C S` (`F^nn_λ - C ∑_{i ∉ S} (r̃₁/r̃₂)² + ∑_{i ∈ S} (log (r̃₂(z_i) ∧
-r̃₂(z_{φ₁(i)}))/r̃₁(z_i)) - C)`) and `Λ = box N`. The function `f(p₀)` of the source (l. 1231--1233)
-is `p log p - p₀ log p₀ - q log q + C₀ q + max_{γ, |S| = q} log I(γ, S)`; a bound
-`max log I(γ, S) + (entropy) ≤ X` is stated, for every `γ` and `S`, as
-`e^{entropy} · I(γ, S) ≤ e^X` (ruling R10). We take `0 log 0 = 0` (Mathlib's `Real.log 0 = 0`).
+r̃₂(z_{φ₁(i)}))/r̃₁(z_i)) - C)`) and `Λ = box N`. The function `f(p₀)` of the source (l. 1177–1178)
+is `p log p - p₀ log p₀ - q log q + C₀ q + max_γ log I(γ)`; a bound
+`max_γ log I(γ) + (entropy) ≤ X` is stated, for every `γ`, as
+`e^{entropy} · I(γ) ≤ e^X` (ruling R10). We take `0 log 0 = 0` (Mathlib's `Real.log 0 = 0`).
 
 The indicator terms and the error rate are written as `if`-chains on `β`:
 `(2 - β) log λ 1_{β>2} + log |log λ| 1_{β=2}` and
@@ -49,19 +51,23 @@ The indicator terms and the error rate are written as `if`-chains on `β`:
   proof holds for every `2 ≤ p ≤ N`, and the statement is given in that generality.
 
 The constants `C_β, c_β` are quantified before `ι, γ, N, p, p₀, λ` and depend only on `β`, `C`,
-`C₀` (source l. 1235; ruling R11).
+`C₀` ( ruling R11).
 
 ## Proof structure
 
-Steps 3--4 of the proof (source l. 1337--1415) are proved once, for the integral over the
+Steps 3--4 of the proof (source l. 1269–1330) are proved once, for the integral over the
 representatives on the right side of `(pred3)` with an arbitrary constant `C' > 0`. They are also
-used by Step 4 of Proposition 3.10 (`UpperAssembly.exists_anchor_conv`, `exists_anchor_crude`) and
+used by Step 4 of Proposition 3.9 (`UpperAssembly.exists_anchor_conv`, `exists_anchor_crude`) and
 by the tilted blocks of Theorem 2 (`Fluctuations/TiltedIsolated.lean`).
+
+Source: `source/dipole-formation.tex`, l. 1291–1332. The subcritical regimes remain
+separate through optimization. The `β > 2` crude bound integrates constant factors,
+while the critical extension retains its logarithmic and packing estimates.
 
 * `IsolatedAssembly.refIntegral_le`: Steps 3--4 for the representatives relabelled by `Fin p`, the
   same-sign ones forming `T ⊆ Fin p`, for every `β ≥ 2`. The four ranges of `β` are
   `refIntegral_le_of_eq_two`, `refIntegral_le_of_two_lt_of_lt_four`, `refIntegral_le_of_eq_four`
-  and `refIntegral_le_of_four_lt` (source l. 1360--1387, 1396--1408), with the quadratic gain
+  and `refIntegral_le_of_four_lt` (source l. 1291–1314, 1319–1330), with the quadratic gain
   `-p (q/p)²` included.
 * `IsolatedAssembly.refSetIntegral_conv`, `IsolatedAssembly.refSetIntegral_crude`:
   (eq:n neutral conv) and (eq:crude) for the integral over a set `R` of representatives.
@@ -151,9 +157,19 @@ theorem ofReal_ite_le (P : Prop) [Decidable P] (x y : ℝ) :
   · exact le_rfl
   · exact ENNReal.ofReal_add_le.trans_eq (by rw [ENNReal.ofReal_one])
 
+/-- The entropy of the two pair types is at most `p log 2`, as in the current
+manuscript, line 1375. The formula includes empty types with `0 log 0 = 0`. -/
+theorem entropy_le_log_two {p p₀ q : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) :
+    p * Real.log p - p₀ * Real.log p₀ - q * Real.log q ≤ p * Real.log 2 := by
+  have hP : (0 : ℝ) < p := by exact_mod_cast hp
+  have h := mul_log_add_le (Nat.cast_nonneg p₀) (Nat.cast_nonneg q)
+  have hpq' : (p₀ : ℝ) + q = p := by exact_mod_cast hpq
+  rw [hpq', Real.log_div hP.ne' (by norm_num)] at h
+  linarith
+
 /-! ### Steps 3--4 for the representatives, in the four ranges of `β` -/
 
-/-- **Steps 3--4 for `β = 2`** (source l. 1337--1363, 1397, 1407--1408): Proposition 3.7 with
+/-- **Steps 3--4 for `β = 2`** : Proposition 3.6 with
 `β = 0`, `δ' = 1` on the `k + q` selected representatives, and the optimization gives the error
 `K ℓ^{-1}`, with the quadratic gain `-p (q/p)²`. (Internal.) -/
 theorem refIntegral_le_of_eq_two {β : ℝ} (hβ : 2 ≤ β) (h2 : β = 2) {C' : ℝ} (hC' : 0 < C')
@@ -217,8 +233,8 @@ theorem refIntegral_le_of_eq_two {β : ℝ} (hβ : 2 ≤ β) (h2 : β = 2) {C' :
   gcongr _ + ?_ + _
   exact (mul_le_mul_of_nonneg_left hrate (Nat.cast_nonneg p)).trans_eq (by ring)
 
-/-- **Steps 3--4 for `2 < β < 4`** (source l. 1337--1373, 1398--1402, 1407--1408):
-Proposition 3.7 with parameter `2b`, `b = β - 2`, on the `k + q` selected representatives, and
+/-- **Steps 3--4 for `2 < β < 4`** (source l. 1269–1300, 1320–1324, 1329–1330):
+Proposition 3.6 with parameter `2b`, `b = β - 2`, on the `k + q` selected representatives, and
 the optimization gives the error `K λ^{β-2}` (in the three regimes `b < 1`, `b = 1`, `b > 1`).
 (Internal.) -/
 theorem refIntegral_le_of_two_lt_of_lt_four {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (h4 : β < 4)
@@ -262,24 +278,39 @@ theorem refIntegral_le_of_two_lt_of_lt_four {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 
       exact hB6 N p (A.card + q) (A ∪ T) (by rw [Finset.card_union_of_disjoint hAT, hT])
         hpN hN lam hlam hl1)
   rw [hTc, hT] at hW
+  by_cases h3 : β < 3
+  · have hzero : ∀ M, gammaBeta (2 * (β - 2)) hb 0 lam M N = 0 :=
+      fun _ => gammaBeta_of_lt_two (by linarith) _ _
+    simp only [hzero, mul_zero, add_zero] at hW
+    have hfin := IsolatedSubcritical.ofReal_exp_mul_le hpq hp hpN C₀ C₆ hZ hm hW
+    refine hfin.trans (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_))
+    rw [exp_add_log _ hm]
+    have hrate : Real.exp (2 + Real.log 2 + |C₀| + C₆) * (C' * lam ^ (β - 2)) ≤
+        (Real.exp (2 * (2 + Real.log 2 + |C₀| + C₆)) * C' ^ 2 +
+          Real.exp (2 + Real.log 2 + |C₀| + C₆) * C') * lam ^ (β - 2) := by
+      nlinarith [mul_nonneg
+        (by positivity : 0 ≤ Real.exp (2 * (2 + Real.log 2 + |C₀| + C₆)) * C' ^ 2) ht.le]
+    gcongr _ + ?_ + _
+    exact (mul_le_mul_of_nonneg_left hrate (Nat.cast_nonneg p)).trans_eq (by ring)
   have hfin := ofReal_exp_mul_le_single hpq hp hpN C₀ C₆ hZ hm
-    (Real.rpow_pos_of_pos hlam (-(β - 2))) one_pos (fun M => gammaBeta (2 * (β - 2)) hb 0 lam M N)
-    (fun k _ => gammaBeta_le_of_lt_four h4 hb hlam hl1 hp hpN) hW
+    (subcriticalCycleScale_pos β hlam hl1) one_pos
+    (fun M => gammaBeta (2 * (β - 2)) hb 0 lam M N)
+    (fun k _ => gammaBeta_le_of_lt_four h4 hb hlam hp hpN) hW
   refine hfin.trans (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_))
   rw [exp_two_mul_add_log _ hm, exp_add_log _ hm]
-  have hrate : lam ^ (-(β - 2)) * (Real.exp (2 * (2 + Real.log 2 + |C₀| + C₆))
-        * (C' * lam ^ (β - 2)) ^ 2)
-      + 1 * (Real.exp (2 + Real.log 2 + |C₀| + C₆) * (C' * lam ^ (β - 2))) =
+  have hbranch := subcriticalCycleScale_mul_sq_le h2 h4 hlam hl1
+  have hrate : subcriticalCycleScale β lam *
+      (Real.exp (2 * (2 + Real.log 2 + |C₀| + C₆)) * (C' * lam ^ (β - 2)) ^ 2)
+      + 1 * (Real.exp (2 + Real.log 2 + |C₀| + C₆) * (C' * lam ^ (β - 2))) ≤
       (Real.exp (2 * (2 + Real.log 2 + |C₀| + C₆)) * C' ^ 2
         + Real.exp (2 + Real.log 2 + |C₀| + C₆) * C') * lam ^ (β - 2) := by
-    rw [Real.rpow_neg hlam.le]
-    field_simp
-  rw [hrate]
+    nlinarith [mul_le_mul_of_nonneg_left hbranch
+      (by positivity : 0 ≤ Real.exp (2 * (2 + Real.log 2 + |C₀| + C₆)) * C' ^ 2)]
   gcongr _ + ?_ + _
-  exact le_of_eq (by ring)
+  exact (mul_le_mul_of_nonneg_left hrate (Nat.cast_nonneg p)).trans_eq (by ring)
 
-/-- **Steps 3--4 for `β = 4`** (source l. 1374--1379, 1403--1404, 1407--1408): the same-sign
-factors are enlarged by `1 + log (ρ_j/λ) ≥ 1`, Proposition 3.7 with parameter `4`, `δ = 1`, on the
+/-- **Steps 3--4 for `β = 4`** (source l. 1301–1306, 1325–1326, 1329–1330): the same-sign
+factors are enlarged by `1 + log (ρ_j/λ) ≥ 1`, Proposition 3.6 with parameter `4`, `δ = 1`, on the
 `k + q` selected representatives, and the optimization gives the error `K λ² ℓ²`. (Internal.) -/
 theorem refIntegral_le_of_eq_four {β : ℝ} (hβ : 2 ≤ β) (h4 : β = 4) {C' : ℝ} (hC' : 0 < C')
     (C₀ : ℝ) :
@@ -343,7 +374,7 @@ theorem refIntegral_le_of_eq_four {β : ℝ} (hβ : 2 ≤ β) (h4 : β = 4) {C' 
   gcongr _ + ?_ + _
   exact (mul_le_mul_of_nonneg_left hrate (Nat.cast_nonneg p)).trans_eq (by ring)
 
-/-- **Steps 3--4 for `β > 4`** (source l. 1380--1387, 1405, 1407--1408): Proposition 3.8 with the
+/-- **Steps 3--4 for `β > 4`** (source l. 1307–1314, 1327, 1329–1330): Proposition 3.7 with the
 `k` selected neutral factors (parameter `4`, `δ = 0`) and the `q` same-sign factors (parameter
 `2b`, `b = β - 2`), and the optimization gives the error `K λ² ℓ` (`K λ²` from the `x₀` terms and
 `K λ² ℓ` from the `x₁` terms). (Internal.) -/
@@ -423,7 +454,7 @@ theorem refIntegral_le_of_four_lt {β : ℝ} (hβ : 2 ≤ β) (h4 : 4 < β) {C' 
   gcongr _ + ?_ + _
   exact (mul_le_mul_of_nonneg_left hrate (Nat.cast_nonneg p)).trans_eq (by ring)
 
-/-- **Steps 3--4 of Proposition 3.9 for the representatives** (source l. 1337--1408): for `β ≥ 2`,
+/-- **Steps 3--4 of Proposition 3.8 for the representatives** (source l. 1269–1330): for `β ≥ 2`,
 `C' > 0` and `C₀ ∈ ℝ` there is `K > 0` (depending only on `β`, `C'`, `C₀`) such that for
 `2 ≤ p ≤ N ≤ 2p`, `p = p₀ + q`, `T ⊆ Fin p` with `|T| = q` and `0 < λ ≤ e^{-1}`,
 `e^{p log p - p₀ log p₀ - q log q + C₀ q} (𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}))^p
@@ -470,8 +501,7 @@ theorem refIntegral_le {β : ℝ} (hβ : 2 ≤ β) {C' : ℝ} (hC' : 0 < C') (C�
 /-! ### (eq:n neutral conv) and (eq:crude) for a set of representatives -/
 
 open scoped Classical in
-/-- **(eq:n neutral conv) for the integral over the representatives** (source l. 1243--1246,
-1337--1408): for `β ≥ 2`, `C' > 0` and `C₀` there are `C_β, c_β > 0` such that for every set `R` of
+/-- **(eq:n neutral conv) for the integral over the representatives** (source l. 1188–1189, 1269–1330): for `β ≥ 2`, `C' > 0` and `C₀` there are `C_β, c_β > 0` such that for every set `R` of
 representatives (`|R| = p`, `2 ≤ p ≤ N ≤ 2p`) of a fixed-point-free involution `f`, every
 `f`-invariant `S` with `|S| = 2(p - p₀)` and `0 < λ ≤ e⁻¹`,
 `e^{entropy} (𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}))^p W
@@ -530,7 +560,7 @@ theorem refSetIntegral_conv {β : ℝ} (hβ : 2 ≤ β) {C' : ℝ} (hC' : 0 < C'
   linarith
 
 open scoped Classical in
-/-- **(eq:crude) for the integral over the representatives** (source l. 1248--1253, 1410--1415):
+/-- **(eq:crude) for the integral over the representatives** :
 for `β ≥ 2`, `C' > 0` and `C₀` there is `C_β > 0` such that for every set `R` of `p ≤ N`
 representatives, every `S` and `0 < λ ≤ e⁻¹`,
 `e^{entropy} (𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}))^p W
@@ -562,11 +592,26 @@ theorem refSetIntegral_crude {β : ℝ} (hβ : 2 ≤ β) {C' : ℝ} (hC' : 0 < C
   have hp2 : 2 ≤ p := by
     rw [← hR]
     exact Fintype.one_lt_card_iff_nontrivial.2 inferInstance
-  have hW := IsolatedCrude.lintegral_ref_le_crude (κ := {i // i ∈ R}) (N := N)
-    (by rw [hR]; exact hpN) hlam hl1 hC'.le
-    (fun j ρ => if (j : ι) ∈ S then C' * isolatedTail β hβ lam ρ
-      else 1 + C' * isolatedPhi β hβ lam ρ)
-    (fun j ρ hρ => IsolatedCrude.factor_le hβ hlam hl1 hC'.le hρ _)
+  have hW : (∫⁻ w in Set.univ.pi fun _ : {i // i ∈ R} => box N,
+      ∏ j : {i // i ∈ R}, ENNReal.ofReal (if (j : ι) ∈ S then
+        C' * isolatedTail β hβ lam (nnRadius lam w j)
+        else 1 + C' * isolatedPhi β hβ lam (nnRadius lam w j))) ≤
+      (N : ℝ≥0∞) ^ Fintype.card {i // i ∈ R} *
+        ENNReal.ofReal (K ^ Fintype.card {i // i ∈ R} * Real.exp (2 * N)) := by
+    rcases hβ.eq_or_lt with h2 | h2
+    · exact IsolatedCrude.lintegral_ref_le_crude (κ := {i // i ∈ R}) (N := N)
+        (by rw [hR]; exact hpN) hlam hl1 hC'.le
+        (fun j ρ => if (j : ι) ∈ S then C' * isolatedTail β hβ lam ρ
+          else 1 + C' * isolatedPhi β hβ lam ρ)
+        (fun j ρ hρ => IsolatedCrude.factor_le hβ hlam hl1 hC'.le hρ _)
+    · -- Source, line 1332: bound each factor by `1 + C'` and integrate the box.
+      refine (IsolatedCrude.lintegral_ref_le_of_two_lt N hβ h2 hlam hl1 hC'.le
+        {j : {i // i ∈ R} | (j : ι) ∈ S}).trans ?_
+      gcongr
+      calc (1 + C') ^ Fintype.card {i // i ∈ R}
+          ≤ K ^ Fintype.card {i // i ∈ R} := by gcongr; dsimp [K]; linarith
+        _ ≤ K ^ Fintype.card {i // i ∈ R} * Real.exp (2 * N) :=
+          le_mul_of_one_le_right (by positivity) (Real.one_le_exp (by positivity))
   rw [hR] at hW
   have hp : 0 < p := by omega
   have hP : (0 : ℝ) < p := by exact_mod_cast hp
@@ -574,8 +619,18 @@ theorem refSetIntegral_crude {β : ℝ} (hβ : 2 ≤ β) {C' : ℝ} (hC' : 0 < C
   have hN0 : (0 : ℝ) < N := hP.trans_le hPN
   have hZ : 0 < dipoleConstant β hβ * isolatedScale β hβ lam :=
     mul_pos (dipoleConstant_pos β hβ) (isolatedScale_pos hβ hlam hl1)
-  have hent := entropy_le_crude (p := p) (p₀ := p₀) (q := p - p₀) (by omega) hp C₀
-  rw [Nat.cast_sub hp₀] at hent
+  have hent₀ := entropy_le_log_two (p := p) (p₀ := p₀) (q := p - p₀) (by omega) hp
+  rw [Nat.cast_sub hp₀] at hent₀
+  have hent : p * Real.log p - p₀ * Real.log p₀
+      - ((p : ℝ) - p₀) * Real.log ((p : ℝ) - p₀) + C₀ * ((p : ℝ) - p₀) ≤
+      (1 + |C₀|) * p := by
+    have hq : 0 ≤ (p : ℝ) - p₀ := sub_nonneg.2 (by exact_mod_cast hp₀)
+    have hqp : (p : ℝ) - p₀ ≤ p := sub_le_self _ (Nat.cast_nonneg _)
+    have hlog : Real.log 2 ≤ 1 := by
+      linarith [Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)]
+    linarith [mul_le_mul_of_nonneg_left hlog hP.le,
+      mul_le_mul_of_nonneg_right (le_abs_self C₀) hq,
+      mul_le_mul_of_nonneg_left hqp (abs_nonneg C₀)]
   refine (mul_le_mul_right (mul_le_mul_right hW _) _).trans ?_
   rw [ofReal_exp_mul_pow_eq hZ (by linarith : (0 : ℝ) < K) hN0]
   refine ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_)
@@ -604,9 +659,9 @@ end IsolatedAssembly
 
 open IsolatedAssembly
 
-/-! ### Proposition 3.9 -/
+/-! ### Proposition 3.8 -/
 
-/-- **Proposition 3.9, (eq:n neutral conv)** (`prop:isolated`, source l. 1243--1246). For
+/-- **Proposition 3.8, (eq:n neutral conv)** (`prop:isolated`, source l. 1188–1189). For
 `β ≥ 2`, `C ≥ 0` and `C₀ ∈ ℝ` there are `C_β, c_β > 0` (depending only on `β`, `C`, `C₀`) such that
 for every finite index type `ι` with `|ι| = 2p`, tie-break key, graph `γ ∈ G_p` (a
 fixed-point-free involution `f`) with assigned set `S` (`f`-invariant, `|S| = 2(p - p₀)`), every
@@ -650,7 +705,7 @@ theorem isolated_n_neutral_conv {β : ℝ} (hβ : 2 ≤ β) {C : ℝ} (hC : 0 �
   exact (mul_le_mul_right hI _).trans
     (h ι f (gpRefSet key f) hf2 hRf S hS N p p₀ hR hp2 hpN hN hp₀ hSq lam hlam hl1)
 
-/-- **Proposition 3.9, (eq:n neutral)** (`prop:isolated`, source l. 1237--1242). For `β ≥ 2`,
+/-- **Proposition 3.8, (eq:n neutral)** (`prop:isolated`, source l. 1183–1185). For `β ≥ 2`,
 `C ≥ 0` and `C₀ ∈ ℝ` there is `C_β > 0` (depending only on `β`, `C`, `C₀`) such that for every
 finite index type `ι` with `|ι| = 2p`, tie-break key, graph `γ ∈ G_p` (a fixed-point-free
 involution `f`) with assigned set `S` (`f`-invariant, `|S| = 2(p - p₀)`), every `2 ≤ p ≤ N` with
@@ -685,7 +740,7 @@ theorem isolated_n_neutral {β : ℝ} (hβ : 2 ≤ β) {C : ℝ} (hC : 0 ≤ C) 
   have hq : 0 ≤ cβ * p * (((p : ℝ) - p₀) / p) ^ 2 := by positivity
   linarith
 
-/-- **Proposition 3.9, (eq:crude)** (`prop:isolated`, source l. 1248--1253, proof l. 1410--1415).
+/-- **Proposition 3.8, (eq:crude)** (`prop:isolated`, source l. 1193–1197, proof ).
 For `β ≥ 2`, `C ≥ 0` and `C₀ ∈ ℝ` there is `C_β > 0` (depending only on `β`, `C`, `C₀`) such that
 for every finite index type `ι` with `|ι| = 2p`, tie-break key, graph `γ ∈ G_p` (a
 fixed-point-free involution `f`), every `f`-invariant set `S` of vertices, every `2 ≤ p ≤ N`,

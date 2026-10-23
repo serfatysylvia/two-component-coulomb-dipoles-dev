@@ -17,9 +17,9 @@ import TwoComponentCoulomb.UpperBound.ReducedConstruction
 import TwoComponentCoulomb.UpperBound.ReducedMatching
 
 /-!
-# Assembly of Lemma 3.6 (free energy of the reduced dipole model)
+# Assembly of Lemma 3.5 (free energy of the reduced dipole model)
 
-Source: Lemma 3.6 (`lemma:part nn`, l. 922--1003). The matching upper bounds
+Source: Lemma 3.5 (`lemma:part nn`, l. 870–952). The matching upper bounds
 (`UpperBound/ReducedMatching.lean`) and the placement lower bounds
 (`UpperBound/ReducedConstruction.lean`) are turned, by Stirling's formula and elementary
 estimates, into the two-sided logarithmic expansion of the statement: positivity and finiteness of
@@ -35,12 +35,12 @@ estimates, into the two-sided logarithmic expansion of the statement: positivity
   (the latter for the placement construction with `t ≤ 1/16`).
 * `ReducedAssembly.reducedPartitionFunction_le_exp_of_two_lt`,
   `ReducedAssembly.exp_le_reducedPartitionFunction_of_two_lt` : the two bounds for `β > 2`
-  (source l. 976--1001), with `t = λ^{(β-2)/β}` for the lower one.
+  (source l. 926–951), with `t = λ^{(β-2)/β}` for the lower one.
 * `ReducedAssembly.reducedPartitionFunction_two_le_exp`,
   `ReducedAssembly.exp_le_reducedPartitionFunction_two` : the two bounds for `β = 2`
-  (source l. 949--974), with `ℓ = |log λ|` and `t = ℓ^{-1/2}` for the lower one.
-* `lemma_3_6_of_two_lt` : the frozen expression of Lemma 3.6 for `β > 2`.
-* `lemma_3_6_two` : the frozen expression of Lemma 3.6 for `β = 2`.
+  (source l. 899–923), with `ℓ = |log λ|` and `t = ℓ^{-1/2}` for the lower one.
+* `lemma_3_5_of_two_lt` : the frozen expression of Lemma 3.5 for `β > 2`.
+* `lemma_3_5_two` : the frozen expression of Lemma 3.5 for `β = 2`.
 -/
 
 @[expose] public section
@@ -55,29 +55,9 @@ namespace TwoComponentCoulomb
 /-- **Stirling upper bound**: for `N ≥ 1`, `log N! ≤ N log N - N + 1 + log N`. -/
 theorem log_factorial_le {N : ℕ} (hN : 1 ≤ N) :
     Real.log (N ! : ℝ) ≤ N * Real.log N - N + 1 + Real.log N := by
-  induction N, hN using Nat.le_induction with
-  | base => simp
-  | succ n hn ih =>
-    have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
-    have hfac : ((n + 1)! : ℝ) = ((n : ℝ) + 1) * (n ! : ℝ) := by
-      rw [Nat.factorial_succ]; push_cast; ring
-    have hfpos : (0 : ℝ) < (n ! : ℝ) := by exact_mod_cast Nat.factorial_pos n
-    have hlog : Real.log (((n + 1)! : ℕ) : ℝ) = Real.log ((n : ℝ) + 1) + Real.log (n ! : ℝ) := by
-      rw [hfac, Real.log_mul (by positivity) hfpos.ne']
-    have hdiff : Real.log (n : ℝ) - Real.log ((n : ℝ) + 1) ≤ -(1 / ((n : ℝ) + 1)) := by
-      have h := Real.log_le_sub_one_of_pos (x := (n : ℝ) / ((n : ℝ) + 1)) (by positivity)
-      rw [Real.log_div hn0.ne' (by positivity)] at h
-      have : (n : ℝ) / ((n : ℝ) + 1) - 1 = -(1 / ((n : ℝ) + 1)) := by field_simp; ring
-      linarith only [h, this]
-    have hkey : 1 ≤ ((n : ℝ) + 1) * (Real.log ((n : ℝ) + 1) - Real.log n) := by
-      have h1 : 1 / ((n : ℝ) + 1) ≤ Real.log ((n : ℝ) + 1) - Real.log n := by
-        linarith only [hdiff]
-      calc (1 : ℝ) = ((n : ℝ) + 1) * (1 / ((n : ℝ) + 1)) := by field_simp
-        _ ≤ ((n : ℝ) + 1) * (Real.log ((n : ℝ) + 1) - Real.log n) :=
-            mul_le_mul_of_nonneg_left h1 (by positivity)
-    push_cast
-    rw [hlog]
-    linarith only [hkey, ih]
+  have h := log_factorial_stirling_le hN
+  have hlog : 0 ≤ Real.log (N : ℝ) := Real.log_nonneg (by exact_mod_cast hN)
+  linarith only [h, hlog]
 
 /-- `log (N + 1) ≥ 1` for `N ≥ 2`. -/
 theorem one_le_log_add_one {N : ℕ} (hN : 2 ≤ N) : 1 ≤ Real.log ((N : ℝ) + 1) := by
@@ -219,7 +199,7 @@ theorem min_le_two_mul_sub_div {β : ℝ} (hβ : 2 < β) :
     rw [le_div_iff₀ hβ0]
     linarith only [h]
 
-/-- **Lemma 3.6, upper bound for `β > 2`** (source l. 957--962, 976--981), in the form of the
+/-- **Lemma 3.5, upper bound for `β > 2`** (source l. 907–911, 926–931), in the form of the
 frozen statement: `𝒦 ≤ exp (M + C (N λ^{min((β-2)/2, 1)} + log (N+1)))`. -/
 theorem reducedPartitionFunction_le_exp_of_two_lt {β : ℝ} (hβ : 2 < β) :
     ∃ C : ℝ, 0 < C ∧ ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam ≤ 1 →
@@ -277,7 +257,7 @@ theorem reducedPartitionFunction_le_exp_of_two_lt {β : ℝ} (hβ : 2 < β) :
   rw [e4]
   linarith only [hF', e1, e2, e3]
 
-/-- The radii of the `β > 2` construction (source l. 986, 996): for `t = λ^{(β-2)/β}` one has
+/-- The radii of the `β > 2` construction (source l. 936, 946): for `t = λ^{(β-2)/β}` one has
 `t² = (λ/t)^{β-2} = λ^{2(β-2)/β}`, and `2λ ≤ t` as soon as `λ^{2/β} ≤ 1/2`. -/
 theorem radius_rpow_identities {β lam : ℝ} (hβ : 2 < β) (hlam : 0 < lam)
     (h2 : lam ^ (2 / β) ≤ 1 / 2) :
@@ -331,7 +311,7 @@ theorem two_lt_lower_arith {N β L lZ C₀ x y Q lA : ℝ} (hN : 0 < N) (hC₀ :
     mul_le_mul_of_nonneg_left hQ (by positivity)
   linarith [Real.pi_pos]
 
-/-- **Lemma 3.6, lower bound for `β > 2`** (source l. 982--1001), in the form of the frozen
+/-- **Lemma 3.5, lower bound for `β > 2`** (source l. 932–951), in the form of the frozen
 statement, with `t = λ^{(β-2)/β}`. -/
 theorem exp_le_reducedPartitionFunction_of_two_lt {β : ℝ} (hβ : 2 < β) :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧ ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
@@ -413,6 +393,67 @@ theorem log_sq_le_two_mul {r : ℝ} (hr : 0 < r) : Real.log (r ^ 2) ≤ 2 * r :=
   push_cast
   linarith
 
+/-- Taking the logarithm of the mass expansion by `log (1+x) ≤ x`. -/
+private theorem log_gaussianMass_le_ratio {B ℓ C : ℝ} (hℓ : 0 < ℓ) (hB0 : 0 < B)
+    (hB : |B - 2 * Real.pi * (ℓ + 1 / 2 * Real.log ℓ)| ≤ C) :
+    Real.log B ≤ Real.log (2 * Real.pi * ℓ) +
+      (Real.pi * Real.log ℓ + |C|) / (2 * Real.pi * ℓ) := by
+  have hp : 0 < 2 * Real.pi * ℓ := by positivity
+  have hlog := Real.log_le_sub_one_of_pos (div_pos hB0 hp)
+  rw [Real.log_div hB0.ne' hp.ne'] at hlog
+  have hnum : B - 2 * Real.pi * ℓ ≤ Real.pi * Real.log ℓ + |C| := by
+    linarith only [(abs_le.1 hB).2, le_abs_self C]
+  have hratio := div_le_div_of_nonneg_right hnum hp.le
+  have hid : B / (2 * Real.pi * ℓ) - 1 = (B - 2 * Real.pi * ℓ) / (2 * Real.pi * ℓ) := by
+    field_simp
+  linarith only [hlog, hratio, hid]
+
+/-- The sharp logarithmic estimate in `eq:critical-B`, obtained from the mass
+expansion by `log (1+x) ≤ x`. -/
+theorem log_gaussianMass_le_sharp {B ℓ C : ℝ} (hℓ : 1 ≤ ℓ) (hB0 : 0 < B)
+    (hB : |B - 2 * Real.pi * (ℓ + 1 / 2 * Real.log ℓ)| ≤ C) :
+    Real.log B ≤ Real.log (2 * Real.pi * ℓ) +
+      (1 + |C|) * (1 + Real.log ℓ) / ℓ := by
+  have hℓ0 : 0 < ℓ := zero_lt_one.trans_le hℓ
+  have hlog := log_gaussianMass_le_ratio hℓ0 hB0 hB
+  have hl0 : 0 ≤ Real.log ℓ := Real.log_nonneg hℓ
+  have hnum : Real.pi * Real.log ℓ + |C| ≤
+      2 * Real.pi * ((1 + |C|) * (1 + Real.log ℓ)) := by
+    have hp : 1 ≤ Real.pi := le_trans (by norm_num) Real.pi_gt_three.le
+    have h1 : Real.pi * Real.log ℓ ≤ Real.pi * ((1 + |C|) * (1 + Real.log ℓ)) := by
+      gcongr
+      nlinarith only [abs_nonneg C, hl0, mul_nonneg (abs_nonneg C) hl0]
+    have h2 : |C| ≤ Real.pi * ((1 + |C|) * (1 + Real.log ℓ)) := by
+      calc |C| ≤ (1 + |C|) * (1 + Real.log ℓ) := by
+            nlinarith only [abs_nonneg C, hl0, mul_nonneg (abs_nonneg C) hl0]
+        _ ≤ _ := le_mul_of_one_le_left (by positivity) hp
+    linarith only [h1, h2]
+  have hratio : (Real.pi * Real.log ℓ + |C|) / (2 * Real.pi * ℓ) ≤
+      (1 + |C|) * (1 + Real.log ℓ) / ℓ := by
+    rw [← div_div]
+    apply div_le_div_of_nonneg_right _ hℓ0.le
+    apply (div_le_iff₀ (by positivity : 0 < 2 * Real.pi)).2
+    linarith only [hnum]
+  linarith only [hlog, hratio]
+
+/-- The full sharp bound on `log J_λ(1/ℓ)`, with a universal positive constant
+and the manuscript's range `0 < λ ≤ e⁻¹`. -/
+theorem exists_log_gaussianMass_le_sharp :
+    ∃ C : ℝ, 0 < C ∧ ∀ lam : ℝ, 0 < lam → lam ≤ Real.exp (-1) →
+      Real.log (∫ u : ℂ, Real.exp (2 * smearedKernel lam u - ‖u‖ ^ 2 / |Real.log lam|)) ≤
+        Real.log (2 * Real.pi * |Real.log lam|) +
+          C * (1 + Real.log |Real.log lam|) / |Real.log lam| := by
+  obtain ⟨C, hC⟩ := exists_abs_gaussianMass_sub_le
+  refine ⟨1 + |C|, by positivity, fun lam hlam hle => ?_⟩
+  obtain ⟨hℓ, h2⟩ := two_mul_le_sqrt_neg_log hlam hle
+  have hab : |Real.log lam| = -Real.log lam := abs_of_neg (by linarith)
+  apply log_gaussianMass_le_sharp
+  · rwa [hab]
+  · apply integral_gaussianMass_pos hlam
+    · rw [hab]; linarith
+    · rwa [hab]
+  · exact hC lam hlam hle
+
 /-- The two-sided control of the Gaussian mass `B = 2π(ℓ + ½ log ℓ + O(1))` that is used in the
 upper bound: with `ℓ = r²` and `ω = r⁻¹`, `ℓ ≤ B` and `log B ≤ log (2π) + log ℓ + (1 + |C₁|) ω`. -/
 theorem log_gaussianMass_le {B ℓ r ω C₁ : ℝ} (hr1 : 1 ≤ r) (hr2 : r ^ 2 = ℓ) (hωℓ : ω * ℓ = r)
@@ -432,18 +473,15 @@ theorem log_gaussianMass_le {B ℓ r ω C₁ : ℝ} (hr1 : 1 ≤ r) (hr2 : r ^ 2
     have h1 := (abs_le.1 hB).1
     have : 0 ≤ Real.pi * Real.log ℓ := by positivity
     linarith only [h1, this, mul_le_mul_of_nonneg_right hpi3.le hℓ0.le, hC₁, hC, hrℓ, hℓ0]
-  have hBup : B ≤ 2 * Real.pi * ℓ + Real.pi * Real.log ℓ + |C₁| := by
-    have h1 := (abs_le.1 hB).2
-    linarith only [h1, hC₁]
   have hBpos : 0 < B := by linarith
   refine ⟨hBlow, ?_⟩
   have hpℓ : 0 < 2 * Real.pi * ℓ := by positivity
-  have h1 := Real.log_le_sub_one_of_pos (x := B / (2 * Real.pi * ℓ)) (by positivity)
-  rw [Real.log_div hBpos.ne' hpℓ.ne', Real.log_mul (by positivity) hℓ0.ne'] at h1
-  have h2 : B / (2 * Real.pi * ℓ) ≤ 1 + (1 + |C₁|) * ω := by
+  have h1 := log_gaussianMass_le_ratio hℓ0 hBpos hB
+  rw [Real.log_mul (by positivity) hℓ0.ne'] at h1
+  have h2 : (Real.pi * Real.log ℓ + |C₁|) / (2 * Real.pi * ℓ) ≤ (1 + |C₁|) * ω := by
     rw [div_le_iff₀ hpℓ]
-    have e : (1 + (1 + |C₁|) * ω) * (2 * Real.pi * ℓ) =
-        2 * Real.pi * ℓ + 2 * Real.pi * (1 + |C₁|) * r := by
+    have e : (1 + |C₁|) * ω * (2 * Real.pi * ℓ) =
+        2 * Real.pi * (1 + |C₁|) * r := by
       linear_combination (2 * Real.pi * (1 + |C₁|)) * hωℓ
     rw [e]
     have : Real.pi * Real.log ℓ + |C₁| ≤ 2 * Real.pi * (1 + |C₁|) * r := by
@@ -454,10 +492,10 @@ theorem log_gaussianMass_le {B ℓ r ω C₁ : ℝ} (hr1 : 1 ≤ r) (hr2 : r ^ 2
           linarith only [mul_le_mul_of_nonneg_right hpi3.le hr0.le, hr1]
         linarith only [mul_le_mul_of_nonneg_left this (abs_nonneg C₁)]
       linarith only [h3, h4]
-    linarith only [hBup, this]
+    exact this
   linarith only [h1, h2]
 
-/-- **Lemma 3.6, upper bound for `β = 2`** (source l. 949--968, 974). -/
+/-- **Lemma 3.5, upper bound for `β = 2`** . -/
 theorem reducedPartitionFunction_two_le_exp :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧ ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
       reducedPartitionFunction N 2 lam ≤ ENNReal.ofReal (Real.exp (
@@ -571,7 +609,7 @@ theorem critical_radius_bounds {ℓ r ω : ℝ} (hr : 16 ≤ r) (hr2 : r ^ 2 = �
   have := neg_two_mul_le_log_one_sub hy0 hy2
   linarith only [this, hy3]
 
-/-- **Lemma 3.6, lower bound for `β = 2`** (source l. 970--974). -/
+/-- **Lemma 3.5, lower bound for `β = 2`** (source l. 920–923). -/
 theorem exp_le_reducedPartitionFunction_two :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧ ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
       ENNReal.ofReal (Real.exp (
@@ -645,10 +683,10 @@ end ReducedAssembly
 
 open ReducedAssembly
 
-/-! ### The statements of Lemma 3.6 -/
+/-! ### The statements of Lemma 3.5 -/
 
-/-- **Lemma 3.6 for `β > 2`** (source l. 922--1003), in the form of the frozen statement. -/
-theorem lemma_3_6_of_two_lt {β : ℝ} (hβ : 2 < β) :
+/-- **Lemma 3.5 for `β > 2`** (source l. 870–952), in the form of the frozen statement. -/
+theorem lemma_3_5_of_two_lt {β : ℝ} (hβ : 2 < β) :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
         0 < reducedPartitionFunction N β lam ∧ reducedPartitionFunction N β lam < ∞ ∧
@@ -672,8 +710,8 @@ theorem lemma_3_6_of_two_lt {β : ℝ} (hβ : 2 < β) :
   simp only [hβ, hβ.ne', ↓reduceIte, add_zero]
   exact h
 
-/-- **Lemma 3.6 for `β = 2`** (source l. 922--1003), in the form of the frozen statement. -/
-theorem lemma_3_6_two (hβ : (2 : ℝ) ≤ 2) :
+/-- **Lemma 3.5 for `β = 2`** (source l. 870–952), in the form of the frozen statement. -/
+theorem lemma_3_5_two (hβ : (2 : ℝ) ≤ 2) :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
         0 < reducedPartitionFunction N 2 lam ∧ reducedPartitionFunction N 2 lam < ∞ ∧

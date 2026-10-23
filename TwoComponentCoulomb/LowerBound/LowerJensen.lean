@@ -11,7 +11,7 @@ import TwoComponentCoulomb.Integrals.Radial
 /-!
 # Jensen over the placement set and the lower bound for `β > 2`
 
-Source: Proposition 4.1, Steps 2--3 (l. 1828--1898), eqs.
+Source: Proposition 4.1, Steps 2--3 (l. 1738–1802), eqs.
 (minz3), (align57), (eq:volume-lower), (eq:Jensen) and the conclusion before Stirling's formula.
 The proof follows the source (ruling R22): the pair factor `J_β(r)` carries the correction
 `-β s²/r²` coming from eq. (majof), and Jensen's inequality is applied to the profile `φ_β`.
@@ -23,7 +23,7 @@ The proof follows the source (ruling R22): the pair factor `J_β(r)` carries the
   (align57) (`exists_pairFactor_ge_exp`).
 * `partitionFunction_ge_of_two_lt` : the lower bound
   `Z ≥ N! N^N (𝒵_β λ^{2-β})^N exp(-C N ε_λ - C √N η_λ)` for `β > 2` (the inequality of the source
-  before the use of Stirling's formula, l. 1889--1892), from (minz3)
+  before the use of Stirling's formula, l. 1793–1796), from (minz3)
   (`partitionFunction_ge_pairFactor`), (eq:volume-lower) (`volume_placementSet_ge`) and Step 3
   (`expectation_isolatedPhi_lowerRadius_le`).
 -/
@@ -70,7 +70,7 @@ theorem measureReal_mul_exp_neg_le_integral {α : Type*} [MeasurableSpace α] {�
   rw [h2] at h1
   linarith
 
-/-- **Jensen over `H`** (source l. 1856--1860, eqs. (minz3), (align57), (eq:Jensen)): for `β > 2`
+/-- **Jensen over `H`** (source l. 1766–1770, eqs. (minz3), (align57), (eq:Jensen)): for `β > 2`
 there is `C > 0` such that for `0 < λ`, `4λ ≤ 1` and `H = H(N, N, 4λ, 8λ)`,
 `∫_H ∏_i J_β(ϱ(x_i)) dX ≥ vol H · (𝒵_β λ^{2-β})^N · exp(-C Σ_i (1/vol H) ∫_H φ_β(ϱ(x_i)))`,
 where `J_β = pairFactor β β λ` and `φ_β = isolatedPhi β`. -/
@@ -145,7 +145,7 @@ theorem lintegral_prod_pairFactor_ge {β : ℝ} (hβ : 2 < β) :
       = A ^ N * (V * Real.exp (-((C * ∑ i, ∫ X in H, f i X) / V))) := by ring
     _ ≤ A ^ N * ∫ X, Real.exp (-g X) ∂μ := mul_le_mul_of_nonneg_left hJ hAN.le
 
-/-- **The lower bound for `β > 2`** (source l. 1828--1892, the inequality before Stirling's
+/-- **The lower bound for `β > 2`** (source l. 1738–1796, the inequality before Stirling's
 formula): there are `λ₀, C > 0` such that for all `N ≥ 2` and `0 < λ < λ₀`,
 `Z ≥ N! N^N (𝒵_β λ^{2-β})^N exp(-C N ε_λ - C √N η_λ)`. -/
 theorem partitionFunction_ge_of_two_lt {β : ℝ} (hβ : 2 < β) :

@@ -16,9 +16,9 @@ import TwoComponentCoulomb.Potential.PairIntegral
 import TwoComponentCoulomb.UpperBound.MatchingSum
 
 /-!
-# The matching upper bound for the reduced partition function (Lemma 3.6, upper half)
+# The matching upper bound for the reduced partition function (Lemma 3.5, upper half)
 
-Source: l. 949--968 and 976--981. For `Z = (X, Y)` (positive charges
+Source `source/dipole-formation.tex`, l. 898–908, 933–935. For `Z = (X, Y)` (positive charges
 `inl`, negative charges `inr`) with nearest-neighbour map `φ = nearestNeighbor Z`, the *neutral
 2-cycles* are the pairs `(a, b)` with `φ (inl a) = inr b` and `φ (inr b) = inl a`; they form a
 partial matching between positive and negative indices. The reduced energy only sees them, and
@@ -28,14 +28,14 @@ counts each twice with weight `1/2`, so that
 If the weight is dominated by `K₀ ∏_{(a, b)} G (x_a - y_b)` then the integrand is at most `K₀`
 times the sum over *all* partial matchings `M` of `∏_{(a, b) ∈ M} G (x_a - y_b)`. Integrating over
 `Λ^{2N}`, a matching of size `p` contributes at most `N ^ (2 N - p) (∫ G) ^ p`
-(`lintegral_prod_matching_le`), and there are at most `C(N, p) · N! / (N - p)!` of them
-(`card_matchings_filter_card_le`). The sum is then bounded by `sum_matchings_le`.
+(`lintegral_prod_matching_le`), and there are exactly `C(N, p) · N! / (N - p)!` of them
+(`card_matchings_filter_card_eq`). The sum is then bounded by `sum_matchings_le`.
 
 * `neutralPairs`, `IsMatching`, `isMatching_neutralPairs` : the neutral 2-cycles as a partial
   matching.
 * `exp_neg_reducedEnergy_eq_prod` : the product formula for the reduced Boltzmann weight (and its
   `Sum.elim X Y` form).
-* `sum_sq_neutralPairs_le` : the packing bound `∑_{pairs} |u|² ≤ 18 N / π` (source l. 957).
+* `sum_sq_neutralPairs_le` : the packing bound `∑_{pairs} |u|² ≤ 18 N / π` .
 * `lintegral_prod_matching_le` : the integral of a matching product.
 * `reducedPartitionFunction_le_sum_matchings` : the reduction of `𝒦_{N, β}^λ` to the matching sum.
 * `reducedPartitionFunction_le_of_gt_two` (`β > 2`) and `reducedPartitionFunction_two_le`
@@ -140,7 +140,7 @@ theorem sum_cycle_inr (Z : Fin N ⊕ Fin N → ℂ) (h : ℂ → ℝ) (heven : �
   · norm_num [hφ, charge_inr]
 
 open scoped Classical in
-/-- Key counting identity (source l. 255--257): the sum, over the points `i` that lie on a neutral
+/-- Key counting identity (source l. 247–249): the sum, over the points `i` that lie on a neutral
 2-cycle, of `h (Z i - Z (φ₁ i))` for an even `h` counts every neutral 2-cycle twice. -/
 theorem sum_cycle_eq_two_mul (Z : Fin N ⊕ Fin N → ℂ) (h : ℂ → ℝ) (heven : ∀ x, h (-x) = h x) :
     (∑ i, if nearestNeighbor Z (nearestNeighbor Z i) = i ∧
@@ -158,26 +158,30 @@ theorem reducedEnergy_eq_neg_sum (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) :
   rw [sum_cycle_eq_two_mul Z (smearedKernel lam) (smearedKernel_neg lam)]
   ring
 
+/-- **Source l. 898–901.** For `Z = Sum.elim X Y` (positive charges `X`, negative charges `Y`),
+`exp (-β F̃_λ (Z)) = ∏_{(a, b) neutral 2-cycle} exp (β g_λ (x_a - y_b))`. -/
+theorem exp_neg_reducedEnergy_eq_prod (β lam : ℝ) (X Y : Fin N → ℂ) :
+    Real.exp (-β * reducedEnergy lam (Sum.elim X Y)) =
+      ∏ p ∈ neutralPairs (Sum.elim X Y), Real.exp (β * smearedKernel lam (X p.1 - Y p.2)) := by
+  rw [reducedEnergy_eq_neg_sum, ← Real.exp_sum]
+  simp only [Sum.elim_inl, Sum.elim_inr]
+  congr 1
+  rw [← Finset.mul_sum, neg_mul_neg]
+
 /-- The reduced Boltzmann weight is the product over the neutral 2-cycles of `exp (β g_λ)`
-(source l. 926, 950). -/
+(source l. 873, 900). -/
 theorem exp_neg_reducedEnergy_eq_prod_inl_inr (β lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) :
     Real.exp (-β * reducedEnergy lam Z) =
       ∏ p ∈ neutralPairs Z,
         Real.exp (β * smearedKernel lam (Z (Sum.inl p.1) - Z (Sum.inr p.2))) := by
-  rw [reducedEnergy_eq_neg_sum, ← Real.exp_sum]
-  congr 1
-  rw [← Finset.mul_sum, neg_mul_neg]
+  have hZ : Sum.elim (fun a => Z (Sum.inl a)) (fun b => Z (Sum.inr b)) = Z := by
+    funext i
+    cases i <;> rfl
+  have h := exp_neg_reducedEnergy_eq_prod β lam
+    (fun a => Z (Sum.inl a)) (fun b => Z (Sum.inr b))
+  rwa [hZ] at h
 
-/-- **Source l. 926, 950.** For `Z = Sum.elim X Y` (positive charges `X`, negative charges `Y`),
-`exp (-β F̃_λ (Z)) = ∏_{(a, b) neutral 2-cycle} exp (β g_λ (x_a - y_b))`; the neutral 2-cycles
-`neutralPairs Z` form a partial matching (`isMatching_neutralPairs`). -/
-theorem exp_neg_reducedEnergy_eq_prod (β lam : ℝ) (X Y : Fin N → ℂ) :
-    Real.exp (-β * reducedEnergy lam (Sum.elim X Y)) =
-      ∏ p ∈ neutralPairs (Sum.elim X Y), Real.exp (β * smearedKernel lam (X p.1 - Y p.2)) := by
-  simpa only [Sum.elim_inl, Sum.elim_inr] using
-    exp_neg_reducedEnergy_eq_prod_inl_inr β lam (Sum.elim X Y)
-
-/-- The packing bound for the neutral 2-cycles (source l. 957): `∑ |x_a - y_b|² ≤ 18 N / π`. -/
+/-- The packing bound for the neutral 2-cycles : `∑ |x_a - y_b|² ≤ 18 N / π`. -/
 theorem sum_sq_neutralPairs_le (Z : Fin N ⊕ Fin N → ℂ) (hZ : ∀ i, Z i ∈ box N) :
     ∑ p ∈ neutralPairs Z, ‖Z (Sum.inl p.1) - Z (Sum.inr p.2)‖ ^ 2 ≤ 18 * N / Real.pi := by
   have h := sum_cycle_eq_two_mul Z (fun x => ‖x‖ ^ 2) (fun x => by simp)
@@ -304,7 +308,7 @@ theorem measurable_prod_matching (M : Finset (Fin N × Fin N)) {G : ℂ → ℝ�
   Finset.measurable_prod _ fun _ _ =>
     hG.comp ((measurable_pi_apply _).sub (measurable_pi_apply _))
 
-/-- **Integral of a matching product** (source l. 957): for a partial matching `M` of size `p`,
+/-- **Integral of a matching product** : for a partial matching `M` of size `p`,
 `∫_{Λ^{2N}} ∏_{(a, b) ∈ M} G (x_a - y_b) ≤ N ^ (2 N - p) (∫ G) ^ p`. Each matched pair contributes
 `∫_Λ ∫_Λ G (x - y) dy dx ≤ N ∫ G` and each unmatched point contributes `N`. -/
 theorem lintegral_prod_matching_le {M : Finset (Fin N × Fin N)} (hM : IsMatching M)
@@ -330,10 +334,10 @@ theorem lintegral_prod_matching_le {M : Finset (Fin N × Fin N)} (hM : IsMatchin
 
 /-! ### Counting the partial matchings -/
 
-/-- There are at most `C(N, p) · N! / (N - p)!` partial matchings of size `p` (source l. 951--954):
+/-- There are exactly `C(N, p) · N! / (N - p)!` partial matchings of size `p` :
 choose the `p` positive indices, then an injective assignment of negative partners. -/
-theorem card_matchings_filter_card_le (N p : ℕ) :
-    (((matchings N).filter fun M => M.card = p).card) ≤ N.choose p * N.descFactorial p := by
+theorem card_matchings_filter_card_eq (N p : ℕ) :
+    (((matchings N).filter fun M => M.card = p).card) = N.choose p * N.descFactorial p := by
   classical
   let ι := Σ S : Finset.powersetCard p (Finset.univ : Finset (Fin N)),
     ((S : Finset (Fin N)) ↪ Fin N)
@@ -364,8 +368,52 @@ theorem card_matchings_filter_card_le (N p : ℕ) :
       refine ⟨⟨a, Finset.mem_image.2 ⟨(a, b), hab, rfl⟩⟩, rfl, ?_⟩
       have := hfst (hf ⟨a, Finset.mem_image.2 ⟨(a, b), hab, rfl⟩⟩) hab rfl
       exact congrArg Prod.snd this
-  calc _ ≤ ((Finset.univ : Finset ι).image Φ).card := Finset.card_le_card hsub
-    _ ≤ (Finset.univ : Finset ι).card := Finset.card_image_le
+  have hfst : ∀ s : ι, (Φ s).image Prod.fst = s.1.val := by
+    intro s
+    ext a
+    simp only [Φ, Finset.mem_image, Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨q, ⟨x, rfl⟩, rfl⟩
+      exact x.2
+    · intro ha
+      exact ⟨(a, s.2 ⟨a, ha⟩), ⟨⟨a, ha⟩, rfl⟩, rfl⟩
+  have hinj : Function.Injective Φ := by
+    rintro ⟨S, e⟩ ⟨T, f⟩ heq
+    have hST : S = T := Subtype.ext
+      ((hfst ⟨S, e⟩).symm.trans ((congrArg (Finset.image Prod.fst) heq).trans (hfst ⟨T, f⟩)))
+    subst T
+    congr 1
+    apply Function.Embedding.ext
+    intro a
+    have hmem : (a.1, e a) ∈ Φ ⟨S, e⟩ :=
+      Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩
+    rw [heq] at hmem
+    obtain ⟨b, _, hb⟩ := Finset.mem_image.1 hmem
+    have hba : b = a := Subtype.ext (congrArg Prod.fst hb)
+    subst b
+    exact (congrArg Prod.snd hb).symm
+  have hrev : (Finset.univ : Finset ι).image Φ ⊆
+      (matchings N).filter (fun M => M.card = p) := by
+    intro M hM
+    obtain ⟨s, _, rfl⟩ := Finset.mem_image.1 hM
+    rw [Finset.mem_filter, mem_matchings]
+    constructor
+    · constructor
+      · intro q hq r hr hqr
+        obtain ⟨a, _, rfl⟩ := Finset.mem_image.1 hq
+        obtain ⟨b, _, rfl⟩ := Finset.mem_image.1 hr
+        have hab : a = b := Subtype.ext hqr
+        rw [hab]
+      · intro q hq r hr hqr
+        obtain ⟨a, _, rfl⟩ := Finset.mem_image.1 hq
+        obtain ⟨b, _, rfl⟩ := Finset.mem_image.1 hr
+        have hab := s.2.injective hqr
+        rw [hab]
+    · rw [Finset.card_image_of_injective _ (fun a b h => Subtype.ext (congrArg Prod.fst h)),
+        Finset.card_univ, Fintype.card_coe]
+      exact (Finset.mem_powersetCard.1 s.1.2).2
+  calc _ = ((Finset.univ : Finset ι).image Φ).card := congrArg Finset.card (Finset.Subset.antisymm hsub hrev)
+    _ = (Finset.univ : Finset ι).card := Finset.card_image_of_injective _ hinj
     _ = N.choose p * N.descFactorial p := by
         rw [Finset.card_univ, Fintype.card_sigma]
         have hS : ∀ S : Finset.powersetCard p (Finset.univ : Finset (Fin N)),
@@ -375,7 +423,18 @@ theorem card_matchings_filter_card_le (N p : ℕ) :
         simp only [hS, Finset.sum_const, Finset.card_univ, Fintype.card_coe,
           Finset.card_powersetCard, Fintype.card_fin, smul_eq_mul]
 
-/-- `C(N, p) · N! / (N - p)! = (N !)² / (p ! ((N - p) !)²)` (source l. 952). -/
+/-- The matching count in the upper-bound form used by the integral estimates. -/
+theorem card_matchings_filter_card_le (N p : ℕ) :
+    (((matchings N).filter fun M => M.card = p).card) ≤ N.choose p * N.descFactorial p :=
+  (card_matchings_filter_card_eq N p).le
+
+/-- The manuscript's exact count `binom(N,p)^2 p!` of partial matchings. -/
+theorem card_matchings_filter_card_eq_choose (N p : ℕ) :
+    (((matchings N).filter fun M => M.card = p).card) = (N.choose p) ^ 2 * p.factorial := by
+  rw [card_matchings_filter_card_eq, Nat.descFactorial_eq_factorial_mul_choose]
+  ring
+
+/-- `C(N, p) · N! / (N - p)! = (N !)² / (p ! ((N - p) !)²)` . -/
 theorem choose_mul_descFactorial_eq {N p : ℕ} (hp : p ≤ N) :
     ((N.choose p * N.descFactorial p : ℕ) : ℝ) = (N ! : ℝ) ^ 2 / (p ! * ((N - p) ! : ℝ) ^ 2) := by
   have h1 : (N.choose p * p ! * (N - p)! : ℕ) = N ! := Nat.choose_mul_factorial_mul_factorial hp
@@ -392,7 +451,7 @@ theorem choose_mul_descFactorial_eq {N p : ℕ} (hp : p ≤ N) :
 
 /-! ### Reduction of the partition function to the matching sum -/
 
-/-- **Source l. 950--960 (reduction).** If the reduced Boltzmann weight is dominated, on `Λ^{2N}`,
+/-- **Source l. 900–909 (reduction).** If the reduced Boltzmann weight is dominated, on `Λ^{2N}`,
 by `K₀ ∏_{(a, b) neutral 2-cycle} G (z_a - z_b)` for a measurable weight `G`, then
 `𝒦_{N, β}^λ ≤ K₀ ∑_{p ≤ N} C(N, p) (N!/(N - p)!) N^(2 N - p) (∫ G)^p`. -/
 theorem reducedPartitionFunction_le_sum_matchings {β lam : ℝ} {G : ℂ → ℝ≥0∞}
@@ -462,7 +521,7 @@ theorem sum_coeff_eq_ofReal (N : ℕ) {A : ℝ} (hA : 0 ≤ A) :
     ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow hA, ENNReal.ofReal_pow (Nat.cast_nonneg N),
     ENNReal.ofReal_natCast, ENNReal.ofReal_natCast]
 
-/-- **Source l. 958--968.** If the reduced Boltzmann weight is dominated on `Λ^{2N}` by
+/-- **Source l. 907–917.** If the reduced Boltzmann weight is dominated on `Λ^{2N}` by
 `K ∏_{neutral 2-cycles} G (z_a - z_b)` with `∫ G = A > 0` finite, then
 `𝒦_{N, β}^λ ≤ K · N! N^N A^N e^{2 N / √A}`. -/
 theorem reducedPartitionFunction_le_ofReal {β lam : ℝ} {G : ℂ → ℝ≥0∞} (hG : Measurable G)
@@ -476,7 +535,7 @@ theorem reducedPartitionFunction_le_ofReal {β lam : ℝ} {G : ℂ → ℝ≥0�
   rw [hGA, sum_coeff_eq_ofReal N hA.le, ← ENNReal.ofReal_mul hK]
   exact ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left (sum_matchings_le N hA) hK)
 
-/-- **Lemma 3.6, upper bound for `β > 2`** (source l. 976--981):
+/-- **Lemma 3.5, upper bound for `β > 2`** (source l. 926–931):
 `𝒦_{N, β}^λ ≤ N! N^N A^N e^{2 N / √A}` with `A = 𝒵_β λ^{2 - β} = ∫ e^{β g_λ}`. -/
 theorem reducedPartitionFunction_le_of_gt_two {β lam : ℝ} (hβ : 2 < β) (hlam : 0 < lam) :
     reducedPartitionFunction N β lam ≤
@@ -520,7 +579,7 @@ theorem integral_gaussianMass_pos {lam ℓ : ℝ} (hlam : 0 < lam) (hℓ : 0 < �
   rw [this]
   simp
 
-/-- **Source l. 957 (Gaussian insertion).** For `Z ∈ Λ^{2N}` and `ℓ > 0`, the packing bound
+/-- **Source (Gaussian insertion).** For `Z ∈ Λ^{2N}` and `ℓ > 0`, the packing bound
 gives `exp (-2 F̃_λ (Z)) ≤ e^{18 N / (π ℓ)} ∏_{neutral 2-cycles} exp (2 g_λ (u) - |u|² / ℓ)`. -/
 theorem ofReal_exp_neg_two_mul_reducedEnergy_le {lam ℓ : ℝ} (hℓ : 0 < ℓ)
     (Z : Fin N ⊕ Fin N → ℂ) (hZ : ∀ i, Z i ∈ box N) :
@@ -544,7 +603,7 @@ theorem ofReal_exp_neg_two_mul_reducedEnergy_le {lam ℓ : ℝ} (hℓ : 0 < ℓ)
   rw [Finset.sum_sub_distrib]
   linarith
 
-/-- **Lemma 3.6, upper bound for `β = 2`** (source l. 949--968): for `ℓ > 0` with `2 λ ≤ √ℓ`,
+/-- **Lemma 3.5, upper bound for `β = 2`** (source l. 899–917): for `ℓ > 0` with `2 λ ≤ √ℓ`,
 `𝒦_{N, 2}^λ ≤ e^{18 N / (π ℓ)} N! N^N B^N e^{2 N / √B}`, where
 `B = ∫ e^{2 g_λ(u) - |u|²/ℓ} du` is the Gaussian mass (`J_λ(1/ℓ)` of the source). -/
 theorem reducedPartitionFunction_two_le {lam ℓ : ℝ} (hlam : 0 < lam) (hℓ : 0 < ℓ)
@@ -569,8 +628,8 @@ theorem reducedPartitionFunction_two_le {lam ℓ : ℝ} (hlam : 0 < lam) (hℓ :
     (Real.exp_pos _).le hB hint fun Z hZ =>
       ofReal_exp_neg_two_mul_reducedEnergy_le hℓ Z (Set.mem_univ_pi.1 hZ)
 
-/-- **Lemma 3.6, upper bound for `β = 2`, with the source's choice `ℓ = |log λ|`**
-(source l. 949--968), for `0 < λ ≤ e⁻¹`. -/
+/-- **Lemma 3.5, upper bound for `β = 2`, with the source's choice `ℓ = |log λ|`**
+(source l. 899–917), for `0 < λ ≤ e⁻¹`. -/
 theorem reducedPartitionFunction_two_le_abs_log {lam : ℝ} (hlam : 0 < lam)
     (hle : lam ≤ Real.exp (-1)) :
     reducedPartitionFunction N 2 lam ≤

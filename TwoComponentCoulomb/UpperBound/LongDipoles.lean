@@ -9,37 +9,37 @@ public import TwoComponentCoulomb.UpperBound.UpperAssembly
 import TwoComponentCoulomb.Integrals.Radial
 
 /-!
-# Proposition 3.10, Step 4: control on the size of dipoles (`β > 2`)
+# Proposition 3.9, Step 4: control on the size of dipoles (`β > 2`)
 
-Source: proof of Proposition 3.10, Step 4, l. 1643--1664, and the statement (eq:u bound),
-l. 1440--1445.
+Source: proof of Proposition 3.9, Step 4, l. 1547–1568, and the statement (eq:u bound),
+l. 1357–1362.
 
 For `R ≥ 2λ` let `α = μ_β([R/λ, ∞)) = (2π/𝒵_β) ∫_{R/λ}^∞ e^{β g_1(r)} r dr`. On the event
 `{D_R ≥ p₀'}` at least `p₀'` isolated neutral pairs are longer than `R`; each such pair receives
 the quadratic correction in `F⁽¹⁾`, and requiring it to be long bounds its radial factor by
 `C_β ∫_{|u| ≥ R} e^{β g_λ} = C_β 𝒵_β λ^{2-β} α`, with the same remaining integral over the
-representatives (l. 1644--1649). Summing over the choices of the long pairs costs `C(N, p₀')`
-(l. 1651), which gives (eq:A'), and (eq:claim F(1)) gives (eq:u bound).
+representatives (l. 1548–1553). Summing over the choices of the long pairs costs `C(N, p₀')`
+(l. 1555), which gives the union bound over long pairs, and the binomial estimate in Step 4 gives (eq:u bound).
 
 ## Main results
 
 * `TwoComponentCoulomb.LongDipoles.lintegral_closedBall_long_le`: the radial factor of a long
-  neutral pair (l. 1644--1647); `tail_eq_mul_alpha`: `2π R^{2-β}/(β-2) = 𝒵_β λ^{2-β} α`.
+  neutral pair (l. 1548–1551); `tail_eq_mul_alpha`: `2π R^{2-β}/(β-2) = 𝒵_β λ^{2-β} α`.
 * `TwoComponentCoulomb.LongDipoles.exists_lintegral_isolatedCell_long_le`: `(pred3)` with a set `L`
   of prescribed long neutral pairs: the factor `(e^{18βC} α)^{|L|}` in front of the same integral
-  over the representatives (l. 1649).
+  over the representatives (l. 1553).
 * `TwoComponentCoulomb.LongDipoles.neutralReps`, `subset_iUnion_long`: the choice of the long
-  pairs (l. 1651), at most `C(N, p₀')` choices (`card_neutralReps_le`).
+  pairs (l. 1555), at most `C(N, p₀')` choices (`card_neutralReps_le`).
 * `TwoComponentCoulomb.LongDipoles.exists_cellBound_long_rate`: the per-cell bound `CellBoundRate`
-  with the extra exponent `p₀' log (e^{C_m} α)` (l. 1644--1652), in the cases `m = 1`, `m = N` and
+  with the extra exponent `p₀' log (e^{C_m} α)` (l. 1548–1555), in the cases `m = 1`, `m = N` and
   `2 ≤ m < N`.
-* `TwoComponentCoulomb.LongDipoles.log_choose_add_le`: (eq:claim F(1)) (l. 1658--1663).
-* `TwoComponentCoulomb.LongDipoles.proposition_3_10_long_of_two_lt_rate`: **(eq:A') and
-  (eq:u bound)**, the long-dipole clause of the frozen statement of Proposition 3.10.
+* `TwoComponentCoulomb.LongDipoles.log_choose_add_le`: the binomial estimate in Step 4 (l. 1562–1566).
+* `TwoComponentCoulomb.LongDipoles.proposition_3_9_long_of_two_lt_rate`: **the union bound over long pairs and
+  (eq:u bound)**, the long-dipole clause of the joint frozen statement of Propositions 3.9 and 3.10.
 
 The per-cell bound and (eq:u bound) are stated for a rate function `ω` satisfying
 `TwoComponentCoulomb.UpperRateHyp` in place of `ω_λ`; they are instantiated at `errorRate` in
-`UpperBound/UpperRate.lean` (`TwoComponentCoulomb.LongDipoles.proposition_3_10_long_of_two_lt`).
+`UpperBound/UpperRate.lean` (`TwoComponentCoulomb.LongDipoles.proposition_3_9_long_of_two_lt`).
 -/
 
 @[expose] public section
@@ -51,12 +51,12 @@ namespace TwoComponentCoulomb
 
 namespace LongDipoles
 
-/-! ### The radial factor of a long pair (source l. 1644--1649) -/
+/-! ### The radial factor of a long pair (source l. 1548–1553) -/
 
 section Radial
 
 /-- `2π R^{2-β}/(β-2) = 𝒵_β λ^{2-β} α` with `α = (2π/𝒵_β) ∫_{R/λ}^∞ e^{β g_1(r)} r dr`, for
-`R ≥ 2λ` (source l. 1645--1647). -/
+`R ≥ 2λ` (source l. 1549–1551). -/
 theorem tail_eq_mul_alpha {β : ℝ} (hβ : 2 < β) {lam Rl : ℝ} (hlam : 0 < lam)
     (hRl : 2 * lam ≤ Rl) :
     2 * Real.pi * (Rl ^ (2 - β) / (β - 2)) =
@@ -81,7 +81,7 @@ theorem alpha_pos {β : ℝ} (hβ : 2 < β) {lam Rl : ℝ} (hlam : 0 < lam) (hRl
   have : 0 < β - 2 := by linarith
   positivity
 
-/-- **The radial factor of a long neutral pair** (source l. 1644--1647): for `ρ ≥ λ` and
+/-- **The radial factor of a long neutral pair** (source l. 1548–1551): for `ρ ≥ λ` and
 `R ≥ 2λ`, the integral over `|u| ≤ 4ρ`, `|u| > R` of the neutral pair weight
 `e^{β g_λ(u)} e^{C (a(u)/ρ)²}` is at most `e^{C} · 2π R^{2-β}/(β - 2)`, since `a(u) ≤ ρ` there. -/
 theorem lintegral_closedBall_long_le {β : ℝ} (hβ : 2 < β) {C lam ρ Rl : ℝ} (hC : 0 ≤ C)
@@ -135,17 +135,17 @@ theorem lintegral_closedBall_long_le {β : ℝ} (hβ : 2 < β) {C lam ρ Rl : �
 
 end Radial
 
-/-! ### `(pred3)` with prescribed long pairs (source l. 1644--1651) -/
+/-! ### `(pred3)` with prescribed long pairs (source l. 1548–1555) -/
 
 section Pred3
 
 open IsolatedReduction
 
 open scoped Classical in
-/-- **`(pred3)` with prescribed long neutral pairs** (source l. 1644--1651): for `β > 2` and
+/-- **`(pred3)` with prescribed long neutral pairs** (source l. 1548–1555): for `β > 2` and
 `C ≥ 0` there is `C' > 0` (depending only on `β` and `C`) such that for every finite index type,
 fixed-point-free involution `f` with set of representatives `R`, `f`-invariant `S`, every set `L`
-of representatives of pairs not in `S` (the pairs `j ∉ S` of l. 1644), `R_l ≥ 2λ` and
+of representatives of pairs not in `S` (the pairs `j ∉ S` of l. 1548), `R_l ≥ 2λ` and
 `0 < λ ≤ e⁻¹`, the integral of `exp(-β E)`, `E = pairAssignedEnergy h3 key λ C S`, over the cell
 intersected with `{|z_{f j} - z_j| > R_l, j ∈ L}` is at most
 `(e^{18βC} α)^{|L|} (𝒵_β λ^{2-β})^{|R|} ∫_{Λ^R} ∏_{j ∈ R ∖ S} (1 + C' φ_β(ρ_j))
@@ -354,7 +354,7 @@ theorem exists_lintegral_isolatedCell_long_le {β : ℝ} (hβ : 2 < β) {C : ℝ
 
 end Pred3
 
-/-! ### Long dipoles and prescribed long pairs (source l. 1651) -/
+/-! ### Long dipoles and prescribed long pairs (source l. 1555) -/
 
 section Events
 
@@ -475,7 +475,7 @@ theorem card_longIsolatedDipoles_le {Z : Fin N ⊕ Fin N → ℂ} (Rl : ℝ) :
   rw [heq]
   exact (card_le_card hsub).trans (card_image_le.trans (card_le_card hsub2))
 
-/-- **The choice of the long pairs** (source l. 1651): on the cell of `φ`, the event
+/-- **The choice of the long pairs** (source l. 1555): on the cell of `φ`, the event
 `{D_R ≥ p₀'}` is contained in the union, over the sets `L` of `p₀'` representatives of isolated
 neutral pairs, of the events that all pairs of `L` are longer than `R`. -/
 theorem subset_iUnion_long (hN : 2 ≤ N) {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N}
@@ -513,7 +513,7 @@ theorem setLIntegral_le_sum_of_subset {α κ : Type*} [MeasurableSpace α] {μ :
 
 end Events
 
-/-! ### The per-cell bound with prescribed long pairs (source l. 1644--1652) -/
+/-! ### The per-cell bound with prescribed long pairs (source l. 1548–1555) -/
 
 section Cell
 
@@ -535,7 +535,7 @@ theorem ofReal_exp_mul_le_of_long {I Q : ℝ≥0∞} {Mα H B : ℝ} {k : ℕ} (
 
 variable {N : ℕ}
 
-/-- **The per-cell bound with prescribed long pairs, generic rate** (source l. 1644--1652): the
+/-- **The per-cell bound with prescribed long pairs, generic rate** (source l. 1548–1555): the
 per-cell bound `CellBoundRate`, with the extra exponent `p₀' log (e^{C_m} α)`, for a rate `ω`
 satisfying `UpperRateHyp` in place of `ω_λ`. -/
 theorem exists_cellBound_long_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
@@ -697,7 +697,7 @@ theorem exists_cellBound_long_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
   have hp₀' : p₀ + m - p + p = p₀ + m := by omega
   have hLneg : ∀ i ∈ L, charge i * charge (nearestNeighbor Z₀ i) = -1 := fun i hi =>
     (mem_neutralReps.1 (hLsub hi)).2.1
-  -- the error rate of Proposition 3.9 (`exists_anchor_conv`)
+  -- the error rate of Proposition 3.8 (`exists_anchor_conv`)
   have hr' := hω.isolated_le lam hlam hlam1
   have hr0' : 0 ≤ (if β < 4 then lam ^ (β - 2) else if β = 4 then lam ^ 2 * |Real.log lam| ^ 2
       else lam ^ 2 * |Real.log lam|) := by
@@ -884,13 +884,13 @@ theorem exists_cellBound_long_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
 
 end Cell
 
-/-! ### (eq:claim F(1)) and (eq:u bound) (source l. 1652--1663) -/
+/-! ### the binomial estimate in Step 4 and (eq:u bound) (source l. 1557–1566) -/
 
 section Main
 
 open UpperCellBound UpperAssembly
 
-/-- **(eq:claim F(1))** (source l. 1658--1663): for `1 ≤ k ≤ N`, `M ≥ 1`, `α > 0` and
+/-- **the binomial estimate in Step 4** (source l. 1562–1566): for `1 ≤ k ≤ N`, `M ≥ 1`, `α > 0` and
 `x₀ = k/N ≥ (e M)² α`, `log C(N, k) + k log (M α) ≤ -½ N x₀ log (x₀/α)`. -/
 theorem log_choose_add_le {N k : ℕ} (hk : 1 ≤ k) (hkN : k ≤ N) {M α : ℝ} (hM : 1 ≤ M)
     (hα : 0 < α) (hx : (Real.exp 1 * M) ^ 2 * α ≤ (k : ℝ) / N) :
@@ -928,11 +928,11 @@ theorem log_choose_add_le {N k : ℕ} (hk : 1 ≤ k) (hkN : k ≤ N) {M α : ℝ
   have hp := mul_le_mul_of_nonneg_left hlx hk0.le
   linarith only [hlogC, hp]
 
-/-- **(eq:A') and (eq:u bound) for `β > 2`, generic rate** (`prop:upper bound`, eq:u bound,
-source l. 1440--1445, proof l. 1643--1664), for a rate `ω` satisfying `UpperRateHyp` in place of
+/-- **the union bound over long pairs and (eq:u bound) for `β > 2`, generic rate** (`prop:upper bound`, eq:u bound,
+source l. 1357–1362, proof l. 1547–1568), for a rate `ω` satisfying `UpperRateHyp` in place of
 `ω_λ`; the constants and the threshold depend only on `β` and `ω`. Instantiated at `errorRate` in
-`proposition_3_10_long_of_two_lt` (`UpperBound/UpperRate.lean`). -/
-theorem proposition_3_10_long_of_two_lt_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
+`proposition_3_9_long_of_two_lt` (`UpperBound/UpperRate.lean`). -/
+theorem proposition_3_9_long_of_two_lt_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
     (hω : UpperRateHyp β hβ ω) :
     ∃ lam₀ : ℝ, 0 < lam₀ ∧
       ∃ c C₁ C₂ : ℝ, 0 < c ∧ 0 < C₁ ∧ 0 < C₂ ∧
@@ -969,7 +969,7 @@ theorem proposition_3_10_long_of_two_lt_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ
     + C' * N * ω lam + C' * Real.log (N + 1) with hY
   have hω0 : 0 ≤ ω lam := hω.nonneg lam hlam
   have hchoose : (1 : ℝ) ≤ N.choose p₀' := by exact_mod_cast Nat.choose_pos hpN
-  -- one marked graph: the sum over the choices of the long pairs (l. 1651)
+  -- one marked graph: the sum over the choices of the long pairs (l. 1555)
   have hcell : ∀ (K p p₀ : ℕ) (φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (T : Finset (Fin N ⊕ Fin N)),
       (φ, T) ∈ markedGraphs hN K p p₀ →
         ((markedGraphs hN K p p₀).card : ℝ≥0∞) *
@@ -1026,13 +1026,13 @@ theorem proposition_3_10_long_of_two_lt_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ
       _ = _ := by
           rw [Real.exp_add (Y + X) (Real.log (N.choose p₀' : ℝ)), Real.exp_log (by linarith),
             ENNReal.ofReal_mul (Real.exp_pos _).le, mul_comm, ENNReal.ofReal_natCast]
-  -- the sum over the graphs (l. 1622, 1652--1657: (eq:A'))
+  -- the sum over the graphs (l. 1526, 1557–1560: the union bound over long pairs)
   have hA' := UpperAssembly.lintegral_le_of_card_mul_le hN
     {Z | p₀' ≤ (longIsolatedDipoles Z Rl).card}
     (fun Z => ENNReal.ofReal (Real.exp (-β * energy lam Z))) _ hcell
   rw [natCast_add_one_pow_mul_ofReal_exp] at hA'
   refine hA'.trans (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_))
-  -- (eq:claim F(1))
+  -- the binomial estimate in Step 4
   have hclaim := log_choose_add_le hp1 hpN (M := Real.exp Cm) (Real.one_le_exp hCm) hα0
     (by rw [mul_pow, mul_assoc]; exact (le_of_eq (by ring)).trans hx)
   have hlogN : 0 ≤ Real.log (N + 1) :=

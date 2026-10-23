@@ -16,21 +16,21 @@ public import TwoComponentCoulomb.NearestNeighbor.Cone
 # Second nearest neighbours and the radii `r₁`, `r₂`
 
 API for `TwoComponentCoulomb.secondNearestNeighbor`, `TwoComponentCoulomb.firstNeighborRadius` and
-`TwoComponentCoulomb.secondNeighborRadius` (source l. 363--370, eqs. (nn2), (nn3)), together with
-the second-neighbour half of Remark 2.1 (source l. 388--397).
+`TwoComponentCoulomb.secondNeighborRadius` (source l. 366–373, eqs. (nn2), (nn3)), together with
+the second-neighbour half of Lemma 2.1 (source l. 391–403).
 
 * `secondNearestNeighbor_ne_self`, `secondNearestNeighbor_ne_nearestNeighbor`,
   `norm_sub_secondNearestNeighbor_le`: `φ₂ i` is a closest point to `z_i` among the points other
   than `z_i` and `z_{φ₁ i}`.
 * `firstNeighborRadius_eq`, `secondNeighborRadius_eq`: the minima in (nn2), (nn3) are attained at
-  `φ₁ i` and `φ₂ i` respectively (the "radius-phi identity" of the source, l. 363--370).
+  `φ₁ i` and `φ₂ i` respectively (the "radius-phi identity" of the source, l. 366–373).
 * `lam_le_firstNeighborRadius`, `firstNeighborRadius_le_secondNeighborRadius`: `λ ≤ r₁ ≤ r₂`.
-* `smearedKernel_add_log_firstNeighborRadius_ge`: source eq. (gr2r1), `g_λ(z_i - z_{φ₁ i}) +
+* `smearedKernel_add_log_firstNeighborRadius_ge`: source the nonneutral-pair comparison in Corollary 2.3, `g_λ(z_i - z_{φ₁ i}) +
   log r₁(z_i) ≥ -C`.
 * `firstNeighborRadius_nearestNeighbor_eq`, `firstNeighborRadius_le_min_secondNeighborRadius`: for a
   2-cycle `φ₁ (φ₁ i) = i` one has `r₁(z_{φ₁ i}) = r₁(z_i) ≤ r₂(z_i) ∧ r₂(z_{φ₁ i})`.
 * `card_filter_secondNearestNeighbor_eq_le_twelve`: a point is the second nearest neighbour of at
-  most twelve points (Remark 2.1).
+  most twelve points (Lemma 2.1).
 -/
 
 public section
@@ -111,7 +111,7 @@ theorem lam_le_firstNeighborRadius (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) (i 
   rw [firstNeighborRadius_eq]
   exact le_max_right _ _
 
-/-- Source eq. (gr2r1) (l. 472--476): `g_λ(z_i - z_{φ₁ i}) + log r₁(z_i) ≥ -C`, uniformly in `λ`. -/
+/-- Source the nonneutral-pair comparison in Corollary 2.3 (l. 478–481): `g_λ(z_i - z_{φ₁ i}) + log r₁(z_i) ≥ -C`, uniformly in `λ`. -/
 theorem smearedKernel_add_log_firstNeighborRadius_ge {Cg : ℝ}
     (hCg : ∀ lam : ℝ, 0 < lam → ∀ z : ℂ, -Real.log (max ‖z‖ lam) - Cg ≤ smearedKernel lam z)
     {lam : ℝ} (hlam : 0 < lam) (Z : Fin N ⊕ Fin N → ℂ) (i : Fin N ⊕ Fin N) :
@@ -137,7 +137,7 @@ theorem lam_le_secondNeighborRadius (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fi
   rw [secondNeighborRadius_eq]
   exact le_max_right _ _
 
-/-- `r₁(z_i) ≤ r₂(z_i)` (source l. 365--367). -/
+/-- `r₁(z_i) ≤ r₂(z_i)` (source l. 368–370). -/
 theorem firstNeighborRadius_le_secondNeighborRadius (hN : 2 ≤ N) (lam : ℝ)
     (Z : Fin N ⊕ Fin N → ℂ) (i : Fin N ⊕ Fin N) :
     firstNeighborRadius lam Z i ≤ secondNeighborRadius hN lam Z i := by
@@ -151,7 +151,7 @@ theorem firstNeighborRadius_nearestNeighbor_eq (lam : ℝ) (Z : Fin N ⊕ Fin N 
     firstNeighborRadius lam Z (nearestNeighbor Z i) = firstNeighborRadius lam Z i := by
   rw [firstNeighborRadius_eq, firstNeighborRadius_eq, h, norm_sub_rev]
 
-/-- In a 2-cycle `φ₁ (φ₁ i) = i`, `r₁(z_i) ≤ r₂(z_i) ∧ r₂(z_{φ₁ i})` (source l. 472--473). -/
+/-- In a 2-cycle `φ₁ (φ₁ i) = i`, `r₁(z_i) ≤ r₂(z_i) ∧ r₂(z_{φ₁ i})` (source l. 478–479). -/
 theorem firstNeighborRadius_le_min_secondNeighborRadius (hN : 2 ≤ N) (lam : ℝ)
     (Z : Fin N ⊕ Fin N → ℂ) {i : Fin N ⊕ Fin N} (h : nearestNeighbor Z (nearestNeighbor Z i) = i) :
     firstNeighborRadius lam Z i ≤
@@ -160,7 +160,7 @@ theorem firstNeighborRadius_le_min_secondNeighborRadius (hN : 2 ≤ N) (lam : �
   rw [← firstNeighborRadius_nearestNeighbor_eq lam Z h]
   exact firstNeighborRadius_le_secondNeighborRadius hN lam Z _
 
-/-! ### Remark 2.1: a point is the second nearest neighbour of at most twelve points -/
+/-! ### Lemma 2.1: a point is the second nearest neighbour of at most twelve points -/
 
 /-- If `φ₂ j = o`, then at most one index `k ∉ {j, o}` has `z_k` strictly closer to `z_j` than
 `z_o`, namely `k = φ₁ j`. -/
@@ -175,7 +175,7 @@ theorem card_filter_lt_secondNearestNeighbor_le_one (hN : 2 ≤ N) (Z : Fin N �
   rw [h] at this
   exact absurd hlt (not_lt.2 this)
 
-/-- Remark 2.1 (source l. 388--397): a point `o` is the second nearest neighbour of at most
+/-- Lemma 2.1 (source l. 391–403): a point `o` is the second nearest neighbour of at most
 twelve points. Only the injectivity of `Z` is used. -/
 theorem card_filter_secondNearestNeighbor_eq_le_twelve_of_injective (hN : 2 ≤ N)
     {Z : Fin N ⊕ Fin N → ℂ} (hZ : Function.Injective Z) (o : Fin N ⊕ Fin N) :
@@ -186,7 +186,7 @@ theorem card_filter_secondNearestNeighbor_eq_le_twelve_of_injective (hN : 2 ≤ 
   exact Finset.mem_filter.2 ⟨Finset.mem_univ _, hj' ▸ (secondNearestNeighbor_ne_self hN Z j).symm,
     card_filter_lt_secondNearestNeighbor_le_one hN Z hj'⟩
 
-/-- Remark 2.1 for generic configurations. -/
+/-- Lemma 2.1 for generic configurations. -/
 theorem card_filter_secondNearestNeighbor_eq_le_twelve (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N → ℂ}
     (hZ : IsGeneric Z) (o : Fin N ⊕ Fin N) :
     (univ.filter fun j => secondNearestNeighbor hN Z j = o).card ≤ 12 :=

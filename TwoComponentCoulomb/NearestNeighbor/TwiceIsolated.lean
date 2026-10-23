@@ -15,10 +15,10 @@ public import TwoComponentCoulomb.NearestNeighbor.Isolated
 public import TwoComponentCoulomb.NearestNeighbor.Second
 
 /-!
-# Twice-isolated pairs and the geometric constraint of Proposition 3.10, Step 1
+# Twice-isolated pairs and the geometric constraint of Proposition 3.9, Step 1
 
-Source: l. 1219 (definition of twice-isolated cycles), l. 1495--1506
-(eqs. (eq:r1), (eq:r2), (eq:K-p)), together with Remark 2.1 (l. 388--397).
+Source: l. 1167 (definition of twice-isolated cycles), l. 1403–1414
+(the bound on m − p in Step 1, the bound on K − m in Step 1, (eq:K-p)), together with Lemma 2.1 (l. 391–403).
 
 An isolated 2-cycle `{i, φ₁ i}` is *twice isolated* if `φ₂ i` and `φ₂ (φ₁ i)` each lie in some
 isolated 2-cycle, i.e. in `I^pair`.
@@ -37,10 +37,10 @@ isolated 2-cycle, i.e. in `I^pair`.
   twice-isolated cycles.
 * `TwoComponentCoulomb.card_filter_secondNearestNeighbor_eq_le_six`: among vertices no two of which
   form a nearest-neighbour pair, at most six have a given point as second nearest neighbour
-  (Remark 2.1, second paragraph).
+  (Lemma 2.1).
 * `TwoComponentCoulomb.numIsolatedPairs_le_add_six_mul_compl` and
-  `TwoComponentCoulomb.numIsolatedPairs_le_add_twelve_mul` (eq. (eq:r1)),
-  `TwoComponentCoulomb.numComponents_le_numIsolatedPairs_add` (eq. (eq:r2)),
+  `TwoComponentCoulomb.numIsolatedPairs_le_add_twelve_mul` (the bound on m − p in Step 1),
+  `TwoComponentCoulomb.numComponents_le_numIsolatedPairs_add` (the bound on K − m in Step 1),
   `TwoComponentCoulomb.numIsolatedPairs_le_numTwiceIsolated_add` and
   `TwoComponentCoulomb.numComponents_le_numTwiceIsolated_add` (eq. (eq:K-p)):
   `m - p ≤ 36 (N - K)` and `K - p ≤ 38 (N - K)`. These need only the injectivity of `Z`.
@@ -56,7 +56,7 @@ variable {N : ℕ}
 
 /-! ### Definitions -/
 
-/-- `i` lies in a *twice-isolated* 2-cycle (source l. 1219): `{i, φ₁ i}` is an isolated pair and
+/-- `i` lies in a *twice-isolated* 2-cycle (source l. 1167): `{i, φ₁ i}` is an isolated pair and
 `φ₂ i`, `φ₂ (φ₁ i)` each lie in some isolated 2-cycle, that is, in `I^pair`. -/
 def IsTwiceIsolated (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → ℂ) (i : Fin N ⊕ Fin N) : Prop :=
   IsIsolatedPair Z i ∧ IsIsolatedPair Z (secondNearestNeighbor hN Z i) ∧
@@ -207,9 +207,9 @@ theorem mem_neutralTwiceIsolatedSet_iff {i : Fin N ⊕ Fin N} :
 
 end Basic
 
-/-! ### The six-bound (Remark 2.1, second paragraph) -/
+/-! ### The six-bound (Lemma 2.1) -/
 
-/-- Source l. 388--397 (Remark 2.1, second paragraph). If `S` is a set of vertices no two of
+/-- Source l. 391–403 (Lemma 2.1). If `S` is a set of vertices no two of
 which form a nearest-neighbour pair (`φ₁ i ∉ S` for `i ∈ S`; for instance, `S` contains at most
 one vertex of each isolated pair), then at most six vertices of `S` have a given point `o` as
 second nearest neighbour. Two such vertices in one `π/3`-cone around `z_o`, the closer one `A` and
@@ -268,7 +268,7 @@ theorem card_compl_isolatedPairSet (Z : Fin N ⊕ Fin N → ℂ) :
   have h4 : Fintype.card (Fin N ⊕ Fin N) = 2 * N := by simp [two_mul]
   omega
 
-/-- Equation (eq:r2) (source l. 1499--1502): `K - m ≤ 2 (N - K)`. Each of the nonisolated
+/-- Equation the bound on K − m in Step 1 (source l. 1407–1409): `K - m ≤ 2 (N - K)`. Each of the nonisolated
 components contains a tree vertex adjacent to its 2-cycle, and there are `2 (N - K)` tree
 vertices. -/
 theorem numComponents_le_numIsolatedPairs_add (Z : Fin N ⊕ Fin N → ℂ) :
@@ -312,7 +312,7 @@ theorem numComponents_le_numIsolatedPairs_add (Z : Fin N ⊕ Fin N → ℂ) :
   have h9 := numComponents_le Z
   omega
 
-/-- Equation (eq:r1), first half (source l. 1495--1498): `m - p ≤ 6 |(I^pair)^c|`. For each
+/-- Equation the bound on m − p in Step 1, first half (source l. 1403–1405): `m - p ≤ 6 |(I^pair)^c|`. For each
 isolated pair that is not twice isolated, one vertex whose second nearest neighbour lies outside
 `I^pair` is selected (the one with the smaller index if both qualify); by the six-bound, at most
 six selected vertices have a given exterior point as second nearest neighbour. -/
@@ -394,7 +394,7 @@ theorem numIsolatedPairs_le_add_six_mul_compl (hN : 2 ≤ N) {Z : Fin N ⊕ Fin 
   have hW2 := card_le_mul_card_image_of_maps_to hψ 2 hfib
   omega
 
-/-- Source l. 1503: `|(I^pair)^c| = 2 (N - K) + 2 (K - m) ≤ 6 (N - K)`. -/
+/-- Source l. 1411: `|(I^pair)^c| = 2 (N - K) + 2 (K - m) ≤ 6 (N - K)`. -/
 theorem card_compl_isolatedPairSet_le (Z : Fin N ⊕ Fin N → ℂ) :
     ((isolatedPairSet Z)ᶜ).card ≤ 6 * (N - numComponents Z) := by
   have h1 := card_compl_isolatedPairSet Z
@@ -402,7 +402,7 @@ theorem card_compl_isolatedPairSet_le (Z : Fin N ⊕ Fin N → ℂ) :
   have h3 := numComponents_le Z
   omega
 
-/-- Equation (eq:r1) (source l. 1496--1498): `m - p ≤ 6 |(I^pair)^c| = 12 (N - m)`. -/
+/-- Equation the bound on m − p in Step 1 (source l. 1405): `m - p ≤ 6 |(I^pair)^c| = 12 (N - m)`. -/
 theorem numIsolatedPairs_le_add_twelve_mul (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N → ℂ}
     (hZ : Function.Injective Z) :
     numIsolatedPairs Z ≤ numTwiceIsolated hN Z + 12 * (N - numIsolatedPairs Z) := by
@@ -410,7 +410,7 @@ theorem numIsolatedPairs_le_add_twelve_mul (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N �
   have h2 := card_compl_isolatedPairSet Z
   omega
 
-/-- Source l. 1503: `m - p ≤ M₀ (N - K)` with `M₀ = 36`, in natural numbers. -/
+/-- Source l. 1411: `m - p ≤ M₀ (N - K)` with `M₀ = 36`, in natural numbers. -/
 theorem numIsolatedPairs_le_numTwiceIsolated_add (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N → ℂ}
     (hZ : Function.Injective Z) :
     numIsolatedPairs Z ≤ numTwiceIsolated hN Z + 36 * (N - numComponents Z) := by
@@ -418,7 +418,7 @@ theorem numIsolatedPairs_le_numTwiceIsolated_add (hN : 2 ≤ N) {Z : Fin N ⊕ F
   have h2 := card_compl_isolatedPairSet_le Z
   omega
 
-/-- Equation (eq:K-p) (source l. 1504--1506): `K - p ≤ (M₀ + 2) (N - K)` with `M₀ = 36`, in natural
+/-- Equation (eq:K-p) (source l. 1412–1414): `K - p ≤ (M₀ + 2) (N - K)` with `M₀ = 36`, in natural
 numbers. -/
 theorem numComponents_le_numTwiceIsolated_add (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N → ℂ}
     (hZ : Function.Injective Z) :
@@ -427,7 +427,7 @@ theorem numComponents_le_numTwiceIsolated_add (hN : 2 ≤ N) {Z : Fin N ⊕ Fin 
   have h2 := numComponents_le_numIsolatedPairs_add Z
   omega
 
-/-- Source l. 1503 in real numbers: `m - p ≤ M₀ (N - K)`. -/
+/-- Source l. 1411 in real numbers: `m - p ≤ M₀ (N - K)`. -/
 theorem numIsolatedPairs_sub_le_M0_mul (hN : 2 ≤ N) {Z : Fin N ⊕ Fin N → ℂ}
     (hZ : Function.Injective Z) :
     (numIsolatedPairs Z : ℝ) - numTwiceIsolated hN Z ≤ M0 * ((N : ℝ) - numComponents Z) := by

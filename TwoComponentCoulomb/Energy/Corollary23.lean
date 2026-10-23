@@ -24,7 +24,7 @@ import TwoComponentCoulomb.Frozen.Proposition22
 Registered implementation module of `TwoComponentCoulomb/Frozen/Corollary23.lean`. Its export
 `TwoComponentCoulomb.Energy.corollary_2_3` states and proves exactly the frozen statement, from the
 sealed `TwoComponentCoulomb.proposition_2_2` and the explicit comparison
-`TwoComponentCoulomb.mino_rhs_ge_coromino_rhs` (proof of Cor 2.3, source l. 466–489).
+`TwoComponentCoulomb.mino_rhs_ge_coromino_rhs` (proof of Cor 2.3, source l. 472–494).
 
 The anchor is sealed (`by exact` this export); this module must never import the
 anchor it provides.
@@ -35,7 +35,7 @@ anchor it provides.
 namespace TwoComponentCoulomb.Energy
 
 open scoped Classical in
-/-- **Corollary 2.3** (`coromino`, source l. 452–464). -/
+/-- **Corollary 2.3** (`coromino`, source l. 458–470). -/
 theorem corollary_2_3 :
     ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam →
       ∀ Z : Fin N ⊕ Fin N → ℂ, (∀ i, Z i ∈ box N) → IsGeneric Z →

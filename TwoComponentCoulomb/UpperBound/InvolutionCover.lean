@@ -14,7 +14,7 @@ public import Mathlib.Algebra.Order.BigOperators.Group.Finset
 # Covering involutions by embeddings of representatives
 
 Counting device for the enumeration of nearest-neighbour graphs in Step 1 of the proof of
-Proposition 3.10 (source l. 1462--1488). A *partial involution* of a finite
+Proposition 3.9 (source l. 1370–1396). A *partial involution* of a finite
 type `α` is a map `h : α → α` with `h (h i) = i`; its *moved points* are the `i` with `h i ≠ i`,
 which are grouped into 2-cycles `{i, h i}`. A set `A` of *representatives* contains exactly one
 vertex of every 2-cycle (`IsRepSet`). The involution `h` is then determined by the embedding

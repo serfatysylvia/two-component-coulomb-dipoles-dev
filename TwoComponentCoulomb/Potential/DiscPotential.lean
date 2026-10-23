@@ -18,7 +18,7 @@ import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 /-!
 # Newton's theorem for the uniform disc
 
-The logarithmic potential of a uniform disc is explicit (source l. 143–167, 493–513): for `a > 0`
+The logarithmic potential of a uniform disc is explicit (source l. 128–152, 499–518): for `a > 0`
 and `u = x - z`,
 
 * `∫_{B(z,a)} log |x - y| dy = π a² log |x - z|` if `a ≤ |x - z|`

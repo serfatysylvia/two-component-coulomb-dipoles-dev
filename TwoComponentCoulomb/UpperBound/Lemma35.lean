@@ -9,19 +9,19 @@ public import TwoComponentCoulomb.Frozen.ReducedPartitionFunction
 import TwoComponentCoulomb.UpperBound.ReducedAssembly
 
 /-!
-# Proof of the frozen statement `TwoComponentCoulomb.lemma_3_6`
+# Proof of the frozen statement `TwoComponentCoulomb.lemma_3_5`
 
-Implementation module of `TwoComponentCoulomb/Frozen/Lemma36.lean` (registered in
-`manifest/frozen_anchors.json`). Its theorem `TwoComponentCoulomb.UpperBound.lemma_3_6` states and
-proves exactly the frozen statement (Lemma 3.6, `lemma:part nn`, source l. 922--1003): the
+Implementation module of `TwoComponentCoulomb/Frozen/Lemma35.lean` (registered in
+`manifest/frozen_anchors.json`). Its theorem `TwoComponentCoulomb.UpperBound.lemma_3_5` states and
+proves exactly the frozen statement (Lemma 3.5, `lemma:part nn`, source l. 870–952): the
 two-sided logarithmic expansion of the partition function `𝒦_{N,β}^λ` of the reduced dipole
 model. The binders `β` and `hβ` are implicit here, since the frozen statement binds them before
 the colon and is proved by `exact`.
 
-The proof is by cases `β = 2` (`lemma_3_6_two`) and `β > 2` (`lemma_3_6_of_two_lt`), both proved in
+The proof is by cases `β = 2` (`lemma_3_5_two`) and `β > 2` (`lemma_3_5_of_two_lt`), both proved in
 `UpperBound/ReducedAssembly.lean` from the matching upper bounds and the placement lower bounds.
 
-The frozen file proves its statement by `exact TwoComponentCoulomb.UpperBound.lemma_3_6`, so this
+The frozen file proves its statement by `exact TwoComponentCoulomb.UpperBound.lemma_3_5`, so this
 module must never import it.
 -/
 
@@ -31,9 +31,9 @@ open scoped ENNReal
 
 namespace TwoComponentCoulomb.UpperBound
 
-/-- **Lemma 3.6** (`lemma:part nn`, source l. 922--1003), exactly the frozen statement
-`TwoComponentCoulomb.lemma_3_6`. -/
-theorem lemma_3_6 {β : ℝ} {hβ : 2 ≤ β} :
+/-- **Lemma 3.5** (`lemma:part nn`, source l. 870–952), exactly the frozen statement
+`TwoComponentCoulomb.lemma_3_5`. -/
+theorem lemma_3_5 {β : ℝ} {hβ : 2 ≤ β} :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
         0 < reducedPartitionFunction N β lam ∧ reducedPartitionFunction N β lam < ∞ ∧
@@ -46,8 +46,8 @@ theorem lemma_3_6 {β : ℝ} {hβ : 2 ≤ β} :
             + Real.log (N + 1)) := by
   rcases hβ.eq_or_lt with h | h
   · subst h
-    exact TwoComponentCoulomb.lemma_3_6_two hβ
-  · exact TwoComponentCoulomb.lemma_3_6_of_two_lt h
+    exact TwoComponentCoulomb.lemma_3_5_two hβ
+  · exact TwoComponentCoulomb.lemma_3_5_of_two_lt h
 
 end TwoComponentCoulomb.UpperBound
 

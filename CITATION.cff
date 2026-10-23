@@ -2,6 +2,9 @@ cff-version: 1.2.0
 message: "If you use this formalization, please cite the paper it formalizes."
 title: "Dipole formation in the two-component plasma: a Lean 4 formalization"
 type: software
+abstract: >-
+  Lean 4 formalization of the paper in source/dipole-formation.tex
+  (SHA-256 f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91).
 authors:
   - family-names: Serfaty
     given-names: Sylvia

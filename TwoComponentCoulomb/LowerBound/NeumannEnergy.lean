@@ -11,17 +11,17 @@ import TwoComponentCoulomb.Potential.ElectricEnergy
 /-!
 # The energy of the screened dipoles and eq. (majof) (Proposition 4.1, Step 1)
 
-Source: Proposition 4.1, Step 1 (l. 1762–1825), as ruled in
+Source: Proposition 4.1, Step 1 (l. 1671–1734), as ruled in
 R22. The source decomposes `u_i = g*δ_{x_i}^{(λ)} - g*δ_{y_i}^{(λ)} + v_i` with `v_i` harmonic and
-eq. (estimatesv) `|∇v_i| ≤ C |x_i - y_i| / ϱ(x_i)²` on `B(x_i, 3ϱ(x_i)/4)` (l. 1798–1806), computes
-the energy of each ball (l. 1807–1814),
+eq. (estimatesv) `|∇v_i| ≤ C |x_i - y_i| / ϱ(x_i)²` on `B(x_i, 3ϱ(x_i)/4)` (l. 1708–1716), computes
+the energy of each ball (l. 1717–1724),
 `∫_{B(x_i, ϱ(x_i))} |∇u_i|² = 2π ∫ u_i d(δ_{x_i}^{(λ)} - δ_{y_i}^{(λ)})
   = 4π (g(λ) + κ) - 4π g_λ(x_i - y_i) + O(|x_i - y_i|² / ϱ(x_i)²)`,
-and inserts it into eq. (hui) and eq. (eq:rewrF) to obtain eq. (majof) (l. 1815–1816). Under ruling
+and inserts it into eq. (hui) and eq. (eq:rewrF) to obtain eq. (majof) (l. 1725–1726). Under ruling
 R22a, `u_i` is the explicit image-charge solution `neumannPotential` of
 `LowerBound/NeumannDipole.lean`, and the `O(·)` is explicit.
 
-* `integral_ball_norm_sq_neumannField` : the energy of one ball (l. 1807–1814), with the error term
+* `integral_ball_norm_sq_neumannField` : the energy of one ball (l. 1717–1724), with the error term
   `2π (∫ v dδ_c^{(λ)} - ∫ v dδ_y^{(λ)})` kept exact. It is the weak Neumann problem
   `integral_ball_fderiv_neumannField` tested against `ξ = u` (which is `C¹` on `B(c, 2ρ)`), together
   with the pair-energy identity `integral_neumannPotential_sub`.
@@ -39,7 +39,7 @@ open MeasureTheory Metric Set InnerProductSpace
 
 namespace TwoComponentCoulomb
 
-/-- **The energy of one ball** (source l. 1807–1814): with `v = neumannCorrection ρ c y`,
+/-- **The energy of one ball** (source l. 1717–1724): with `v = neumannCorrection ρ c y`,
 `∫_{B(c,ρ)} |∇u|² = 4π (g(λ) + κ) - 4π g_λ(y - c) + 2π (∫ v dδ_c^{(λ)} - ∫ v dδ_y^{(λ)})`. -/
 theorem integral_ball_norm_sq_neumannField {lam ρ : ℝ} {c y : ℂ} (hlam : 0 < lam)
     (hρ : 4 * lam ≤ ρ) (hy : ‖y - c‖ ≤ ρ / 2) :
@@ -60,7 +60,7 @@ theorem integral_ball_norm_sq_neumannField {lam ρ : ℝ} {c y : ℂ} (hlam : 0 
     integral_neumannPotential_sub hlam hρ hy]
   ring
 
-/-- **Eq. (majof)** (source l. 1815–1816): for disjoint discs `B(x_i, ρ_i)` with `4λ ≤ ρ_i` and
+/-- **Eq. (majof)** (source l. 1725–1726): for disjoint discs `B(x_i, ρ_i)` with `4λ ≤ ρ_i` and
 `|y_i - x_i| ≤ ρ_i / 2`, `F_λ(X_N, Y_N) ≤ -Σ_i g_λ(y_i - x_i) + Σ_i |y_i - x_i|² / ρ_i²`. The
 constant is `(1 / 4π) · 2π · 2 = 1`. -/
 theorem energy_sum_elim_le_screened {N : ℕ} {lam : ℝ} (hlam : 0 < lam) (X Y : Fin N → ℂ)

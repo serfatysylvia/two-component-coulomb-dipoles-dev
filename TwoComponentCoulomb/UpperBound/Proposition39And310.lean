@@ -16,21 +16,15 @@ import TwoComponentCoulomb.UpperBound.Proposition310Critical
 import TwoComponentCoulomb.UpperBound.UpperRate
 
 /-!
-# Proof of the frozen statement `TwoComponentCoulomb.proposition_3_10`
+# The upper bounds of Propositions 3.9 and 3.10
 
-Implementation module of `TwoComponentCoulomb/Frozen/Proposition310.lean` (registered in
-`manifest/frozen_anchors.json`). Its theorem `TwoComponentCoulomb.UpperBound.proposition_3_10`
-states and proves exactly the frozen statement (Proposition 3.10, `prop:upper bound`, source
-l. 1423–1455), by cases on `β`:
-
-* `β > 2`: (ubz) and (eq:neutral bound) are `UpperAssembly.proposition_3_10_main_of_two_lt`, and
-  (eq:u bound) is `LongDipoles.proposition_3_10_long_of_two_lt`; the threshold is the minimum of
-  their two thresholds and `e⁻²`;
-* `β = 2`: the threshold is `e⁻²`; (ubz) and (eq:neutral bound) are
-  `proposition_3_10_main_two`, and (eq:critical upper) is `proposition_3_10_critical`.
-
-This module must never import the frozen file, which proves its statement by `exact` this
-theorem.
+Source: `source/dipole-formation.tex`, l. 1340–1363 and 1575–1584.
+This provider bundles the two temperature regimes in one frozen statement:
+`proposition_3_9_and_3_10`. For `β > 2`, `UpperAssembly.proposition_3_9_main_of_two_lt` and
+`LongDipoles.proposition_3_9_long_of_two_lt` give Proposition 3.9. For `β = 2`,
+`critical_upper` gives Proposition 3.10. `proposition_3_10_main_two` also derives the
+partition-function and dipole-count bounds stated immediately after it. A minimum
+of the thresholds gives the shared threshold of the combined frozen statement.
 -/
 
 open MeasureTheory
@@ -40,9 +34,10 @@ open scoped ENNReal
 
 namespace TwoComponentCoulomb.UpperBound
 
-/-- **Proposition 3.10** (`prop:upper bound`, source l. 1423–1455), exactly the frozen statement
-`TwoComponentCoulomb.proposition_3_10`. -/
-theorem proposition_3_10 {β : ℝ} {hβ : 2 ≤ β} :
+/-- **Propositions 3.9 and 3.10** (`prop:upper bound` and `prop:critical upper`,
+source l. 1340–1363, 1575–1584), exactly the frozen statement
+`TwoComponentCoulomb.proposition_3_9_and_3_10`. -/
+theorem proposition_3_9_and_3_10 {β : ℝ} {hβ : 2 ≤ β} :
     ∃ lam₀ : ℝ, 0 < lam₀ ∧ lam₀ ≤ Real.exp (-2) ∧
       (∃ C c : ℝ, 0 < C ∧ 0 < c ∧
         ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
@@ -92,9 +87,9 @@ theorem proposition_3_10 {β : ℝ} {hβ : 2 ≤ β} :
     obtain ⟨C', hC', hcrit⟩ := proposition_3_10_critical β hβ hβ2
     exact ⟨Real.exp (-2), Real.exp_pos _, le_rfl, ⟨C, c, hC, hc, hmain⟩,
       fun h2 => absurd (hβ2 ▸ h2) (lt_irrefl 2), fun _ => ⟨C', hC', hcrit⟩⟩
-  · obtain ⟨l₁, hl₁, C, c, hC, hc, h1⟩ := UpperAssembly.proposition_3_10_main_of_two_lt h2
+  · obtain ⟨l₁, hl₁, C, c, hC, hc, h1⟩ := UpperAssembly.proposition_3_9_main_of_two_lt h2
     obtain ⟨l₂, hl₂, c', C₁, C₂, hc', hC₁, hC₂, h2'⟩ :=
-      LongDipoles.proposition_3_10_long_of_two_lt h2
+      LongDipoles.proposition_3_9_long_of_two_lt h2
     refine ⟨min (min l₁ l₂) (Real.exp (-2)), lt_min (lt_min hl₁ hl₂) (Real.exp_pos _),
       min_le_right _ _, ⟨C, c, hC, hc, fun N hN lam hlam hlt => ?_⟩,
       fun _ => ⟨c', C₁, C₂, hc', hC₁, hC₂, fun N hN lam hlam hlt =>

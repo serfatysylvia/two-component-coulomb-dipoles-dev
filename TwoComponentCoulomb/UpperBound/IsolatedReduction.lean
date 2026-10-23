@@ -17,13 +17,13 @@ import TwoComponentCoulomb.Integrals.PiProduct
 import TwoComponentCoulomb.Integrals.Radial
 
 /-!
-# Proposition 3.9, Steps 1--2: reduction to an integral over the pair representatives
+# Proposition 3.8, Steps 1--2: reduction to an integral over the pair representatives
 
-Source: proof of Proposition 3.9 (`prop:isolated`), l. 1257--1333, up to
+Source: proof of Proposition 3.8 (`prop:isolated`), l. 1202–1265, up to
 (pred3). Fix a finite index type `ι`, a tie-break key `key`, a fixed-point-free involution
 `f : ι → ι` (the nearest-neighbour graph `γ` of the cell, all of whose components are `2`-cycles)
 and a set `R ⊆ ι` of representatives, with exactly one endpoint of each `2`-cycle
-(`i ∈ R ↔ f i ∉ R`). The integral `I(γ)` of Proposition 3.9 is
+(`i ∈ R ↔ f i ∉ R`). The integral `I(γ)` of Proposition 3.8 is
 `∫_{Λ^ι ∩ {nnMap key z = f}} exp(-β E(z)) dz` with `E = pairAssignedEnergy h3 key lam C S`, where
 `S` is the `f`-invariant set of vertices of the pairs assigned the logarithmic (same-sign) term.
 
@@ -34,12 +34,12 @@ and a set `R ⊆ ι` of representatives, with exactly one endpoint of each `2`-c
   `z ↦ (w, u)`, `w_j = z_j`, `u_j = z_{f j} - z_j` (`j ∈ R`), is a measure-preserving measurable
   embedding of `ι → ℂ` into `(R → ℂ) × (R → ℂ)` (it is the Gunson--Panta map of
   `PhaseSpace/GunsonPanta.lean` with the reference set `R`, followed by a relabelling; source
-  l. 1273: the change of variables has Jacobian `1`).
+  l. 1217: the change of variables has Jacobian `1`).
 * `TwoComponentCoulomb.IsolatedReduction.lintegral_cell_le_lintegral_ref`: the displacement
   reduction. For measurable pair weights `Φ_j(u, ρ)`,
   `∫_{Λ^ι ∩ cell} ∏_j Φ_j(u_j(z), ρ_j(z)) dz ≤ ∫_{Λ^R} ∏_j ∫_{|u| ≤ 4 ρ_j(w)} Φ_j(u, ρ_j(w)) du dw`
-  (Fubini with the displacement domain enlarged to `|u_j| ≤ 4ρ_j`, source l. 1268, 1277).
-* `TwoComponentCoulomb.lintegral_isolatedCell_le`: **`(pred3)`** (source l. 1322--1333).
+  (Fubini with the displacement domain enlarged to `|u_j| ≤ 4ρ_j`, source ).
+* `TwoComponentCoulomb.lintegral_isolatedCell_le`: **`(pred3)`** (source l. 1258–1265).
   For `β ≥ 2` and `C ≥ 0` there is `C' > 0` (depending only on `β` and `C`) such that, for
   `0 < λ ≤ e^{-1}`, the cell integral is at most
   `(𝒵_β (λ^{2-β} 1_{β>2} + ℓ 1_{β=2}))^p ∫_{Λ^R} ∏_{j ∈ R ∖ S} (1 + C' φ_β(ρ_j))
@@ -74,7 +74,7 @@ theorem exists_iterate_mem_ref (hRf : ∀ i, i ∈ R ↔ f i ∉ R) (i : ι) : �
 
 variable (f R) in
 /-- The pair coordinates `(w, u)` of a configuration: the representatives `w_j = z_j` and the
-displacements `u_j = z_{f j} - z_j`, `j ∈ R` (source l. 1258, 1263). -/
+displacements `u_j = z_{f j} - z_j`, `j ∈ R` . -/
 def pairCoords (z : ι → ℂ) : ({i // i ∈ R} → ℂ) × ({i // i ∈ R} → ℂ) :=
   (fun j => z j, fun j => z (f j) - z j)
 
@@ -119,7 +119,7 @@ theorem measurePreserving_pairCoordsEquiv (hf2 : ∀ i, f (f i) = i)
       (volume_measurePreserving_piCongrLeft (fun _ : {i // i ∈ R} => ℂ) (refEquiv hf2 hRf).symm)
   exact h3.comp (h2.comp h1)
 
-/-- **Change of variables with Jacobian `1`** (source l. 1273): `z ↦ (w, u)` is a measurable
+/-- **Change of variables with Jacobian `1`** (source l. 1217): `z ↦ (w, u)` is a measurable
 embedding. -/
 theorem measurableEmbedding_pairCoords (hf2 : ∀ i, f (f i) = i)
     (hRf : ∀ i, i ∈ R ↔ f i ∉ R) : MeasurableEmbedding (pairCoords f R) := by
@@ -128,7 +128,7 @@ theorem measurableEmbedding_pairCoords (hf2 : ∀ i, f (f i) = i)
   rw [this]
   exact (pairCoordsEquiv hf2 hRf).measurableEmbedding
 
-/-- **Change of variables with Jacobian `1`** (source l. 1273, "The change of variables
+/-- **Change of variables with Jacobian `1`** (source l. 1217, "The change of variables
 `Z_{2p} ↦ (U_p, W_p)` has Jacobian `1`"): `z ↦ (w, u)` preserves Lebesgue measure. -/
 theorem measurePreserving_pairCoords (hf2 : ∀ i, f (f i) = i) (hRf : ∀ i, i ∈ R ↔ f i ∉ R) :
     MeasurePreserving (pairCoords f R) volume volume := by
@@ -178,7 +178,7 @@ theorem lintegral_pi_set_prod {κ : Type*} [Fintype κ] (s : κ → Set ℂ)
 variable {κ : Type*} [Fintype κ] [Nontrivial κ]
 
 /-- Fubini on `(κ → ℂ) × (κ → ℂ)` for the set of pairs `(w, u)` with `w ∈ P` and `u` in the
-polydisc `|u_j| ≤ 4 ρ_j(w)` (source l. 1258, 1277). -/
+polydisc `|u_j| ≤ 4 ρ_j(w)` . -/
 theorem lintegral_polydisc_set (lam : ℝ) (P : Set (κ → ℂ)) (hP : MeasurableSet P)
     (G : (κ → ℂ) × (κ → ℂ) → ℝ≥0∞) (hG : Measurable G) :
     ∫⁻ x in {x : (κ → ℂ) × (κ → ℂ) | x.1 ∈ P ∧ ∀ j, ‖x.2 j‖ ≤ 4 * nnRadius lam x.1 j}, G x =
@@ -219,7 +219,7 @@ section Displacement
 
 variable {ι : Type*} [Fintype ι] [Nontrivial ι] {f : ι → ι} {R : Set ι} [DecidablePred (· ∈ R)]
 
-/-- **Displacement reduction** (source l. 1258, 1271--1277, 1280): integrate first over the pair
+/-- **Displacement reduction** (source l. 1203, 1217–1220, 1224): integrate first over the pair
 displacements and then over one representative of each pair. For measurable pair weights
 `Φ_j(u, ρ) ≥ 0` the integral over the cell `Λ^ι ∩ {nnMap key z = f}` of
 `∏_{j ∈ R} Φ_j(u_j(z), ρ_j(z))` is at most
@@ -280,7 +280,7 @@ section Pred3
 open IsolatedReduction
 
 open scoped Classical in
-/-- **`(pred3)`** (source `pred3`, l. 1322--1333, with the integrand of Proposition 3.9): for
+/-- **`(pred3)`** (source `pred3`, l. 1258–1265, with the integrand of Proposition 3.8): for
 `β ≥ 2` and `C ≥ 0` there is a constant `C' > 0`, depending only on `β` and `C`, such that for every
 finite index type `ι`, tie-break key, fixed-point-free involution `f` (the nearest-neighbour graph
 of the cell, all components being `2`-cycles) with set of representatives `R`
@@ -293,7 +293,7 @@ is at most
 where `p = |R|` and `ρ_j = nnRadius λ w j` is the first-neighbour radius of the representative
 `w_j` among the representatives (`isolatedPhi` is `φ_β`, `isolatedTail` the same-sign factor).
 As in the source, only the assigned pair terms enter, not the charges (`S` is an arbitrary set of
-`2`-cycles, l. 1225, 1322). -/
+`2`-cycles, ). -/
 theorem lintegral_isolatedCell_le {β : ℝ} (hβ : 2 ≤ β) {C : ℝ} (hC : 0 ≤ C) :
     ∃ C' : ℝ, 0 < C' ∧ ∀ (ι : Type u) [Fintype ι] [Nontrivial ι] (key : ι ↪ ℕ) (f : ι → ι)
       (R : Set ι) [DecidablePred (· ∈ R)] [Nontrivial {i // i ∈ R}],

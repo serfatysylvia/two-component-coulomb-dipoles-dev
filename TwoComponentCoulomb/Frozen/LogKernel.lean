@@ -12,14 +12,14 @@ public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 # Frozen: `TwoComponentCoulomb.logKernel`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 137–139.
+Source: l. 123.
 -/
 
 @[expose] public section
 
 namespace TwoComponentCoulomb
 
-/-- `g(x) = -log |x|` on `ℝ² = ℂ` (source l. 137–139). -/
+/-- `g(x) = -log |x|` on `ℝ² = ℂ` (source l. 123). -/
 noncomputable def logKernel (x : ℂ) : ℝ := -Real.log ‖x‖
 
 end TwoComponentCoulomb

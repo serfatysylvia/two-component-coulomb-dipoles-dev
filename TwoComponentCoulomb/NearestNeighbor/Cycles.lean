@@ -13,7 +13,7 @@ public import TwoComponentCoulomb.NearestNeighbor.Basic
 # Cycles of the nearest-neighbour map
 
 The directed nearest-neighbour graph `i ↦ φ₁ i` of a configuration has only 2-cycles (source
-l. 217--222: its components are 2-cycles with trees attached). Thanks to the index tie-break of
+l. 202–207: its components are 2-cycles with trees attached). Thanks to the index tie-break of
 the frozen definition (ruling R4) this holds for *every* configuration, not just almost surely.
 
 * `norm_sub_nearestNeighbor_nearestNeighbor_le`: edge lengths do not increase along an orbit.
@@ -83,7 +83,7 @@ private theorem nearestNeighbor_nearestNeighbor_eq_or_key_lt (Z : Fin N ⊕ Fin 
 
 /-- All cycles of the nearest-neighbour map are 2-cycles: a periodic point `i` of `φ₁` satisfies
 `φ₁ (φ₁ i) = i`. This holds for every configuration, thanks to the index tie-break (source
-l. 217--222, ruling R4). -/
+l. 202–207, ruling R4). -/
 theorem nearestNeighbor_nearestNeighbor_of_iterate_eq_self (Z : Fin N ⊕ Fin N → ℂ)
     {i : Fin N ⊕ Fin N} {n : ℕ} (hn : 0 < n) (h : (nearestNeighbor Z)^[n] i = i) :
     nearestNeighbor Z (nearestNeighbor Z i) = i := by

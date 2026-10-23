@@ -16,9 +16,9 @@ public import TwoComponentCoulomb.UpperBound.RestrictedGraph
 import TwoComponentCoulomb.Integrals.PiProduct
 
 /-!
-# Proposition 3.7, Step 2: integration over one restricted graph
+# Proposition 3.6, Step 2: integration over one restricted graph
 
-Source: proof of Proposition 3.7 (`prop:auxk`), l. 1087--1114 (Step 2,
+Source: proof of Proposition 3.6 (`prop:auxk`), l. 1035–1062 (Step 2,
 "integration"), in the weighted generality of ruling R12c: the factors
 `r̃₁^{-β/2} (1 + log (r̃₁/λ))^δ (1 + |log r̃₁|)^{δ'}` of the source are replaced by a measurable
 radial weight `w` evaluated at the first-neighbour radius `r̃₁(z_i) = r(z_i) ∨ λ`
@@ -29,12 +29,12 @@ Fix `p` points `z₁, …, z_p` in the box `Λ`, the selected vertices `i < k` a
 `r̃₁(z_i) = max (|z_i - z_{g i}| / 4, λ)` for `i < k`, which depends only on the coordinates of
 the `m = k + k₁` vertices of the nontrivial components. The proof follows the source:
 
-* *Trivial vertices* (l. 1087--1093, `AuxIntegrationVolume.lean`). Fubini over the `p - m` other
+* *Trivial vertices* (l. 1035–1041, `UpperBound/AuxIntegrationVolume.lean`). Fubini over the `p - m` other
   vertices: each avoids the balls `B(z_i, |z_i - z_{g i}|)`, whose halves are disjoint and meet `Λ`
   in area `≥ |z_i - z_{g i}|²/16`, so the available volume is at most `N - ∑ r(z_i)²`; with
   `p - m ≥ p - 2k` and `N ≤ 2p` this contributes at most `e^{2k} N^{p-m} e^{-∑ r(z_i)²/4}`
   (`AuxIntegration.volume_section_le`, `AuxIntegration.lintegral_cell_le_fubini`).
-* *Gunson--Panta variables* (l. 1095). On the nontrivial vertices `NtV g` the map
+* *Gunson--Panta variables* (l. 1043). On the nontrivial vertices `NtV g` the map
   `v ↦ g v` (`stepNt`) and the reference set `R` (`refSet`: the roots and the first vertex of each
   `2`-cycle of `g`) satisfy that every orbit reaches `R`
   (`AuxIntegration.exists_iterate_stepNt_mem_refSet`), so the Gunson--Panta map is measure
@@ -66,7 +66,7 @@ section GunsonPanta
 
 variable {κ : Type*} [Fintype κ] (f : κ → κ) (R : Set κ) [DecidablePred (· ∈ R)]
 
-/-- **Reference coordinates** (source l. 1095: "We integrate the reference points in `Λ` and
+/-- **Reference coordinates** (source l. 1043: "We integrate the reference points in `Λ` and
 extend each integral over a variable `u_j` to `ℝ²`"): if
 `Ψ (GP⁻¹ u) = ∏_{v ∉ R} G_v (u_v)`, then the integral of `Ψ` over the set where all reference
 coordinates lie in `Λ` is `N^{|R|} ∏_{v ∉ R} ∫ G_v`. -/
@@ -146,7 +146,7 @@ open scoped Classical
 
 variable {p k : ℕ} (hk : k ≤ p) (g : Fin k → Fin p)
 
-/-- A vertex of a nontrivial component of the restricted graph of `g` (source l. 1081: there are
+/-- A vertex of a nontrivial component of the restricted graph of `g` (source l. 1030: there are
 `m = k + k₁` vertices "in its nontrivial connected components"): a selected vertex `v < k`, or a
 root, i.e. a vertex which is the target of a selected vertex. -/
 def IsNtVertex (v : Fin p) : Prop := (v : ℕ) < k ∨ ∃ i, g i = v
@@ -205,7 +205,7 @@ theorem card_ntV_le_p : Fintype.card (NtV g) ≤ p := by
   simpa using Fintype.card_subtype_le (IsNtVertex g)
 
 /-- The *reference set* of the Gunson--Panta change of variables on the nontrivial components
-(source l. 642--659, 1095): the roots (vertices `≥ k`) and the first vertex of each `2`-cycle
+(source l. 645–662, 1043): the roots (vertices `≥ k`) and the first vertex of each `2`-cycle
 inside the selected set (the source retains the larger-indexed vertex; either choice gives a
 triangular map with determinant `1`). -/
 def refSet : Set (NtV g) :=
@@ -246,7 +246,7 @@ theorem exists_iterate_stepV_of_reflTransGen {a b : Fin p}
     exact ⟨n + 1, by rw [Function.iterate_succ_apply', hn]; simp [stepV, hlt]⟩
 
 include hk in
-/-- **Every orbit reaches the reference set** (source l. 1041--1044, 1095): in an admissible
+/-- **Every orbit reaches the reference set** (source l. 990–993, 1043): in an admissible
 restricted graph, every forward path ends at a root or at a `2`-cycle inside the selected set,
 which contains exactly one reference vertex. -/
 theorem exists_iterate_stepNt_mem_refSet (hg : IsAdmissibleRestriction g) (v : NtV g) :
@@ -312,7 +312,7 @@ theorem card_notMem_refSet :
 
 /-- The vertex of `κ ∖ R` whose Gunson--Panta coordinate is the displacement `z_i - z_{g i}` of the
 selected vertex `i` (up to sign): `i` itself if `i` is not a reference vertex, and its partner
-`g i` in the `2`-cycle otherwise (source l. 1095: for a `2`-cycle both endpoints have the same
+`g i` in the `2`-cycle otherwise (source l. 1043: for a `2`-cycle both endpoints have the same
 displacement). -/
 noncomputable def sigma (i : Fin k) : NtV g :=
   if selV hk g i ∈ refSet hk g then tgtV g i else selV hk g i
@@ -412,7 +412,7 @@ section Displacement
 variable (hg : IsAdmissibleRestriction g)
 
 include hk hg in
-/-- **Displacements** (source l. 1095): in the Gunson--Panta coordinates `u = GP z` on the
+/-- **Displacements** (source l. 1043): in the Gunson--Panta coordinates `u = GP z` on the
 nontrivial components, the displacement `z_i - z_{g i}` of the selected vertex `i` has the same norm
 as the coordinate `u_{σ i}` of `σ i ∉ R`. For a `2`-cycle both endpoints have the same
 displacement. -/
@@ -449,7 +449,7 @@ section Integration
 variable (hg : IsAdmissibleRestriction g)
 
 include hk hg in
-/-- **Source l. 1095--1102, the displacement integrals.** After the Gunson--Panta change of
+/-- **Source l. 1043–1050, the displacement integrals.** After the Gunson--Panta change of
 variables on the nontrivial components, the reference points (`|R| = k₀ + k₁` of them) integrate to
 `N^{|R|}`, and the `k - k₀` displacement coordinates give `k₀` cycle integrals and `k - 2 k₀`
 non-cycle integrals. -/
@@ -542,7 +542,7 @@ noncomputable def splitNt : (Fin p → ℂ) ≃ᵐ (NtV g → ℂ) × ({v : Fin 
 nontrivial components. -/
 noncomputable def dispNt (x : NtV g → ℂ) (i : Fin k) : ℝ := ‖x (selV hk g i) - x (tgtV g i)‖
 
-/-- **Fubini over the trivial vertices** (source l. 1087: "We first integrate the `p - m`
+/-- **Fubini over the trivial vertices** (source l. 1035: "We first integrate the `p - m`
 vertices in trivial components"): the integral over a set `cell` of a function of the nontrivial
 coordinates is at most the integral over the nontrivial coordinates of that function times the
 volume of the section of `cell` by the trivial coordinates. -/
@@ -579,7 +579,7 @@ theorem lintegral_cell_le_fubini (cell : Set (Fin p → ℂ)) (hcell : Measurabl
 
 variable [Nontrivial (Fin p)] (key : Fin p ↪ ℕ)
 
-/-- The cell `{γ'_p = g} ∩ Λ^p` of source l. 1081--1086. -/
+/-- The cell `{γ'_p = g} ∩ Λ^p` of source l. 1030–1034. -/
 def cellSet (N : ℕ) : Set (Fin p → ℂ) :=
   (Set.univ.pi fun _ : Fin p => box N) ∩ {z | restrictedNnMap hk key z = g}
 
@@ -598,7 +598,7 @@ theorem mem_box_of_mem_cellSet {N : ℕ} {z : Fin p → ℂ} (hz : z ∈ cellSet
     z i ∈ box N :=
   hz.1 i (Set.mem_univ i)
 
-/-- **The volume available to the trivial vertices** (source l. 1087--1093). For fixed coordinates
+/-- **The volume available to the trivial vertices** (source l. 1035–1041). For fixed coordinates
 `x` of the nontrivial components, the section of the cell by the trivial coordinates has volume at
 most `e^{2k} N^{p - m} exp(-(∑_{i<k} |z_i - z_{g i}|²/16)/4)`, `m = |κ|`, and is empty unless all
 the coordinates `x` lie in `Λ`. -/
@@ -683,7 +683,7 @@ theorem prod_ofReal_exp_neg_auxC_mul (t : Fin k → ℝ) :
   simp only [auxC]
   ring
 
-/-- **Source l. 1087--1114, Step 2 for one restricted graph, with explicit constants.** For
+/-- **Source l. 1035–1062, Step 2 for one restricted graph, with explicit constants.** For
 `g ∈ D(k₀, k₁)` the integral over the cell `{γ'_p = g} ∩ Λ^p` of `∏_{i<k} w(r̃₁(z_i))` is at most
 `e^{2k} N^{p - k + k₀} I₂^{k₀} I₁^{k - 2k₀}`, where `I₂` (resp. `I₁`) is the Gaussian integral of
 `w(|u|/4 ∨ λ)²` (resp. `w(|u|/4 ∨ λ)`) against `e^{-|u|²/64}` over `ℂ`. -/
@@ -777,7 +777,7 @@ end AuxIntegration
 
 /-! ### The integral over one restricted graph -/
 
-/-- **Proposition 3.7, Step 2 (integration over one restricted graph; source l. 1087--1114), in
+/-- **Proposition 3.6, Step 2 (integration over one restricted graph; source l. 1035–1062), in
 weighted generality (ruling R12c).** There are absolute constants `C, c > 0` such that for every
 `p ≥ 2`, `k ≤ p`, `N ≤ 2p`, every tie-break key, every measurable radial weight `w` (evaluated at
 the first-neighbour radius `r̃₁ = r ∨ λ`) and every restricted graph `g ∈ D(k₀, k₁)`,

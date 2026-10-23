@@ -15,14 +15,15 @@ public import TwoComponentCoulomb.UpperBound.CriticalEnergy
 import TwoComponentCoulomb.Gibbs.Generic
 import TwoComponentCoulomb.NearestNeighbor.Isolated
 import TwoComponentCoulomb.PhaseSpace.Packing
-import TwoComponentCoulomb.UpperBound.NearestNeighborModelCritical
+public import TwoComponentCoulomb.UpperBound.CriticalMass
+import TwoComponentCoulomb.UpperBound.CriticalGaussian
 import TwoComponentCoulomb.UpperBound.ReducedMatching
 
 /-!
 # The cell integral of the critical case `β = 2` (Proposition 3.10, eq. (eq:critical upper))
 
-Source: l. 1670--1706 (proof of Proposition 3.10, `β = 2`), also used for
-the electric moment of Theorem 2 at `β = 2` (l. 2023--2060).
+Source `source/dipole-formation.tex`, l. 1605–1620 (proof of Proposition 3.10, `β = 2`), also used for
+the electric moment of Theorem 2 at `β = 2` (l. 1910–1912).
 
 Fix a nearest-neighbour graph `f` with `K` components, `m` isolated pairs and `p₀` isolated
 neutral pairs. On the cell `{φ₁ = f}` the source integrates the displacement `u_j` of each
@@ -40,8 +41,8 @@ here for a general integrand. The instances are the Gibbs integrand of (eq:criti
 
 * `TwoComponentCoulomb.lintegral_pi_complex_prod_eq_prod`: Fubini for a product of one-variable
   functions over `σ → ℂ`, `σ` a finite type.
-* `TwoComponentCoulomb.lintegral_pair_prod_le` (source l. 1689, "with the retained points
-  fixed"): integrating the displacements of the pairs, each pair contributes at most the
+* `TwoComponentCoulomb.lintegral_pair_prod_le` ( "conditional on the retained
+  coordinates"): integrating the displacements of the pairs, each pair contributes at most the
   supremum over `ρ` of its radial integral.
 * `TwoComponentCoulomb.lintegral_prod_indicator_box_mul`: the retained endpoints `w_j ∈ Λ`
   contribute `N` each.
@@ -51,20 +52,22 @@ here for a general integrand. The instances are the Gibbs integrand of (eq:criti
   `TwoComponentCoulomb.two_mul_card_gpRefSet_isoNonMap`: the sub-configuration of the components
   that are not isolated pairs, whose nearest-neighbour map is the restriction of `f` and which has
   `K - m` 2-cycles.
-* `TwoComponentCoulomb.lintegral_cell_le_of_pointwise` (source l. 1689--1702): integrating the pair
+* `TwoComponentCoulomb.lintegral_cell_le_of_pointwise` (source l. 1618–1620): integrating the pair
   displacements conditional on the retained coordinates, and then the retained endpoints.
-* `TwoComponentCoulomb.ofReal_exp_le_cell_of_exponent` (source l. 1674--1682): from an exponent
+* `TwoComponentCoulomb.ofReal_exp_le_cell_of_exponent` (source l. 1605–1610): from an exponent
   bound `Φ ≤ ∑_{i ∉ I^pair} (g_λ + c₁) + ∑_s P_s` and pair weights dominating `e^{P_s - |u_s|²/ℓ}`,
   the integrand on the cell is at most
   `e^{c₁ |(I^pair)^c| + 36N/(πℓ)} e^{∑_{i ∉ I^pair} g_λ(z_i - z_{f i})} ∏_s W_s(u_s, ρ_s)` (the
   Gaussian factor is inserted by the packing bound).
-* `TwoComponentCoulomb.exists_nonIsoFactor` (source l. 1702): the components that are not isolated
-  pairs, by Lemma 3.5 at `β = 2` (`TwoComponentCoulomb.lintegral_cell_le_of_eq_two`), which gives
-  the factor `N^h (2π (ℓ + log (N/h)))^h (N/d)^d e^{C d + C N log ℓ/ℓ}` for `h = K - m` cycles and
-  `2d`, `d = N - K`, tree vertices, in place of the source's `N^h J_λ(1/ℓ)^h (CN/d)^d`.
-* `TwoComponentCoulomb.pairCellExponent`,
-  `TwoComponentCoulomb.exists_lintegral_cell_le_pairCellExponent` (source l. 1682--1706): the cell
-  integral is at most `exp (pairCellExponent …)`, for neutral and same-sign pair masses `Mₙ`, `Mₛ`.
+* `TwoComponentCoulomb.exists_commonCutoffFactor`: the common Gaussian cutoff in the
+  nonisolated components gives `N^h J_λ(1/ℓ)^h exp(d log(N/d) + Cd + 36N/(πℓ))`.
+* `TwoComponentCoulomb.criticalCellExponent`,
+  `TwoComponentCoulomb.exists_lintegral_cell_le_criticalCellExponent`: the full cell
+  estimate with pair masses `Mₙ`, `Mₛ` and the same cycle mass `J_λ(1/ℓ)`.
+
+The isolated and nonisolated Gaussian insertions are made in their respective
+integrals. Their two packing costs sum to `72N/(πℓ)`, an explicit choice of the
+paper's `CN/ℓ`.
 -/
 
 @[expose] public section
@@ -87,7 +90,7 @@ theorem lintegral_pi_complex_prod_eq_prod {σ : Type*} [Fintype σ] (φ : σ →
   exact lintegral_fin_nat_prod_eq_prod (μ := fun _ => volume) (fun i => φ (e i))
     (fun i => hφ (e i))
 
-/-- **Integration of the pair displacements** (source l. 1689). Let `σ` index the pairs and `α`
+/-- **Integration of the pair displacements** . Let `σ` index the pairs and `α`
 the retained points, `π s` the retained endpoint of the pair `s` and `ρ s y` its radius, a
 function of the retained configuration `y`. If, uniformly in `y`, the radial weight `Φ s` of the
 pair `s` has integral at most `M s` in the displacement, then integrating the non-retained
@@ -124,7 +127,7 @@ theorem lintegral_pair_prod_le {σ α : Type*} [Fintype σ] [Fintype α] (π : �
     _ = (∏ s, M s) * ∫⁻ y, F y := by
         rw [lintegral_mul_const _ hF, mul_comm]
 
-/-- **The retained endpoints** (source l. 1702, "Their reference points and the `m` retained
+/-- **The retained endpoints** ( "Their reference points and the `m` retained
 endpoints contribute `N^K`"): for a predicate `p` on a finite type `α`, the coordinates `y_j ∈ Λ`
 (`p j`) integrate to `N` each. -/
 theorem lintegral_prod_indicator_box_mul {α : Type*} [Fintype α] (p : α → Prop) [DecidablePred p]
@@ -297,7 +300,7 @@ theorem two_mul_card_gpRefSet_isoNonMap (hf0 : ∀ i, f i ≠ i) :
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
   exact Iff.rfl
 
-/-- **Restriction of the nearest-neighbour map** (source l. 1542, used at l. 1702): on the cell
+/-- **Restriction of the nearest-neighbour map** (source l. 1450, used at ): on the cell
 `φ₁ = f`, the nearest-neighbour map of the non-isolated sub-configuration is the restriction of
 `f`. -/
 theorem nnMap_isoNon (hN : 2 ≤ N) (hf0 : ∀ i, f i ≠ i) [Nontrivial (IsoNon f)]
@@ -335,7 +338,7 @@ theorem measurableSet_cell (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) :
   rw [this]
   exact MeasurableSet.iInter fun i => measurableSet_nearestNeighbor_eq i (f i)
 
-/-- **The cell integral, given a pointwise bound by pair weights** (source l. 1689--1702). If at
+/-- **The cell integral, given a pointwise bound by pair weights** (source l. 1622–1639). If at
 the generic configurations of the cell `Λ^{2N} ∩ {φ₁ = f}` the integrand `Φ` is at most
 `c · H(z_{non-isolated}) ∏_s W_s(u_s, ρ_s)`, and every pair weight has integral at most `M_s` in the
 displacement (uniformly in `ρ ≥ λ`), then integrating the pair displacements conditional on the
@@ -414,11 +417,11 @@ theorem exp_two_mul_log_sub_four_mul_log {m ρ c : ℝ} (hm : 0 < m) (hρ : 0 < 
   rw [Real.exp_add, Real.exp_sub, e2, e4]
   ring
 
-/-- **The pointwise bound on a cell** (source l. 1674--1691): for `Z` in `Λ` with `φ₁(Z) = f`, if
+/-- **The pointwise bound on a cell** (source l. 1605–1622): for `Z` in `Λ` with `φ₁(Z) = f`, if
 `Φ ≤ ∑_{i ∉ I^pair} (g_λ(z_i - z_{f i}) + c₁) + ∑_s P_s` and the pair weights dominate
 `e^{P_s - |u_s|²/ℓ}`, then `e^Φ` is at most
 `e^{c₁ |(I^pair)ᶜ| + 36N/(πℓ)} e^{∑_{i ∉ I^pair} g_λ(z_i - z_{f i})} ∏_s W_s(u_s, ρ_s)`. The Gaussian
-factor `e^{-|u_s|²/ℓ}` is inserted by the packing bound `∑_s |u_s|² ≤ 36N/π` (source l. 1682). -/
+factor `e^{-|u_s|²/ℓ}` is inserted by the packing bound `∑_s |u_s|² ≤ 36N/π` . -/
 theorem ofReal_exp_le_cell_of_exponent (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
     (hle : lam ≤ Real.exp (-1)) {c₁ Φ : ℝ} (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N)
     {Z : Fin N ⊕ Fin N → ℂ} (hbox : ∀ i, Z i ∈ box N) (hf : nearestNeighbor Z = f)
@@ -525,14 +528,17 @@ theorem card_filter_neutral_isoSecondVerts (Z₀ : Fin N ⊕ Fin N → ℂ) :
   rw [h3] at h2
   omega
 
-/-! ### The non-isolated components (Lemma 3.5 at `β = 2`) -/
+theorem ofReal_pow_eq_ofReal_exp {x : ℝ} (hx : 0 < x) (k : ℕ) :
+    ENNReal.ofReal x ^ k = ENNReal.ofReal (Real.exp (k * Real.log x)) := by
+  rw [← ENNReal.ofReal_pow hx.le, ← Real.log_pow, Real.exp_log (pow_pos hx k)]
 
-/-- **The components that are not isolated pairs** (source l. 1702, by Lemma 3.5 at `β = 2`):
-for a graph `f = φ₁(Z₀)` with `K` components and `m` isolated pairs there is a measurable weight
-`H` of the non-isolated vertices that dominates `e^{∑_{i ∉ I^pair} g_λ(z_i - z_{f i})}` on the cell
-and has integral at most
-`N^{K-m} (2π (ℓ + log (N/(K-m))))^{K-m} (N/(N-K))^{N-K} e^{C (N-K) + C N log ℓ/ℓ}`. -/
-theorem exists_nonIsoFactor :
+
+/-! ### The common cutoff on the nonisolated components -/
+
+/-- **The nonisolated components in (eq:critical-fixed-graph)**. Each of the
+`K-m` cycles contributes `J_λ(1/ℓ)`. The `2(N-K)` tree variables keep the
+packing constraint and contribute the Dirichlet factor, including `N = K`. -/
+theorem exists_commonCutoffFactor :
     ∃ CJ : ℝ, 0 ≤ CJ ∧ ∀ (N : ℕ), 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam ≤ Real.exp (-2) →
       ∀ (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (Z₀ : Fin N ⊕ Fin N → ℂ), nearestNeighbor Z₀ = f →
         ∃ H : (IsoNon f → ℂ) → ℝ≥0∞, Measurable H ∧
@@ -541,13 +547,11 @@ theorem exists_nonIsoFactor :
               H (fun j => Z (isoNonEmb f j))) ∧
           ∫⁻ w, H w ≤ ENNReal.ofReal (Real.exp
             (((numComponents Z₀ : ℝ) - numIsolatedPairs Z₀) * Real.log N +
-              ((numComponents Z₀ : ℝ) - numIsolatedPairs Z₀) * Real.log (|Real.log lam| +
-                Real.log (N / ((numComponents Z₀ : ℝ) - numIsolatedPairs Z₀))) +
-              ((numComponents Z₀ : ℝ) - numIsolatedPairs Z₀) * Real.log (2 * Real.pi) +
+              ((numComponents Z₀ : ℝ) - numIsolatedPairs Z₀) * Real.log (criticalCycleMass lam) +
               ((N : ℝ) - numComponents Z₀) * Real.log (N / ((N : ℝ) - numComponents Z₀)) +
               CJ * ((N : ℝ) - numComponents Z₀) +
-              CJ * N * (Real.log |Real.log lam| / |Real.log lam|))) := by
-  obtain ⟨CJ₀, hJ⟩ := lintegral_cell_le_of_eq_two.{0} (β := 2) rfl
+              36 * N / (Real.pi * |Real.log lam|))) := by
+  obtain ⟨CJ₀, hJ⟩ := exists_lintegral_cell_common_cutoff_le
   refine ⟨max CJ₀ 0, le_max_right _ _, ?_⟩
   intro N hN lam hlam hlam2 f Z₀ hf₀
   subst hf₀
@@ -582,11 +586,8 @@ theorem exists_nonIsoFactor :
       rw [← ENNReal.ofReal_one]
       refine ENNReal.ofReal_le_ofReal ?_
       refine Real.one_le_exp ?_
-      have hlogℓ : 0 ≤ Real.log ℓ := Real.log_nonneg (by linarith)
-      have : 0 ≤ Real.log ℓ / ℓ := by positivity
-      have := le_max_right CJ₀ 0
       positivity
-  · -- the non-isolated components, by Lemma 3.5 at `β = 2`
+  · -- Insert the common Gaussian and keep the tree packing constraint.
     have hmN' : m < N := lt_of_le_of_ne (le_trans hmK hKN) hmN
     have hcard : Fintype.card (IsoNon f) = 2 * (N - m) := by rw [card_isoNon, hP]; omega
     have hnt : Nontrivial (IsoNon f) := by
@@ -624,58 +625,65 @@ theorem exists_nonIsoFactor :
       rw [sum_compl_isoPairVerts f]
       norm_num
       rfl
-    · have hJ' := hJ (IsoNon f) (isoNonKey f) N (N - m) K' (isoNonMap f hf0) (by omega)
-        (by omega) hcard rfl lam hlam hlam2
-      have hint : ∫⁻ w, H w = ∫⁻ w in C', ENNReal.ofReal (Real.exp ((2 / 2) *
-          ∑ j, smearedKernel lam (w j - w (nnMap (isoNonKey f) w j)))) := by
+    · have hK'p : K' ≤ N - m := by omega
+      have hreal : ∃ w : IsoNon f → ℂ, nnMap (isoNonKey f) w = isoNonMap f hf0 :=
+        ⟨fun j => Z₀ (isoNonEmb f j), nnMap_isoNon f hN hf0 rfl⟩
+      have hJ' := hJ (isoNonKey f) N (N - m) K' (isoNonMap f hf0) (by omega)
+        hK'p hcard hreal rfl lam ℓ hlam (by linarith)
+      have hint : ∫⁻ w, H w = ∫⁻ w in C', ENNReal.ofReal (Real.exp
+          (∑ j, smearedKernel lam (w j - w (isoNonMap f hf0 j)))) := by
         rw [hH, lintegral_indicator hC'm]
-        refine setLIntegral_congr_fun hC'm fun w hw => ?_
-        rw [hw.2]
+        norm_num
       rw [hint]
-      refine hJ'.trans (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_))
-      rw [hK'R, Nat.cast_sub hmN'.le]
-      have e1 : (N : ℝ) - m - (K - m) = N - K := by ring
-      have e2 : (1 - (2 : ℝ) / 4) * (2 * ((N : ℝ) - m) - 2 * (K - m)) = N - K := by ring
-      rw [e1, e2]
+      refine hJ'.trans ?_
+      have hNpos : (0 : ℝ) < N := by exact_mod_cast (by omega : 0 < N)
+      rw [← ofReal_criticalCycleMass hlam (hlam2.trans (Real.exp_le_exp.2 (by norm_num))),
+        ← ENNReal.ofReal_natCast,
+        ← ENNReal.ofReal_pow hNpos.le,
+        ← ENNReal.ofReal_pow (criticalCycleMass_pos hlam
+          (hlam2.trans (Real.exp_le_exp.2 (by norm_num)))).le]
+      have hnp : (N : ℝ) ^ K' = Real.exp (K' * Real.log N) := by
+        rw [← Real.log_pow, Real.exp_log (pow_pos hNpos _)]
+      have hjp : criticalCycleMass lam ^ K' = Real.exp (K' * Real.log (criticalCycleMass lam)) := by
+        rw [← Real.log_pow, Real.exp_log (pow_pos (criticalCycleMass_pos hlam
+          (hlam2.trans (Real.exp_le_exp.2 (by norm_num)))) _)]
+      rw [hnp, hjp, ← ENNReal.ofReal_mul (Real.exp_pos _).le,
+        ← ENNReal.ofReal_mul (Real.exp_pos _).le,
+        ← ENNReal.ofReal_mul (Real.exp_pos _).le,
+        ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]
+      apply ENNReal.ofReal_le_ofReal
+      apply Real.exp_le_exp.2
+      rw [hK'R, Nat.cast_sub (by omega : K' ≤ N - m), Nat.cast_sub hmN'.le, hK'R]
       have hNK : 0 ≤ (N : ℝ) - K := by
         have : (K : ℝ) ≤ N := by exact_mod_cast hKN
-        linarith
-      have h1 : CJ₀ * ((N : ℝ) - K) ≤ max CJ₀ 0 * ((N : ℝ) - K) :=
-        mul_le_mul_of_nonneg_right (le_max_left _ _) hNK
-      have h2 : CJ₀ * N * (Real.log ℓ / ℓ) ≤ max CJ₀ 0 * N * (Real.log ℓ / ℓ) := by
-        have h0 : 0 ≤ (N : ℝ) * (Real.log ℓ / ℓ) := by
-          have : 0 ≤ Real.log ℓ := Real.log_nonneg (by linarith)
-          positivity
-        rw [mul_assoc, mul_assoc]
-        exact mul_le_mul_of_nonneg_right (le_max_left _ _) h0
-      linarith
+        linarith only [this]
+      have h1 := mul_le_mul_of_nonneg_right (le_max_left CJ₀ 0) hNK
+      rw [show (N : ℝ) - m - (K - m) = N - K by ring]
+      dsimp [ℓ]
+      linarith only [h1]
 
 /-! ### The cell bound in exponential form -/
 
 /-- The logarithm of the bound on the cell of a graph with `K` components, `m` isolated pairs and
 `p₀` isolated neutral pairs, for neutral and same-sign pair masses `Mₙ` and `Mₛ` (source
-l. 1702--1706): the packing cost `36N/(πℓ)` and the cost `c₁ (2N - 2m)` of the non-isolated
+l. 1618–1620): the packing cost `72N/(πℓ)` and the cost `c₁ (2N - 2m)` of the non-isolated
 vertices, the `p₀` neutral pairs, the `m - p₀` same-sign pairs, the `m` retained endpoints, and the
 non-isolated components (`K - m` cycles and `2(N - K)` tree vertices). -/
-noncomputable def pairCellExponent (c₁ CJ lam Mn Ms : ℝ) (N K m p₀ : ℕ) : ℝ :=
+noncomputable def criticalCellExponent (c₁ CJ lam Mn Ms : ℝ) (N K m p₀ : ℕ) : ℝ :=
   c₁ * (2 * (N : ℝ) - 2 * m) + 36 * N / (Real.pi * |Real.log lam|) +
     p₀ * Real.log Mn + ((m : ℝ) - p₀) * Real.log Ms + m * Real.log N +
     (((K : ℝ) - m) * Real.log N +
-      ((K : ℝ) - m) * Real.log (|Real.log lam| + Real.log (N / ((K : ℝ) - m))) +
-      ((K : ℝ) - m) * Real.log (2 * Real.pi) + ((N : ℝ) - K) * Real.log (N / ((N : ℝ) - K)) +
-      CJ * ((N : ℝ) - K) + CJ * N * (Real.log |Real.log lam| / |Real.log lam|))
+      ((K : ℝ) - m) * Real.log (criticalCycleMass lam) + ((N : ℝ) - K) * Real.log (N / ((N : ℝ) - K)) +
+      CJ * ((N : ℝ) - K) + 36 * N / (Real.pi * |Real.log lam|))
 
-theorem ofReal_pow_eq_ofReal_exp {x : ℝ} (hx : 0 < x) (k : ℕ) :
-    ENNReal.ofReal x ^ k = ENNReal.ofReal (Real.exp (k * Real.log x)) := by
-  rw [← ENNReal.ofReal_pow hx.le, ← Real.log_pow, Real.exp_log (pow_pos hx k)]
 
-/-- **The cell bound for a general integrand** (source l. 1682--1706). There is a constant `C_J`
+/-- **The cell bound for a general integrand** (source l. 1618–1620). There is a constant `C_J`
 such that for `N ≥ 2`, `0 < λ ≤ e⁻²` and every nearest-neighbour graph `f = φ₁(Z₀)`: if at the
 generic configurations of the cell `Λ^{2N} ∩ {φ₁ = f}` the integrand `Φ` is at most
 `e^{c₁ |(I^pair)ᶜ| + 36N/(πℓ)} e^{∑_{i ∉ I^pair} g_λ(z_i - z_{f i})} ∏_s W_s(u_s, ρ_s)`, where every
 neutral (resp. same-sign) pair weight has integral at most `Mₙ` (resp. `Mₛ`) in the displacement,
-uniformly in `ρ ≥ λ`, then the cell integral of `Φ` is at most `exp (pairCellExponent …)`. -/
-theorem exists_lintegral_cell_le_pairCellExponent :
+uniformly in `ρ ≥ λ`, then the cell integral of `Φ` is at most `exp (criticalCellExponent …)`. -/
+theorem exists_lintegral_cell_le_criticalCellExponent :
     ∃ CJ : ℝ, 0 ≤ CJ ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → lam ≤ Real.exp (-2) →
       ∀ (c₁ Mn Ms : ℝ), 0 < Mn → 0 < Ms →
       ∀ (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (Z₀ : Fin N ⊕ Fin N → ℂ), nearestNeighbor Z₀ = f →
@@ -690,9 +698,9 @@ theorem exists_lintegral_cell_le_pairCellExponent :
             (ENNReal.ofReal (Real.exp (∑ i ∈ (isoPairVerts f)ᶜ, smearedKernel lam (Z i - Z (f i)))) *
               ∏ s, W s (Z s - Z (f s), isoRadius f hN lam (fun k => Z k) (isoPartner s)))) →
         ∫⁻ Z in (Set.univ.pi fun _ : Fin N ⊕ Fin N => box N) ∩ {Z | nearestNeighbor Z = f}, Φ Z ≤
-          ENNReal.ofReal (Real.exp (pairCellExponent c₁ CJ lam Mn Ms N (numComponents Z₀)
+          ENNReal.ofReal (Real.exp (criticalCellExponent c₁ CJ lam Mn Ms N (numComponents Z₀)
             (numIsolatedPairs Z₀) (isolatedDipoles Z₀).card)) := by
-  obtain ⟨CJ, hCJ, hJ⟩ := exists_nonIsoFactor
+  obtain ⟨CJ, hCJ, hJ⟩ := exists_commonCutoffFactor
   refine ⟨CJ, hCJ, ?_⟩
   intro N hN lam hlam hlam2 c₁ Mn Ms hMn0 hMs0 f Z₀ hf₀ Φ W hWm hWM hpt
   obtain ⟨H, hHm, hHpt, hHJ⟩ := hJ N hN lam hlam hlam2 f Z₀ hf₀
@@ -743,10 +751,9 @@ theorem exists_lintegral_cell_le_pairCellExponent :
           ENNReal.ofReal (Real.exp (((m - p₀ : ℕ) : ℝ) * Real.log Ms)) *
           (ENNReal.ofReal (Real.exp (m * Real.log N)) * ENNReal.ofReal (Real.exp
             (((K : ℝ) - m) * Real.log N +
-              ((K : ℝ) - m) * Real.log (ℓ + Real.log (N / ((K : ℝ) - m))) +
-              ((K : ℝ) - m) * Real.log (2 * Real.pi) +
+              ((K : ℝ) - m) * Real.log (criticalCycleMass lam) +
               ((N : ℝ) - K) * Real.log (N / ((N : ℝ) - K)) +
-              CJ * ((N : ℝ) - K) + CJ * N * (Real.log ℓ / ℓ))))) := by
+              CJ * ((N : ℝ) - K) + 36 * N / (Real.pi * ℓ))))) := by
         gcongr
     _ = _ := by
         rw [← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ENNReal.ofReal_mul (Real.exp_pos _).le,
@@ -758,7 +765,7 @@ theorem exists_lintegral_cell_le_pairCellExponent :
             (fun s => charge s * charge (f s) = -1)
           rw [hneu, hS] at this
           exact this
-        rw [pairCellExponent, Nat.cast_sub hp₀m, Nat.cast_sub (by omega : 2 * m ≤ 2 * N)]
+        rw [criticalCellExponent, Nat.cast_sub hp₀m, Nat.cast_sub (by omega : 2 * m ≤ 2 * N)]
         push_cast
         ring
 

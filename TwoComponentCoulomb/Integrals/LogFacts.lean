@@ -10,7 +10,7 @@ import Mathlib.Analysis.Convex.SpecificFunctions.Basic
 /-!
 # Elementary facts on `log λ` for `0 < λ ≤ e⁻¹`, and on `exp`
 
-The standing smallness condition `0 < λ ≤ e^{-1}` of §3 (e.g. Propositions 3.7–3.9) gives
+The standing smallness condition `0 < λ ≤ e^{-1}` of §3 (e.g. Propositions 3.6–3.8) gives
 `log λ ≤ -1` and `ℓ = |log λ| ≥ 1`. These two facts are shared by many modules, as are the
 elementary bounds `exp (-1) ≤ 1 / 2` and the convexity bound `e^{c s} ≤ 1 + (e^c - 1) s` for
 `0 ≤ s ≤ 1`.
@@ -36,7 +36,7 @@ theorem exp_neg_one_le_half : Real.exp (-1) ≤ 1 / 2 := by
   rw [Real.exp_neg, one_div]
   exact inv_anti₀ (by norm_num) h
 
-/-- Convexity of `exp`: `e^{c s} ≤ 1 + (e^c - 1) s` for `0 ≤ s ≤ 1` (source l. 2143--2149, used for
+/-- Convexity of `exp`: `e^{c s} ≤ 1 + (e^c - 1) s` for `0 ≤ s ≤ 1` (source l. 2021–2027, used for
 the tilt `e^{2t ((a/γ)² ∧ 1)}`). -/
 theorem exp_mul_le_one_add {c s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
     Real.exp (c * s) ≤ 1 + (Real.exp c - 1) * s := by

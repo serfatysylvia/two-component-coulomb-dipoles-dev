@@ -21,7 +21,7 @@ import TwoComponentCoulomb.Main.Theorem1AssemblyBounds
 /-!
 # Theorem 2, Steps 5--6: the rate properties, and Theorem 1 for a general rate
 
-The error rate `ω_λ` enters the proof of Theorem 2 (source l. 2182--2247) both in the event
+The error rate `ω_λ` enters the proof of Theorem 2 (source l. 2060–2121) both in the event
 threshold `M N √ω_λ` and in the tail `e^{-c √N ω_λ}`. Steps 5--6 are proved for a general rate
 function `ω : ℝ → ℝ` with the elementary properties collected in `Theorem2RateHyp`; they are
 instantiated at `ω = errorRate β hβ` in `Fluctuations/Theorem2RateInstance.lean`.
@@ -47,7 +47,7 @@ namespace TwoComponentCoulomb
 
 /-! ### The rate properties of Steps 5--6 -/
 
-/-- **The properties of the rate `ω` used in Theorem 2, Steps 5--6** (source l. 2182--2247).
+/-- **The properties of the rate `ω` used in Theorem 2, Steps 5--6** (source l. 2060–2121).
 Each field is an elementary inequality about `ω` on an explicit range of `λ`. This
 is a hypothesis of conditional helpers only; the `errorRate` instance is
 `theorem2RateHyp_errorRate`. -/
@@ -76,7 +76,7 @@ structure Theorem2RateHyp (β : ℝ) (hβ : 2 ≤ β) (ω : ℝ → ℝ) : Prop 
 
 /-- **The statement of Theorem 1 with a general rate `ω`**, in the form consumed by Steps 5--6
 of the proof of Theorem 2: the statement of the frozen `TwoComponentCoulomb.theorem_1`
-(`theorem:th1`, source l. 235--274) with `errorRate β hβ` replaced by `ω`, except that the
+(`theorem:th1`, source l. 220–266) with `errorRate β hβ` replaced by `ω`, except that the
 `β > 2` long-dipole bound has the error `C₂ N √ω` and its constants in the order (threshold, gain,
 error), and the `β = 2` long-dipole bound has the term `(1 + log |log λ| + log (1/R)) / |log λ|`
 in place of `log (1/R) / |log λ|` and its own threshold `λ₀`. Since `ω_λ ≤ √ω_λ` for

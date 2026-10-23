@@ -12,19 +12,19 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # Assembly of Proposition 2.2
 
-The ball-growth inequality (`energy_ge_ballGrowth_overlap`) with the enlarged radii `τ`
+The ball-growth identity (`energy_eq_ballGrowth_overlap`) with the enlarged radii `τ`
 (`TwoComponentCoulomb.tau`, source (deftau)) is reduced to the vertices of the 2-cycles of the
 nearest-neighbour graph and then to the per-vertex estimates of Proposition 2.2
-(source l. 512–593).
+(source l. 517–598).
 
 * `energy_ge_cycle_sum` : the ordered pairs of overlapping enlarged discs, with `max τ > λ`,
   are exactly the ordered pairs of mutual nearest neighbours (up to terms that vanish), so that
   `F_λ ≥ -½ Σᵢ (g(τᵢ) + κ) + ½ Σ_{i : φ(φ i) = i} dᵢ d_{φ i}
     [g_λ(z_{φ i} - zᵢ) - g(τᵢ) - g₁((z_{φ i} - zᵢ) / τᵢ)]`.
-* `cycle_vertex_ge` : the estimate `|g₁(w) - κ| ≤ |w|²` and the displacement ratio
+* `cycle_vertex_ge` : the estimate `|g₁(w) - κ| ≤ |w|² / 2` and the displacement ratio
   (`sq_norm_div_tau_le`) bound the bracket from below by
-  `dᵢ d_{φ i} g_λ(zᵢ - z_{φ i}) - dᵢ d_{φ i} (g(τᵢ) + κ) - 64 (r₁ i / r₂ i)²`.
-* `energy_ge_mino` : the inequality of Proposition 2.2 with the constant `C = 64`.
+  `dᵢ d_{φ i} g_λ(zᵢ - z_{φ i}) - dᵢ d_{φ i} (g(τᵢ) + κ) - 32 (r₁ i / r₂ i)²`.
+* `energy_ge_mino` : the inequality of Proposition 2.2 with the constant `C = 32`.
 -/
 
 @[expose] public section
@@ -132,7 +132,7 @@ theorem sum_overlap_eq_sum_twoCycle (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
   simp only [hT]
   rw [bracket_twoCycle hN hlam Z hcyc]
 
-/-- **The ball-growth inequality reduced to the 2-cycle vertices** (source l. 521–557,
+/-- **The ball-growth inequality reduced to the 2-cycle vertices** (source l. 526–562,
 (peq)–(trcomp) and the two-cycle contribution):
 `F_λ ≥ -½ Σᵢ (g(τᵢ) + κ) + ½ Σ_{i : φ(φ i) = i} dᵢ d_{φ i}
   [g_λ(z_{φ i} - zᵢ) - g(τᵢ) - g₁((z_{φ i} - zᵢ) / τᵢ)]`. -/
@@ -142,8 +142,13 @@ theorem energy_ge_cycle_sum (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin
         charge i * charge (nearestNeighbor Z i) *
           (smearedKernel lam (Z (nearestNeighbor Z i) - Z i) - logKernel (tau hN lam Z i : ℂ) -
             smearedKernel 1 ((Z (nearestNeighbor Z i) - Z i) / (tau hN lam Z i : ℂ))) := by
-  have h := energy_ge_ballGrowth_overlap Z hlam (tau hN lam Z) (lam_le_tau hN lam Z)
-  rwa [sum_overlap_eq_sum_twoCycle hN hlam Z] at h
+  have h := energy_eq_ballGrowth_overlap Z hlam (tau hN lam Z) (lam_le_tau hN lam Z)
+  rw [sum_overlap_eq_sum_twoCycle hN hlam Z] at h
+  rw [h]
+  have h0 : 0 ≤ ∫ x, ‖electricField charge Z (tau hN lam Z) x‖ ^ 2 :=
+    MeasureTheory.integral_nonneg fun x => sq_nonneg _
+  have hpi : 0 < 1 / (4 * Real.pi) := by positivity
+  nlinarith
 
 end CycleSum
 
@@ -151,15 +156,15 @@ end CycleSum
 
 section Vertex
 
-/-- **The per-vertex estimate** (source l. 555–574, using `|g₁(w) - κ| ≤ |w|²` and the
+/-- **The per-vertex estimate** (source l. 560–567, using `|g₁(w) - κ| ≤ |w|² / 2` and the
 displacement ratio `sq_norm_div_tau_le`): at a vertex `i` of a 2-cycle,
-`dᵢ d_{φ i} g_λ(zᵢ - z_{φ i}) - dᵢ d_{φ i} (g(τᵢ) + κ) - 64 (r₁ i / r₂ i)² ≤
+`dᵢ d_{φ i} g_λ(zᵢ - z_{φ i}) - dᵢ d_{φ i} (g(τᵢ) + κ) - 32 (r₁ i / r₂ i)² ≤
   dᵢ d_{φ i} [g_λ(z_{φ i} - zᵢ) - g(τᵢ) - g₁((z_{φ i} - zᵢ) / τᵢ)]`. -/
 theorem cycle_vertex_ge (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin N ⊕ Fin N → ℂ)
     {i : Fin N ⊕ Fin N} (hi : nearestNeighbor Z (nearestNeighbor Z i) = i) :
     charge i * charge (nearestNeighbor Z i) * smearedKernel lam (Z i - Z (nearestNeighbor Z i)) -
         charge i * charge (nearestNeighbor Z i) * (logKernel (tau hN lam Z i : ℂ) + kappa) -
-        64 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2 ≤
+        32 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2 ≤
       charge i * charge (nearestNeighbor Z i) *
         (smearedKernel lam (Z (nearestNeighbor Z i) - Z i) - logKernel (tau hN lam Z i : ℂ) -
           smearedKernel 1 ((Z (nearestNeighbor Z i) - Z i) / (tau hN lam Z i : ℂ))) := by
@@ -168,10 +173,14 @@ theorem cycle_vertex_ge (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin N �
   have hnorm : ‖(Z (nearestNeighbor Z i) - Z i) / (tau hN lam Z i : ℂ)‖ ^ 2 =
       ‖Z (nearestNeighbor Z i) - Z i‖ ^ 2 / tau hN lam Z i ^ 2 := by
     rw [norm_div, Complex.norm_real, Real.norm_of_nonneg hτ.le, div_pow]
-  have hg1 := abs_smearedKernel_one_sub_kappa_le
+  have hg1 := abs_smearedKernel_one_sub_kappa_le_half
     ((Z (nearestNeighbor Z i) - Z i) / (tau hN lam Z i : ℂ))
   rw [hnorm] at hg1
-  have hg1' := (abs_le.1 (hg1.trans hsq))
+  have herror : |smearedKernel 1
+      ((Z (nearestNeighbor Z i) - Z i) / (tau hN lam Z i : ℂ)) - kappa| ≤
+      32 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2 := by
+    nlinarith
+  have hg1' := abs_le.1 herror
   have hneg : smearedKernel lam (Z i - Z (nearestNeighbor Z i)) =
       smearedKernel lam (Z (nearestNeighbor Z i) - Z i) := by
     rw [← smearedKernel_neg lam (Z (nearestNeighbor Z i) - Z i), neg_sub]
@@ -183,15 +192,15 @@ theorem cycle_vertex_ge (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin N �
 
 end Vertex
 
-/-! ### Proposition 2.2 with the constant `64` -/
+/-! ### Proposition 2.2 with the constant `32` -/
 
 section Assembly
 
-/-- **Proposition 2.2** (`prop:mino2`, source l. 434–443, proved in l. 512–593) in the form
-proved here: with the constant `C = 64` and the sums over the vertices of the 2-cycles of the
+/-- **Proposition 2.2** (`prop:mino2`, source l. 440–449, proved in l. 517–598) in the form
+proved here: with the constant `C = 32` and the sums over the vertices of the 2-cycles of the
 nearest-neighbour graph and over the remaining vertices,
 `F_λ ≥ ½ (Σ_{φ(φ i) = i} [dᵢ d_{φ i} g_λ(zᵢ - z_{φ i}) - dᵢ (dᵢ + d_{φ i}) (g(min (r₂ i, r₂ (φ i)))
-  + κ) - 64 (r₁ i / r₂ i)²] - Σ_{φ(φ i) ≠ i} (g(r₂ i) + κ))`. -/
+  + κ) - 32 (r₁ i / r₂ i)²] - Σ_{φ(φ i) ≠ i} (g(r₂ i) + κ))`. -/
 theorem energy_ge_mino (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin N ⊕ Fin N → ℂ) :
     (1 / 2) * (∑ i ∈ Finset.univ.filter fun i => nearestNeighbor Z (nearestNeighbor Z i) = i,
         (charge i * charge (nearestNeighbor Z i) *
@@ -199,7 +208,7 @@ theorem energy_ge_mino (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin N �
           - charge i * (charge i + charge (nearestNeighbor Z i)) *
               (logKernel ((min (secondNeighborRadius hN lam Z i)
                 (secondNeighborRadius hN lam Z (nearestNeighbor Z i)) : ℝ) : ℂ) + kappa)
-          - 64 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2)
+          - 32 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2)
       - ∑ i ∈ Finset.univ.filter fun i => nearestNeighbor Z (nearestNeighbor Z i) ≠ i,
           (logKernel (secondNeighborRadius hN lam Z i : ℂ) + kappa))
       ≤ energy lam Z := by
@@ -209,7 +218,7 @@ theorem energy_ge_mino (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin N �
           - charge i * (charge i + charge (nearestNeighbor Z i)) *
               (logKernel ((min (secondNeighborRadius hN lam Z i)
                 (secondNeighborRadius hN lam Z (nearestNeighbor Z i)) : ℝ) : ℂ) + kappa)
-          - 64 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2 ≤
+          - 32 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2 ≤
         -(logKernel (tau hN lam Z i : ℂ) + kappa) + charge i * charge (nearestNeighbor Z i) *
           (smearedKernel lam (Z (nearestNeighbor Z i) - Z i) - logKernel (tau hN lam Z i : ℂ) -
             smearedKernel 1 ((Z (nearestNeighbor Z i) - Z i) / (tau hN lam Z i : ℂ))) := by

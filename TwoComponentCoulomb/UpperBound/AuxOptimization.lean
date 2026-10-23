@@ -9,14 +9,15 @@ public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 public import Mathlib.Data.Nat.Factorial.Basic
 public import TwoComponentCoulomb.Integrals.LogFacts
+import TwoComponentCoulomb.Integrals.Stirling
 
 /-!
-# Proposition 3.7, Step 3: the real-variable optimization
+# Proposition 3.6, Step 3: the real-variable optimization
 
-Source: proof of Proposition 3.7 (`prop:auxk`), l. 1119--1140 (Step 3,
-"optimization"), together with the definition (def:gbetak, l. 1020--1028) of the entropy-correction
+Source: proof of Proposition 3.6 (`prop:auxk`), l. 1068–1088 (Step 3,
+"optimization"), together with the definition (def:gbetak, l. 970–977) of the entropy-correction
 exponent `γ_{β,k}`. Nothing in this file refers to the geometry of the nearest-neighbour graph:
-it is pure real analysis, consumed by `AuxNearestNeighbor.lean`.
+it is pure real analysis, consumed by `UpperBound/AuxNearestNeighbor.lean`.
 
 ## The scales
 
@@ -28,21 +29,21 @@ Step 2 bounds a `2`-cycle displacement integral by `C · A` and any other displa
 
 ## Main definitions and results
 
-* `TwoComponentCoulomb.psiBeta`: the function `ψ_β` of source l. 1108--1117.
-* `TwoComponentCoulomb.gammaBeta`: `γ_{β,k}` of source l. 1020--1028.
+* `TwoComponentCoulomb.psiBeta`: the function `ψ_β` of source l. 1056–1065.
+* `TwoComponentCoulomb.gammaBeta`: `γ_{β,k}` of source l. 970–977.
 * `TwoComponentCoulomb.psiBeta_eq`: `ψ_β(x) = x log A + (1 - 2x) log B`.
 * `TwoComponentCoulomb.gammaBeta_eq`: `γ_{β,k} = log (max (A k / N) (B ^ 2))`.
 * `TwoComponentCoulomb.affine_maximization`: for `0 ≤ x ≤ 1/2`,
   `x log (k/N) + ψ_β(x) ≤ γ_{β,k} / 2`, with equality at `x = 0` or `x = 1/2`
-  (source l. 1135--1139: "The function being maximized is affine").
+  (source l. 1083–1087: "The function being maximized is affine").
 * `TwoComponentCoulomb.count_mul_pow_le`: the entropy combination of the graph count with the
-  integral bound (source l. 1122--1133): for `2 k₀ + k₁ ≤ k ≤ p ≤ N`,
+  integral bound (source l. 1070–1081): for `2 k₀ + k₁ ≤ k ≤ p ≤ N`,
   `(2^k k^k p^{k₁} / (k₀! k₁!)) N^{p - k + k₀} ≤ (2 e²)^k N^p (k/N)^{k₀}`.
 * `TwoComponentCoulomb.affine_max`, `TwoComponentCoulomb.affine_max_log`: the endpoint
   maximization of `x ↦ x u + (1 - 2x) v` on `[0, 1/2]`, for general scales `A, B > 0`.
 * `TwoComponentCoulomb.pow_mul_pow_le_exp`: the multiplicative form of the same maximization,
   `X^{k₀} b^{k - 2 k₀} ≤ exp ((k/2) log m)`; it is the form used in the assembly.
-* `TwoComponentCoulomb.sum_le_exp`: the summation over `(k₀, k₁)` (source l. 1134): the sum of
+* `TwoComponentCoulomb.sum_le_exp`: the summation over `(k₀, k₁)` (source l. 1082): the sum of
   the per-cell bounds is at most `exp (p log N + C k + (k/2) log (max (A k / N) (B ^ 2)))`.
 
 `psiBeta` and `gammaBeta` take the hypothesis `0 ≤ β` as an (unused) argument, so that they are
@@ -56,19 +57,45 @@ open Finset
 
 namespace TwoComponentCoulomb
 
-/-! ### Entropy combination (source l. 1122--1133) -/
+/-! ### Entropy combination (source l. 1070–1081) -/
 
-/-- **Count against the volume factor** (source l. 1122--1133, the first inequality of the
-displayed chain, written multiplicatively): for `2 k₀ + k₁ ≤ k ≤ p ≤ N`,
-`(2^k k^k p^{k₁} / (k₀! k₁!)) N^{p - k + k₀} ≤ (2 e²)^k N^p (k/N)^{k₀}`.
-We use `x^n / n! ≤ eˣ` for `k^{k₀} / k₀!` and `k^{k₁} / k₁!`, `p ≤ N`, and
-`(k/N)^{k - k₀ - k₁} ≤ (k/N)^{k₀}` (which uses `2 k₀ + k₁ ≤ k` and `k ≤ N`). -/
-theorem count_mul_pow_le {k₀ k₁ k p N : ℕ} (h : 2 * k₀ + k₁ ≤ k) (hkp : k ≤ p) (hpN : p ≤ N)
+/-- Stirling's lower bound, including the convention `0 log 0 = 0`. -/
+theorem log_factorial_ge_mul_log (n : ℕ) :
+    (n : ℝ) * Real.log n - n ≤ Real.log (n ! : ℝ) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  · linarith [log_factorial_ge hn]
+
+/-- The factorial entropy term is bounded by `K`. First use
+`log n! ≥ n log n - n`, then `n log (K/n) ≤ K - n`.
+This is the Stirling and entropy calculation in `prop:auxk`, Step 3. -/
+theorem pow_div_factorial_le_exp_of_stirling {K : ℝ} (hK : 0 < K) (n : ℕ) :
+    K ^ n / (n ! : ℝ) ≤ Real.exp K := by
+  have hf : (0 : ℝ) < (n ! : ℝ) := by exact_mod_cast Nat.factorial_pos n
+  have hlog : Real.log (K ^ n / (n ! : ℝ)) ≤ K := by
+    rw [Real.log_div (by positivity) hf.ne', Real.log_pow]
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · simp only [Nat.cast_zero, zero_mul, Nat.factorial_zero, Nat.cast_one, Real.log_one,
+        sub_zero]
+      exact hK.le
+    · have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
+      have he := mul_le_mul_of_nonneg_left
+        (Real.log_le_sub_one_of_pos (div_pos hK hn0)) hn0.le
+      rw [Real.log_div hK.ne' hn0.ne', mul_sub, mul_sub, mul_div_cancel₀ _ hn0.ne',
+        mul_one] at he
+      linarith [log_factorial_ge_mul_log n]
+  exact (Real.log_le_iff_le_exp (by positivity)).1 hlog
+
+/-- Combining the factorial entropy terms and the volume bound before the vertex-budget
+simplification gives `(k/N)^{k-k₀-k₁}`, as in manuscript lines 1143–1149. -/
+theorem count_mul_pow_le_before_budget {k₀ k₁ k p N : ℕ} (h : 2 * k₀ + k₁ ≤ k) (hkp : k ≤ p) (hpN : p ≤ N)
     (hk : 1 ≤ k) :
     2 ^ k * (k : ℝ) ^ k * (p : ℝ) ^ k₁ / ((k₀ ! : ℝ) * (k₁ ! : ℝ)) * (N : ℝ) ^ (p - k + k₀) ≤
-      (2 * Real.exp 2) ^ k * (N : ℝ) ^ p * ((k : ℝ) / N) ^ k₀ := by
+      (2 * Real.exp 2) ^ k * (N : ℝ) ^ p * ((k : ℝ) / N) ^ (k - k₀ - k₁) := by
   obtain ⟨t, ht⟩ : ∃ t, k = 2 * k₀ + k₁ + t := ⟨k - (2 * k₀ + k₁), by omega⟩
   obtain ⟨q, hq⟩ : ∃ q, p = k + q := ⟨p - k, by omega⟩
+  have hrem : k - k₀ - k₁ = k₀ + t := by omega
+  rw [hrem]
   have hK0 : (0 : ℝ) < k := by exact_mod_cast hk
   have hKN : (k : ℝ) ≤ N := by exact_mod_cast hkp.trans hpN
   have hN0 : (0 : ℝ) < N := hK0.trans_le hKN
@@ -76,18 +103,17 @@ theorem count_mul_pow_le {k₀ k₁ k p N : ℕ} (h : 2 * k₀ + k₁ ≤ k) (hk
   have hp0 : (0 : ℝ) ≤ p := Nat.cast_nonneg p
   have hf0 : (0 : ℝ) < (k₀ ! : ℝ) := by exact_mod_cast Nat.factorial_pos k₀
   have hf1 : (0 : ℝ) < (k₁ ! : ℝ) := by exact_mod_cast Nat.factorial_pos k₁
-  have hA := Real.pow_div_factorial_le_exp (k : ℝ) hK0.le k₀
-  have hB := Real.pow_div_factorial_le_exp (k : ℝ) hK0.le k₁
+  have hA := pow_div_factorial_le_exp_of_stirling hK0 k₀
+  have hB := pow_div_factorial_le_exp_of_stirling hK0 k₁
   have hpk : (p : ℝ) ^ k₁ ≤ (N : ℝ) ^ k₁ := pow_le_pow_left₀ hp0 hpN' k₁
-  have hKt : (k : ℝ) ^ t ≤ (N : ℝ) ^ t := pow_le_pow_left₀ hK0.le hKN t
   have hexp : (Real.exp 2) ^ k = Real.exp k * Real.exp k := by
     rw [← Real.exp_nat_mul, ← Real.exp_add]; exact congrArg Real.exp (by ring)
   have hkexp : (k : ℝ) ^ k = (k : ℝ) ^ k₀ * (k : ℝ) ^ k₁ * (k : ℝ) ^ (k₀ + t) := by
     rw [← pow_add, ← pow_add]; exact congrArg (fun e => (k : ℝ) ^ e) (by omega)
-  have hNexp : (N : ℝ) ^ p = (N : ℝ) ^ (q + k₀ + k₁ + t) * (N : ℝ) ^ k₀ := by
+  have hNexp : (N : ℝ) ^ p = (N : ℝ) ^ (q + k₀ + k₁) * (N : ℝ) ^ (k₀ + t) := by
     rw [← pow_add]; exact congrArg (fun e => (N : ℝ) ^ e) (by omega)
   have hsub : p - k + k₀ = q + k₀ := by omega
-  have hNK : (N : ℝ) ^ k₀ * ((k : ℝ) / N) ^ k₀ = (k : ℝ) ^ k₀ := by
+  have hNK : (N : ℝ) ^ (k₀ + t) * ((k : ℝ) / N) ^ (k₀ + t) = (k : ℝ) ^ (k₀ + t) := by
     rw [← mul_pow, mul_div_cancel₀ _ hN0.ne']
   have hLHS : 2 ^ k * (k : ℝ) ^ k * (p : ℝ) ^ k₁ / ((k₀ ! : ℝ) * (k₁ ! : ℝ)) *
       (N : ℝ) ^ (p - k + k₀) = 2 ^ k * ((k : ℝ) ^ k₀ / (k₀ ! : ℝ)) * ((k : ℝ) ^ k₁ / (k₁ ! : ℝ)) *
@@ -96,16 +122,10 @@ theorem count_mul_pow_le {k₀ k₁ k p N : ℕ} (h : 2 * k₀ + k₁ ≤ k) (hk
     conv_lhs => rw [hkexp]
     ring
   rw [hLHS, mul_pow, hexp]
-  have hmid : (k : ℝ) ^ (k₀ + t) * (N : ℝ) ^ k₁ * (N : ℝ) ^ (q + k₀) ≤
-      (N : ℝ) ^ (q + k₀ + k₁ + t) * (k : ℝ) ^ k₀ := by
-    calc (k : ℝ) ^ (k₀ + t) * (N : ℝ) ^ k₁ * (N : ℝ) ^ (q + k₀)
-        = (k : ℝ) ^ k₀ * (k : ℝ) ^ t * (N : ℝ) ^ (q + k₀ + k₁) := by
-          rw [pow_add, pow_add (N : ℝ) (q + k₀) k₁]; ring
-      _ ≤ (k : ℝ) ^ k₀ * (N : ℝ) ^ t * (N : ℝ) ^ (q + k₀ + k₁) :=
-          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hKt (by positivity))
-            (by positivity)
-      _ = (N : ℝ) ^ (q + k₀ + k₁ + t) * (k : ℝ) ^ k₀ := by
-          rw [pow_add (N : ℝ) (q + k₀ + k₁) t]; ring
+  have hmid : (k : ℝ) ^ (k₀ + t) * (N : ℝ) ^ k₁ * (N : ℝ) ^ (q + k₀) =
+      (N : ℝ) ^ (q + k₀ + k₁) * (k : ℝ) ^ (k₀ + t) := by
+    rw [pow_add (N : ℝ) (q + k₀) k₁]
+    ring
   have hE0 : 0 ≤ 2 ^ k * Real.exp k * Real.exp k := by positivity
   have hE0' : 0 ≤ 2 ^ k * Real.exp k := by positivity
   calc 2 ^ k * ((k : ℝ) ^ k₀ / (k₀ ! : ℝ)) * ((k : ℝ) ^ k₁ / (k₁ ! : ℝ)) *
@@ -116,24 +136,36 @@ theorem count_mul_pow_le {k₀ k₁ k p N : ℕ} (h : 2 * k₀ + k₁ ≤ k) (hk
         (mul_le_mul (mul_le_mul_of_nonneg_left hA (by positivity)) hB (by positivity) hE0')
         (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hpk (by positivity))
           (by positivity)) (by positivity) hE0
-    _ ≤ 2 ^ k * Real.exp k * Real.exp k *
-        ((N : ℝ) ^ (q + k₀ + k₁ + t) * (k : ℝ) ^ k₀) := mul_le_mul_of_nonneg_left hmid hE0
-    _ = 2 ^ k * (Real.exp k * Real.exp k) * (N : ℝ) ^ p * ((k : ℝ) / N) ^ k₀ := by
+    _ = 2 ^ k * Real.exp k * Real.exp k *
+        ((N : ℝ) ^ (q + k₀ + k₁) * (k : ℝ) ^ (k₀ + t)) := by rw [hmid]
+    _ = 2 ^ k * (Real.exp k * Real.exp k) * (N : ℝ) ^ p * ((k : ℝ) / N) ^ (k₀ + t) := by
         rw [hNexp, ← hNK]; ring
+
+/-- Apply `2 k₀ + k₁ ≤ k` to the count and volume bound. Since `k/N ≤ 1`,
+`(k/N)^{k-k₀-k₁} ≤ (k/N)^{k₀}`, as in manuscript lines 1149–1151. -/
+theorem count_mul_pow_le {k₀ k₁ k p N : ℕ} (h : 2 * k₀ + k₁ ≤ k) (hkp : k ≤ p) (hpN : p ≤ N)
+    (hk : 1 ≤ k) :
+    2 ^ k * (k : ℝ) ^ k * (p : ℝ) ^ k₁ / ((k₀ ! : ℝ) * (k₁ ! : ℝ)) * (N : ℝ) ^ (p - k + k₀) ≤
+      (2 * Real.exp 2) ^ k * (N : ℝ) ^ p * ((k : ℝ) / N) ^ k₀ := by
+  refine (count_mul_pow_le_before_budget h hkp hpN hk).trans ?_
+  apply mul_le_mul_of_nonneg_left _ (by positivity)
+  have hrat : (k : ℝ) / N ≤ 1 := div_le_one_of_le₀ (by exact_mod_cast hkp.trans hpN)
+    (Nat.cast_nonneg N)
+  exact pow_le_pow_of_le_one (by positivity) hrat (by omega)
 
 /-! ### The scales and the functions `ψ_β`, `γ_{β,k}` -/
 
-/-- The size of the integral of a `2`-cycle displacement (source l. 1097--1118), as a function of
+/-- The size of the integral of a `2`-cycle displacement (source l. 1045–1065), as a function of
 `β` and `λ`: `1` for `β < 2`, `ℓ = |log λ|` for `β = 2` and `λ^{2-β}` for `β > 2`. -/
 noncomputable def cycleScale (β lam : ℝ) : ℝ :=
   if β < 2 then 1 else if β = 2 then |Real.log lam| else lam ^ (2 - β)
 
-/-- The size of the integral of a non-cycle displacement (source l. 1097--1118): `1` for `β < 4`,
+/-- The size of the integral of a non-cycle displacement (source l. 1045–1065): `1` for `β < 4`,
 `ℓ^{1+δ}` for `β = 4` and `λ^{2-β/2}` for `β > 4`. -/
 noncomputable def treeScale (β : ℝ) (δ : ℕ) (lam : ℝ) : ℝ :=
   if β < 4 then 1 else if β = 4 then |Real.log lam| ^ (1 + δ) else lam ^ (2 - β / 2)
 
-/-- The function `ψ_β` of source l. 1108--1117 (`ℓ = |log λ|`), for `β ≥ 0`. -/
+/-- The function `ψ_β` of source l. 1056–1065 (`ℓ = |log λ|`), for `β ≥ 0`. -/
 noncomputable def psiBeta (β : ℝ) (_hβ : 0 ≤ β) (δ : ℕ) (lam x : ℝ) : ℝ :=
   if β < 2 then 0
   else if β = 2 then x * Real.log |Real.log lam|
@@ -142,7 +174,7 @@ noncomputable def psiBeta (β : ℝ) (_hβ : 0 ≤ β) (δ : ℕ) (lam x : ℝ) 
     -2 * x * Real.log lam + (1 + (δ : ℝ)) * (1 - 2 * x) * Real.log |Real.log lam|
   else (2 - β) * x * Real.log lam + (2 - β / 2) * (1 - 2 * x) * Real.log lam
 
-/-- The entropy-correction exponent `γ_{β,k}` of source l. 1020--1028 (def:gbetak), for `β ≥ 0`.
+/-- The entropy-correction exponent `γ_{β,k}` of source l. 970–977 (def:gbetak), for `β ≥ 0`.
 The case `β = 0`, `δ' = 1` and the case `β ∈ (0, 2)` of the source both give `0`. -/
 noncomputable def gammaBeta (β : ℝ) (_hβ : 0 ≤ β) (δ : ℕ) (lam : ℝ) (k N : ℕ) : ℝ :=
   if β < 2 then 0
@@ -305,7 +337,7 @@ theorem gammaBeta_eq (β : ℝ) (hβ : 0 ≤ β) (δ : ℕ) (hlam : 0 < lam) {k 
       ring
     rw [gammaBeta_of_four_lt h4, cycleScale_of_two_lt (by linarith), treeScale_of_four_lt h4, e2]
 
-/-! #### Maximization of the affine function (source l. 1135--1139) -/
+/-! #### Maximization of the affine function (source l. 1083–1087) -/
 
 /-- An affine function `x ↦ x u + (1 - 2x) v` on `[0, 1/2]` is at most `max u (2 v) / 2`, and
 this maximum is attained at one of the two endpoints (`x = 0`: value `v`; `x = 1/2`: value `u/2`). -/
@@ -356,7 +388,7 @@ theorem affine_max_log {A B : ℝ} (hA : 0 < A) (hB : 0 < B) {k N : ℕ} (hk : 1
     · left; linear_combination h
     · right; linear_combination h
 
-/-- **Proposition 3.7, Step 3: affine maximization** (source l. 1135--1139), in the source's
+/-- **Proposition 3.6, Step 3: affine maximization** (source l. 1083–1087), in the source's
 notation. For `0 ≤ β`, `0 < λ ≤ e⁻¹` and integers `1 ≤ k ≤ N`, the function
 `x ↦ x log (k/N) + ψ_β(x)` is at most `γ_{β,k} / 2` on `[0, 1/2]`, and the value `γ_{β,k} / 2`
 is attained at one of the endpoints `x = 0`, `x = 1/2`. -/
@@ -375,9 +407,9 @@ theorem affine_maximization (β : ℝ) (hβ : 0 ≤ β) (δ : ℕ) {lam : ℝ} (
 
 end Scales
 
-/-! ### Summation over the graph types (source l. 1134--1140) -/
+/-! ### Summation over the graph types (source l. 1082–1088) -/
 
-/-- **Maximization of the affine function, in multiplicative form** (source l. 1134--1139): if
+/-- **Maximization of the affine function, in multiplicative form** (source l. 1082–1087): if
 `X, b > 0` and `X, b² ≤ m`, then for `1 ≤ k` and `2 k₀ ≤ k` we have
 `X^{k₀} b^{k - 2 k₀} ≤ m^{k/2} = exp ((k/2) log m)`. Indeed, with `x = k₀/k ∈ [0, 1/2]` the logarithm
 of the left side is `k (x log X + (1 - 2x) log b) ≤ k max (log X) (2 log b) / 2` (`affine_max`). -/
@@ -413,7 +445,7 @@ theorem pow_mul_pow_le_exp {X b m : ℝ} (hX : 0 < X) (hb : 0 < b) (hXm : X ≤ 
           (hmax.trans (div_le_div_of_nonneg_right hmax' (by norm_num : (0 : ℝ) ≤ 2))) hK0.le
     _ = (k : ℝ) / 2 * Real.log m := by ring
 
-/-- **Summation over `(k₀, k₁)` and assembly of Step 3** (source l. 1126--1140). Let `d k₀ k₁`
+/-- **Summation over `(k₀, k₁)` and assembly of Step 3** (source l. 1074–1088). Let `d k₀ k₁`
 bound the number of graphs in `D(k₀, k₁)`: `d k₀ k₁ · k₀! k₁! ≤ 2^k k^k p^{k₁}` whenever
 `2 k₀ + k₁ ≤ k`, and `d k₀ k₁ = 0` when `2 k₀ + k₁ > k`. If the integral over one graph of type
 `(k₀, k₁)` is bounded by `e^{2k} N^{p - k + k₀} (C_a A)^{k₀} (C_b B)^{k - 2 k₀}` (Step 2 with the

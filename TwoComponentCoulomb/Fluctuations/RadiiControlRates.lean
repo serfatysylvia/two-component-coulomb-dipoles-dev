@@ -12,7 +12,7 @@ import TwoComponentCoulomb.Main.Theorem1AssemblyBounds
 /-!
 # The radius `R₀` (Theorem 2, Step 5)
 
-Source: proof of Theorem 2, Step 5 (l. 2182--2194): the radius is
+Source: proof of Theorem 2, Step 5 (l. 2060–2068): the radius is
 
 `R₀ = ω_λ^{1/4}` (`β = 2`),  `R₀ = λ ω_λ^{-1/(2(β-2))} ∨ 2λ` (`β > 2`).
 
@@ -38,7 +38,7 @@ namespace TwoComponentCoulomb
 /-! ### The radius `R₀` -/
 
 /-- The radius `R₀` of Step 5 for a general rate function `ω` in place of `ω_λ`:
-`ω(λ)^{1/4}` if `β = 2`, and `λ ω(λ)^{-1/(2(β-2))}` if `β > 2`. The source (l. 2184--2187)
+`ω(λ)^{1/4}` if `β = 2`, and `λ ω(λ)^{-1/(2(β-2))}` if `β > 2`. The source (l. 2062–2065)
 writes `λ ω_λ^{-1/(2(β-2))} ∨ 2λ` for `β > 2`; the maximum with `2λ` is not needed, because
 `2λ ≤ λ ω^{-1/(2(β-2))}` for `λ` small (`exists_R0Rate_regime_of_two_lt`). -/
 noncomputable def R0Rate (β : ℝ) (ω : ℝ → ℝ) (lam : ℝ) : ℝ :=
@@ -123,7 +123,7 @@ theorem exists_R0Rate_regime_of_two_lt {β : ℝ} (h2 : 2 < β) {ω : ℝ → �
     rw [hs]
     field_simp
 
-/-- **The range of `R₀` for a general rate function `ω`** (source l. 2191--2194): for `λ` small,
+/-- **The range of `R₀` for a general rate function `ω`** : for `λ` small,
 `2λ ≤ R₀ ≤ ω(λ)^{1/4}`; for `β > 2`, `(λ/R₀)^{β-2} = √ω(λ)`; for `β = 2`,
 `(1 + log |log λ| + log (1/R₀)) / |log λ| ≤ 5 ω(λ)`. The hypotheses are elementary
 properties of the rate `ω` on `(0, e⁻¹)` (resp. `(0, e⁻⁴)` for the `β = 2` comparisons). -/

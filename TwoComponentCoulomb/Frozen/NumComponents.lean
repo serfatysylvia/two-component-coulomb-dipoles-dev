@@ -12,7 +12,7 @@ public import TwoComponentCoulomb.Frozen.NearestNeighbor
 # Frozen: `TwoComponentCoulomb.numComponents`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 375.
+Source: l. 378.
 -/
 
 @[expose] public section
@@ -20,7 +20,7 @@ Source: l. 375.
 namespace TwoComponentCoulomb
 
 /-- `K`: the number of connected components of the nearest-neighbour graph `γ_{2N}(Z_{2N})`,
-the graph on `{1, …, 2N}` with an edge from `i` to `φ₁(i)` (source l. 375). -/
+the graph on `{1, …, 2N}` with an edge from `i` to `φ₁(i)` (source l. 378). -/
 noncomputable def numComponents {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) : ℕ :=
   Nat.card (SimpleGraph.fromRel fun i j => nearestNeighbor Z i = j).ConnectedComponent
 

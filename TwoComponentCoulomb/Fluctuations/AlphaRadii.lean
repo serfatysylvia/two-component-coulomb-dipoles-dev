@@ -9,21 +9,21 @@ public import TwoComponentCoulomb.Energy.MinoPairs
 /-!
 # The radii `αᵢ` of the ball-growth method in Theorem 2, Step 2
 
-Source: l. 1995–2006 and 2062–2068. Write `φ₁ = nearestNeighbor Z`,
+Source: l. 1872–1883, 1941–1946. Write `φ₁ = nearestNeighbor Z`,
 `r̃₁ = firstNeighborRadius λ Z`, `r̃₂ = secondNeighborRadius hN λ Z`, and let `τᵢ = tau hN λ Z i`
 be the enlarged radii of Proposition 2.2 (source (deftau)). For a parameter `γ` (in the source
 `2λ ≤ γ ≤ 1`) the radii of Theorem 2, Step 2 are
 
-`αᵢ := (τᵢ ∧ γ) ∨ r̃₁(zᵢ)`   (source (eq:def alphai), l. 2004–2006).
+`αᵢ := (τᵢ ∧ γ) ∨ r̃₁(zᵢ)`   (source the definition of αᵢ in Step 2, l. 1882–1883).
 
 * `alphaRadius` : the radii `αᵢ`.
 * `firstNeighborRadius_le_alphaRadius`, `alphaRadius_le_tau`, `alphaRadius_nearestNeighbor_eq` :
   `λ ≤ r̃₁(zᵢ) ≤ αᵢ ≤ τᵢ`, and `α_{φ₁ i} = αᵢ` on a 2-cycle. These are the only properties of the
   radii used by the ball-growth argument of Proposition 2.2.
 * `cutoffRadius_le_two_mul_alphaRadius`, `sq_norm_div_alphaRadius_le` : the displacement ratio on a
-  2-cycle (source l. 2020, which writes the error with `r̃₂(zᵢ)` in place of `τᵢ`),
+  2-cycle (source l. 1897, which writes the error with `r̃₂(zᵢ)` in place of `τᵢ`),
   `|z_{φ₁ i} - zᵢ|² / αᵢ² ≤ 64 (r̃₁ / ((r̃₂ ∧ γ) ∨ r̃₁))²`.
-* `sq_div_max_min_le` : (source l. 2062–2067) for `0 < r̃₁ ≤ r̃₂` and `γ > 0`,
+* `sq_div_max_min_le` : (source l. 1941–1945) for `0 < r̃₁ ≤ r̃₂` and `γ > 0`,
   `(r̃₁ / ((r̃₂ ∧ γ) ∨ r̃₁))² ≤ (r̃₁ / r̃₂)² + ((r̃₁ / γ)² ∧ 1)`.
 -/
 
@@ -33,8 +33,8 @@ namespace TwoComponentCoulomb
 
 variable {N : ℕ}
 
-/-- The radii of the ball-growth method in Theorem 2, Step 2 (source (eq:def alphai),
-l. 2004–2006): `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)`, where `τᵢ = tau hN lam Z i` are the enlarged radii of
+/-- The radii of the ball-growth method in Theorem 2, Step 2 (source the definition of αᵢ in Step 2,
+l. 1882–1883): `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)`, where `τᵢ = tau hN lam Z i` are the enlarged radii of
 Proposition 2.2 (source (deftau)) and `γ` is a parameter (`2λ ≤ γ ≤ 1` in the source). -/
 noncomputable def alphaRadius (hN : 2 ≤ N) (lam γ : ℝ) (Z : Fin N ⊕ Fin N → ℂ)
     (i : Fin N ⊕ Fin N) : ℝ :=
@@ -86,7 +86,7 @@ theorem alphaRadius_pos (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (γ : ℝ) (
     (i : Fin N ⊕ Fin N) : 0 < alphaRadius hN lam γ Z i :=
   hlam.trans_le (lam_le_alphaRadius hN lam γ Z i)
 
-/-! ### The displacement ratio (source l. 2020) -/
+/-! ### The displacement ratio (source l. 1897) -/
 
 section Displacement
 
@@ -118,7 +118,7 @@ theorem cutoffRadius_le_two_mul_alphaRadius (hN : 2 ≤ N) {lam : ℝ} (hlam : 0
     have h4 := le_max_left (min (min R R') γ) ρ
     exact max_le (by linarith) (by linarith)
 
-/-- **The displacement ratio** with the radii `α` (source l. 2020): at a vertex `i` of a 2-cycle,
+/-- **The displacement ratio** with the radii `α` (source l. 1897): at a vertex `i` of a 2-cycle,
 `|z_{φ₁ i} - zᵢ|² / αᵢ² ≤ 64 (r̃₁(zᵢ) / ((r̃₂(zᵢ) ∧ γ) ∨ r̃₁(zᵢ)))²`. -/
 theorem sq_norm_div_alphaRadius_le (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (γ : ℝ)
     (Z : Fin N ⊕ Fin N → ℂ) {i : Fin N ⊕ Fin N}
@@ -155,12 +155,12 @@ theorem sq_norm_div_alphaRadius_le (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (
 
 end Displacement
 
-/-! ### Splitting the quadratic error (source l. 2062–2067) -/
+/-! ### Splitting the quadratic error (source l. 1941–1945) -/
 
 section Split
 
 /-- For `0 < r₁ ≤ r₂` and `γ > 0`:
-`(r₁ / ((r₂ ∧ γ) ∨ r₁))² ≤ (r₁ / r₂)² + ((r₁ / γ)² ∧ 1)` (source l. 2062–2067). -/
+`(r₁ / ((r₂ ∧ γ) ∨ r₁))² ≤ (r₁ / r₂)² + ((r₁ / γ)² ∧ 1)` (source l. 1941–1945). -/
 theorem sq_div_max_min_le {r₁ r₂ γ : ℝ} (h1 : 0 < r₁) (h12 : r₁ ≤ r₂) (hγ : 0 < γ) :
     (r₁ / max (min r₂ γ) r₁) ^ 2 ≤ (r₁ / r₂) ^ 2 + min ((r₁ / γ) ^ 2) 1 := by
   have hs := sq_nonneg (r₁ / r₂)

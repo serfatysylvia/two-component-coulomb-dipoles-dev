@@ -15,9 +15,9 @@ public import TwoComponentCoulomb.Gibbs.Measurability
 /-!
 # Plumbing for the Gibbs measure
 
-Elementary facts on the box `Λ = [0, √N]²` (source l. 125), the
-partition function `partitionFunction` (eq. (eq:ZRV), l. 176--177) and the Gibbs measure
-`gibbsMeasure` (eq. (defP), l. 172--174), used in the proofs of Theorems 1 and 2.
+Elementary facts on the box `Λ = [0, √N]²` (source l. 110), the
+partition function `partitionFunction` (the definition of Z, l. 161) and the Gibbs measure
+`gibbsMeasure` (eq. (defP), l. 157–159), used in the proofs of Theorems 1 and 2.
 
 Throughout, `Λ` denotes `Set.univ.pi fun _ : Fin N ⊕ Fin N => box N`, the domain of integration of
 the partition function.
@@ -31,7 +31,7 @@ the partition function.
 * `gibbsMeasure_apply`, `gibbsMeasure_apply'`, `lintegral_gibbsMeasure` : integrals against the
   Gibbs measure as normalised integrals of the Boltzmann weight over `Λ`.
 * `lintegral_gibbsMeasure_exp_energy_sub_reducedEnergy` : the identity
-  `𝔼[e^{β(F_λ - F̃_λ)}] = K / Z` behind Theorem 1 (2) (source l. 1923--1933), where
+  `𝔼[e^{β(F_λ - F̃_λ)}] = K / Z` behind Theorem 1 (2) , where
   `K = ∫_Λ e^{-β F̃_λ}`.
 -/
 
@@ -169,7 +169,7 @@ theorem lintegral_gibbsMeasure' {N : ℕ} {β lam : ℝ} (f : (Fin N ⊕ Fin N �
       (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top) f]
   simp_rw [Pi.mul_apply, mul_comm]
 
-/-- The identity behind Theorem 1 (2) (source l. 1923--1933):
+/-- The identity behind Theorem 1 (2) :
 `𝔼[e^{β(F_λ - F̃_λ)}] = Z⁻¹ ∫_Λ e^{-β F̃_λ}`. -/
 theorem lintegral_gibbsMeasure_exp_energy_sub_reducedEnergy {N : ℕ} {β lam : ℝ} :
     ∫⁻ Z, ENNReal.ofReal (Real.exp (β * (energy lam Z - reducedEnergy lam Z)))

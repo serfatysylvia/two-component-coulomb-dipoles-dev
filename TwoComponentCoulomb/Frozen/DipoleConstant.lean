@@ -14,7 +14,7 @@ public import TwoComponentCoulomb.Frozen.SmearedKernel
 # Frozen: `TwoComponentCoulomb.dipoleConstant`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 208–213.
+Source: l. 193–198.
 -/
 
 open MeasureTheory
@@ -23,7 +23,7 @@ open MeasureTheory
 
 namespace TwoComponentCoulomb
 
-/-- `𝒵_β`, eq. (def:Cbeta) (source l. 208–213); defined for `β ≥ 2` only (ruling R6). -/
+/-- `𝒵_β`, eq. (def:Cbeta) (source l. 193–198); defined for `β ≥ 2` only (ruling R6). -/
 noncomputable def dipoleConstant (β : ℝ) (_hβ : 2 ≤ β) : ℝ :=
   if β = 2 then 2 * Real.pi
   else 2 * Real.pi * ∫ r in Set.Ioi (0 : ℝ), Real.exp (β * smearedKernel 1 r) * r

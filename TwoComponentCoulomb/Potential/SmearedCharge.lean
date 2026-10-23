@@ -12,7 +12,7 @@ public import TwoComponentCoulomb.Frozen.SmearedCharge
 # API for the uniform disc measure `smearedCharge`
 
 Basic facts about `δ_z^{(a)} = smearedCharge z a`, the uniform probability measure on the disc
-`B(z, a)` (source l. 148).
+`B(z, a)` (source l. 133).
 
 * `smearedCharge_eq` : `δ_z^{(a)} = |B(z, a)|⁻¹ • (volume restricted to B(z, a))`.
 * `smearedCharge_of_nonpos` : the measure is `0` when `a ≤ 0` (the disc is empty).

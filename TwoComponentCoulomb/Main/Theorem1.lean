@@ -12,8 +12,8 @@ public import TwoComponentCoulomb.Frozen.IsolatedDipoles
 public import TwoComponentCoulomb.Frozen.LongIsolatedDipoles
 public import TwoComponentCoulomb.Frozen.PartitionFunction
 public import TwoComponentCoulomb.Frozen.ReducedEnergy
-import TwoComponentCoulomb.Frozen.Lemma36
-import TwoComponentCoulomb.Frozen.Proposition310
+import TwoComponentCoulomb.Frozen.Lemma35
+import TwoComponentCoulomb.Frozen.Proposition39And310
 import TwoComponentCoulomb.Main.Theorem1Assembly
 
 /-!
@@ -21,9 +21,9 @@ import TwoComponentCoulomb.Main.Theorem1Assembly
 
 Registered implementation module of `TwoComponentCoulomb/Frozen/Theorem1.lean`. Its export
 `TwoComponentCoulomb.Main.theorem_1` states and proves exactly the frozen statement (Theorem 1,
-source l. 235–274) by applying the assembly `theorem_1_of_gates` (`Main/Theorem1Assembly.lean`;
-proof of Theorem 1, l. 1904–1959) to the sealed anchors `TwoComponentCoulomb.lemma_3_6`
-(Lemma 3.6) and `TwoComponentCoulomb.proposition_3_10` (Proposition 3.10).
+source l. 220–266) by applying the assembly `theorem_1_of_gates` (`Main/Theorem1Assembly.lean`;
+proof of Theorem 1, l. 1808–1837) to the sealed anchors `TwoComponentCoulomb.lemma_3_5`
+(Lemma 3.5) and `TwoComponentCoulomb.proposition_3_9_and_3_10` (Propositions 3.9 and 3.10).
 
 This module must never import the anchor.
 -/
@@ -69,7 +69,7 @@ theorem theorem_1 {β : ℝ} {hβ : 2 ≤ β} :
           gibbsMeasure N β lam {Z | (longIsolatedDipoles Z R).card = p₀'}
             ≤ ENNReal.ofReal (((N : ℝ) + 1) ^ C * Real.exp (-(p₀' : ℝ) + C * N *
                 (errorRate β hβ lam + Real.log (1 / R) / |Real.log lam|)))) :=
-  theorem_1_of_gates β hβ (lemma_3_6 β hβ) (proposition_3_10 β hβ)
+  theorem_1_of_gates β hβ (lemma_3_5 β hβ) (proposition_3_9_and_3_10 β hβ)
 
 end TwoComponentCoulomb.Main
 

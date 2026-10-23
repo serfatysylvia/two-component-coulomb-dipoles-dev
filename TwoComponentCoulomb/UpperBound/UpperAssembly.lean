@@ -8,12 +8,13 @@ public import TwoComponentCoulomb.Frozen.IsolatedDipoles
 public import TwoComponentCoulomb.Frozen.PartitionFunction
 public import TwoComponentCoulomb.UpperBound.Isolated
 public import TwoComponentCoulomb.UpperBound.UpperCellBound
+import TwoComponentCoulomb.UpperBound.UpperCorollary
 import TwoComponentCoulomb.Integrals.Radial
 
 /-!
-# Proposition 3.10 for `β > 2`: assembly of Steps 2--3 (ubz and eq:neutral bound)
+# Proposition 3.9 for `β > 2`: assembly of Steps 2--3 (ubz and eq:neutral bound)
 
-Source: proof of Proposition 3.10, l. 1513--1628.
+Source: proof of Proposition 3.9, l. 1421–1532.
 
 ## Structure
 
@@ -22,37 +23,39 @@ The generic part, valid for any family of cell integrals, is
 * `TwoComponentCoulomb.UpperCellBound.CellBoundRate` and
   `TwoComponentCoulomb.UpperCellBound.exists_card_mul_le_of_cellBound_rate`
   (`UpperBound/UpperCellBound.lean`): from the per-cell bound to (eq:quadra x3) for one graph;
-* `TwoComponentCoulomb.UpperAssembly.lintegral_le_of_card_mul_le` (l. 1622): the sum over
+* `TwoComponentCoulomb.UpperAssembly.lintegral_le_of_card_mul_le` (l. 1526): the sum over
   `K, p, p₀` and the graphs costs `3 log (N + 1)`;
 * `TwoComponentCoulomb.UpperAssembly.lintegral_le_of_cellBound_rate`: the two combined, with an
   extra exponent `X`, for an arbitrary integrand whose cell integrals satisfy `CellBoundRate`.
 
-The energy-specific part is `TwoComponentCoulomb.UpperAssembly.exists_cellBound_energy_rate`: for
-the Gibbs integrand `e^{-β F_λ}`, (gred3) (`UpperBound/EnergySplit.lean`), (eq:F(1)) from
-Proposition 3.9 (`TwoComponentCoulomb.isolated_n_neutral_conv`,
-`TwoComponentCoulomb.isolated_crude`) and (eq:F(2)) from Lemma 3.5 give `CellBoundRate`, in the
-three cases `p = 0` (no marked pair; Lemma 3.5 on all points), `m = N` (`Iᶜ = ∅`) and `m < N`.
+The energy-specific part is `TwoComponentCoulomb.UpperAssembly.exists_cellBound_energy_rate`: for the
+Gibbs integrand `e^{-β F_λ}`, (gred3) (`UpperBound/EnergySplit.lean`), (eq:F(1)) from Proposition 3.8
+(`TwoComponentCoulomb.isolated_n_neutral_conv`, `TwoComponentCoulomb.isolated_crude`) and
+(eq:F(2)) from Lemma 3.4 give `UpperCellBound.CellBoundRate`. The cases follow the isolated block: `m = 0`
+(empty block), `m = 1` (direct pair integration), `m = N` (`Iᶜ = ∅`) and `2 ≤ m < N`.
+For every `m ≥ 2`, unmarked pairs receive the assigned quadratic correction, including
+graphs with no marked pair.
 
 ## Main results
 
 * `TwoComponentCoulomb.UpperAssembly.exists_anchor_conv`,
-  `TwoComponentCoulomb.UpperAssembly.exists_anchor_crude`: Proposition 3.9, Steps 3--4
+  `TwoComponentCoulomb.UpperAssembly.exists_anchor_crude`: Proposition 3.8, Steps 3--4
   (eq:n neutral conv and eq:crude) for the integral over the representatives on the right side of
-  `(pred3)`, for every constant `C' > 0` (used by Step 4 of Proposition 3.10, l. 1644--1649, where
+  `(pred3)`, for every constant `C' > 0` (used by Step 4 of Proposition 3.9, l. 1548–1553, where
   only the radial factors of prescribed pairs change): the `β > 2` forms of
   `TwoComponentCoulomb.IsolatedAssembly.refSetIntegral_conv` and `refSetIntegral_crude`.
 * `TwoComponentCoulomb.UpperAssembly.numNeutralTwiceIsolated_le_card_isolatedDipoles`: marked
-  neutral pairs are isolated dipoles (l. 1622--1624).
-* `TwoComponentCoulomb.UpperAssembly.proposition_3_10_main_of_two_lt_rate`: **(ubz) and
-  (eq:neutral bound) for `β > 2`** (l. 1427--1438), in the form of the first block of the frozen
-  statement of Proposition 3.10 with its `if`s resolved for `β > 2`.
+  neutral pairs are isolated dipoles (l. 1526–1528).
+* `TwoComponentCoulomb.UpperAssembly.proposition_3_9_main_of_two_lt_rate`: **(ubz) and
+  (eq:neutral bound) for `β > 2`** (l. 1346–1355), in the form of the first block of the frozen
+  statement of Proposition 3.9 with its `if`s resolved for `β > 2`.
 
 ## Generic rate
 
 `lintegral_le_of_cellBound_rate`, `isolatedRate_le_rate`, `exists_cellBound_energy_rate` and
-`proposition_3_10_main_of_two_lt_rate` are stated for a rate function `ω` satisfying
+`proposition_3_9_main_of_two_lt_rate` are stated for a rate function `ω` satisfying
 `TwoComponentCoulomb.UpperRateHyp` in place of `ω_λ`; they are instantiated at `errorRate` in
-`UpperBound/UpperRate.lean` (`TwoComponentCoulomb.UpperAssembly.proposition_3_10_main_of_two_lt`).
+`UpperBound/UpperRate.lean` (`TwoComponentCoulomb.UpperAssembly.proposition_3_9_main_of_two_lt`).
 -/
 
 @[expose] public section
@@ -66,7 +69,7 @@ namespace UpperAssembly
 
 open UpperCellBound
 
-/-! ### Summation over the marked graphs (source l. 1622) -/
+/-! ### Summation over the marked graphs (source l. 1526) -/
 
 /-- If `|D| · F γ ≤ B` for every `γ ∈ D`, then `∑_{γ ∈ D} F γ ≤ B` (the passage from the cell
 integrals to `I(K, p, p₀)`, the maximum over `D`). -/
@@ -80,7 +83,7 @@ theorem sum_le_of_card_mul_le {α : Type*} (D : Finset α) (F : α → ℝ≥0�
     _ = (D.card : ℝ≥0∞) * F γ₀ := by rw [nsmul_eq_mul, hsup]
     _ ≤ B := h γ₀ hγ₀
 
-/-- **Summation over `K, p, p₀`** (source l. 1622, "Summing over `K, p, p̂₀` costs at most
+/-- **Summation over `K, p, p₀`** (source l. 1526, "Summing over `K, p, p̂₀` costs at most
 `3 log (N + 1)`"): if for every marked graph `γ = (φ, T) ∈ D_{2N,K,p,p₀}` the cell integral over
 `Λ^{2N} ∩ A ∩ {γ_{2N} = γ}` satisfies `|D_{2N,K,p,p₀}| · ∫ F ≤ B`, then
 `∫_{Λ^{2N} ∩ A} F ≤ (N + 1)³ B`. -/
@@ -112,7 +115,7 @@ theorem natCast_add_one_pow_mul_ofReal_exp (N : ℕ) (t : ℝ) :
     Real.exp_log (by positivity), ENNReal.ofReal_pow hN.le, ENNReal.ofReal_add (by positivity)
       zero_le_one, ENNReal.ofReal_natCast, ENNReal.ofReal_one]
 
-/-- **The summed bound for an arbitrary integrand, generic rate** (source l. 1620--1628): for a
+/-- **The summed bound for an arbitrary integrand, generic rate** (source l. 1524–1532): for a
 rate `ω` satisfying `UpperRateHyp` in place of `ω_λ` and cell integrals satisfying `CellBoundRate`,
 the per-graph bound `exists_card_mul_le_of_cellBound_rate` summed by `lintegral_le_of_card_mul_le`.
 The constants depend only on `β, ω, A, c, C_b`. -/
@@ -167,7 +170,7 @@ theorem lintegral_le_of_cellBound_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → �
     rw [ht]
     ring
 
-/-! ### Marked neutral pairs are isolated dipoles (source l. 1622--1624) -/
+/-! ### Marked neutral pairs are isolated dipoles (source l. 1526–1528) -/
 
 /-- The number `p₀` of marked neutral pairs is at most the number of isolated dipoles. -/
 theorem numNeutralTwiceIsolated_le_card_isolatedDipoles {N : ℕ} (hN : 2 ≤ N)
@@ -178,25 +181,24 @@ theorem numNeutralTwiceIsolated_le_card_isolatedDipoles {N : ℕ} (hN : 2 ≤ N)
   rw [mem_filter]
   exact ⟨mem_univ _, ((mem_neutralTwiceIsolatedSet hN Z).1 hi).2⟩
 
-/-! ### Proposition 3.9, Steps 3--4, for the integral over the representatives
+/-! ### Proposition 3.8, Steps 3--4, for the integral over the representatives
 
-Step 4 of Proposition 3.10 (l. 1644--1649) changes the radial factor of a prescribed long pair and
+Step 4 of Proposition 3.9 (l. 1548–1553) changes the radial factor of a prescribed long pair and
 keeps the same integral over the representatives (the bounds (eq:representative-bound) "apply
 uniformly to every prescribed set of long pairs"). We therefore record Steps 3--4 of
-Proposition 3.9 (source l. 1337--1415) for the right side of `(pred3)` itself: the integral
+Proposition 3.8 (source l. 1269–1330) for the right side of `(pred3)` itself: the integral
 `W = ∫_{Λ^R} ∏_{j ∈ R} (1_{j ∈ S} C' τ_β(ρ_j) + 1_{j ∉ S} (1 + C' φ_β(ρ_j)))` over the
 representatives, for every constant `C' > 0`. These are the bounds
 `TwoComponentCoulomb.IsolatedAssembly.refSetIntegral_conv` and
 `TwoComponentCoulomb.IsolatedAssembly.refSetIntegral_crude` (`UpperBound/Isolated.lean`), from which
-Proposition 3.9 itself is derived, with their `if`s resolved for `β > 2`. -/
+Proposition 3.8 itself is derived, with their `if`s resolved for `β > 2`. -/
 
 section Anchor
 
 open IsolatedAssembly
 
 open scoped Classical in
-/-- **(eq:n neutral conv) for the representative integral**, `β > 2` (source l. 1243--1246,
-1337--1408): for every `C' > 0` and `C₀` there are `C_β, c_β > 0` such that for every set `R` of
+/-- **(eq:n neutral conv) for the representative integral**, `β > 2` (source l. 1188–1189, 1269–1330): for every `C' > 0` and `C₀` there are `C_β, c_β > 0` such that for every set `R` of
 representatives (`|R| = p`, `2 ≤ p ≤ N ≤ 2p`) of a fixed-point-free involution `f`, every
 `f`-invariant `S` with `|S| = 2(p - p₀)` and `0 < λ ≤ e⁻¹`,
 `e^{entropy} (𝒵_β λ^{2-β})^p W ≤ exp (p (log N + (2-β) log λ + log 𝒵_β) - c_β p ((p-p₀)/p)²
@@ -228,7 +230,7 @@ theorem exists_anchor_conv {β : ℝ} (hβ : 2 < β) {C' : ℝ} (hC' : 0 < C') (
   rwa [ite_eq_left hβ, ite_eq_right hβ.ne', ite_eq_right hβ.ne', add_zero] at h'
 
 open scoped Classical in
-/-- **(eq:crude) for the representative integral**, `β > 2` (source l. 1248--1253, 1410--1415):
+/-- **(eq:crude) for the representative integral**, `β > 2` :
 for every `C' > 0` and `C₀` there is `C_β > 0` such that for every set `R` of `p ≤ N`
 representatives, every `S` and `0 < λ ≤ e⁻¹`,
 `e^{entropy} (𝒵_β λ^{2-β})^p W ≤ exp (p (log N + (2-β) log λ) + C_β N)`, `W` the integral over the
@@ -253,7 +255,7 @@ theorem exists_anchor_crude {β : ℝ} (hβ : 2 < β) {C' : ℝ} (hC' : 0 < C') 
 
 end Anchor
 
-/-! ### The per-cell bound for the Gibbs integrand (source l. 1513--1595) -/
+/-! ### The per-cell bound for the Gibbs integrand (source l. 1421–1503) -/
 
 section Energy
 
@@ -266,8 +268,8 @@ theorem lintegral_ofReal_exp_neg_mul {α : Type*} [MeasurableSpace α] (μ : Mea
       ∫⁻ x in s, ENNReal.ofReal (Real.exp (-(β * E x))) ∂μ := by
   simp_rw [neg_mul]
 
-/-- The error rate of Proposition 3.9 for `β > 2` is nonnegative and at most `ω(λ)`, for a rate
-`ω` satisfying `UpperRateHyp` (source l. 1237--1246, `0 < λ ≤ e⁻¹`). -/
+/-- The error rate of Proposition 3.8 for `β > 2` is nonnegative and at most `ω(λ)`, for a rate
+`ω` satisfying `UpperRateHyp` (source l. 1183–1189, `0 < λ ≤ e⁻¹`). -/
 theorem isolatedRate_le_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) (hω : UpperRateHyp β hβ ω)
     {lam : ℝ} (hlam : 0 < lam) (hlam1 : lam ≤ Real.exp (-1)) :
     0 ≤ (if β = 2 then |Real.log lam|⁻¹ else if β < 4 then lam ^ (β - 2)
@@ -290,19 +292,21 @@ theorem card_markedSameSign (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → ℂ) :
     (isolatedPairSet_eq_pairVerts Z) ▸ twiceIsolatedSet_subset_isolatedPairSet hN Z
       (mem_markedSameSign.1 hx).1]
 
-/-- **The per-cell bound for the Gibbs integrand, generic rate** (source l. 1513--1595): the
-per-cell bound `CellBoundRate` for the Gibbs integrand `e^{-β F_λ}`, for a rate `ω` satisfying
-`UpperRateHyp` in place of `ω_λ`. -/
-theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
-    (hω : UpperRateHyp β hβ ω) :
+/-- Internal cell argument for an energy above the Corollary 2.3 expression. It uses
+the separation (gred3), with direct integration when `m ≤ 1` and assigned quadratic
+corrections whenever `m ≥ 2`, including graphs with no marked pair. -/
+theorem exists_cellBound_of_corollary_lower_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
+    (hω : UpperRateHyp β hβ ω) (Cc : ℝ) (hCc0 : 0 < Cc)
+    (F : ∀ (N : ℕ), 2 ≤ N → ℝ → (Fin N ⊕ Fin N → ℂ) → ℝ)
+    (hF : ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam →
+      ∀ Z, (∀ i, Z i ∈ box N) → IsGeneric Z → corollary23Bound hN Cc lam Z ≤ F N hN lam Z) :
     ∃ A c Cb : ℝ, 0 < c ∧ 0 ≤ Cb ∧
       ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → lam ≤ Real.exp (-1) →
       ∀ (K p p₀ : ℕ) (φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (T : Finset (Fin N ⊕ Fin N)),
         (φ, T) ∈ markedGraphs hN K p p₀ → ∀ E : Set (Fin N ⊕ Fin N → ℂ),
         CellBoundRate β hβ ω A c Cb N K p p₀ lam 0
           (∫⁻ Z in (Set.univ.pi fun _ : Fin N ⊕ Fin N => box N) ∩ E ∩ markedCell hN φ T,
-            ENNReal.ofReal (Real.exp (-β * energy lam Z))) := by
-  obtain ⟨Cc, hCc0, hCc⟩ := exists_corollary23Holds
+            ENNReal.ofReal (Real.exp (-β * F N hN lam Z))) := by
   obtain ⟨C₁, c₁, hC₁, hc₁, hconvH⟩ := isolated_n_neutral_conv.{0} hβ.le hCc0.le 60
   obtain ⟨C₂, hC₂, hcrudeH⟩ := isolated_crude.{0} hβ.le hCc0.le 60
   obtain ⟨C₄, hF2⟩ := exists_lintegral_nnEnergy_le hβ
@@ -328,36 +332,68 @@ theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ
   obtain ⟨hF2c, hF2f⟩ := hF2 N Z₀ (nearestNeighbor Z₀) hNpos rfl lam hlam hlam1
   have hnt : Nontrivial (Fin N ⊕ Fin N) :=
     ⟨⟨Sum.inl ⟨0, hNpos⟩, Sum.inr ⟨0, hNpos⟩, Sum.inl_ne_inr⟩⟩
-  rcases Nat.eq_zero_or_pos p with hp0 | hp1
-  · -- no marked pair: Lemma 3.5 on all points
-    have hp₀0 : p₀ = 0 := by omega
-    have hT0 : twiceIsolatedSet hN Z₀ = ∅ := by
+  by_cases hmSmall : m ≤ 1
+  · have hm1 : m ≤ 1 := hmSmall
+    have hT0 := twiceIsolatedSet_eq_empty_of_numIsolatedPairs_le_one hN (Z := Z₀) hm1
+    have hp0 : p = 0 := by
       have h := card_twiceIsolatedSet (hN := hN) (Z := Z₀)
-      rw [hp, hp0] at h
-      exact Finset.card_eq_zero.1 h
-    rw [hT0] at hγ ⊢
-    have hcell := lintegral_markedCell_le_full_of_empty hCc hN hlam hβ0 hγ E
-    refine Or.inl (hcell.trans ((mul_le_mul_right hF2f _).trans ?_))
-    rw [ofReal_exp_mul_ofReal_exp]
-    refine ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_)
-    have e1 : (p : ℝ) = 0 := by exact_mod_cast hp0
-    have e2 : (p₀ : ℝ) = 0 := by exact_mod_cast hp₀0
-    rw [e1, e2]
-    have h1 : 0 ≤ (C₁ + C₂ + |L|) * N * ω lam := by
-      rw [mul_assoc]; exact mul_nonneg hCb hNω
-    have h2 : 0 ≤ (C₁ + C₂ + |L|) * Real.log (N + 1) := mul_nonneg hCb hlogN
-    have h3 : c₁ * (0 : ℝ) ^ 2 / N = 0 := by simp
-    simp only [mul_zero, Real.log_zero, sub_self]
-    rw [← hL]
-    linarith
-  -- at least one marked pair: `m ≥ 2`
-  have hm2 : 2 ≤ m := by
-    by_contra h
-    have h' := twiceIsolatedSet_eq_empty_of_numIsolatedPairs_le_one hN (Z := Z₀) (by omega)
-    have h2 := card_twiceIsolatedSet (hN := hN) (Z := Z₀)
-    rw [h', hp] at h2
-    simp at h2
-    omega
+      rw [hT0, hp] at h
+      simp at h
+      omega
+    have hp₀0 : p₀ = 0 := by omega
+    by_cases hm0 : m = 0
+    · -- `I = ∅`: only the complementary block remains.
+      rw [hT0] at hγ ⊢
+      have hcell := UpperCorollary.lintegral_markedCell_le_full_of_empty hN (F N hN lam)
+        (hF N hN lam hlam) hβ0 hγ E
+      refine Or.inl (hcell.trans ((mul_le_mul_right hF2f _).trans ?_))
+      rw [ofReal_exp_mul_ofReal_exp]
+      refine ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_)
+      have e1 : (p : ℝ) = 0 := by exact_mod_cast hp0
+      have e2 : (p₀ : ℝ) = 0 := by exact_mod_cast hp₀0
+      rw [e1, e2]
+      have h1 : 0 ≤ (C₁ + C₂ + |L|) * N * ω lam := by
+        rw [mul_assoc]; exact mul_nonneg hCb hNω
+      have h2 : 0 ≤ (C₁ + C₂ + |L|) * Real.log (N + 1) := mul_nonneg hCb hlogN
+      have h3 : c₁ * (0 : ℝ) ^ 2 / N = 0 := by simp
+      simp only [mul_zero, Real.log_zero, sub_self]
+      rw [← hL]
+      linarith
+    · -- `m = 1`: separate the pair before integrating its displacement.
+      have hmEq : m = 1 := by omega
+      have hcardI : Fintype.card {i // i ∈ pairVerts (nearestNeighbor Z₀)} = 2 := by
+        rw [card_pairVerts_subtype rfl, show numIsolatedPairs Z₀ = 1 from hmEq]
+      have hcardIc : Fintype.card {i // i ∉ pairVerts (nearestNeighbor Z₀)} = 2 * (N - 1) := by
+        rw [card_compl_pairVerts_subtype rfl, show numIsolatedPairs Z₀ = 1 from hmEq]
+      have : Nontrivial {i // i ∈ pairVerts (nearestNeighbor Z₀)} :=
+        Fintype.one_lt_card_iff_nontrivial.1 (by omega)
+      have : Nontrivial {i // i ∉ pairVerts (nearestNeighbor Z₀)} :=
+        Fintype.one_lt_card_iff_nontrivial.1 (by omega)
+      rw [hT0] at hγ ⊢
+      have hcell := UpperCorollary.lintegral_markedCell_le_mul_of_empty hN (F N hN lam)
+        (hF N hN lam hlam) hβ0 hγ E
+      have hpair := lintegral_nnEnergy_pair_le hβ
+        (subtypeKey (· ∈ pairVerts (nearestNeighbor Z₀)) (sumKey N)) hcardI
+        (pairRestrict_ne_of_nearestNeighbor rfl)
+        (pairRestrict_pairRestrict (nearestNeighbor Z₀)) hNpos hlam hlam1
+      have hpair' : ENNReal.ofReal (Real.exp 0) *
+          (∫⁻ x in (Set.univ.pi fun _ : {i // i ∈ pairVerts (nearestNeighbor Z₀)} => box N) ∩
+            {x | nnMap (subtypeKey (· ∈ pairVerts (nearestNeighbor Z₀)) (sumKey N)) x =
+              pairRestrict (nearestNeighbor Z₀)},
+            ENNReal.ofReal (Real.exp (-β * nnEnergy
+              (subtypeKey (· ∈ pairVerts (nearestNeighbor Z₀)) (sumKey N)) lam x))) ≤
+          ENNReal.ofReal (Real.exp (Real.log N + (2 - β) * Real.log lam +
+            Real.log (dipoleConstant β hβ.le))) := by
+        simpa only [Real.exp_zero, ENNReal.ofReal_one, one_mul] using hpair
+      refine Or.inl (le_ofReal_exp_of_le_mul hcell hpair' (@hF2c inferInstance) ?_)
+      have h1 : 0 ≤ (C₁ + C₂ + |L|) * N * ω lam := by positivity
+      have h2 : 0 ≤ (C₁ + C₂ + |L|) * Real.log (N + 1) := by positivity
+      simp only [hp0, hp₀0, Nat.cast_zero, sub_zero, Real.log_zero, mul_zero,
+        zero_add, zero_pow (by norm_num : 2 ≠ 0), zero_div]
+      rw [show numIsolatedPairs Z₀ = 1 from hmEq, ← hL]
+      push_cast
+      nlinarith only [h1, h2]
+  have hm2 : 2 ≤ m := by omega
   have hmN : m ≤ N := hmK.trans hKN
   have hcardI : Fintype.card {i // i ∈ pairVerts (nearestNeighbor Z₀)} = 2 * m :=
     card_pairVerts_subtype rfl
@@ -378,10 +414,11 @@ theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ
     rwa [pairRestrict_pairRestrict] at this
   have hp₀' : p₀ + m - p + p = p₀ + m := by omega
   by_cases hmN' : m = N
-  · -- `Iᶜ = ∅`: Proposition 3.9 on all points
+  · -- `Iᶜ = ∅`: Proposition 3.8 on all points
     have hKeq : numComponents Z₀ = N := by omega
     have h3' : 3 ≤ Fintype.card (Fin N ⊕ Fin N) := by simp; omega
-    have hcell := lintegral_markedCell_le_full hCc0.le hCc hN h3' hlam hβ0 hγ E
+    have hcell := UpperCorollary.lintegral_markedCell_le_full hCc0.le hN h3' (F N hN lam)
+      (hF N hN lam hlam) hβ0 hγ E
     rw [lintegral_ofReal_exp_neg_mul volume _ β (pairAssignedEnergy h3' (sumKey N) lam Cc
       (markedSameSign (nearestNeighbor Z₀) (twiceIsolatedSet hN Z₀)))] at hcell
     have huniv : pairVerts (nearestNeighbor Z₀) = Finset.univ := by
@@ -434,7 +471,8 @@ theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ
     card_compl_pairVerts_subtype rfl
   have : Nontrivial {i // i ∉ pairVerts (nearestNeighbor Z₀)} :=
     Fintype.one_lt_card_iff_nontrivial.1 (by omega)
-  have hcell := lintegral_markedCell_le_mul hCc0.le hCc hN hlam hβ0 hγ E h3
+  have hcell := UpperCorollary.lintegral_markedCell_le_mul hCc0.le hN (F N hN lam)
+    (hF N hN lam hlam) hβ0 hγ E h3
   rw [lintegral_ofReal_exp_neg_mul volume _ β
     (pairAssignedEnergy h3 (subtypeKey (· ∈ pairVerts (nearestNeighbor Z₀)) (sumKey N)) lam Cc
       (markedSameSignIn (nearestNeighbor Z₀) (twiceIsolatedSet hN Z₀)))] at hcell
@@ -480,6 +518,20 @@ theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ
     have h2 := mul_pos hC₁ hN0
     linarith
 
+/-- The Gibbs instance of the cell argument above. -/
+theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
+    (hω : UpperRateHyp β hβ ω) :
+    ∃ A c Cb : ℝ, 0 < c ∧ 0 ≤ Cb ∧
+      ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → lam ≤ Real.exp (-1) →
+      ∀ (K p p₀ : ℕ) (φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (T : Finset (Fin N ⊕ Fin N)),
+        (φ, T) ∈ markedGraphs hN K p p₀ → ∀ E : Set (Fin N ⊕ Fin N → ℂ),
+        CellBoundRate β hβ ω A c Cb N K p p₀ lam 0
+          (∫⁻ Z in (Set.univ.pi fun _ : Fin N ⊕ Fin N => box N) ∩ E ∩ markedCell hN φ T,
+            ENNReal.ofReal (Real.exp (-β * energy lam Z))) := by
+  obtain ⟨Cc, hCc0, hCc⟩ := exists_corollary23Holds
+  exact exists_cellBound_of_corollary_lower_rate hβ ω hω Cc hCc0
+    (fun _ _ lam Z => energy lam Z) hCc
+
 end Energy
 
 /-! ### (ubz) and (eq:neutral bound) for `β > 2` -/
@@ -489,7 +541,7 @@ section Main
 variable {N : ℕ}
 
 /-- On the cell of a graph with `p₀` marked neutral pairs, the event `{|I^dip| = 2p₁}` is empty when
-`p₁ < p₀` (marked neutral pairs are isolated dipoles, source l. 1622--1624). -/
+`p₁ < p₀` (marked neutral pairs are isolated dipoles, source l. 1526–1528). -/
 theorem lintegral_markedCell_isolatedDipoles_eq_zero (hN : 2 ≤ N) {K p p₀ p₁ : ℕ}
     {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N} {T : Finset (Fin N ⊕ Fin N)}
     (hγ : (φ, T) ∈ markedGraphs hN K p p₀) (hp : p₁ < p₀) (F : (Fin N ⊕ Fin N → ℂ) → ℝ≥0∞) :
@@ -505,10 +557,10 @@ theorem lintegral_markedCell_isolatedDipoles_eq_zero (hN : 2 ≤ N) {K p p₀ p�
   rw [hempty, Measure.restrict_empty, lintegral_zero_measure]
 
 /-- **(ubz) and (eq:neutral bound) for `β > 2`, generic rate** (`prop:upper bound`, source
-l. 1423--1438, proof l. 1459--1628), for a rate `ω` satisfying `UpperRateHyp` in place of `ω_λ`;
+l. 1340–1355, proof l. 1367–1532), for a rate `ω` satisfying `UpperRateHyp` in place of `ω_λ`;
 the constants and the threshold depend only on `β` and `ω`. Instantiated at `errorRate` in
-`proposition_3_10_main_of_two_lt` (`UpperBound/UpperRate.lean`). -/
-theorem proposition_3_10_main_of_two_lt_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
+`proposition_3_9_main_of_two_lt` (`UpperBound/UpperRate.lean`). -/
+theorem proposition_3_9_main_of_two_lt_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
     (hω : UpperRateHyp β hβ ω) :
     ∃ lam₀ : ℝ, 0 < lam₀ ∧
       ∃ C c : ℝ, 0 < C ∧ 0 < c ∧

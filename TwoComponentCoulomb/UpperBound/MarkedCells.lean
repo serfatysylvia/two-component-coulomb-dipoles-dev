@@ -8,14 +8,14 @@ public import TwoComponentCoulomb.Gibbs.Generic
 public import TwoComponentCoulomb.UpperBound.MarkedGraphCover
 
 /-!
-# The cell decomposition of Proposition 3.10 by marked graphs
+# The cell decomposition of Proposition 3.9 by marked graphs
 
-Source: proof of Proposition 3.10, Step 2 (l. 1513--1517), which defines, for
+Source: proof of Proposition 3.9, Step 2 (l. 1421–1425), which defines, for
 `p₀ ≤ p ≤ K ≤ N`, `I(K,p,p₀) := max_{γ ∈ D_{2N,K,p,p₀}} log ∫_{γ_{2N} = γ} e^{-β F_λ}` (the
 source writes `p̂₀`), together with the splitting of the phase space according to the
-nearest-neighbour graph announced at l. 1459 ("we split the phase-space according to the nearest
+nearest-neighbour graph announced at l. 1367 ("we split the phase-space according to the nearest
 neighbor graph `γ_{2N}` of the points"). Up to the Lebesgue-null set of non-generic configurations
-(l. 217, 348; `TwoComponentCoulomb.lintegral_restrict_inter_isGeneric`), the box `Λ^{2N}` is the
+(l. 202, 351; `TwoComponentCoulomb.lintegral_restrict_inter_isGeneric`), the box `Λ^{2N}` is the
 disjoint union of the cells `{γ_{2N} = γ}` of the marked graphs `γ = (φ₁, T) ∈ D_{2N,K,p,p₀}`
 (`TwoComponentCoulomb.markedGraphs`), `K, p, p₀ ≤ N`.
 
@@ -64,7 +64,7 @@ theorem finSumFinEquiv_secondNearestNeighbor_le (hN : 2 ≤ N) (Z : Fin N ⊕ Fi
 
 /-- Characterization of `secondNearestNeighbor hN Z i = j`: `j ∉ {i, φ₁ i}` is a nearest point to
 `z_i` among the points other than `z_i, z_{φ₁ i}`, with the smallest index among all such nearest
-points (source l. 367--368, ruling R4). -/
+points (source l. 370–371, ruling R4). -/
 theorem secondNearestNeighbor_eq_iff (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → ℂ) (i j : Fin N ⊕ Fin N) :
     secondNearestNeighbor hN Z i = j ↔
       j ≠ i ∧ j ≠ nearestNeighbor Z i ∧
@@ -172,9 +172,9 @@ end TwiceIsolated
 
 section Cells
 
-/-- The cell `{γ_{2N} = (f, T)}` of a marked graph (source l. 1515--1517): the generic
+/-- The cell `{γ_{2N} = (f, T)}` of a marked graph (source l. 1423–1425): the generic
 configurations whose nearest-neighbour map is `f` and whose twice-isolated vertices (the marked
-vertices, source l. 1219, 1421) form the set `T`. -/
+vertices, source l. 1167, 1338) form the set `T`. -/
 def markedCell (hN : 2 ≤ N) (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (T : Finset (Fin N ⊕ Fin N)) :
     Set (Fin N ⊕ Fin N → ℂ) :=
   {Z | IsGeneric Z ∧ nearestNeighbor Z = f ∧ twiceIsolatedSet hN Z = T}
@@ -258,7 +258,7 @@ theorem numTwiceIsolated_le (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → ℂ) : numTw
   simp only [Fintype.card_sum, Fintype.card_fin] at h1
   omega
 
-/-- **Cell decomposition** (source l. 1459, 1515--1517). For every event `A` and every integrand
+/-- **Cell decomposition** (source l. 1367, 1423–1425). For every event `A` and every integrand
 `F`, the integral over `Λ^{2N} ∩ A` is the sum, over `K, p, p₀ ≤ N` and the marked graphs
 `γ ∈ D_{2N,K,p,p₀}`, of the integrals over `Λ^{2N} ∩ A ∩ {γ_{2N} = γ}`. The non-generic
 configurations, which lie in no cell, form a null set. -/

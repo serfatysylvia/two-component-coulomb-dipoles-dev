@@ -9,8 +9,8 @@ public import TwoComponentCoulomb.PhaseSpace.Placement
 /-!
 # The radius `ϱ(x_i)` and the discs of the lower bound
 
-Source: Proposition 4.1, Step 1 (l. 1762--1775) and the case
-`β = 2` (l. 1820--1826). The proof of Proposition 4.1 follows the source (ruling R22); this module
+Source: Proposition 4.1, Step 1 (l. 1671–1684) and the case
+`β = 2` (l. 1730–1736). The proof of Proposition 4.1 follows the source (ruling R22); this module
 holds the geometry of the configurations used there.
 
 Positive charges are restricted to the set `placementSet N N a b` of configurations in the inner
@@ -19,7 +19,7 @@ square `Λ_a = [a, √N - a]²` at mutual distance at least `b` (the source's `H
 lie in `Λ`, and carry the Neumann problems of Step 1.
 
 * `lowerRadius` : the radius `ϱ(x_i) = min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}` of
-  l. 1771--1773. We write the distance to the boundary as the distance to the complement of `Λ`,
+  l. 1680–1682. We write the distance to the boundary as the distance to the complement of `Λ`,
   which is the quantity that is convenient to bound below (`le_infDist_compl_box`: a point of the
   inner square `Λ_a` has distance at least `a` from `Λᶜ`, and a disc of smaller radius about it
   lies in `Λ`). For `x_i ∈ Λ` this is the source's `dist(x_i, ∂Λ)`: `infDist_frontier_box_eq`
@@ -28,9 +28,9 @@ lie in `Λ`, and carry the Neumann problems of Step 1.
   frontier.
 * `measurable_lowerRadius`, `four_mul_le_lowerRadius`, `closedBall_lowerRadius_div_two_subset_box`,
   `lowerRadius_add_lowerRadius_le` : measurability, `ϱ(x_i) ≥ 4λ` on `H`, the discs
-  `B̄(x_i, ϱ(x_i)/2)` lie in `Λ`, and the discs `B(x_i, ϱ(x_i))` are disjoint (l. 1774).
+  `B̄(x_i, ϱ(x_i)/2)` lie in `Λ`, and the discs `B(x_i, ϱ(x_i))` are disjoint (l. 1683).
 * `closedBall_subset_box_of_mem_placementSet` : discs about the points of `placementSet N n a b`
-  of radius at most `a` lie in `Λ` (used for `β = 2`, l. 1820--1823).
+  of radius at most `a` lie in `Λ` (used for `β = 2`, l. 1730–1733).
 -/
 
 public section
@@ -154,7 +154,7 @@ theorem univ_erase_nonempty (hN : 2 ≤ N) (i : Fin N) : (Finset.univ.erase i).N
     Fintype.card_fin]
   omega
 
-/-- The radius `ϱ(x_i) = min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}` of l. 1771--1773,
+/-- The radius `ϱ(x_i) = min {½ min_{j ≠ i} |x_j - x_i|, dist(x_i, ∂Λ), 1}` of l. 1680–1682,
 with the distance to the boundary of `Λ` written as the distance to the complement of `Λ` (see the
 module docstring). -/
 noncomputable def lowerRadius (hN : 2 ≤ N) (X : Fin N → ℂ) (i : Fin N) : ℝ :=
@@ -207,7 +207,7 @@ theorem measurable_lowerRadius (hN : 2 ≤ N) (i : Fin N) :
     Measurable fun X : Fin N → ℂ => lowerRadius hN X i :=
   (continuous_lowerRadius hN i).measurable
 
-/-- For `X ∈ H(N, N, 4λ, 8λ)` and `4λ ≤ 1` the radii satisfy `ϱ(x_i) ≥ 4λ` (source l. 1774). -/
+/-- For `X ∈ H(N, N, 4λ, 8λ)` and `4λ ≤ 1` the radii satisfy `ϱ(x_i) ≥ 4λ` (source l. 1683). -/
 theorem four_mul_le_lowerRadius (hN : 2 ≤ N) {lam : ℝ} (h4 : 4 * lam ≤ 1) {X : Fin N → ℂ}
     (hX : X ∈ placementSet N N (4 * lam) (8 * lam)) (i : Fin N) :
     4 * lam ≤ lowerRadius hN X i := by
@@ -216,7 +216,7 @@ theorem four_mul_le_lowerRadius (hN : 2 ≤ N) {lam : ℝ} (h4 : 4 * lam ≤ 1) 
   have := hX.2 j i hji
   linarith
 
-/-- The closed discs `B̄(x_i, ϱ(x_i) / 2)` lie in `Λ` (source l. 1774). -/
+/-- The closed discs `B̄(x_i, ϱ(x_i) / 2)` lie in `Λ` (source l. 1683). -/
 theorem closedBall_lowerRadius_div_two_subset_box (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
     (h4 : 4 * lam ≤ 1) {X : Fin N → ℂ} (hX : X ∈ placementSet N N (4 * lam) (8 * lam))
     (i : Fin N) : Metric.closedBall (X i) (lowerRadius hN X i / 2) ⊆ box N := by
@@ -229,7 +229,7 @@ theorem closedBall_lowerRadius_div_two_subset_box (hN : 2 ≤ N) {lam : ℝ} (hl
   exact Set.disjoint_left.1 hd hz hzb
 
 /-- The discs `B(x_i, ϱ(x_i))` are disjoint: `ϱ(x_i) + ϱ(x_j) ≤ |x_i - x_j|` for `i ≠ j`
-(source l. 1774). -/
+(source l. 1683). -/
 theorem lowerRadius_add_lowerRadius_le (hN : 2 ≤ N) (X : Fin N → ℂ) {i j : Fin N} (hij : i ≠ j) :
     lowerRadius hN X i + lowerRadius hN X j ≤ ‖X i - X j‖ := by
   have h1 := two_mul_lowerRadius_le hN X (i := j) (j := i) hij

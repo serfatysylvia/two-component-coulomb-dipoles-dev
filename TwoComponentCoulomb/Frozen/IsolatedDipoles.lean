@@ -12,7 +12,7 @@ public import TwoComponentCoulomb.Frozen.NearestNeighbor
 # Frozen: `TwoComponentCoulomb.isolatedDipoles`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 230, 259.
+Source: l. 215, 251.
 -/
 
 @[expose] public section
@@ -20,7 +20,7 @@ Source: l. 230, 259.
 namespace TwoComponentCoulomb
 
 open scoped Classical in
-/-- The set of isolated dipoles `{i, φ₁ i}` of a configuration (source l. 230, 259). -/
+/-- The set of isolated dipoles `{i, φ₁ i}` of a configuration (source l. 215, 251). -/
 noncomputable def isolatedDipoles {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) :
     Finset (Finset (Fin N ⊕ Fin N)) :=
   (Finset.univ.filter (IsIsolatedDipole Z)).image fun i => {i, nearestNeighbor Z i}

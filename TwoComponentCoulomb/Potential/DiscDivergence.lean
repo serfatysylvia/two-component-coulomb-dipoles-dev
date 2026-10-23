@@ -25,7 +25,7 @@ import Mathlib.MeasureTheory.Integral.DivergenceTheorem
 # The divergence theorem on a disc
 
 Mathlib proves the divergence theorem on boxes only. Proposition 4.1, Step 1, of the
-paper (l. 1762–1825) solves Neumann problems on disjoint discs
+paper (l. 1671–1734) solves Neumann problems on disjoint discs
 (ruling R22a); we verify them in weak form, which needs the divergence theorem on a closed disc of
 `ℂ ≅ ℝ²` for fields of class `C¹`.
 

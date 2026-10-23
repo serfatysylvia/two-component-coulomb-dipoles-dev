@@ -14,14 +14,14 @@ import TwoComponentCoulomb.LowerBound.Proposition41
 # Frozen: `TwoComponentCoulomb.proposition_4_1`
 
 Frozen statement, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 1745–1759.
+Source: l. 1657–1668.
 -/
 
 @[expose] public section
 
 namespace TwoComponentCoulomb
 
-/-- **Proposition 4.1** (`prop:lower bound`, source l. 1745–1759). -/
+/-- **Proposition 4.1** (`prop:lower bound`, source l. 1657–1668). -/
 theorem proposition_4_1 (β : ℝ) (hβ : 2 ≤ β) :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →

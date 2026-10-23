@@ -16,8 +16,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 137–139"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 123"
       },
       "contract": {
         "id": "TwoComponentCoulomb.logKernel",
@@ -33,7 +33,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+      "full_file_sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
     },
     {
       "id": "def:box",
@@ -45,8 +45,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 125"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 110"
       },
       "contract": {
         "id": "TwoComponentCoulomb.box",
@@ -62,7 +62,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+      "full_file_sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
     },
     {
       "id": "def:smearedCharge",
@@ -74,8 +74,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 148"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 133"
       },
       "contract": {
         "id": "TwoComponentCoulomb.smearedCharge",
@@ -91,7 +91,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+      "full_file_sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
     },
     {
       "id": "def:kappa",
@@ -103,8 +103,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 149–150 (eq. defkappa)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 135 (definition of κ)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.kappa",
@@ -116,11 +116,11 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         }
       ],
       "state": "SEALED",
@@ -129,7 +129,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+      "full_file_sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
     },
     {
       "id": "def:smearedKernel",
@@ -141,8 +141,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 162–163 (eq. eq:defgeta)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 147–148 (eq. eq:defgeta)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.smearedKernel",
@@ -154,11 +154,11 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         }
       ],
       "state": "SEALED",
@@ -167,7 +167,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+      "full_file_sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
     },
     {
       "id": "def:charge",
@@ -179,8 +179,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 216"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 201"
       },
       "contract": {
         "id": "TwoComponentCoulomb.charge",
@@ -196,7 +196,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+      "full_file_sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
     },
     {
       "id": "def:energy",
@@ -208,8 +208,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 155–158 (eq. eq:F3)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 140–143 (eq. eq:F3)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.energy",
@@ -221,19 +221,19 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         }
       ],
       "state": "SEALED",
@@ -242,7 +242,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+      "full_file_sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
     },
     {
       "id": "def:partitionFunction",
@@ -254,8 +254,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 176–177 (eq. eq:ZRV)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 161 (definition of Z)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.partitionFunction",
@@ -267,27 +267,27 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         }
       ],
       "state": "SEALED",
@@ -296,7 +296,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+      "full_file_sha256": "1c8189e3ecead980e64126b442d215ad5ec300c6452ef3447dd96c40285fb36a"
     },
     {
       "id": "def:gibbsMeasure",
@@ -308,8 +308,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 172–174 (eq. defP)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 157–159 (eq. defP)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.gibbsMeasure",
@@ -321,31 +321,31 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
-          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+          "sha256": "1c8189e3ecead980e64126b442d215ad5ec300c6452ef3447dd96c40285fb36a"
         }
       ],
       "state": "SEALED",
@@ -354,7 +354,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "ae05faf33d30ce4482724f6512506f1a15a43a7c8e07220add543c153083afe0"
+      "full_file_sha256": "eb418092f9e2b378c70a37ca75834abe98cabea1726237c5dcedbb3e2f532682"
     },
     {
       "id": "def:dipoleConstant",
@@ -366,8 +366,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 208–213 (eq. def:Cbeta)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 193–198 (eq. def:Cbeta)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.dipoleConstant",
@@ -379,15 +379,15 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         }
       ],
       "state": "SEALED",
@@ -396,7 +396,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+      "full_file_sha256": "8de840a07c396e50d9138916a583469eeaeea589fcca06fc4a51cd25c5e2a28f"
     },
     {
       "id": "def:M0",
@@ -408,8 +408,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 233"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 218"
       },
       "contract": {
         "id": "TwoComponentCoulomb.M0",
@@ -425,7 +425,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+      "full_file_sha256": "025a747c4242de496b4f8798e4c0bdbda8ec7d947ee3d0efe988a9ac01250b36"
     },
     {
       "id": "def:nearestNeighbor",
@@ -437,8 +437,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 217"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 202"
       },
       "contract": {
         "id": "TwoComponentCoulomb.nearestNeighbor",
@@ -454,7 +454,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+      "full_file_sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
     },
     {
       "id": "def:IsIsolatedDipole",
@@ -466,8 +466,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 222–230"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 207–215"
       },
       "contract": {
         "id": "TwoComponentCoulomb.IsIsolatedDipole",
@@ -479,11 +479,11 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         }
       ],
       "state": "SEALED",
@@ -492,7 +492,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+      "full_file_sha256": "60da36a69db47a8ed1b0c6a5fcbcf160f93fa4e291abe9ed70bf5fcb7749ab5e"
     },
     {
       "id": "def:isolatedDipoles",
@@ -504,8 +504,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 230, 259"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 215, 251"
       },
       "contract": {
         "id": "TwoComponentCoulomb.isolatedDipoles",
@@ -517,15 +517,15 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
-          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+          "sha256": "60da36a69db47a8ed1b0c6a5fcbcf160f93fa4e291abe9ed70bf5fcb7749ab5e"
         }
       ],
       "state": "SEALED",
@@ -534,7 +534,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "fca9e6e3abfbd06cf64124967d47b8b19867daf401f721cee5165c27c6c8bbb3"
+      "full_file_sha256": "9c3e43a2c19d717072c542d3f06606670585e8936d4209c509eff1daccd6f751"
     },
     {
       "id": "def:longIsolatedDipoles",
@@ -546,8 +546,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 263"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 255"
       },
       "contract": {
         "id": "TwoComponentCoulomb.longIsolatedDipoles",
@@ -559,15 +559,15 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
-          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+          "sha256": "60da36a69db47a8ed1b0c6a5fcbcf160f93fa4e291abe9ed70bf5fcb7749ab5e"
         }
       ],
       "state": "SEALED",
@@ -576,7 +576,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "d64ba477642a9f36eb404359a02f7e1994dcc4ead5dd829bfc46adaaa7b7ccf4"
+      "full_file_sha256": "91675ce4f9f70eb7e611e56f41f39a69024a8d087aa366eaa5d96669fea5fbea"
     },
     {
       "id": "def:reducedEnergy",
@@ -588,8 +588,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 255–257"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 247–249"
       },
       "contract": {
         "id": "TwoComponentCoulomb.reducedEnergy",
@@ -601,23 +601,23 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         }
       ],
       "state": "SEALED",
@@ -626,7 +626,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+      "full_file_sha256": "d3d8a1654534681cc477fb5e5784780b99c2b7bb4b5bc3d1913595f5a9227bf7"
     },
     {
       "id": "def:fluct",
@@ -638,8 +638,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 298"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 295"
       },
       "contract": {
         "id": "TwoComponentCoulomb.fluct",
@@ -651,11 +651,11 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         }
       ],
       "state": "SEALED",
@@ -664,7 +664,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R17, R19"
       },
-      "full_file_sha256": "4d772749d072be3ce0d6f7ac775356d1f2c4a17180008e63b07e52959c9980b4"
+      "full_file_sha256": "2e80c3d7c88a7b1671c26916701db99a2fb6c414897622f9946bca4ed0136b63"
     },
     {
       "id": "def:IsGeneric",
@@ -676,8 +676,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 217, 348"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 202, 351"
       },
       "contract": {
         "id": "TwoComponentCoulomb.IsGeneric",
@@ -693,7 +693,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R18, R19"
       },
-      "full_file_sha256": "ffe32dde03daecb29fe958800374b9678039fd9b004a45d797118dedd9ed63a9"
+      "full_file_sha256": "5aa82af0629f733ab53d3bd4f2ecf5dbec7e39f7161f61636c9e17b22eab8e51"
     },
     {
       "id": "def:secondNearestNeighbor",
@@ -705,8 +705,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 367–368"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 370–371"
       },
       "contract": {
         "id": "TwoComponentCoulomb.secondNearestNeighbor",
@@ -718,7 +718,7 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         }
       ],
       "state": "SEALED",
@@ -727,7 +727,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R18, R19"
       },
-      "full_file_sha256": "5db664e8fa71290b16476c43ee50fa7fb06e76862f80ca6c5aa6181ed956cfc7"
+      "full_file_sha256": "dfb9ad45f01c2f3d4ae67fd352426810456ab13c9d58fe39ad48d1aea3925d45"
     },
     {
       "id": "def:firstNeighborRadius",
@@ -739,8 +739,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 365 (eq. nn2)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 368 (eq. nn2)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.firstNeighborRadius",
@@ -756,7 +756,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R18, R19"
       },
-      "full_file_sha256": "a0a58c4042413e3135c26ebb169f098d060905c988782a89a9130a30a604e581"
+      "full_file_sha256": "e10033dbba7969e8a44ce0cb0659ea4832ec49d1724780976d81ccfc596fce94"
     },
     {
       "id": "def:secondNeighborRadius",
@@ -768,8 +768,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 367 (eq. nn3, p = 2)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 370 (eq. nn3, p = 2)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.secondNeighborRadius",
@@ -781,7 +781,7 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         }
       ],
       "state": "SEALED",
@@ -790,7 +790,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R18, R19"
       },
-      "full_file_sha256": "a723c4331c144e817e4417dfbb9cff2a69bf8e3021c6ee1ed4dc59edd519bc44"
+      "full_file_sha256": "57fc6b60c9e82b9eef28a38dca92dd6efa9803f1f9758da1a7021e33322226c4"
     },
     {
       "id": "def:IsIsolatedPair",
@@ -802,8 +802,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 375–385 (eq. defIdip)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 378–388 (eq. defIdip)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.IsIsolatedPair",
@@ -815,7 +815,7 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         }
       ],
       "state": "SEALED",
@@ -824,7 +824,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R18, R19"
       },
-      "full_file_sha256": "c1d10d34587a2a9ef1a1cb0b2ec599edd94fed3a18424cd1579c8d97bae7a0d0"
+      "full_file_sha256": "a2ed93b2a510b83e91089c374a8fe4854eb733813581c2643dd9ed95eaa91762"
     },
     {
       "id": "def:numComponents",
@@ -836,8 +836,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 375"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 378"
       },
       "contract": {
         "id": "TwoComponentCoulomb.numComponents",
@@ -849,7 +849,7 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         }
       ],
       "state": "SEALED",
@@ -858,7 +858,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R18, R19"
       },
-      "full_file_sha256": "23f9f53813dcf36277e44192acae9741103b1b3a6219e7d5168e720cf5636b16"
+      "full_file_sha256": "18568ca2e1ad24dc86c235d7eca52a13941c5d8f6553724a9d6096869556080e"
     },
     {
       "id": "def:reducedPartitionFunction",
@@ -870,8 +870,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 922–930"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 870–877"
       },
       "contract": {
         "id": "TwoComponentCoulomb.reducedPartitionFunction",
@@ -883,31 +883,31 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/ReducedEnergy.lean",
-          "sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+          "sha256": "d3d8a1654534681cc477fb5e5784780b99c2b7bb4b5bc3d1913595f5a9227bf7"
         }
       ],
       "state": "SEALED",
@@ -916,7 +916,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R18, R19"
       },
-      "full_file_sha256": "3d533471684b4af06c615197a32526ea75253ec7f759453e5d356af693c8181e"
+      "full_file_sha256": "a877e8b2057789e9d1dda3ec87bd611a62a98010c05ad9bebcf0bbd9ab3604c2"
     },
     {
       "id": "prop:mino2",
@@ -928,8 +928,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 434–443 (prop:mino2, Proposition 2.2)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 440–449 (prop:mino2, Proposition 2.2)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.proposition_2_2",
@@ -941,47 +941,47 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsGeneric.lean",
-          "sha256": "ffe32dde03daecb29fe958800374b9678039fd9b004a45d797118dedd9ed63a9"
+          "sha256": "5aa82af0629f733ab53d3bd4f2ecf5dbec7e39f7161f61636c9e17b22eab8e51"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/FirstNeighborRadius.lean",
-          "sha256": "a0a58c4042413e3135c26ebb169f098d060905c988782a89a9130a30a604e581"
+          "sha256": "e10033dbba7969e8a44ce0cb0659ea4832ec49d1724780976d81ccfc596fce94"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SecondNeighborRadius.lean",
-          "sha256": "a723c4331c144e817e4417dfbb9cff2a69bf8e3021c6ee1ed4dc59edd519bc44"
+          "sha256": "57fc6b60c9e82b9eef28a38dca92dd6efa9803f1f9758da1a7021e33322226c4"
         }
       ],
       "state": "SEALED",
@@ -994,7 +994,7 @@
         "module": "TwoComponentCoulomb.Energy.Proposition22",
         "export": "TwoComponentCoulomb.Energy.proposition_2_2"
       },
-      "prefix_sha256": "683b03d500c6e0821e14792aca81b125f695efb21e4283cdd7c88582ee1fc22c",
+      "prefix_sha256": "26aadf235e10ba24b7ba4980509714b529a2f105b1beffbc8f7f0245bee188b8",
       "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
       "draft_allowlist": {
         "frozen_paths": [],
@@ -1011,8 +1011,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 452–464 (coromino, Corollary 2.3)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 458–470 (coromino, Corollary 2.3)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.corollary_2_3",
@@ -1024,63 +1024,63 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
-          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+          "sha256": "60da36a69db47a8ed1b0c6a5fcbcf160f93fa4e291abe9ed70bf5fcb7749ab5e"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsGeneric.lean",
-          "sha256": "ffe32dde03daecb29fe958800374b9678039fd9b004a45d797118dedd9ed63a9"
+          "sha256": "5aa82af0629f733ab53d3bd4f2ecf5dbec7e39f7161f61636c9e17b22eab8e51"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SecondNearestNeighbor.lean",
-          "sha256": "5db664e8fa71290b16476c43ee50fa7fb06e76862f80ca6c5aa6181ed956cfc7"
+          "sha256": "dfb9ad45f01c2f3d4ae67fd352426810456ab13c9d58fe39ad48d1aea3925d45"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/FirstNeighborRadius.lean",
-          "sha256": "a0a58c4042413e3135c26ebb169f098d060905c988782a89a9130a30a604e581"
+          "sha256": "e10033dbba7969e8a44ce0cb0659ea4832ec49d1724780976d81ccfc596fce94"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SecondNeighborRadius.lean",
-          "sha256": "a723c4331c144e817e4417dfbb9cff2a69bf8e3021c6ee1ed4dc59edd519bc44"
+          "sha256": "57fc6b60c9e82b9eef28a38dca92dd6efa9803f1f9758da1a7021e33322226c4"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsIsolatedPair.lean",
-          "sha256": "c1d10d34587a2a9ef1a1cb0b2ec599edd94fed3a18424cd1579c8d97bae7a0d0"
+          "sha256": "a2ed93b2a510b83e91089c374a8fe4854eb733813581c2643dd9ed95eaa91762"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NumComponents.lean",
-          "sha256": "23f9f53813dcf36277e44192acae9741103b1b3a6219e7d5168e720cf5636b16"
+          "sha256": "18568ca2e1ad24dc86c235d7eca52a13941c5d8f6553724a9d6096869556080e"
         }
       ],
       "state": "SEALED",
@@ -1093,7 +1093,7 @@
         "module": "TwoComponentCoulomb.Energy.Corollary23",
         "export": "TwoComponentCoulomb.Energy.corollary_2_3"
       },
-      "prefix_sha256": "b2c9b8de2f17b8342c6a99fbcbf8c3e5352d7a6a07c54ae5f070354843d48e5f",
+      "prefix_sha256": "c1e19a5103a03da457c523902f71cd9e59f11f429b46ddfa832007c05622129c",
       "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
       "draft_allowlist": {
         "frozen_paths": [],
@@ -1110,52 +1110,52 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 922–946 (lemma:part nn, Lemma 3.6)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 870–896 (lemma:part nn, Lemma 3.5)"
       },
       "contract": {
-        "id": "TwoComponentCoulomb.lemma_3_6",
+        "id": "TwoComponentCoulomb.lemma_3_5",
         "version": "1"
       },
-      "path": "TwoComponentCoulomb/Frozen/Lemma36.lean",
-      "export": "TwoComponentCoulomb.lemma_3_6",
-      "abi_sha256": "5d0ee1e74500c02a089aeaf37ebb642899d913a5a9008da4abcba4f0547a20e9",
+      "path": "TwoComponentCoulomb/Frozen/Lemma35.lean",
+      "export": "TwoComponentCoulomb.lemma_3_5",
+      "abi_sha256": "a3b4e85474a13674bccc6b49ca41572a6597dd3527bb36514429454af8a714e6",
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
-          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+          "sha256": "8de840a07c396e50d9138916a583469eeaeea589fcca06fc4a51cd25c5e2a28f"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/ReducedEnergy.lean",
-          "sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+          "sha256": "d3d8a1654534681cc477fb5e5784780b99c2b7bb4b5bc3d1913595f5a9227bf7"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/ReducedPartitionFunction.lean",
-          "sha256": "3d533471684b4af06c615197a32526ea75253ec7f759453e5d356af693c8181e"
+          "sha256": "a877e8b2057789e9d1dda3ec87bd611a62a98010c05ad9bebcf0bbd9ab3604c2"
         }
       ],
       "state": "SEALED",
@@ -1165,10 +1165,10 @@
         "ruling_ref": "RULINGS.md R18, R19"
       },
       "implementation": {
-        "module": "TwoComponentCoulomb.UpperBound.Lemma36",
-        "export": "TwoComponentCoulomb.UpperBound.lemma_3_6"
+        "module": "TwoComponentCoulomb.UpperBound.Lemma35",
+        "export": "TwoComponentCoulomb.UpperBound.lemma_3_5"
       },
-      "prefix_sha256": "63c4602a947c4b31d79a11d578044bf9222591bffa52226c31a1071a58033697",
+      "prefix_sha256": "9d01b463e51684a58e5462a9e040fa4d4bc28798177d09091a845a49ca14bb3f",
       "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
       "draft_allowlist": {
         "frozen_paths": [],
@@ -1185,8 +1185,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 1745–1759 (prop:lower bound, Proposition 4.1)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 1657–1668 (prop:lower bound, Proposition 4.1)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.proposition_4_1",
@@ -1198,39 +1198,39 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
-          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+          "sha256": "1c8189e3ecead980e64126b442d215ad5ec300c6452ef3447dd96c40285fb36a"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
-          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+          "sha256": "8de840a07c396e50d9138916a583469eeaeea589fcca06fc4a51cd25c5e2a28f"
         }
       ],
       "state": "SEALED",
@@ -1243,7 +1243,7 @@
         "module": "TwoComponentCoulomb.LowerBound.Proposition41",
         "export": "TwoComponentCoulomb.LowerBound.proposition_4_1"
       },
-      "prefix_sha256": "a3702fc18a42886192e2ca349c59877277509f057bf83588b7b7f2949ff9f767",
+      "prefix_sha256": "de664c5b269c8bf21dabe8d34af54d4239c4c9a9f856db62bea46b271fd9426f",
       "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
       "draft_allowlist": {
         "frozen_paths": [],
@@ -1260,8 +1260,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 236–244 (eq. eq:defgammal)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 221–229 (eq. eq:defgammal)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.errorRate",
@@ -1273,7 +1273,7 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/M0.lean",
-          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+          "sha256": "025a747c4242de496b4f8798e4c0bdbda8ec7d947ee3d0efe988a9ac01250b36"
         }
       ],
       "state": "SEALED",
@@ -1282,7 +1282,7 @@
         "mode": "NOT_SPLIT",
         "ruling_ref": "RULINGS.md R20"
       },
-      "full_file_sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+      "full_file_sha256": "25296e22be63de85aa563913e86cf44ed75bdacc73485e496af2ee3a0e5ebd91"
     },
     {
       "id": "prop:upper-bound",
@@ -1294,76 +1294,76 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 1423–1455 (prop:upper bound, Proposition 3.10)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 1340–1363, 1575–1584 (prop:upper bound and prop:critical upper, Propositions 3.9 and 3.10)"
       },
       "contract": {
-        "id": "TwoComponentCoulomb.proposition_3_10",
+        "id": "TwoComponentCoulomb.proposition_3_9_and_3_10",
         "version": "1"
       },
-      "path": "TwoComponentCoulomb/Frozen/Proposition310.lean",
-      "export": "TwoComponentCoulomb.proposition_3_10",
-      "abi_sha256": "11ff2fbeb59bd38cba8ad3eeb75103f19203a7e546f60c90ceefcc1f0f0c45c9",
+      "path": "TwoComponentCoulomb/Frozen/Proposition39And310.lean",
+      "export": "TwoComponentCoulomb.proposition_3_9_and_3_10",
+      "abi_sha256": "37820ffa0a5f226a4625a8798f44059fc56883683cb39cf0813f2b2497a77b9e",
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
-          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+          "sha256": "1c8189e3ecead980e64126b442d215ad5ec300c6452ef3447dd96c40285fb36a"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
-          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+          "sha256": "8de840a07c396e50d9138916a583469eeaeea589fcca06fc4a51cd25c5e2a28f"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/M0.lean",
-          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+          "sha256": "025a747c4242de496b4f8798e4c0bdbda8ec7d947ee3d0efe988a9ac01250b36"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/ErrorRate.lean",
-          "sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+          "sha256": "25296e22be63de85aa563913e86cf44ed75bdacc73485e496af2ee3a0e5ebd91"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
-          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+          "sha256": "60da36a69db47a8ed1b0c6a5fcbcf160f93fa4e291abe9ed70bf5fcb7749ab5e"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsolatedDipoles.lean",
-          "sha256": "fca9e6e3abfbd06cf64124967d47b8b19867daf401f721cee5165c27c6c8bbb3"
+          "sha256": "9c3e43a2c19d717072c542d3f06606670585e8936d4209c509eff1daccd6f751"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/LongIsolatedDipoles.lean",
-          "sha256": "d64ba477642a9f36eb404359a02f7e1994dcc4ead5dd829bfc46adaaa7b7ccf4"
+          "sha256": "91675ce4f9f70eb7e611e56f41f39a69024a8d087aa366eaa5d96669fea5fbea"
         }
       ],
       "state": "SEALED",
@@ -1373,10 +1373,10 @@
         "ruling_ref": "RULINGS.md R20"
       },
       "implementation": {
-        "module": "TwoComponentCoulomb.UpperBound.Proposition310",
-        "export": "TwoComponentCoulomb.UpperBound.proposition_3_10"
+        "module": "TwoComponentCoulomb.UpperBound.Proposition39And310",
+        "export": "TwoComponentCoulomb.UpperBound.proposition_3_9_and_3_10"
       },
-      "prefix_sha256": "8a03b1fc047040c868a56412374357d9a046a3961b2a1120bab887f2ecab8704",
+      "prefix_sha256": "5ab02b829bcdc28bd5bbb88c208efe9dac045836ba9cdd43938aae01baa2e3a1",
       "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
       "draft_allowlist": {
         "frozen_paths": [],
@@ -1393,8 +1393,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 235–274 (theorem:th1)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 220–266 (theorem:th1)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.theorem_1",
@@ -1406,71 +1406,71 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedKernel.lean",
-          "sha256": "6b794e02833d817483d1c4a525f461babd8b25424987c80bdccfcc4a4bfccc16"
+          "sha256": "7027d30a6548438f1ffd3c8171f86dc2d892c2a4d8d476d76f216ae9c53ec49c"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
-          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+          "sha256": "1c8189e3ecead980e64126b442d215ad5ec300c6452ef3447dd96c40285fb36a"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/GibbsMeasure.lean",
-          "sha256": "ae05faf33d30ce4482724f6512506f1a15a43a7c8e07220add543c153083afe0"
+          "sha256": "eb418092f9e2b378c70a37ca75834abe98cabea1726237c5dcedbb3e2f532682"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/DipoleConstant.lean",
-          "sha256": "80ea77ba2a88dfda61dde2590451abab199b5b0f33ecc3485698e34130f75d75"
+          "sha256": "8de840a07c396e50d9138916a583469eeaeea589fcca06fc4a51cd25c5e2a28f"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/M0.lean",
-          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+          "sha256": "025a747c4242de496b4f8798e4c0bdbda8ec7d947ee3d0efe988a9ac01250b36"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/ErrorRate.lean",
-          "sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+          "sha256": "25296e22be63de85aa563913e86cf44ed75bdacc73485e496af2ee3a0e5ebd91"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/NearestNeighbor.lean",
-          "sha256": "fdb3650190783b7a8f5728a7919228c359abd48f13c3cb6cff4c93efa27ef363"
+          "sha256": "1ac64d30561e0a2ade4f47cde48550a062cea7bd9799a175aabfc9a44a0534f0"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsIsolatedDipole.lean",
-          "sha256": "1b09446699b9bcdd90f6cd1cf08a130177c3a933be8a71174f319beeaf80cb9f"
+          "sha256": "60da36a69db47a8ed1b0c6a5fcbcf160f93fa4e291abe9ed70bf5fcb7749ab5e"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/IsolatedDipoles.lean",
-          "sha256": "fca9e6e3abfbd06cf64124967d47b8b19867daf401f721cee5165c27c6c8bbb3"
+          "sha256": "9c3e43a2c19d717072c542d3f06606670585e8936d4209c509eff1daccd6f751"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/LongIsolatedDipoles.lean",
-          "sha256": "d64ba477642a9f36eb404359a02f7e1994dcc4ead5dd829bfc46adaaa7b7ccf4"
+          "sha256": "91675ce4f9f70eb7e611e56f41f39a69024a8d087aa366eaa5d96669fea5fbea"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/ReducedEnergy.lean",
-          "sha256": "e9d4fb52cd621df4ca0cf90ec7bd35c908611b82051be220d26c946630e2b76f"
+          "sha256": "d3d8a1654534681cc477fb5e5784780b99c2b7bb4b5bc3d1913595f5a9227bf7"
         }
       ],
       "state": "SEALED",
@@ -1483,7 +1483,7 @@
         "module": "TwoComponentCoulomb.Main.Theorem1",
         "export": "TwoComponentCoulomb.Main.theorem_1"
       },
-      "prefix_sha256": "650015c30cf916cecf923961871bcf44b15c99e292360c36ca652afe79aa95c7",
+      "prefix_sha256": "61155ea6f252c3c7fd7e92f72bc66a603e32719b5ee6476b63d4f391ba537eca",
       "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
       "draft_allowlist": {
         "frozen_paths": [],
@@ -1500,8 +1500,8 @@
         "approval_version": "1"
       },
       "source": {
-        "revision": "source/dipole-formation.tex sha256:2c6fc7b48ee7e9c0e4e8bb9591e513edba49ece4ce6c54bb493c4026147726f6",
-        "range": "l. 297–305 (prop:linear, Theorem 2)"
+        "revision": "source/dipole-formation.tex sha256:f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91",
+        "range": "l. 294–302 (prop:linear, Theorem 2)"
       },
       "contract": {
         "id": "TwoComponentCoulomb.theorem_2",
@@ -1513,47 +1513,47 @@
       "definition_closure": [
         {
           "path": "TwoComponentCoulomb/Frozen/LogKernel.lean",
-          "sha256": "936d8e2dd25d1b86f56f3ac3d2e5f410bfbd695cb6709909fc21890ccc653e56"
+          "sha256": "48a11cc3603805b82fab919a612cc1ed01e7f0efbc492f708af195edf21097b6"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Box.lean",
-          "sha256": "7b52b54b2ae114637d4aaf279b7abaafca1dadcee86dcb47aa1191cf7bb7c80e"
+          "sha256": "21542c56df9c62f73b72b9ffdbcdc9672d877308f161dcb88d4182ff05d57039"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/SmearedCharge.lean",
-          "sha256": "1fcec2ebefe6cdf7e7fcbe60569fddaedd7bfdb3e5906bd63d71828c7848017e"
+          "sha256": "01f4a8a1daf7f90f9b6d18187db319ac7080be00ce957b8eafbebbb4ed4726ae"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Kappa.lean",
-          "sha256": "30cb440fa12c0a1fbc87c91810b470b92774a0eaea89c26c07de4a1427b40ed4"
+          "sha256": "ae48eca54a3f7c11d996ae8d012c2b81abb8b9ff59915075d3143db7e0487920"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Charge.lean",
-          "sha256": "eb70b39983ca59be748e092bfe8ada988597341191efacf041f107633f811c21"
+          "sha256": "0c242edc9008fb9ac3b4684ebe74da1a553a04c28b62d00a19967ec1649f471d"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Energy.lean",
-          "sha256": "1f06908271ad07f8eeede7a2c1a7d136751f98a7573b266b55d789ca99219ef8"
+          "sha256": "ee3622b19929ce573b2422c12c8d4a80e12dee59f26a5bbca63ecd213e6a6b78"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/PartitionFunction.lean",
-          "sha256": "3b58f32966376fe68f69a4c59d334bfdfd67fc37cf69578e0a0d017b28ac6ce1"
+          "sha256": "1c8189e3ecead980e64126b442d215ad5ec300c6452ef3447dd96c40285fb36a"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/GibbsMeasure.lean",
-          "sha256": "ae05faf33d30ce4482724f6512506f1a15a43a7c8e07220add543c153083afe0"
+          "sha256": "eb418092f9e2b378c70a37ca75834abe98cabea1726237c5dcedbb3e2f532682"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/M0.lean",
-          "sha256": "270aaa280423ba8e55b18f2da5a89f1f44402f92b4cd2c60aeb7ec6860469ec0"
+          "sha256": "025a747c4242de496b4f8798e4c0bdbda8ec7d947ee3d0efe988a9ac01250b36"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/ErrorRate.lean",
-          "sha256": "a4c367ab6d4a2ec023b69335257d3bb277031ed6eb14f3c7885c6c1ed5070a66"
+          "sha256": "25296e22be63de85aa563913e86cf44ed75bdacc73485e496af2ee3a0e5ebd91"
         },
         {
           "path": "TwoComponentCoulomb/Frozen/Fluct.lean",
-          "sha256": "4d772749d072be3ce0d6f7ac775356d1f2c4a17180008e63b07e52959c9980b4"
+          "sha256": "2e80c3d7c88a7b1671c26916701db99a2fb6c414897622f9946bca4ed0136b63"
         }
       ],
       "state": "SEALED",
@@ -1566,7 +1566,7 @@
         "module": "TwoComponentCoulomb.Main.Theorem2",
         "export": "TwoComponentCoulomb.Main.theorem_2"
       },
-      "prefix_sha256": "ce93a4bf26b6454acb5cfcf57ec4bd8e8872e54d1a2bcb8a92d286ee943a76bd",
+      "prefix_sha256": "dff352ce0df4bfff203c8532b3878cea8721275e64f90c062b63916b9ce7cb48",
       "suffix_sha256": "361d4d81919f62a2e04dc25db701695aaf3701aa8252a17b8b686b53dd20cc6e",
       "draft_allowlist": {
         "frozen_paths": [],

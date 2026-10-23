@@ -12,7 +12,7 @@ import TwoComponentCoulomb.Gibbs.Basic
 /-!
 # The radius `ϱ(x_i)` on the placement set: its tail, and the quantities `ε_λ`, `η_λ`
 
-Source: Proposition 4.1, Step 3 (l. 1864--1882). The proof of
+Source: Proposition 4.1, Step 3 (l. 1775–1786). The proof of
 Proposition 4.1 follows the source (ruling R22); this module proves the tail bound of Step 3,
 which `LowerBound/PhiExpectation.lean` integrates against the profile `φ_β`.
 
@@ -27,10 +27,10 @@ boundary strip of width `s`, of area at most `(N - 1) π (2s)² + 4 s √N`.
 * `insertNth_mem_placementSet_iff`, `volume_eq_lintegral_insertNth` : Fubini along a coordinate.
 * `volume_bad_section_le`, `subset_bad_section` : the bad set of a section.
 * `volume_inter_closeSet_le`, `radius_tail_le` : `vol (H ∩ {ϱ(x_i) ≤ s}) ≤
-  (32π s² + 16 s / √N) vol H` (source l. 1865--1868, `ℚ(ϱ(x_1) ≤ r) ≤ C (r² + r / √N)`).
+  (32π s² + 16 s / √N) vol H` (source l. 1775–1778, `ℚ(ϱ(x_1) ≤ r) ≤ C (r² + r / √N)`).
 * `placement_area_condition` : the area condition of (eq:volume-lower) for `a = 4λ`, `b = 8λ`.
-* `lowerEps`, `lowerEta` : the quantities `ε_λ`, `η_λ` of l. 1869--1882 (for `β > 2`), with
-  `λ² ≤ ε_λ` and `λ ≤ η_λ` for `64 λ ≤ 1` (`sq_le_lowerEps`, `le_lowerEta`; l. 1889).
+* `lowerEps`, `lowerEta` : the quantities `ε_λ`, `η_λ` of l. 1780–1786 (for `β > 2`), with
+  `λ² ≤ ε_λ` and `λ ≤ η_λ` for `64 λ ≤ 1` (`sq_le_lowerEps`, `le_lowerEta`; l. 1793).
 -/
 
 public section
@@ -276,7 +276,7 @@ theorem bad_le_mul_half {M n s r : ℝ} (hn : n ≤ M) (hr0 : 0 < r) (hr : r * r
     ring
   linarith only [h1, h2]
 
-/-- **The close-neighbour event, in volume** (source l. 1865--1868, Step 3): if the placement area
+/-- **The close-neighbour event, in volume** (source l. 1775–1778, Step 3): if the placement area
 condition `4a√N + Nπb² ≤ N/2` holds then for `n + 1 = N`,
 `vol (H ∩ {x_i within 2σ of another point or σ of ∂Λ}) ≤ (8π σ² + 8 σ / √N) vol H`.
 The union bound over the other `n` particles and the boundary strip. -/
@@ -372,7 +372,7 @@ theorem placement_area_condition {N : ℕ} (hN : 1 ≤ N) {lam : ℝ} (hlam : 0 
     linarith only [this]
   linarith
 
-/-- **The tail of the radius** (source l. 1865--1868, Step 3: `ℚ(ϱ(x_1) ≤ r) ≤ C (r² + r/√N)`):
+/-- **The tail of the radius** (source l. 1775–1778, Step 3: `ℚ(ϱ(x_1) ≤ r) ≤ C (r² + r/√N)`):
 for `64 λ ≤ 1`, `H = H(N, N, 4λ, 8λ)` and every `s > 0`,
 `vol (H ∩ {ϱ(x_i) ≤ s}) ≤ (32π s² + 16 s / √N) vol H`. -/
 theorem radius_tail_le (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (h64 : 64 * lam ≤ 1) {s : ℝ}
@@ -406,13 +406,13 @@ theorem radius_tail_le (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (h64 : 64 * l
 
 /-! ### The quantities `ε_λ` and `η_λ` -/
 
-/-- The quantity `ε_λ` (source l. 1869--1882) for `β > 2`. -/
+/-- The quantity `ε_λ` (source l. 1780–1786) for `β > 2`. -/
 @[expose] noncomputable def lowerEps (β : ℝ) (_hβ : 2 < β) (lam : ℝ) : ℝ :=
   if β < 4 then lam ^ (β - 2)
   else if β = 4 then lam ^ 2 * |Real.log lam| ^ 2
   else lam ^ 2 * |Real.log lam|
 
-/-- The quantity `η_λ` (source l. 1869--1882) for `β > 2`. -/
+/-- The quantity `η_λ` (source l. 1780–1786) for `β > 2`. -/
 @[expose] noncomputable def lowerEta (β : ℝ) (_hβ : 2 < β) (lam : ℝ) : ℝ :=
   if β < 3 then lam ^ (β - 2)
   else if β = 3 then lam * |Real.log lam|

@@ -22,7 +22,7 @@ import TwoComponentCoulomb.Energy.Proposition22
 # Frozen: `TwoComponentCoulomb.proposition_2_2`
 
 Frozen statement, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 434–443.
+Source: l. 440–449.
 -/
 
 @[expose] public section
@@ -30,7 +30,7 @@ Source: l. 434–443.
 namespace TwoComponentCoulomb
 
 open scoped Classical in
-/-- **Proposition 2.2** (`prop:mino2`, source l. 434–443). The sums over `i ∈ 𝒞_k` and over
+/-- **Proposition 2.2** (`prop:mino2`, source l. 440–449). The sums over `i ∈ 𝒞_k` and over
 `i ∈ ℐ_k ∖ 𝒞_k`, `k = 1, …, K`, are the sums over the vertices that lie on a 2-cycle of the
 nearest-neighbour graph and over the remaining (tree) vertices. -/
 theorem proposition_2_2 :

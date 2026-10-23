@@ -4,51 +4,50 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 module
 
-public import TwoComponentCoulomb.Fluctuations.TiltedEnergy
+public import TwoComponentCoulomb.Fluctuations.SourcePairRadial
 import TwoComponentCoulomb.Integrals.Radial
+import TwoComponentCoulomb.Fluctuations.SourceBinomial
 import TwoComponentCoulomb.UpperBound.Isolated
 
 /-!
-# Theorem 2, Steps 3--4: the tilted Proposition 3.9 bounds for the isolated-pair block
+# Theorem 2, Steps 3--4: the tilted Proposition 3.7 bounds for the isolated-pair block
 
-Source: proof of Theorem 2 (`prop:linear`), Step 3 (l. 2091--2112) and
-Step 4 (l. 2143--2166), for `β > 2`. The isolated-pair block `I` of a marked cell is integrated
-as in the proof of Proposition 3.9, with the modified pair factors of `TiltedEnergy.lean`. The
+Source `source/dipole-formation.tex`, proof of Theorem 2 (`prop:linear`), Step 3 (l. 1969–2002) and
+Step 4 (l. 2003–2056), for `β > 2`. The isolated-pair block `I` of a marked cell is integrated
+as in the proof of Proposition 3.7, with the modified pair factors of `Fluctuations/TiltedEnergy.lean`. The
 results are stated in exactly the shape of `isolated_n_neutral_conv` (eq:n neutral conv) and
 `isolated_n_neutral` (eq:n neutral), with the additional error `C N φ_β(γ)`, so that they enter
-the graph sum of Proposition 3.10 (Steps 2--3, (eq:F(1)) and (eq:2cases p)) in place of
-Proposition 3.9.
+the graph sum of Proposition 3.8 (Steps 2--3, (eq:F(1)) and (eq:2cases p)) in place of
+Proposition 3.7.
 
 ## Main results
 
-* `alphaBlock_n_neutral_conv`: **Step 3** (l. 2092--2112), the analogue of (eq:n neutral conv) for
+* `alphaBlock_n_neutral_conv`: **Step 3** (l. 1969–1994), the analogue of (eq:n neutral conv) for
   `∫_{cell} e^{-β G⁽¹⁾_γ}` (`alphaBlockEnergy`), with the extra error `C_β N φ_β(γ)`.
-* `tiltedBlock_n_neutral_conv`: **Step 4** (l. 2143--2166), the analogue for
+* `tiltedBlock_n_neutral_conv`: **Step 4** (l. 2003–2056), the analogue for
   `∫_{cell} exp (t ∑_i ((r̃₁(z_i)/γ)² ∧ 1) - β F⁽¹⁾)`, with the extra error `C_{β,t} N φ_β(γ)`.
 
-## The expansion of the added constant (Step 3, l. 2102--2111)
+## The expansion of the added constant (Step 3, source l. 1980–1990)
 
 The same-sign factor of `G⁽¹⁾_γ` is `C' ((λ/ρ)^{β-2} + x)`, `x = (λ/γ)^{β-2}`. The product over
 the `q` same-sign representatives is expanded over the set `B` of the `s` pairs assigned the added
-constant `C' x`; these pairs are then given the neutral factor `1 + C' φ_β(ρ) ≥ 1`, and the
-remaining integral is the one of Proposition 3.9 with `(p₀ + s, q - s)` neutral and same-sign pairs
-(Steps 3--4 of Proposition 3.9 for the representatives relabelled by `Fin p`,
-`IsolatedAssembly.refIntegral_le` in `UpperBound/Isolated.lean`; the relabelling is
+constant `C' x`. These pairs are then given the neutral factor `1 + C' φ_β(ρ) ≥ 1`, and the
+remaining integral is the one of Proposition 3.7 with `(p₀ + s, q - s)` neutral and same-sign pairs
+(Steps 3--4 of Proposition 3.7 for the representatives relabelled by `Fin p`,
+`IsolatedAssembly.refIntegral_le` in `UpperBound/Isolated.lean`. The relabelling is
 `IsolatedIntegration.exists_relabel_ref`). The source compares entropies through
-`C(m, q) C(q, s) = C(m, q - s) C(m - q + s, s) ≤ C(m, q - s) C(m, s)`. We use the equivalent exact
-identity for the entropy `H(a, b) = (a + b) log (a + b) - a log a - b log b`,
-`H(p₀, q) + H(s, q - s) = H(p₀ + s, q - s) + H(p₀, s)`, in the form
-`log C(q, s) + H(p₀, q) - H(p₀ + s, q - s) ≤ 2s + s log p - s log s` (`exponent_expand_le`); the
-quadratic gain is kept with `c_β = 1/2` (`(q/p)² ≤ 2((q - s)/p)² + 2 (s/p)²`), and the sum over
-`s` is bounded by the supremum inequality `s (A - log s) ≤ e^{A - 1}`, which gives
-`C' e^{2 + |C₀|} p x ≤ C_β N φ_β(γ)`. This is the source's bound
-`(1 + C_β e^{C₀} (λ/γ)^{β-2})^m ≤ exp (C_β N φ_β(γ))`.
+`C(m, q) C(q, s) = C(m, q - s) C(m - q + s, s) ≤ C(m, q - s) C(m, s)`.
+`SourceBinomial.choose_expansion` proves this identity and inequality. The maximal binomial
+summand gives the factor `(m+1)` connecting entropy to the binomial coefficients.
+After retaining the quadratic gain by `-p((q-s)/p)² ≤ -½p(q/p)² + s`, the binomial theorem
+sums the added constants to `(1 + C' e^{1+|C₀|} x)^p ≤ exp (C' e^{1+|C₀|} p x)`.
+The factor `(m+1)` adds `log(m+1)`, absorbed in the existing logarithmic error.
 
-## The tilt (Step 4, l. 2143--2158)
+## The tilt (Step 4, l. 2003–2056)
 
 By `lintegral_tiltedCell_le`, each pair factor of `(pred3)` gains at most `1 + C_t φ_β(γ)`, and
 the same-sign tilt `e^{2t}` is absorbed into the constant `C'` of the same-sign factor (the source
-absorbs it into `C₀`; the two are equivalent since the entropy and `C'^q` enter the same way).
+absorbs it into `C₀`. The two are equivalent since the entropy and `C'^q` enter the same way).
 Hence the extra factor `(1 + C_t φ_β(γ))^p ≤ exp (C_t N φ_β(γ))`.
 -/
 
@@ -77,7 +76,7 @@ theorem measurable_isolatedTail {β : ℝ} (hβ : 2 ≤ β) (lam : ℝ) :
   unfold isolatedTail
   split_ifs <;> fun_prop
 
-/-! ### The expansion of the added constant (Step 3, l. 2102--2108) -/
+/-! ### The expansion of the added constant (Step 3, l. 1980–1990) -/
 
 /-- Splitting a product over `Fin p` according to a set `U`. -/
 theorem prod_ite_eq {p : ℕ} (U : Finset (Fin p)) (F G : Fin p → ℝ≥0∞) :
@@ -87,7 +86,7 @@ theorem prod_ite_eq {p : ℕ} (U : Finset (Fin p)) (F G : Fin p → ℝ≥0∞) 
   · congr 1; ext i; simp
   · congr 1; ext i; simp
 
-/-- **The expansion over the same-sign pairs** (source l. 2102--2108): expanding the product of
+/-- **The expansion over the same-sign pairs** (source l. 1980–1990): expanding the product of
 the same-sign factors `b_i + c` over the set `B ⊆ T` of the pairs assigned the added constant `c`,
 and giving these pairs the neutral factor `1 + a_i ≥ 1`,
 `∏_{i ∈ T} (b_i + c) ∏_{i ∉ T} (1 + a_i)
@@ -107,7 +106,7 @@ theorem prod_ite_add_le {p : ℕ} (T : Finset (Fin p)) (a b : Fin p → ℝ≥0�
   exact Finset.prod_le_prod_of_subset_of_one_le
     (Finset.compl_subset_compl.2 Finset.sdiff_subset) fun i _ _ => le_self_add
 
-/-- **The expansion, integrated over the representatives** (source l. 2102--2108). -/
+/-- **The expansion, integrated over the representatives** (source l. 1980–1990). -/
 theorem lintegral_prod_ite_add_le {p : ℕ} [Nontrivial (Fin p)] (N : ℕ) (lam : ℝ)
     (T : Finset (Fin p)) {a b : ℝ → ℝ≥0∞} (ha : Measurable a) (hb : Measurable b) (c : ℝ≥0∞) :
     ∫⁻ z in Set.univ.pi (fun _ : Fin p => box N),
@@ -131,17 +130,11 @@ theorem lintegral_prod_ite_add_le {p : ℕ} [Nontrivial (Fin p)] (N : ℕ) (lam 
         rw [lintegral_finsetSum _ fun B _ => (hm (T \ B)).const_mul _]
         exact Finset.sum_congr rfl fun B _ => lintegral_const_mul _ (hm (T \ B))
 
-/-! ### The entropy comparison of the expansion (Step 3, l. 2102--2111) -/
+/-! ### The entropy comparison of the expansion (Step 3, l. 1980–1990) -/
 
-/-- **The entropy comparison of the expansion** (source l. 2102--2111, in entropy form): for
-`p = p₀ + q > 0`, `s ≤ q` and `y > 0`,
-`log C(q, s) + [p log p - p₀ log p₀ - q log q + C₀ q + s log y]
-  - [p log p - (p₀ + s) log (p₀ + s) - (q - s) log (q - s) + C₀ (q - s)] - p ((q - s)/p)²
-  ≤ -½ p (q/p)² + p y e^{2 + |C₀|}`.
-This is the source's `C(m, q) C(q, s) = C(m, q - s) C(m - q + s, s) ≤ C(m, q - s) C(m, s)`
-followed by `∑_s C(m, s) (C e^{C₀} x)^s = (1 + C e^{C₀} x)^m`, through the entropy identity
-`H(p₀, q) + H(s, q - s) = H(p₀ + s, q - s) + H(p₀, s)` and the supremum inequality
-`s (A - log s) ≤ e^{A - 1}`; the quadratic gain uses `(q/p)² ≤ 2 ((q - s)/p)² + 2 (s/p)²`. -/
+/-- The binomial identity in the written expansion, with the factor `p+1`
+needed to pass between binomial coefficients and the representative entropy.
+The quadratic gain is retained by `-p((q-s)/p)² ≤ -½p(q/p)² + s`. -/
 theorem exponent_expand_le {p p₀ q s : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) (hs : s ≤ q)
     (C₀ : ℝ) {y : ℝ} (hy : 0 < y) :
     Real.log (q.choose s)
@@ -149,76 +142,28 @@ theorem exponent_expand_le {p p₀ q s : ℕ} (hpq : p₀ + q = p) (hp : 0 < p) 
         - (p * Real.log p - ((p₀ + s : ℕ) : ℝ) * Real.log ((p₀ + s : ℕ) : ℝ)
           - ((q - s : ℕ) : ℝ) * Real.log ((q - s : ℕ) : ℝ) + C₀ * ((q - s : ℕ) : ℝ)))
       - p * (((q - s : ℕ) : ℝ) / p) ^ 2 ≤
-    -(1 / 2) * (p * ((q : ℝ) / p) ^ 2) + p * y * Real.exp (2 + |C₀|) := by
+    -(1 / 2) * (p * ((q : ℝ) / p) ^ 2) + Real.log (p.choose s) +
+      s * Real.log (y * Real.exp (1 + |C₀|)) + Real.log (p + 1) := by
   have hP : (0 : ℝ) < p := by exact_mod_cast hp
-  have hey : 0 ≤ p * y * Real.exp (2 + |C₀|) := by positivity
-  have hq2 : 0 ≤ (p : ℝ) * ((q : ℝ) / p) ^ 2 := by positivity
-  rcases Nat.eq_zero_or_pos s with rfl | hspos
-  · simp only [Nat.choose_zero_right, Nat.cast_one, Real.log_one, Nat.cast_zero, add_zero,
-      Nat.sub_zero, zero_mul]
-    linarith
-  have hqs : ((q - s : ℕ) : ℝ) = q - s := Nat.cast_sub hs
-  have hps : ((p₀ + s : ℕ) : ℝ) = p₀ + s := by push_cast; ring
-  rw [hqs, hps]
-  have hpq' : (p : ℝ) = p₀ + q := by exact_mod_cast hpq.symm
-  have hsq : (s : ℝ) ≤ q := by exact_mod_cast hs
-  have hs0 : (0 : ℝ) < s := by exact_mod_cast hspos
-  have hp00 : (0 : ℝ) ≤ p₀ := Nat.cast_nonneg p₀
-  have hsp : (s : ℝ) ≤ p := by linarith
-  -- the quadratic term
-  have hquad : -(p * (((q : ℝ) - s) / p) ^ 2) ≤ -(1 / 2) * (p * ((q : ℝ) / p) ^ 2) + s := by
+  have hsp : (s : ℝ) ≤ p := by exact_mod_cast (show s ≤ p by omega)
+  have hs0 : (0 : ℝ) ≤ s := Nat.cast_nonneg s
+  have hquad : -(p * (((q : ℝ) - s) / p) ^ 2) ≤
+      -(1 / 2) * (p * ((q : ℝ) / p) ^ 2) + s := by
     have e1 : (p : ℝ) * (((q : ℝ) - s) / p) ^ 2 = ((q : ℝ) - s) ^ 2 * (p : ℝ)⁻¹ := by
       field_simp
     have e2 : (p : ℝ) * ((q : ℝ) / p) ^ 2 = (q : ℝ) ^ 2 * (p : ℝ)⁻¹ := by field_simp
     rw [e1, e2]
     have key : (q : ℝ) ^ 2 ≤ 2 * ((q : ℝ) - s) ^ 2 + 2 * p * s := by
-      linarith only [sq_nonneg ((q : ℝ) - 2 * s), mul_nonneg hs0.le (sub_nonneg.2 hsp)]
-    have hinv : 0 < (p : ℝ)⁻¹ := inv_pos.2 hP
-    have h1 := mul_le_mul_of_nonneg_right key hinv.le
+      linarith only [sq_nonneg ((q : ℝ) - 2 * s), mul_nonneg hs0 (sub_nonneg.2 hsp)]
+    have h1 := mul_le_mul_of_nonneg_right key (inv_pos.2 hP).le
     have e3 : (2 * ((q : ℝ) - s) ^ 2 + 2 * p * s) * (p : ℝ)⁻¹ =
-        2 * (((q : ℝ) - s) ^ 2 * (p : ℝ)⁻¹) + 2 * s := by
-      field_simp
+        2 * (((q : ℝ) - s) ^ 2 * (p : ℝ)⁻¹) + 2 * s := by field_simp
     linarith
-  -- the binomial coefficient and the entropy `H(p₀, s)`
-  have hchoose := log_choose_le hs
-  have hent := entropy_le (p := p₀ + s) (p₀ := p₀) (q := s) rfl (by omega) (Nat.zero_le p₀)
-    (k := 0)
-  simp only [Nat.choose_zero_right, Nat.cast_one, Real.log_one, add_zero, Nat.cast_zero,
-    zero_mul, sub_zero] at hent
-  push_cast at hent
-  have hlog1 : Real.log ((p₀ : ℝ) + s) ≤ Real.log p :=
-    Real.log_le_log (by linarith) (by linarith)
-  have hlog1' := mul_le_mul_of_nonneg_left hlog1 hs0.le
-  have hcq : ((q : ℝ) - s) * Real.log ((q : ℝ) - s) ≤ ((q : ℝ) - s) * Real.log q := by
-    rcases (sub_nonneg.2 hsq).eq_or_lt with h | h
-    · rw [← h]
-      simp
-    · exact mul_le_mul_of_nonneg_left (Real.log_le_log h (by linarith)) h.le
-  -- the supremum inequality
-  have hopt := mul_sub_log_le_exp (3 + |C₀| + Real.log p + Real.log y) hs0.le
-  have hexp : Real.exp (3 + |C₀| + Real.log p + Real.log y - 1) =
-      p * y * Real.exp (2 + |C₀|) := by
-    rw [show 3 + |C₀| + Real.log p + Real.log y - 1 = (2 + |C₀|) + Real.log p + Real.log y by
-      ring, Real.exp_add, Real.exp_add, Real.exp_log hP, Real.exp_log hy]
-    ring
-  rw [hexp] at hopt
-  have hC₀ : C₀ * s ≤ |C₀| * s := mul_le_mul_of_nonneg_right (le_abs_self C₀) hs0.le
+  have hent := SourceBinomial.entropy_expansion_le hpq hs
+  rw [Nat.cast_sub hs] at hent ⊢
+  rw [Real.log_mul hy.ne' (Real.exp_pos _).ne', Real.log_exp]
+  have hC₀ : C₀ * s ≤ |C₀| * s := mul_le_mul_of_nonneg_right (le_abs_self C₀) hs0
   linarith
-
-/-- **The sum over `0 ≤ s ≤ n` costs at most `log (N + 1)`**: if every term is at most `e^Y`, the
-sum is at most `e^{Y + log (N + 1)}` for `n ≤ N`. -/
-theorem sum_range_le_ofReal_exp {n N : ℕ} (hn : n ≤ N) (Y : ℝ) (F : ℕ → ℝ≥0∞)
-    (hF : ∀ k ∈ range (n + 1), F k ≤ ENNReal.ofReal (Real.exp Y)) :
-    ∑ k ∈ range (n + 1), F k ≤ ENNReal.ofReal (Real.exp (Y + Real.log (N + 1))) := by
-  refine (sum_le_card_nsmul _ _ _ hF).trans ?_
-  rw [card_range, nsmul_eq_mul, Real.exp_add, Real.exp_log (by positivity),
-    ENNReal.ofReal_mul (Real.exp_pos _).le, mul_comm (ENNReal.ofReal (Real.exp Y))]
-  refine mul_le_mul_left ?_ _
-  rw [show ((n + 1 : ℕ) : ℝ≥0∞) = ENNReal.ofReal ((n + 1 : ℕ) : ℝ) from
-    (ENNReal.ofReal_natCast _).symm]
-  refine ENNReal.ofReal_le_ofReal ?_
-  push_cast
-  exact_mod_cast Nat.add_le_add_right hn 1
 
 /-- One term of the expansion: if `e^{H_s} W ≤ e^M`, then `e^{E} y^s W ≤ e^{E + s log y - H_s + M}`
 for `y > 0`. -/
@@ -245,7 +190,7 @@ theorem ofReal_exp_mul_pow_mul_le {E Hs M y : ℝ} (s : ℕ) (hy : 0 < y) {W : �
 /-! ### Step 3: the `A₁`-block (internal form) -/
 
 open scoped Classical in
-/-- **Theorem 2, Step 3, the isolated-pair block** (source l. 2092--2112), internal form with
+/-- **Theorem 2, Step 3, the isolated-pair block** (source l. 1969–1994), internal form with
 explicit constants: for `β > 2`, `C, C₀ ∈ ℝ` there are `K, C₁ > 0` such that for every block with
 `p = p₀ + q` pairs (`2 ≤ p ≤ N ≤ 2p`), `|S| = 2q`, `0 < λ ≤ e^{-1}` and `γ ≥ λ`,
 `e^{p log p - p₀ log p₀ - q log q + C₀ q} ∫_{cell} e^{-β G⁽¹⁾_γ}
@@ -267,9 +212,9 @@ theorem alphaBlock_le {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (C C₀ : ℝ) :
           + K * p * (if β = 2 then |Real.log lam|⁻¹ else if β < 4 then lam ^ (β - 2)
               else if β = 4 then lam ^ 2 * |Real.log lam| ^ 2 else lam ^ 2 * |Real.log lam|)
           + C₁ * p * (lam / γ) ^ (β - 2) + 2 * Real.log (N + 1))) := by
-  obtain ⟨C', hC', hpred⟩ := lintegral_alphaBlockCell_le.{u} hβ h2 C
+  obtain ⟨C', hC', hpred⟩ := lintegral_alphaBlockCell_le_source.{u} hβ h2 C
   obtain ⟨K, hK, hJ⟩ := refIntegral_le hβ hC' C₀
-  refine ⟨K, C' * Real.exp (2 + |C₀|), hK, by positivity, ?_⟩
+  refine ⟨K, C' * Real.exp (1 + |C₀|), hK, by positivity, ?_⟩
   intro ι _ _ key f hf2 hf0 h3 S hS N p p₀ q hcard hp2 hpN hN hpq hSq lam γ hlam hl1 hγ
   have hRf := gpRefSet_mem_iff (key := key) hf2 hf0
   have hR : Fintype.card {i // i ∈ gpRefSet key f} = p := by
@@ -333,20 +278,33 @@ theorem alphaBlock_le {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (C C₀ : ℝ) :
       rw [Finset.card_sdiff_of_subset hBT, hT]
     have h := hJ N p (p₀ + B.card) (q - B.card) (T \ B) hp2 hpN hN (by omega) hcard' lam hlam hl1
     exact ofReal_exp_mul_pow_mul_le B.card hy h
+  set z : ℝ := C' * (lam / γ) ^ (β - 2) * Real.exp (1 + |C₀|) with hzdef
+  have hz : 0 < z := by positivity
+  set Y : ℝ := p * Real.log N + p * Real.log Zs
+    - (1 / 2) * (p * ((q : ℝ) / p) ^ 2) + K * p * r + 2 * Real.log (N + 1) with hYdef
+  have hlogp : Real.log (p + 1 : ℝ) ≤ Real.log (N + 1) :=
+    Real.log_le_log (by positivity) (by exact_mod_cast Nat.add_le_add_right hpN 1)
   have hF : ∀ s ∈ range (q + 1), q.choose s • ENNReal.ofReal (Real.exp (F s)) ≤
-      ENNReal.ofReal (Real.exp (p * Real.log N + p * Real.log Zs
-        - (1 / 2) * (p * ((q : ℝ) / p) ^ 2) + K * p * r
-        + C' * Real.exp (2 + |C₀|) * p * (lam / γ) ^ (β - 2) + Real.log (N + 1))) := by
+      ENNReal.ofReal (Real.exp Y) * ((p.choose s : ℝ≥0∞) * ENNReal.ofReal z ^ s) := by
     intro s hs
     have hsq : s ≤ q := Nat.lt_succ_iff.1 (Finset.mem_range.1 hs)
+    have hsp : s ≤ p := by omega
     have hc : (0 : ℝ) < q.choose s := by exact_mod_cast Nat.choose_pos hsq
+    have hc' : (0 : ℝ) < p.choose s := by exact_mod_cast Nat.choose_pos hsp
     rw [nsmul_eq_mul, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul hc.le,
+      ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_pow hz.le,
+      ← ENNReal.ofReal_mul hc'.le, ← ENNReal.ofReal_mul (Real.exp_pos _).le,
       ← Real.exp_log hc, ← Real.exp_add]
+    have he : Real.exp Y * ((p.choose s : ℝ) * z ^ s) =
+        Real.exp (Y + Real.log (p.choose s) + s * Real.log z) := by
+      conv_rhs => rw [Real.exp_add, Real.exp_add, Real.exp_log hc', Real.exp_nat_mul,
+        Real.exp_log hz]
+      ring
+    rw [he]
     refine ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_)
     have key := exponent_expand_le hpq hp hsq C₀ hy
     simp only [hFdef, hH0]
-    have e : (p : ℝ) * (C' * (lam / γ) ^ (β - 2)) * Real.exp (2 + |C₀|) =
-        C' * Real.exp (2 + |C₀|) * p * (lam / γ) ^ (β - 2) := by ring
+    dsimp only [Y, z]
     linarith
   calc ENNReal.ofReal (Real.exp H0) *
         ∫⁻ z in (Set.univ.pi fun _ : ι => box N) ∩ {z | nnMap key z = f},
@@ -369,15 +327,36 @@ theorem alphaBlock_le {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (C C₀ : ℝ) :
     _ ≤ ∑ B ∈ T.powerset, ENNReal.ofReal (Real.exp (F B.card)) := Finset.sum_le_sum hterm
     _ = ∑ s ∈ range (q + 1), q.choose s • ENNReal.ofReal (Real.exp (F s)) := by
         rw [Finset.sum_powerset_apply_card (fun s => ENNReal.ofReal (Real.exp (F s))), hT]
+    _ ≤ ENNReal.ofReal (Real.exp Y) *
+        ∑ s ∈ range (q + 1), (p.choose s : ℝ≥0∞) * ENNReal.ofReal z ^ s := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_le_sum hF
+    _ ≤ ENNReal.ofReal (Real.exp Y) * ENNReal.ofReal ((1 + z) ^ p) := by
+        gcongr
+        have hsum := SourceBinomial.sum_choose_mul_pow_le (show q ≤ p by omega) hz.le
+        have he : (∑ s ∈ range (q + 1), (p.choose s : ℝ≥0∞) * ENNReal.ofReal z ^ s) =
+            ENNReal.ofReal (∑ s ∈ range (q + 1), (p.choose s : ℝ) * z ^ s) := by
+          rw [ENNReal.ofReal_sum_of_nonneg (by intros; positivity)]
+          refine Finset.sum_congr rfl fun s _ => ?_
+          conv_rhs => rw [ENNReal.ofReal_mul (Nat.cast_nonneg (p.choose s)),
+            ENNReal.ofReal_pow hz.le, ENNReal.ofReal_natCast]
+        rw [he]
+        exact ENNReal.ofReal_le_ofReal hsum
+    _ ≤ ENNReal.ofReal (Real.exp (Y + p * z)) := by
+        rw [Real.exp_add Y (p * z), Real.exp_nat_mul, ENNReal.ofReal_mul (Real.exp_pos _).le]
+        gcongr
+        simpa only [add_comm] using Real.add_one_le_exp z
     _ ≤ _ := by
-        refine (sum_range_le_ofReal_exp hqN _ _ hF).trans (le_of_eq ?_)
+        refine le_of_eq ?_
         congr 2
+        dsimp only [Y, z]
+        rw [hZsdef, hr]
         ring
 
 /-! ### Step 4: the `A₃`-tilted block (internal form) -/
 
 open scoped Classical in
-/-- **Theorem 2, Step 4, the isolated-pair block** (source l. 2143--2166), internal form with
+/-- **Theorem 2, Step 4, the isolated-pair block** (source l. 2003–2056), internal form with
 explicit constants: for `β > 2`, `C ≥ 0`, `C₀ ∈ ℝ` and `t ≥ 0` there are `K > 0`, `C_t ≥ 0` such
 that for every block with `p = p₀ + q` pairs (`2 ≤ p ≤ N ≤ 2p`), `|S| = 2q`, `0 < λ ≤ e^{-1}` and
 `γ ≥ λ`,
@@ -470,15 +449,15 @@ open TiltedAssembly IsolatedAssembly
 /-! ### Step 3: the analogues of (eq:n neutral conv) and (eq:n neutral) for `G⁽¹⁾_γ` -/
 
 /-- **Theorem 2, Step 3: the tilted (eq:n neutral conv) for the `A₁`-block** (source
-l. 2092--2112). For `β > 2` and `C, C₀ ∈ ℝ` there are `C_β, c_β > 0` (depending only on `β`, `C`,
+l. 1969–1994). For `β > 2` and `C, C₀ ∈ ℝ` there are `C_β, c_β > 0` (depending only on `β`, `C`,
 `C₀`) such that for every finite index type `ι` with `|ι| = 2p`, tie-break key, graph
 `γ ∈ G_{p,p₀}` (a fixed-point-free involution `f`) with same-sign set `S` (`f`-invariant,
 `|S| = 2(p - p₀)`), every `2 ≤ p ≤ N` with `p ≥ N/2`, `p₀ ≤ p`, `0 < λ ≤ e^{-1}` and `γ ≥ λ`:
 `p log p - p₀ log p₀ - (p-p₀) log (p-p₀) + C₀ (p-p₀) + log ∫_{cell} e^{-β G⁽¹⁾_γ}
   - p (log N + (2-β) log λ + log 𝒵_β)
   ≤ -c_β p ((p - p₀)/p)² + C_β p r(λ) + C_β N φ_β(γ) + C_β log (N + 1)`,
-where `G⁽¹⁾_γ = alphaBlockEnergy` and `r(λ)` is the error rate of (eq:n neutral conv); stated
-for each graph as `e^{entropy} I(γ) ≤ e^{…}` (ruling R10). The source assumes `2λ ≤ γ ≤ 1`; only
+where `G⁽¹⁾_γ = alphaBlockEnergy` and `r(λ)` is the error rate of (eq:n neutral conv). It is stated
+for each graph as `e^{entropy} I(γ) ≤ e^{…}` (ruling R10). The source assumes `2λ ≤ γ ≤ 1`. Only
 `λ ≤ γ` is used. -/
 theorem alphaBlock_n_neutral_conv {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (C C₀ : ℝ) :
     ∃ Cβ cβ : ℝ, 0 < Cβ ∧ 0 < cβ ∧
@@ -543,7 +522,7 @@ theorem alphaBlock_n_neutral_conv {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) (C C
 /-! ### Step 4: the analogues of (eq:n neutral conv) and (eq:n neutral) with the `A₃` tilt -/
 
 /-- **Theorem 2, Step 4: the tilted (eq:n neutral conv) with the `A₃` tilt** (source
-l. 2143--2166). For `β > 2`, `C ≥ 0`, `C₀ ∈ ℝ` and `t ≥ 0` there are `C_{β,t}, c_{β,t} > 0`
+l. 2003–2056). For `β > 2`, `C ≥ 0`, `C₀ ∈ ℝ` and `t ≥ 0` there are `C_{β,t}, c_{β,t} > 0`
 (depending only on `β`, `C`, `C₀`, `t`) such that for every finite index type `ι` with `|ι| = 2p`,
 tie-break key, graph `γ ∈ G_{p,p₀}` (a fixed-point-free involution `f`) with same-sign set `S`
 (`f`-invariant, `|S| = 2(p - p₀)`), every `2 ≤ p ≤ N` with `p ≥ N/2`, `p₀ ≤ p`, `0 < λ ≤ e^{-1}` and
@@ -551,8 +530,8 @@ tie-break key, graph `γ ∈ G_{p,p₀}` (a fixed-point-free involution `f`) wit
 `p log p - p₀ log p₀ - (p-p₀) log (p-p₀) + C₀ (p-p₀)
   + log ∫_{cell} exp (t ∑_i ((r̃₁(z_i)/γ)² ∧ 1) - β F⁽¹⁾) - p (log N + (2-β) log λ + log 𝒵_β)
   ≤ -c p ((p - p₀)/p)² + C p r(λ) + C N φ_β(γ) + C log (N + 1)`,
-with `F⁽¹⁾ = pairAssignedEnergy` (the energy of Proposition 3.9 and (def:F(1))) and the radii
-computed within the block; stated for each graph as `e^{entropy} I(γ) ≤ e^{…}` (ruling R10). -/
+with `F⁽¹⁾ = pairAssignedEnergy` (the energy of Proposition 3.7 and the definition of F⁽¹⁾) and the radii
+computed within the block. It is stated for each graph as `e^{entropy} I(γ) ≤ e^{…}` (ruling R10). -/
 theorem tiltedBlock_n_neutral_conv {β : ℝ} (hβ : 2 ≤ β) (h2 : 2 < β) {C : ℝ} (hC : 0 ≤ C)
     (C₀ : ℝ) {t : ℝ} (ht : 0 ≤ t) :
     ∃ Cβ cβ : ℝ, 0 < Cβ ∧ 0 < cβ ∧

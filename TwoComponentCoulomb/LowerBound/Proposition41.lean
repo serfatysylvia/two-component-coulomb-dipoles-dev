@@ -14,9 +14,9 @@ import TwoComponentCoulomb.LowerBound.LowerAssembly
 
 Registered implementation module of `TwoComponentCoulomb/Frozen/Proposition41.lean`. Its export
 `TwoComponentCoulomb.LowerBound.proposition_4_1` states and proves exactly the frozen statement
-(Proposition 4.1, source l. 1745--1759): the case `β = 2` is
-`partitionFunction_two_ge_frozen_form` (`CriticalLower`), and the case `β > 2` is
-`proposition_4_1_of_two_lt` (`LowerAssembly`). The proof follows the source (ruling R22).
+(Proposition 4.1, source l. 1657–1668): the case `β = 2` is
+`partitionFunction_two_ge_frozen_form` (`LowerBound/CriticalLower.lean`), and the case `β > 2` is
+`proposition_4_1_of_two_lt` (`LowerBound/LowerAssembly.lean`). The proof follows the source (ruling R22).
 
 The anchor is sealed with `by exact TwoComponentCoulomb.LowerBound.proposition_4_1`. This module
 must never import the anchor.
@@ -26,7 +26,7 @@ must never import the anchor.
 
 namespace TwoComponentCoulomb.LowerBound
 
-/-- **Proposition 4.1** (`prop:lower bound`, source l. 1745--1759), with exactly the type of the
+/-- **Proposition 4.1** (`prop:lower bound`, source l. 1657–1668), with exactly the type of the
 frozen `TwoComponentCoulomb.proposition_4_1`. -/
 theorem proposition_4_1 {β : ℝ} {hβ : 2 ≤ β} :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧

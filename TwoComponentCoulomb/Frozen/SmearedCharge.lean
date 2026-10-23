@@ -12,7 +12,7 @@ public import Mathlib.Probability.ConditionalProbability
 # Frozen: `TwoComponentCoulomb.smearedCharge`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 148.
+Source: l. 133.
 -/
 
 open MeasureTheory
@@ -21,7 +21,7 @@ open MeasureTheory
 
 namespace TwoComponentCoulomb
 
-/-- `δ_z^{(a)}`: the uniform probability measure on `B(z, a)` for `a > 0` (source l. 148); the
+/-- `δ_z^{(a)}`: the uniform probability measure on `B(z, a)` for `a > 0` (source l. 133); the
 zero measure for `a ≤ 0` (ruling R16). -/
 noncomputable def smearedCharge (z : ℂ) (a : ℝ) : Measure ℂ :=
   ProbabilityTheory.cond volume (Metric.ball z a)

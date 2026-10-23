@@ -17,16 +17,16 @@ import TwoComponentCoulomb.PhaseSpace.Packing
 /-!
 # Theorem 2, Step 5: control on the radii (deterministic part)
 
-Source: proof of Theorem 2, Step 5 (l. 2199--2208). Write
+Source: proof of Theorem 2, Step 5 (l. 2073–2082). Write
 `r̃₁ = firstNeighborRadius λ Z`.
 
-* `sum_firstNeighborRadius_sq_le` : the packing bound `Σᵢ r̃₁(zᵢ)² ≤ C' N` (l. 2199): the balls
+* `sum_firstNeighborRadius_sq_le` : the packing bound `Σᵢ r̃₁(zᵢ)² ≤ C' N` (l. 2073): the balls
   `B(zᵢ, |zᵢ - z_{φ₁ i}|/2)` are disjoint in `[-√N, 2√N]²` and `r̃₁ ≤ |zᵢ - z_{φ₁ i}|/4 + λ`.
 * `sq_sum_firstNeighborRadius_le` : (eq:sumrr1) in the form
   `(Σᵢ r̃₁(zᵢ))² ≤ 8 N² R² + 12 N T`, whenever `N - ½|I^dip| + D_R ≤ T` (so that at most `2T`
   particles lie outside the isolated dipoles of length at most `R`, and `2λ ≤ R`). With
   `R = R₀`, `T = M N √ω_λ` and `R₀² ≤ √ω_λ` this is `≤ (8 + 12 M) N² √ω_λ`
-  (eq. (eq:sumrr1), l. 2206).
+  (eq. (eq:sumrr1), l. 2080).
 -/
 
 @[expose] public section
@@ -39,7 +39,7 @@ variable {N : ℕ}
 
 /-! ### The packing bound for `r̃₁` -/
 
-/-- **Packing bound** (source l. 2199): for a configuration in the box and `0 ≤ λ ≤ 1`,
+/-- **Packing bound** (source l. 2073): for a configuration in the box and `0 ≤ λ ≤ 1`,
 `Σᵢ r̃₁(zᵢ)² ≤ 3 N`. -/
 theorem sum_firstNeighborRadius_sq_le {lam : ℝ} (h0 : 0 ≤ lam) (h1 : lam ≤ 1)
     (Z : Fin N ⊕ Fin N → ℂ) (hZ : ∀ i, Z i ∈ box N) :
@@ -94,7 +94,7 @@ theorem card_filter_isIsolatedDipole_lt_norm (Z : Fin N ⊕ Fin N → ℂ) (R : 
     (fun i => IsIsolatedDipole Z i ∧ R < ‖Z i - Z (nearestNeighbor Z i)‖) hP
 
 open scoped Classical in
-/-- **Source l. 2199**: if `N - ½|I^dip| + D_R ≤ T`, then at most `2 T` particles lie outside the
+/-- **Source l. 2073**: if `N - ½|I^dip| + D_R ≤ T`, then at most `2 T` particles lie outside the
 isolated dipoles of length at most `R`. -/
 theorem card_not_short_isolatedDipole_le (Z : Fin N ⊕ Fin N → ℂ) (R T : ℝ)
     (hA : (N : ℝ) - (isolatedDipoles Z).card + (longIsolatedDipoles Z R).card ≤ T) :
@@ -133,7 +133,7 @@ theorem card_not_short_isolatedDipole_le (Z : Fin N ⊕ Fin N → ℂ) (R T : �
   linarith only [hA]
 
 open scoped Classical in
-/-- **(eq:sumrr1), source l. 2199--2207**: for a configuration in the box, `0 < λ ≤ 1`, `2λ ≤ R`
+/-- **(eq:sumrr1), source l. 2073–2081**: for a configuration in the box, `0 < λ ≤ 1`, `2λ ≤ R`
 and `N - ½|I^dip| + D_R ≤ T`,
 `(Σᵢ r̃₁(zᵢ))² ≤ 8 N² R² + 12 N T`.
 The particles in isolated dipoles of length at most `R` have `r̃₁ ≤ R`; the at most `2 T` others

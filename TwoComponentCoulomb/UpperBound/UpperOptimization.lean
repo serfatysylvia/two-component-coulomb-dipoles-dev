@@ -4,17 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 module
 
-public import Mathlib.Analysis.SpecialFunctions.Exp
-public import Mathlib.Analysis.SpecialFunctions.Log.Basic
+public import TwoComponentCoulomb.UpperBound.ReducedOptimization
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 public import TwoComponentCoulomb.Frozen.M0
 
 /-!
-# Proposition 3.10, Steps 2--3: the real-variable calculus
+# Proposition 3.9, Steps 2--3: the real-variable calculus
 
-Source: proof of Proposition 3.10 (`prop:upper bound`), l. 1575--1620:
-the entropy estimate (l. 1575--1579), the function `χ_β` (`defchi`, l. 1587--1594) and its
-optimization (Step 3, l. 1598--1620). Nothing here refers to configurations or graphs: it is pure
+Source: proof of Proposition 3.9 (`prop:upper bound`), l. 1483–1524:
+the entropy estimate (l. 1483–1487), the function `χ_β` (`defchi`, l. 1495–1502) and its
+optimization (Step 3, l. 1507–1524). Nothing here refers to configurations or graphs: it is pure
 real analysis, consumed by the assembly of `eq:quadra x3`.
 
 Notation (as in the source): `ℓ = |log λ|`, `α₀ = M₀ + 2`, `δ = (N - K) / N`, and `0 log 0 = 0`
@@ -23,34 +22,32 @@ Notation (as in the source): `ℓ = |log λ|`, `α₀ = M₀ + 2`, `δ = (N - K)
 ## Main definitions and results
 
 * `TwoComponentCoulomb.chiBeta`: the function `χ_β(δ)` of `defchi`, with its constant `C_β` as an
-  explicit argument `C`, for `β > 2`; `chiBeta β _ lam C 0 = 0` is the value of the formula.
+  explicit argument `C`, for `β > 2`. The equation `chiBeta β _ lam C 0 = 0` is the value of the formula.
 * `TwoComponentCoulomb.mul_add_mul_log_inv_le`: `s (A + B log (1/s)) ≤ B e^{A/B - 1}`
-  (l. 1598--1600).
+ .
 * `TwoComponentCoulomb.entropy_le`: `-(p/N) log (p/N) - ((K-p)/N) log ((K-p)/N)
-  ≤ α₀ δ log (1/δ) + C δ` for `K - p ≤ (M₀ + 2)(N - K)` (l. 1575--1579).
+  ≤ α₀ δ log (1/δ) + C δ` for `K - p ≤ (M₀ + 2)(N - K)` (l. 1483–1487).
 * `TwoComponentCoulomb.chiBeta_le_of_lt_four`, `chiBeta_le_of_eq_four`, `chiBeta_le_of_four_lt`:
-  the three supremum bounds of l. 1602--1609 (compared with `errorRate` in
-  `UpperBound/UpperRate.lean`, l. 1610).
+  the three supremum bounds of l. 1507–1513 (compared with `errorRate` in
+  `UpperBound/UpperRate.lean`, ).
 * `TwoComponentCoulomb.UpperRateHyp`: the three properties of the error rate used by the whole
-  `β > 2` upper-bound chain: nonnegativity, domination of the error rates `λ^{β-2}`
-  (`2 < β < 4`), `λ² ℓ²` (`β = 4`), `λ² ℓ` (`β > 4`) of Proposition 3.9 (l. 1564--1566), and the
-  supremum bound of Step 3. The declarations with suffix `_rate` (here and in `UpperCellBound`,
-  `UpperAssembly`, `LongDipoles`) are stated for a rate function `ω` satisfying `UpperRateHyp`;
-  they are instantiated at `errorRate` in `UpperBound/UpperRate.lean`, where
-  `TwoComponentCoulomb.upperRateHyp_errorRate` proves that `ω_λ = errorRate` has the three
-  properties.
-* `TwoComponentCoulomb.exists_chiBeta_le_neg_sq_add_rate`: `χ_β(δ) ≤ -δ² + C ω(λ)` (l. 1610).
+  `β > 2` upper-bound chain (nonnegativity, domination of the rates of Proposition 3.8, and the
+  supremum bound of Step 3), and `TwoComponentCoulomb.upperRateHyp_errorRate`: `ω_λ` has them.
+  The declarations with suffix `_rate` (here and in `UpperBound/UpperCellBound.lean`, `UpperBound/UpperAssembly.lean`,
+  `UpperBound/LongDipoles.lean`) are stated for any rate `ω` with `UpperRateHyp`. The ones without the suffix are
+  their instances at `ω_λ = errorRate`.
+* `TwoComponentCoulomb.exists_chiBeta_le_neg_sq_add_rate`: `χ_β(δ) ≤ -δ² + C ω_λ` (l. 1513–1514).
 * `TwoComponentCoulomb.one_sub_div_le`, `TwoComponentCoulomb.exists_neg_sq_sub_le`:
   `1 - p₀/N ≤ (1 + α₀) δ + (p - p₀)/N` and the merging of the two quadratic gains
-  (l. 1610--1619); `TwoComponentCoulomb.quadra_x3_main_term_rate` is the resulting bound for the
-  main term of `eq:2cases p` (the case `p ≥ N/2`).
+  (l. 1515–1519). The theorem `TwoComponentCoulomb.quadra_x3_main_term_rate` is the resulting bound for the main
+  term of `eq:2cases p` (the case `p ≥ N/2`).
 * `TwoComponentCoulomb.delta_ge_of_lt_half`, `TwoComponentCoulomb.exists_chiBeta_le_neg_mul`,
   `TwoComponentCoulomb.exists_chiBeta_add_le_neg`, `TwoComponentCoulomb.quadra_x3_small_p`: the
-  case `p < N/2` (l. 1620): there `δ ≥ [2 (1 + α₀)]⁻¹`, `χ_β ≤ -c ℓ` uniformly, and any fixed
+  case `p < N/2` (l. 1524): there `δ ≥ [2 (1 + α₀)]⁻¹`, `χ_β ≤ -c ℓ` uniformly, and any fixed
   crude error `C_β N` is absorbed.
 
 `chiBeta` takes the hypothesis `2 < β` as an (unused) argument, so that it is defined exactly on
-the carrier of the source (ruling R6); the constant `C_β` of `defchi` is the argument `C`.
+the carrier of the source (ruling R6). The constant `C_β` of `defchi` is the argument `C`.
 -/
 
 @[expose] public section
@@ -59,28 +56,15 @@ namespace TwoComponentCoulomb
 
 theorem M0_eq : M0 = 36 := rfl
 
-/-! ### The supremum inequality (source l. 1598--1600) -/
+/-! ### The supremum inequality  -/
 
-/-- **Supremum inequality** (source l. 1598--1600): for `B > 0` and `s ≥ 0`,
+/-- **Supremum inequality** : for `B > 0` and `s ≥ 0`,
 `s (A + B log (1/s)) ≤ B e^{A/B - 1}`. -/
 theorem mul_add_mul_log_inv_le {A B s : ℝ} (hB : 0 < B) (hs : 0 ≤ s) :
     s * (A + B * Real.log (1 / s)) ≤ B * Real.exp (A / B - 1) := by
-  rcases hs.eq_or_lt with rfl | hs
-  · simp only [zero_mul]
-    positivity
-  · have h1 := Real.add_one_le_exp (A / B - 1 - Real.log s)
-    have h2 : Real.exp (A / B - 1 - Real.log s) = Real.exp (A / B - 1) / s := by
-      rw [Real.exp_sub, Real.exp_log hs]
-    rw [h2, le_div_iff₀ hs] at h1
-    have h3 : s * (A + B * Real.log (1 / s)) =
-        B * ((A / B - 1 - Real.log s + 1) * s) := by
-      rw [one_div, Real.log_inv]
-      field_simp
-      ring
-    rw [h3]
-    exact mul_le_mul_of_nonneg_left h1 hB.le
+  exact mul_add_mul_log_inv_le_calculus hB hs
 
-/-! ### The entropy estimate (source l. 1575--1579) -/
+/-! ### The entropy estimate (source l. 1483–1487) -/
 
 /-- `-x log x ≤ 1 - x` for `x ≥ 0`. -/
 private theorem neg_mul_log_le_one_sub {x : ℝ} (hx : 0 ≤ x) : -(x * Real.log x) ≤ 1 - x := by
@@ -109,7 +93,7 @@ private theorem neg_mul_log_le_of_le {a y : ℝ} (ha : 0 < a) (hy : 0 ≤ y) (hy
         _ ≤ a * max (-Real.log a) 0 := mul_le_mul_of_nonneg_right hya (le_max_right _ _)
     linarith
 
-/-- **Entropy estimate**, real-variable form (source l. 1575--1579): if `x, y, δ ≥ 0`,
+/-- **Entropy estimate**, real-variable form (source l. 1483–1487): if `x, y, δ ≥ 0`,
 `x + y + δ = 1`, `δ ≤ 1` and `y ≤ α δ` with `α ≥ 1`, then
 `-x log x - y log y ≤ α δ log (1/δ) + (2 α + 1) δ`. -/
 theorem entropy_le_of_sum_eq_one {α δ x y : ℝ} (hα : 1 ≤ α) (hδ : 0 ≤ δ) (hδ1 : δ ≤ 1) (hx : 0 ≤ x)
@@ -135,7 +119,7 @@ theorem entropy_le_of_sum_eq_one {α δ x y : ℝ} (hα : 1 ≤ α) (hδ : 0 ≤
       linarith
     linarith
 
-/-- **Entropy estimate** (source l. 1575--1579): for naturals `p ≤ K ≤ N`, `N ≥ 1`, with
+/-- **Entropy estimate** (source l. 1483–1487): for naturals `p ≤ K ≤ N`, `N ≥ 1`, with
 `K - p ≤ (M₀ + 2)(N - K)` (eq. `eq:K-p`) and `δ = (N - K)/N`,
 `-(p/N) log (p/N) - ((K-p)/N) log ((K-p)/N) ≤ α₀ δ log (1/δ) + C δ` with `α₀ = M₀ + 2` and the
 absolute constant `C = 2 α₀ + 1`. -/
@@ -159,9 +143,9 @@ theorem entropy_le {N K p : ℕ} (hN : 1 ≤ N) (hpK : p ≤ K) (hKN : K ≤ N)
   · rw [← mul_div_assoc]
     exact div_le_div_of_nonneg_right hKp hNpos.le
 
-/-! ### The function `χ_β` (source `defchi`, l. 1587--1594) -/
+/-! ### The function `χ_β` (source `defchi`, l. 1495–1502) -/
 
-/-- The function `χ_β(δ)` of `defchi` (source l. 1587--1594), for `β > 2`, `ℓ = |log λ|` and
+/-- The function `χ_β(δ)` of `defchi` (source l. 1495–1502), for `β > 2`, `ℓ = |log λ|` and
 `α₀ = M₀ + 2`, with the constant `C_β` as the explicit argument `C`:
 
 * `δ [-(β-2) ℓ + (α₀ + 4 - β/2) log (1/δ) + C]` for `2 < β < 4`;
@@ -198,7 +182,7 @@ theorem chiBeta_of_four_lt (h : 4 < β) :
       δ * (-2 * |Real.log lam| + (M0 + 2 + 2) * Real.log (1 / δ) + C) := by
   simp [chiBeta, not_lt.2 h.le, h.ne']
 
-/-- `χ_β(0) = 0` (source l. 1587). -/
+/-- `χ_β(0) = 0` (source l. 1495). -/
 theorem chiBeta_zero : chiBeta β hβ lam C 0 = 0 := by
   simp [chiBeta]
 
@@ -210,7 +194,7 @@ theorem chiBeta_add_const (c : ℝ) :
 
 end ChiEquations
 
-/-! ### The supremum of `χ_β` (source l. 1597--1609) -/
+/-! ### The supremum of `χ_β` (source l. 1505–1513) -/
 
 section Sup
 
@@ -222,7 +206,7 @@ private theorem exp_mul_log_add {lam c d : ℝ} (h0 : 0 < lam) :
     Real.exp (c * Real.log lam + d) = Real.exp d * lam ^ c := by
   rw [Real.exp_add, Real.rpow_def_of_pos h0, mul_comm, mul_comm (Real.log lam) c]
 
-/-- **Supremum of `χ_β`, case `2 < β < 4`** (source l. 1602--1605): by the supremum inequality,
+/-- **Supremum of `χ_β`, case `2 < β < 4`** (source l. 1507–1509): by the supremum inequality,
 `χ_β(δ) ≤ B e^{C/B - 1} λ^{2(β-2)/(12-β+2M₀)}` with `B = α₀ + 4 - β/2`. -/
 theorem chiBeta_le_of_lt_four {β : ℝ} (hβ : 2 < β) (h4 : β < 4) (C : ℝ) {lam δ : ℝ}
     (h0 : 0 < lam) (h1 : lam < 1) (hδ : 0 ≤ δ) :
@@ -243,7 +227,7 @@ theorem chiBeta_le_of_lt_four {β : ℝ} (hβ : 2 < β) (h4 : β < 4) (C : ℝ) 
   rw [e2, exp_mul_log_add h0]
   ring
 
-/-- **Supremum of `χ_β`, case `β = 4`** (source l. 1605--1606): by the supremum inequality,
+/-- **Supremum of `χ_β`, case `β = 4`** (source l. 1509–1510): by the supremum inequality,
 `χ_4(δ) ≤ (M₀ + 6) e^{C/(M₀+6) - 1} (λ ℓ)^{2/(M₀+6)}`. -/
 theorem chiBeta_le_of_eq_four (hβ : 2 < (4 : ℝ)) (C : ℝ) {lam δ : ℝ}
     (h0 : 0 < lam) (h1 : lam < 1) (hδ : 0 ≤ δ) :
@@ -268,7 +252,7 @@ theorem chiBeta_le_of_eq_four (hβ : 2 < (4 : ℝ)) (C : ℝ) {lam δ : ℝ}
   rw [e2, exp_mul_log_add (mul_pos h0 hℓ)]
   ring
 
-/-- **Supremum of `χ_β`, case `β > 4`** (source l. 1606--1607): by the supremum inequality,
+/-- **Supremum of `χ_β`, case `β > 4`** (source l. 1510–1511): by the supremum inequality,
 `χ_β(δ) ≤ (M₀ + 4) e^{C/(M₀+4) - 1} λ^{2/(M₀+4)}`. -/
 theorem chiBeta_le_of_four_lt {β : ℝ} (hβ : 2 < β) (h4 : 4 < β) (C : ℝ) {lam δ : ℝ}
     (h0 : 0 < lam) (h1 : lam < 1) (hδ : 0 ≤ δ) :
@@ -288,23 +272,21 @@ theorem chiBeta_le_of_four_lt {β : ℝ} (hβ : 2 < β) (h4 : 4 < β) (C : ℝ) 
 
 end Sup
 
-/-! The error rates of Proposition 3.9 are compared with `ω_λ` through the field `isolated_le` of
+/-! The error rates of Proposition 3.8 are compared with `ω_λ` through the field `isolated_le` of
 `UpperRateHyp` (for `errorRate`: `TwoComponentCoulomb.isolatedRate_le_errorRate`,
 `Main/ErrorRateBounds.lean`). -/
 
 /-! ### The rate hypotheses of the upper bound for `β > 2` -/
 
-/-- **The rate hypotheses of the upper bound for `β > 2`.** The proof of Proposition 3.10 for
-`β > 2` (source l. 1459--1664) uses only three properties of the error rate `λ ↦ ω_λ`; a function
-`ω : ℝ → ℝ` with these properties can replace `ω_λ` throughout the `β > 2` chain (the `_rate`
-declarations). The properties are: `ω` is nonnegative; it dominates the error rates of
-Proposition 3.9 (l. 1237--1246); and it dominates the supremum of `χ_β` (Step 3, l. 1598--1610).
-The rate `errorRate` satisfies them (`upperRateHyp_errorRate`, `UpperBound/UpperRate.lean`). -/
+/-- **The rate hypotheses of the upper bound for `β > 2`.** Proposition 3.9
+(source `source/dipole-formation.tex`, l. 1367–1568) uses a nonnegative rate which dominates
+the isolated-pair error and the supremum of `χ_β`. The `_rate` declarations express this
+generality, and `upperRateHyp_errorRate` supplies the paper's rate `ω_λ`. -/
 structure UpperRateHyp (β : ℝ) (hβ : 2 < β) (ω : ℝ → ℝ) : Prop where
   /-- `ω_λ ≥ 0` for `λ > 0`. -/
   nonneg : ∀ lam, 0 < lam → 0 ≤ ω lam
   /-- The error rates `λ^{β-2}`, `λ² ℓ²`, `λ² ℓ` (`2 < β < 4`, `β = 4`, `β > 4`) of
-  Proposition 3.9 are at most `ω_λ` for `0 < λ ≤ e⁻¹`. -/
+  Proposition 3.8 are at most `ω_λ` for `0 < λ ≤ e⁻¹`. -/
   isolated_le : ∀ lam, 0 < lam → lam ≤ Real.exp (-1) →
     (if β < 4 then lam ^ (β - 2) else if β = 4 then lam ^ 2 * |Real.log lam| ^ 2
       else lam ^ 2 * |Real.log lam|) ≤ ω lam
@@ -313,11 +295,11 @@ structure UpperRateHyp (β : ℝ) (hβ : 2 < β) (ω : ℝ → ℝ) : Prop where
   chi_le : ∀ C : ℝ, ∃ C' : ℝ, 0 < C' ∧ ∀ lam δ : ℝ, 0 < lam → lam < 1 → 0 ≤ δ →
     chiBeta β hβ lam C δ ≤ C' * ω lam
 
-/-! ### `χ_β ≤ -δ² + C ω_λ` (source l. 1609--1610) -/
+/-! ### `χ_β ≤ -δ² + C ω_λ` (source l. 1513) -/
 
-/-- **`χ_β(δ) ≤ -δ² + C'' ω_λ`, generic rate** (source l. 1610): for a rate
+/-- **`χ_β(δ) ≤ -δ² + C'' ω_λ`, generic rate** : for a rate
 `ω` satisfying `UpperRateHyp`, applying its supremum bound to `χ_β(δ) + δ²` (the constant `C + 1`)
-and using `δ² ≤ δ`. The constant `C''` depends only on `β`, `ω` and `C`; the estimate holds for
+and using `δ² ≤ δ`. The constant `C''` depends only on `β`, `ω` and `C`. The estimate holds for
 all `0 < λ < 1` and `δ ∈ [0, 1]`. -/
 theorem exists_chiBeta_le_neg_sq_add_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
     (hω : UpperRateHyp β hβ ω) (C : ℝ) :
@@ -325,13 +307,18 @@ theorem exists_chiBeta_le_neg_sq_add_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ �
       chiBeta β hβ lam C δ ≤ -δ ^ 2 + C'' * ω lam := by
   obtain ⟨C'', hC'', h⟩ := hω.chi_le (C + 1)
   refine ⟨C'', hC'', fun lam δ h0 h1 hδ hδ1 => ?_⟩
-  have h2 := h lam δ h0 h1 hδ
-  rw [chiBeta_add_const] at h2
-  linarith only [h2, mul_nonneg hδ (sub_nonneg.2 hδ1)]
+  rcases hδ.eq_or_lt with rfl | hδ
+  · rw [chiBeta_zero]
+    simpa only [zero_pow two_ne_zero, neg_zero, zero_add] using
+      mul_nonneg hC''.le (hω.nonneg lam h0)
+  · have h2 := h lam δ h0 h1 hδ.le
+    rw [chiBeta_add_const] at h2
+    linarith only [h2, mul_nonneg hδ.le (sub_nonneg.2 hδ1)]
 
-/-! ### The quadratic merge (source l. 1611--1615) -/
 
-/-- **`1 - p₀/N ≤ (1 + α₀) δ + (p - p₀)/N`** (source l. 1611--1613), from `N - p₀ = (N - K) +
+/-! ### The quadratic merge (source l. 1515–1519) -/
+
+/-- **`1 - p₀/N ≤ (1 + α₀) δ + (p - p₀)/N`** (source l. 1515–1517), from `N - p₀ = (N - K) +
 (K - p) + (p - p₀)` and `K - p ≤ α₀ (N - K)` (eq. `eq:K-p`). -/
 theorem one_sub_div_le {N K p p₀ : ℕ} (hN : 1 ≤ N)
     (hKp : (K : ℝ) - p ≤ (M0 + 2) * ((N : ℝ) - K)) :
@@ -345,7 +332,7 @@ theorem one_sub_div_le {N K p p₀ : ℕ} (hN : 1 ≤ N)
   rw [e]
   exact div_nonneg (by linarith only [hKp]) hNpos.le
 
-/-- **Merging the two quadratic gains** (source l. 1613--1615): for `c > 0` there is an absolute
+/-- **Merging the two quadratic gains** (source l. 1517–1519): for `c > 0` there is an absolute
 `c' > 0` (depending only on `c`) with
 `-δ² - c ((p - p₀)/N)² ≤ -c' (1 - p₀/N)²`, where `δ = (N - K)/N`, for `p₀ ≤ N` and
 `K - p ≤ (M₀ + 2)(N - K)`. It follows from `(a + b)² ≤ 2 a² + 2 b²` and
@@ -387,7 +374,7 @@ theorem exists_neg_sq_sub_le {c : ℝ} (hc : 0 < c) :
   linarith only [h5, h6, h7]
 
 /-- **The main term of `eq:2cases p` for the case `p ≥ N/2`, generic rate** (source
-l. 1610--1619): for a rate `ω` satisfying `UpperRateHyp` and the constants `C = C_β`,
+l. 1515–1523): for a rate `ω` satisfying `UpperRateHyp` and the constants `C = C_β`,
 `c = c_β > 0` of `eq:2cases p` there are `c' > 0` and `C'' > 0`, depending only on `β`, `ω`, `C`
 and `c`, with `N χ_β(δ) - c (p - p₀)²/N ≤ -c' (N - p₀)²/N + C'' N ω_λ` for `δ = (N - K)/N`,
 `0 < λ < 1`, `1 ≤ N`, `p₀ ≤ N`, `K ≤ N` and `K - p ≤ (M₀ + 2)(N - K)`. -/
@@ -421,9 +408,9 @@ theorem quadra_x3_main_term_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) (h
   rw [e3] at h7
   linarith
 
-/-! ### The case `p < N/2` (source l. 1620) -/
+/-! ### The case `p < N/2` (source l. 1524) -/
 
-/-- **`δ ≥ [2 (1 + α₀)]⁻¹` for `p < N/2`** (source l. 1620): from `N/2 < N - p ≤ (1 + α₀)(N - K)`,
+/-- **`δ ≥ [2 (1 + α₀)]⁻¹` for `p < N/2`** (source l. 1524): from `N/2 < N - p ≤ (1 + α₀)(N - K)`,
 which uses `K - p ≤ α₀ (N - K)` (eq. `eq:K-p`). -/
 theorem delta_ge_of_lt_half {N K p : ℕ} (hN : 1 ≤ N) (hp : (p : ℝ) < N / 2)
     (hKp : (K : ℝ) - p ≤ (M0 + 2) * ((N : ℝ) - K)) :
@@ -485,7 +472,7 @@ private theorem exists_bracket {β : ℝ} (hβ : 2 < β) (C : ℝ) {lam δ : ℝ
     have hmℓ := mul_le_mul_of_nonneg_right hm2 hℓ
     linarith only [hB, hC, hmℓ, hℓ]
 
-/-- **`χ_β ≤ -c ℓ` for `δ ≥ δ₀`** (source l. 1620, "`χ_β(δ) → -∞` uniformly"): with
+/-- **`χ_β ≤ -c ℓ` for `δ ≥ δ₀`** (source l. 1524, "`χ_β(δ) → -∞` uniformly"): with
 `δ₀ = [2 (1 + α₀)]⁻¹` there are `c > 0` and `0 < λ₀ < 1`, depending only on `β` and `C`, with
 `χ_β(δ) ≤ -c |log λ|` for all `0 < λ ≤ λ₀` and `δ ∈ [δ₀, 1]`. -/
 theorem exists_chiBeta_le_neg_mul {β : ℝ} (hβ : 2 < β) (C : ℝ) :
@@ -522,7 +509,7 @@ theorem exists_chiBeta_le_neg_mul {β : ℝ} (hβ : 2 < β) (C : ℝ) :
         mul_le_mul_of_nonneg_left hBr' (one_div_pos.2 hk).le
     _ = -(1 / (2 * (1 + (M0 + 2))) * m / 2 * |Real.log lam|) := by ring
 
-/-- **`χ_β + C_β' ≤ -T` for `δ ≥ δ₀` and `λ` small** (source l. 1620): for any constants
+/-- **`χ_β + C_β' ≤ -T` for `δ ≥ δ₀` and `λ` small** (source l. 1524): for any constants
 `Cb` (a crude error `C_β` of the source, absorbed per unit `N`) and `T`, there is `0 < λ₀ < 1`,
 depending only on `β`, `C`, `Cb` and `T`, with `χ_β(δ) + Cb ≤ -T` for `0 < λ ≤ λ₀` and
 `δ ∈ [[2 (1 + α₀)]⁻¹, 1]`. -/
@@ -543,7 +530,7 @@ theorem exists_chiBeta_add_le_neg {β : ℝ} (hβ : 2 < β) (C Cb T : ℝ) :
   have h4 : Cb + T ≤ |Cb + T| := le_abs_self _
   linarith only [h2, h3, h4]
 
-/-- **The case `p < N/2` of `eq:quadra x3`** (source l. 1595, 1620): for the constants
+/-- **The case `p < N/2` of `eq:quadra x3`** (source l. 1503, 1524): for the constants
 `C = C_β` of `defchi`, a crude error `Cb = C_β` and a target `T ≥ 0` (any of the constants
 `c_β'` of `eq:quadra x3`), there is `0 < λ₀ < 1`, depending only on `β`, `C`, `Cb` and `T`, such
 that for `λ ≤ λ₀`, `1 ≤ N`, `p₀ ≤ N`, `p < N/2` and `K - p ≤ (M₀ + 2)(N - K)`,

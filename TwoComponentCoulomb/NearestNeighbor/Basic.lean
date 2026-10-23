@@ -13,7 +13,7 @@ public import TwoComponentCoulomb.Frozen.IsIsolatedDipole
 /-!
 # Basic properties of the nearest-neighbour map
 
-Basic API for `TwoComponentCoulomb.nearestNeighbor` (source l. 214--230): `φ₁ i` is never `i`, is
+Basic API for `TwoComponentCoulomb.nearestNeighbor` (source l. 199–215): `φ₁ i` is never `i`, is
 at least as close to `z_i` as any other point, and is the smallest index among the points at
 that distance (the tie-break of ruling R4). We also prove a characterization by these three
 properties, a sufficient criterion when the nearest neighbour is strict, and the measurability

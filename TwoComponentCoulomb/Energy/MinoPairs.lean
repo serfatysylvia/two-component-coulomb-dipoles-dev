@@ -17,21 +17,21 @@ public import TwoComponentCoulomb.Potential.Electric
 # The enlarged radii `τ` of Proposition 2.2 and the interacting pairs
 
 This file collects the combinatorial and metric part of the proof of Proposition 2.2
-(`prop:mino2`, source l. 512–593, ball-growth method). Write `φ = nearestNeighbor Z`,
+(`prop:mino2`, source l. 517–598, ball-growth method). Write `φ = nearestNeighbor Z`,
 `r₁ = firstNeighborRadius λ Z`, `r₂ = secondNeighborRadius hN λ Z`.
 
-* `tau` : the enlarged radii (source (deftau), l. 513–517): `τᵢ = min (r₂ i) (r₂ (φ i))` when
+* `tau` : the enlarged radii (source (deftau), l. 518–522): `τᵢ = min (r₂ i) (r₂ (φ i))` when
   `φ (φ i) = i` and `τᵢ = r₂ i` otherwise.
 * `lam_le_tau`, `tau_le_secondNeighborRadius`, `tau_eq_of_twoCycle` : `λ ≤ τᵢ ≤ r₂ i` and
   `τ_{φ i} = τᵢ` on a 2-cycle.
 * radius calculus : `secondNeighborRadius_le`, `exists_secondNeighborRadius_eq` (the basic
   identities `firstNeighborRadius_eq`, `firstNeighborRadius_le_secondNeighborRadius` come from
   `TwoComponentCoulomb.NearestNeighbor.Second`).
-* `isTwoCycle_of_overlap` : (source l. 537–545, (disz)) if `i ≠ j`, the enlarged discs overlap
+* `isTwoCycle_of_overlap` : (source l. 542–550, (disz)) if `i ≠ j`, the enlarged discs overlap
   and `max (τᵢ, τⱼ) > λ`, then `i` and `j` are the two vertices of a 2-cycle.
 * `bracket_eq_zero_of_tau_le` : the pair bracket vanishes when `τᵢ = τⱼ = λ`.
 * `abs_secondNeighborRadius_sub_le` : (rrj) on a 2-cycle `|r₂ i - r₂ (φ i)| ≤ ¼ |zᵢ - z_{φ i}|`.
-* `sq_norm_div_tau_le` : the displacement ratio (source l. 563–574):
+* `sq_norm_div_tau_le` : the displacement ratio (source l. 568–579):
   on a 2-cycle `|z_{φ i} - zᵢ|² / τᵢ² ≤ 64 (r₁ i / r₂ i)²`.
 -/
 
@@ -89,7 +89,7 @@ theorem four_mul_secondNeighborRadius_le (hN : 2 ≤ N) {lam : ℝ} (Z : Fin N �
   · linarith
   · exact absurd hlt (not_lt.2 h)
 
-/-- (ppj) For mutual nearest neighbours `i`, `j`: `r₂(z_j) ≤ ¼ |zᵢ - z_j| + r₂(zᵢ)`. -/
+/-- the self-interaction identity For mutual nearest neighbours `i`, `j`: `r₂(z_j) ≤ ¼ |zᵢ - z_j| + r₂(zᵢ)`. -/
 theorem secondNeighborRadius_le_add (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ)
     {i j : Fin N ⊕ Fin N} (hij : nearestNeighbor Z i = j) (hji : nearestNeighbor Z j = i) :
     secondNeighborRadius hN lam Z j ≤ ‖Z i - Z j‖ / 4 + secondNeighborRadius hN lam Z i := by
@@ -115,7 +115,7 @@ end Radii
 section Tau
 
 /-- The enlarged radii `τᵢ` of the ball-growth proof of Proposition 2.2 (source (deftau),
-l. 513–517): `τᵢ = min (r₂ i, r₂ (φ i))` if `i` lies on a 2-cycle of the nearest-neighbour
+l. 518–522): `τᵢ = min (r₂ i, r₂ (φ i))` if `i` lies on a 2-cycle of the nearest-neighbour
 graph (`φ (φ i) = i`), and `τᵢ = r₂ i` otherwise. -/
 noncomputable def tau (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) (i : Fin N ⊕ Fin N) : ℝ :=
   if nearestNeighbor Z (nearestNeighbor Z i) = i then
@@ -133,7 +133,7 @@ theorem tau_of_not_twoCycle (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → 
     tau hN lam Z i = secondNeighborRadius hN lam Z i := by
   simp [tau, hi]
 
-/-- `λ ≤ τᵢ` (source l. 530, "by definition and (nn3)"). -/
+/-- `λ ≤ τᵢ` (source l. 535, "by definition and (nn3)"). -/
 theorem lam_le_tau (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) (i : Fin N ⊕ Fin N) :
     lam ≤ tau hN lam Z i := by
   unfold tau
@@ -164,7 +164,7 @@ theorem tau_eq_of_twoCycle (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → �
 
 end Tau
 
-/-! ### Classification of the interacting pairs (source l. 537–545) -/
+/-! ### Classification of the interacting pairs (source l. 542–550) -/
 
 section Classification
 
@@ -223,7 +223,7 @@ theorem mutual_of_lt_secondNeighborRadius (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 <
       (hlt.elim (fun h' => h'.trans_le h) id) (by rwa [norm_sub_rev, add_comm])
     exact ⟨h2, h1⟩
 
-/-- **Classification of the interacting pairs** (source l. 537–545, (disz)): if `i ≠ j`, the
+/-- **Classification of the interacting pairs** (source l. 542–550, (disz)): if `i ≠ j`, the
 enlarged discs `B(zᵢ, τᵢ)` and `B(z_j, τ_j)` overlap, and `max (τᵢ, τ_j) > λ`, then `{i, j}`
 is a 2-cycle of the nearest-neighbour graph. -/
 theorem isTwoCycle_of_overlap (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
@@ -249,7 +249,7 @@ theorem bracket_eq_zero_of_tau_le (hN : 2 ≤ N) {lam : ℝ} (Z : Fin N ⊕ Fin 
 
 end Classification
 
-/-! ### The displacement ratio (source l. 559–574) -/
+/-! ### The displacement ratio (source l. 564–579) -/
 
 section Displacement
 
@@ -263,8 +263,8 @@ theorem abs_secondNeighborRadius_sub_le (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N �
   rw [abs_le]
   constructor <;> linarith
 
-/-- **The displacement ratio**, for mutual nearest neighbours `i`, `j` (source l. 563–574):
-`|z_j - zᵢ|² / τᵢ² ≤ 64 (r₁(zᵢ) / r₂(zᵢ))²`. -/
+/-- **The displacement ratio**, for mutual nearest neighbours `i`, `j` (source (rrj) and
+the inequalities following it): `|z_j - zᵢ|² / τᵢ² ≤ 64 (r₁(zᵢ) / r₂(zᵢ))²`. -/
 theorem sq_norm_div_tau_le_of_mutual (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
     (Z : Fin N ⊕ Fin N → ℂ) {i j : Fin N ⊕ Fin N} (hij : nearestNeighbor Z i = j)
     (hji : nearestNeighbor Z j = i) :
@@ -278,42 +278,39 @@ theorem sq_norm_div_tau_le_of_mutual (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam)
   have hρ4 : ‖Z j - Z i‖ ≤ 4 * firstNeighborRadius lam Z i := by
     have := norm_sub_nearestNeighbor_le_four_mul lam Z i
     rwa [hij, norm_sub_rev] at this
-  have hρR := firstNeighborRadius_le_secondNeighborRadius hN lam Z i
-  have hρ' : ‖Z j - Z i‖ ≤ 4 * secondNeighborRadius hN lam Z j := by
-    have h1 := norm_sub_nearestNeighbor_le_four_mul lam Z j
-    have h2 := firstNeighborRadius_le_secondNeighborRadius hN lam Z j
-    rw [hji] at h1
-    linarith
+  have hρτ : firstNeighborRadius lam Z i ≤ tau hN lam Z i := by
+    rw [hτ]
+    simpa only [hij] using firstNeighborRadius_le_min_secondNeighborRadius hN lam Z hi
   have hrr := abs_secondNeighborRadius_sub_le hN lam Z hij hji
-  rw [norm_sub_rev] at hrr
+  have hRτ : secondNeighborRadius hN lam Z i ≤ tau hN lam Z i + firstNeighborRadius lam Z i := by
+    rw [hτ]
+    rcases le_total (secondNeighborRadius hN lam Z i) (secondNeighborRadius hN lam Z j) with h | h
+    · rw [min_eq_left h]
+      linarith [hlam.trans_le (lam_le_firstNeighborRadius lam Z i)]
+    · rw [min_eq_right h]
+      have h := (abs_le.mp hrr).2
+      rw [norm_sub_rev] at h
+      linarith
+  have hR2 : secondNeighborRadius hN lam Z i ≤ 2 * tau hN lam Z i := by linarith
   have hRpos : 0 < secondNeighborRadius hN lam Z i :=
     hlam.trans_le (lam_le_secondNeighborRadius hN lam Z i)
   have hd0 := norm_nonneg (Z j - Z i)
-  rw [hτ] at hτpos ⊢
-  generalize ‖Z j - Z i‖ = d at *
-  generalize firstNeighborRadius lam Z i = ρ at *
-  generalize secondNeighborRadius hN lam Z i = R at *
-  generalize secondNeighborRadius hN lam Z j = R' at *
-  have hmain : d * R ≤ 8 * ρ * min R R' := by
-    rcases le_or_gt ρ (R / 2) with h | h
-    · -- `τ ≥ R - ρ ≥ R / 2`
-      have h1 : R / 2 ≤ min R R' := by
-        refine le_min (by linarith) ?_
-        have := (abs_le.1 hrr).2
-        linarith
-      nlinarith
-    · -- `τ ≥ d / 4`
-      have h1 : d / 4 ≤ min R R' := le_min (by linarith) (by linarith)
-      nlinarith
-  have hfrac : d / min R R' ≤ 8 * (ρ / R) := by
+  have hmain : ‖Z j - Z i‖ * secondNeighborRadius hN lam Z i ≤
+      8 * firstNeighborRadius lam Z i * tau hN lam Z i := by
+    calc _ ≤ (4 * firstNeighborRadius lam Z i) * (2 * tau hN lam Z i) :=
+        mul_le_mul hρ4 hR2 (lam_le_secondNeighborRadius hN lam Z i |>.trans' hlam.le)
+          (by linarith [hρ4, hd0])
+      _ = _ := by ring
+  have hfrac : ‖Z j - Z i‖ / tau hN lam Z i ≤
+      8 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) := by
     rw [div_le_iff₀ hτpos]
-    have : 8 * (ρ / R) * min R R' = 8 * ρ * min R R' / R := by ring
-    rw [this, le_div_iff₀ hRpos]
-    linarith
-  calc d ^ 2 / min R R' ^ 2 = (d / min R R') ^ 2 := by rw [div_pow]
-    _ ≤ (8 * (ρ / R)) ^ 2 :=
+    rw [← mul_div_assoc, div_mul_eq_mul_div, le_div_iff₀ hRpos]
+    exact hmain
+  calc ‖Z j - Z i‖ ^ 2 / tau hN lam Z i ^ 2 = (‖Z j - Z i‖ / tau hN lam Z i) ^ 2 := by
+        rw [div_pow]
+    _ ≤ (8 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i)) ^ 2 :=
         pow_le_pow_left₀ (div_nonneg hd0 hτpos.le) hfrac 2
-    _ = 64 * (ρ / R) ^ 2 := by ring
+    _ = 64 * (firstNeighborRadius lam Z i / secondNeighborRadius hN lam Z i) ^ 2 := by ring
 
 /-- The displacement ratio at a vertex `i` of a 2-cycle (`φ (φ i) = i`). -/
 theorem sq_norm_div_tau_le (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (Z : Fin N ⊕ Fin N → ℂ)

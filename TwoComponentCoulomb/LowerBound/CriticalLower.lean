@@ -15,8 +15,8 @@ import TwoComponentCoulomb.UpperBound.ReducedConstruction
 /-!
 # Proposition 4.1 for `β = 2`: the critical lower bound
 
-Source: Proposition 4.1, eq. (eq:lbz2) (l. 1755--1757),
-proved at l. 1820--1826 with `ℓ = |log λ|` and `t = ℓ^{-1/5}`. The proof follows the source
+Source: Proposition 4.1, eq. (eq:lbz2) (l. 1665–1667),
+proved at l. 1730–1736 with `ℓ = |log λ|` and `t = ℓ^{-1/5}`. The proof follows the source
 (ruling R22): the positive charges are restricted to `H_t = H(N, N, t, 4t)`, the dipole lengths to
 `2λ ≤ |x_i - y_i| ≤ t²`, and the energy is bounded by the Neumann construction on the disjoint
 balls `B(x_i, t)` (eq. (majof)), with energy error `Σ_i |x_i - y_i|²/t² ≤ N t²`.
@@ -91,7 +91,7 @@ theorem log_sub_le_log_critical {s : ℝ} (hs : 16 ≤ s) :
 
 /-! ### The assembly -/
 
-/-- **Proposition 4.1 for `β = 2`** (source l. 1820--1826, eq. (eq:lbz2)). -/
+/-- **Proposition 4.1 for `β = 2`** (source l. 1730–1736, eq. (eq:lbz2)). -/
 theorem partitionFunction_two_ge :
     ∃ lam₀ C : ℝ, 0 < lam₀ ∧ 0 < C ∧
       ∀ N : ℕ, 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
@@ -209,7 +209,7 @@ theorem partitionFunction_two_ge :
           (ENNReal.ofReal A) ^ N := by gcongr
     _ ≤ partitionFunction N 2 lam := hcore
 
-/-- **Proposition 4.1 for `β = 2`, in the form of the frozen statement** (source l. 1755--1757):
+/-- **Proposition 4.1 for `β = 2`, in the form of the frozen statement** (source l. 1665–1667):
 the expressions of `proposition_4_1` at `β = 2`, with `dipoleConstant 2 _ = 2π` and the
 `if β = 2` branches resolved. -/
 theorem partitionFunction_two_ge_frozen_form (hβ : (2 : ℝ) ≤ 2) :

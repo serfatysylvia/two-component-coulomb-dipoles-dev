@@ -17,15 +17,15 @@ import TwoComponentCoulomb.Integrals.Radial
 import TwoComponentCoulomb.Potential.PairIntegral
 
 /-!
-# The nearest-neighbour model: reduction to the cycle and tree integrals (Lemma 3.5, Steps 1--2)
+# The nearest-neighbour model: reduction to the cycle and tree integrals (Lemma 3.4, Steps 1--2)
 
-Source: l. 815--845 (Lemma 3.5, Steps 1 and 2). Let `ι` be a finite index
+Source: l. 781–807 (Lemma 3.4, Steps 1 and 2). Let `ι` be a finite index
 type with a tie-break key `key : ι ↪ ℕ`, and `f : ι → ι` the nearest-neighbour map of some
 configuration. The cell `Λ^ι ∩ {nnMap key z = f}` is integrated against
 `exp (-β F^nn_λ (z)) = exp ((β/2) ∑_i g_λ (z_i - z_{φ(i)}))`.
 
 In the Gunson--Panta variables `u = GP z` (`TwoComponentCoulomb.gpMap`) with the reference set
-`R = gpRefSet key f` (one vertex `m_k'` of each 2-cycle) one has
+`R = gpRefSet key f` (one vertex m′ₖ of each 2-cycle) one has
 * `z_i - z_{f i} = u_i` for `i ∉ R`, and
 * `z_i - z_{f i} = -u_{f i}` for `i ∈ R`, where `f i = m_k ∉ R` is the other vertex of the 2-cycle,
 so that, `g_λ` being even, the displacement `u_{m_k}` of each 2-cycle appears twice (weight
@@ -46,11 +46,11 @@ once (weight `exp ((β/2) g_λ (u_i))`).
 * `TwoComponentCoulomb.lintegral_cell_le_cycle_mul_tree`: source (eq:red neutral) and (eq:cutt),
   `J(f) ≤ N^K · (∫_{B₁} ∏ e^{β g_λ(u_k)}) · (∫_{B₂} ∏ e^{(β/2) g_λ(u_i)})`, with
   `B₁ = {U ∈ ℂ^K | |U|² ≤ 36N/π}` and `B₂ = {U ∈ ℂ^{2p-2K} | |U|² ≤ 36N/π}`.
-* `TwoComponentCoulomb.lintegral_ball_prod_exp_le`: source (3.20b) and (eq:dipa),
+* `TwoComponentCoulomb.lintegral_ball_prod_exp_le`: source the planar pair-mass identity and the planar pair-mass identity,
   `∫_{|U|² ≤ s} ∏_{i ≤ m} e^{γ g_λ(u_i)} ≤ (𝒵_γ λ^{2-γ})^m` for `γ > 2`.
 
 The index type `ι` is arbitrary (finite, with a tie-break key), so that the lemma applies to the
-complement `I^c` of a marked set of points (source l. 1566--1573); `N` (the area of `Λ`) and the
+complement `I^c` of a marked set of points (source l. 1474–1481); `N` (the area of `Λ`) and the
 number `2p` of points are independent.
 -/
 
@@ -92,7 +92,7 @@ variable {ι : Type*} [Fintype ι] (key : ι ↪ ℕ) (f : ι → ι)
 abbrev NonRef : Type _ := {i : ι // i ∉ gpRefSet key f}
 
 /-- The *cycle vertices*: non-reference vertices lying on a 2-cycle (the vertices `m_k` of the
-source, l. 641--658). -/
+source, l. 645–660). -/
 abbrev CycIdx : Type _ := {j : NonRef key f // f (f j) = j}
 
 /-- The *tree vertices*: non-reference vertices not lying on a 2-cycle. -/
@@ -145,7 +145,7 @@ section Energy
 variable (lam : ℝ) (hR : ∀ i, ∃ n, f^[n] i ∈ gpRefSet key f) (u : ι → ℂ)
 
 /-- On a non-reference vertex, the nearest-neighbour displacement is the Gunson--Panta coordinate
-`u_i` (source l. 822--825). -/
+`u_i` (source l. 785–787). -/
 theorem gp_symm_sub_of_notMem {i : ι} (hi : i ∉ gpRefSet key f) :
     (gpLinearEquiv f (gpRefSet key f) hR).symm u i -
         (gpLinearEquiv f (gpRefSet key f) hR).symm u (f i) = u i := by
@@ -162,7 +162,7 @@ theorem gp_symm_sub_of_mem (hf0 : ∀ i, f i ≠ i) {i : ι} (hi : i ∈ gpRefSe
   rw [h1]
   ring
 
-/-- **Exponent bookkeeping** (source l. 827--828, "the interaction `g_λ(u_{m_k})` is counted
+/-- **Exponent bookkeeping** (source l. 789, "the interaction `g_λ(u_{m_k})` is counted
 twice"): in Gunson--Panta variables, `∑_i g_λ(z_i - z_{f i})` is twice the sum over the cycle
 vertices plus the sum over the tree vertices of `g_λ(u_j)`. -/
 theorem sum_smearedKernel_gp_symm (hf0 : ∀ i, f i ≠ i) :
@@ -222,7 +222,7 @@ theorem lintegral_ball_prod_equiv {κ κ' : Type*} [Fintype κ] [Fintype κ'] (e
   simp only [hEapp]
   exact Equiv.prod_comp e fun j => G (w j)
 
-/-- **Separation of the cycle and tree variables** (source l. 839--845, "Splitting the
+/-- **Separation of the cycle and tree variables** (source l. 802–807, "Splitting the
 variables", the inclusion `B ⊆ B₁ × B₂`): the integral over the ball `∑ |v_i|² ≤ s` of a product
 `H₁(v|_P) H₂(v|_{¬P})` is at most the product of the integrals over the two balls. -/
 theorem lintegral_ball_mul_le {κ : Type*} [Fintype κ] (P : κ → Prop) [DecidablePred P] (s : ℝ)
@@ -263,13 +263,13 @@ section Reduction
 
 open scoped Classical
 
-/-- **Lemma 3.5, Steps 1--2** (source (eq:red neutral) and (eq:cutt), l. 819--845). Let `f` be the
+/-- **Lemma 3.4, Steps 1--2** (source (eq:red neutral) and (eq:cutt), l. 785–807). Let `f` be the
 nearest-neighbour map of some configuration of `|ι| = 2p` points, with `K` 2-cycles
 (`K = |gpRefSet key f|`; this is the number of connected components of the graph). The integral
 `J(f)` of `exp (-β F^nn_λ) = exp ((β/2) ∑_i g_λ(z_i - z_{φ(i)}))` over the cell
 `Λ^ι ∩ {nnMap key z = f}` is at most
 `N^K · (∫_{B₁} ∏_k e^{β g_λ(u_k)} du) · (∫_{B₂} ∏_i e^{(β/2) g_λ(u_i)} du)`
-where `B₁ ⊆ ℂ^K` and `B₂ ⊆ ℂ^{2p-2K}` are the balls `|U|² ≤ 36N/π` (source (def:D1), (def:D2)). -/
+where `B₁ ⊆ ℂ^K` and `B₂ ⊆ ℂ^{2p-2K}` are the balls `|U|² ≤ 36N/π` (source the cycle-variable ball, the tree-variable ball). -/
 theorem lintegral_cell_le_cycle_mul_tree [Nontrivial ι] {N p K : ℕ}
     (hcard : Fintype.card ι = 2 * p) (key : ι ↪ ℕ) {f : ι → ι}
     (hf : ∃ z₀ : ι → ℂ, nnMap key z₀ = f) (hK : Fintype.card {i // i ∈ gpRefSet key f} = K)
@@ -370,7 +370,7 @@ theorem two_mul_card_gpRefSet_nnMap_le :
     2 * Fintype.card {i // i ∈ gpRefSet key (nnMap key z₀)} ≤ Fintype.card ι :=
   two_mul_card_gpRefSet_le (nnMap_ne key z₀)
 
-/-- **`K` is the number of connected components** (source l. 815--823): the reference set of the
+/-- **`K` is the number of connected components** (source l. 781–785): the reference set of the
 nearest-neighbour map `nnMap key z₀` contains one vertex of each 2-cycle, so its cardinality is the
 number of connected components of the nearest-neighbour graph. -/
 theorem card_gpRefSet_nnMap_eq_card_components :
@@ -418,7 +418,7 @@ end Counts
 
 section FullSpace
 
-/-- **Source (3.20b) and (eq:dipa)** (l. 858--865), for any number `m` of variables and any
+/-- **Source the planar pair-mass identity and the planar pair-mass identity** (l. 819–825), for any number `m` of variables and any
 radius: for `γ > 2`, removing the restriction to the ball,
 `∫_{|U|² ≤ s} ∏_{i ≤ m} e^{γ g_λ(u_i)} du ≤ (𝒵_γ λ^{2-γ})^m`. -/
 theorem lintegral_ball_prod_exp_le {γ : ℝ} (hγ : 2 < γ) {lam : ℝ} (hlam : 0 < lam) (m : ℕ)

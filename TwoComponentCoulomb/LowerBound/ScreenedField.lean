@@ -16,13 +16,13 @@ import TwoComponentCoulomb.Potential.PairIntegral
 /-!
 # The weak Neumann problem, the pasted field and eq. (hui) (Proposition 4.1, Step 1)
 
-Source: Proposition 4.1, Step 1 (l. 1762–1825), as ruled in
+Source: Proposition 4.1, Step 1 (l. 1671–1734), as ruled in
 R22. On each disc `B(x_i, ϱ(x_i))` the source lets `u_i` solve the Neumann problem
 `-Δu_i = 2π(δ_{x_i}^{(λ)} - δ_{y_i}^{(λ)})` in `B(x_i, ϱ(x_i))`, `∂_ν u_i = 0` on its boundary
-(l. 1777–1784), pastes the fields into `E = Σ_i 1_{B(x_i, ϱ(x_i))} ∇u_i` (l. 1786–1787), observes
-eq. (divE) `-div E = 2π Σ_i (δ_{x_i}^{(λ)} - δ_{y_i}^{(λ)}) = -Δh_λ` in `ℝ²` (l. 1788–1790), and
+(l. 1686–1693), pastes the fields into `E = Σ_i 1_{B(x_i, ϱ(x_i))} ∇u_i` (l. 1695–1696), observes
+eq. (divE) `-div E = 2π Σ_i (δ_{x_i}^{(λ)} - δ_{y_i}^{(λ)}) = -Δh_λ` in `ℝ²` (l. 1697–1699), and
 deduces eq. (hui) `∫ |∇h_λ|² ≤ Σ_i ∫_{B(x_i, ϱ(x_i))} |∇u_i|²` from the `L²` projection onto
-gradients (l. 1791–1797). Under ruling R22a, `u_i` is the explicit image-charge solution
+gradients (l. 1700–1707). Under ruling R22a, `u_i` is the explicit image-charge solution
 `neumannPotential` of `LowerBound/NeumannDipole.lean` (with its correction `v_i` and eq.
 (estimatesv)), and the Neumann problem is checked in weak form by the divergence theorem on a disc
 (`Potential/DiscDivergence.lean`). Here `c, y, ρ` stand for `x_i, y_i, ϱ(x_i)`.
@@ -31,7 +31,7 @@ Main results (standing hypotheses `0 < λ`, `4λ ≤ ρ`, `|y - c| ≤ ρ/2`):
 
 * `integral_ball_fderiv_neumannField` : the Neumann problem in weak form,
   `∫_{B(c,ρ)} ∇ξ · ∇u = 2π (∫ ξ dδ_c^{(λ)} - ∫ ξ dδ_y^{(λ)})` for `ξ` of class `C¹` on a
-  neighbourhood of `B̄(c, ρ)` (l. 1777–1784). With a smooth cutoff `χ` (`χ = 1` on `B̄(c, 13ρ/16)`,
+  neighbourhood of `B̄(c, ρ)` (l. 1686–1693). With a smooth cutoff `χ` (`χ = 1` on `B̄(c, 13ρ/16)`,
   `χ = 0` off `B(c, 7ρ/8)`) we split `ξ = χξ + (1 - χ)ξ`.
   `integral_ball_fderiv_neumannField_of_contDiff` treats `χξ`: the disc potentials give the
   whole-plane Green identity `integral_fderiv_apply_discField`, and `∇v` is divergence free with
@@ -39,17 +39,17 @@ Main results (standing hypotheses `0 < λ`, `4λ ≤ ρ`, `|y - c| ≤ ρ/2`):
   divergence theorem applies to `(1 - χ)ξ ∇u`, which is `C¹` because `∇u` is antiholomorphic (hence
   smooth and divergence free) on the annulus `3ρ/4 < |z - c| < 2ρ`, and the flux vanishes by the
   Neumann condition `inner_neumannField_eq_zero`.
-* `screenedField` : the pasted field `E` (l. 1786–1787).
+* `screenedField` : the pasted field `E` (l. 1695–1696).
 * `integral_fderiv_apply_screenedField` : eq. (divE) in weak form,
   `∫ ∇ξ · E = 2π Σ_i (∫ ξ dδ_{x_i}^{(λ)} - ∫ ξ dδ_{y_i}^{(λ)})` for `ξ` of class `C¹` on `ℂ`;
   `integral_fderiv_apply_screenedField_eq_electricField` : its reading `-div E = -Δh_λ`,
-  `∫ ∇ξ · E = ∫ ∇ξ · ∇h_λ` for `ξ` of class `C¹` with compact support (l. 1788–1790).
-* `integral_norm_sq_electricField_le_screened` : eq. (hui) for disjoint discs (l. 1791–1797), from
+  `∫ ∇ξ · E = ∫ ∇ξ · ∇h_λ` for `ξ` of class `C¹` with compact support (l. 1697–1699).
+* `integral_norm_sq_electricField_le_screened` : eq. (hui) for disjoint discs (l. 1700–1707), from
   `∫ |E|² = Σ_i ∫_{B(x_i, ϱ(x_i))} |∇u_i|²` (`integral_norm_sq_screenedField`),
   `∫ ∇h_λ · E = ∫ |∇h_λ|²` (eq. (divE) tested against `h_λ` and the energy identity
   `integral_norm_sq_electricField`), and `0 ≤ ∫ |E - ∇h_λ|²`.
 
-The energy of each ball (l. 1807–1814) and eq. (majof) (l. 1816) are in
+The energy of each ball (l. 1717–1724) and eq. (majof) (l. 1726) are in
 `LowerBound/NeumannEnergy.lean`.
 -/
 
@@ -255,7 +255,7 @@ theorem integral_ball_fderiv_neumannField_of_eq_zero (hlam : 0 < lam) (hρ : 4 *
   rw [← setIntegral_congr_fun measurableSet_ball hdiv, integral_ball_divergence hρ0 hV hcV hF]
   simp only [hbd, intervalIntegral.integral_zero, mul_zero]
 
-/-- **The Neumann problem in weak form** (source l. 1779–1783, ruling R22a): for `ξ` of class `C¹`
+/-- **The Neumann problem in weak form** (source l. 1688–1689, ruling R22a): for `ξ` of class `C¹`
 on an open set containing `B̄(c, ρ)`,
 `∫_{B(c,ρ)} ∇ξ · ∇u = 2π (∫ ξ dδ_c^{(λ)} - ∫ ξ dδ_y^{(λ)})`, i.e. `-Δu = 2π(δ_c^{(λ)} - δ_y^{(λ)})`
 in `B(c, ρ)` with `∂_ν u = 0` on `∂B(c, ρ)`. -/
@@ -311,7 +311,7 @@ end Weak
 
 /-! ### The pasted field `E` and eq. (divE) -/
 
-/-- The pasted field `E = Σ_i 1_{B(x_i, ρ_i)} ∇u_i` (source l. 1786–1787). -/
+/-- The pasted field `E = Σ_i 1_{B(x_i, ρ_i)} ∇u_i` (source l. 1695–1696). -/
 noncomputable def screenedField {N : ℕ} (lam : ℝ) (ρ : Fin N → ℝ) (X Y : Fin N → ℂ) (z : ℂ) : ℂ :=
   ∑ i, (Metric.ball (X i) (ρ i)).indicator (fun w => neumannField lam (ρ i) (X i) (Y i) w) z
 
@@ -346,7 +346,7 @@ theorem integrable_fderiv_apply_screenedField (hlam : 0 < lam) (hρ : ∀ i, 4 *
     (integrableOn_ball_fderiv_apply_neumannField hlam (hρ i) (hY i) isOpen_univ (subset_univ _)
       hξ.contDiffOn)
 
-/-- **Eq. (divE)** in weak form (source l. 1788–1790): for `ξ` of class `C¹` on `ℂ`,
+/-- **Eq. (divE)** in weak form (source l. 1697–1699): for `ξ` of class `C¹` on `ℂ`,
 `∫ ∇ξ · E = 2π Σ_i (∫ ξ dδ_{x_i}^{(λ)} - ∫ ξ dδ_{y_i}^{(λ)})`, i.e.
 `-div E = 2π Σ_i (δ_{x_i}^{(λ)} - δ_{y_i}^{(λ)})` in `ℝ²`. -/
 theorem integral_fderiv_apply_screenedField (hlam : 0 < lam) (hρ : ∀ i, 4 * lam ≤ ρ i)
@@ -363,7 +363,7 @@ theorem integral_fderiv_apply_screenedField (hlam : 0 < lam) (hρ : ∀ i, 4 * l
   exact integral_ball_fderiv_neumannField hlam (hρ i) (hY i) isOpen_univ (subset_univ _)
     hξ.contDiffOn
 
-/-- **Eq. (divE)**, `-div E = -Δh_λ` (source l. 1788–1790): for `ξ` of class `C¹` with compact
+/-- **Eq. (divE)**, `-div E = -Δh_λ` (source l. 1697–1699): for `ξ` of class `C¹` with compact
 support, `∫ ∇ξ · E = ∫ ∇ξ · ∇h_λ`. -/
 theorem integral_fderiv_apply_screenedField_eq_electricField (hlam : 0 < lam)
     (hρ : ∀ i, 4 * lam ≤ ρ i) (hY : ∀ i, ‖Y i - X i‖ ≤ ρ i / 2) {ξ : ℂ → ℝ}
@@ -425,7 +425,7 @@ theorem integral_norm_sq_screenedField (hlam : 0 < lam) (hρ : ∀ i, 4 * lam �
     (integrableOn_ball_norm_sq_neumannField hlam (hρ i) (hY i))]
   exact Finset.sum_congr rfl fun i _ => integral_indicator measurableSet_ball
 
-/-- `∫ ∇h_λ · E = ∫ |∇h_λ|²`: eq. (divE) tested against `h_λ` (source l. 1791–1795). -/
+/-- `∫ ∇h_λ · E = ∫ |∇h_λ|²`: eq. (divE) tested against `h_λ` (source l. 1700–1705). -/
 theorem integral_fderiv_electricPotential_apply_screenedField (hlam : 0 < lam)
     (hρ : ∀ i, 4 * lam ≤ ρ i) (hY : ∀ i, ‖Y i - X i‖ ≤ ρ i / 2) :
     ∫ z, fderiv ℝ (electricPotential charge (Sum.elim X Y) (fun _ => lam)) z
@@ -450,7 +450,7 @@ theorem integral_fderiv_electricPotential_apply_screenedField (hlam : 0 < lam)
   rw [hmean a, Finset.mul_sum]
   exact Finset.sum_congr rfl fun b _ => by ring
 
-/-- **Eq. (hui)** (source l. 1791–1797), the `L²` projection onto gradients: for disjoint discs,
+/-- **Eq. (hui)** (source l. 1700–1707), the `L²` projection onto gradients: for disjoint discs,
 `∫ |∇h_λ|² ≤ Σ_i ∫_{B(x_i, ρ_i)} |∇u_i|²`. -/
 theorem integral_norm_sq_electricField_le_screened (hlam : 0 < lam) (X Y : Fin N → ℂ)
     (ρ : Fin N → ℝ) (hρ : ∀ i, 4 * lam ≤ ρ i)

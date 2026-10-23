@@ -15,7 +15,7 @@ public import TwoComponentCoulomb.Frozen.SmearedCharge
 # Frozen: `TwoComponentCoulomb.energy`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R17, R19).
-Source: l. 155–158.
+Source: l. 140–143.
 -/
 
 open MeasureTheory
@@ -24,7 +24,7 @@ open MeasureTheory
 
 namespace TwoComponentCoulomb
 
-/-- `F_λ`, eq. (eq:F3) (source l. 155–158), as the bilinear expansion of the double integral
+/-- `F_λ`, eq. (eq:F3) (source l. 140–143), as the bilinear expansion of the double integral
 against `∑ᵢ (δ_{xᵢ}^{(λ)} - δ_{yᵢ}^{(λ)})` (ruling R3). -/
 noncomputable def energy {N : ℕ} (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) : ℝ :=
   (1 / 2) * ∑ a, ∑ b, charge a * charge b *

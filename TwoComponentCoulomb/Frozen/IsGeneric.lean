@@ -12,15 +12,15 @@ public import Mathlib.Data.Fintype.Sum
 # Frozen: `TwoComponentCoulomb.IsGeneric`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 217, 348.
+Source: l. 202, 351.
 -/
 
 @[expose] public section
 
 namespace TwoComponentCoulomb
 
-/-- The configuration lies outside the Lebesgue-null set excluded at source l. 217 and
-l. 348: no two points coincide, and distinct unordered pairs of points are at distinct
+/-- The configuration lies outside the Lebesgue-null set excluded at source l. 202 and
+l. 351: no two points coincide, and distinct unordered pairs of points are at distinct
 distances. -/
 def IsGeneric {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) : Prop :=
   Function.Injective Z ∧

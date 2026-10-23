@@ -14,7 +14,7 @@ public import TwoComponentCoulomb.Potential.PairIntegral
 /-!
 # Measurability of the energies
 
-Measurability of the Hamiltonians appearing in the Gibbs measure `gibbsMeasure` (source l. 172--177) as functions on the configuration space
+Measurability of the Hamiltonians appearing in the Gibbs measure `gibbsMeasure` (source l. 157–161) as functions on the configuration space
 `Fin N ⊕ Fin N → ℂ`.
 
 * `measurable_logKernel` : `g = -log |·|` is measurable.
@@ -23,8 +23,8 @@ Measurability of the Hamiltonians appearing in the Gibbs measure `gibbsMeasure` 
 * `measurable_smearedKernel` : `g_λ` is measurable. This is the measurability of a parametric
   Bochner integral of a jointly measurable function; no continuity or integrability of
   `g_λ` is used.
-* `measurable_energy` : `F_λ` (source eq. (eq:F3), l. 155--158) is measurable.
-* `measurable_reducedEnergy` : `F̃_λ` (source l. 255--257) is measurable.
+* `measurable_energy` : `F_λ` (source eq. (eq:F3), l. 140–143) is measurable.
+* `measurable_reducedEnergy` : `F̃_λ` (source l. 247–249) is measurable.
 -/
 
 public section
@@ -82,7 +82,7 @@ local instance measurableSingletonClass_sum_fin (N : ℕ) :
   ⟨fun x => by rcases x with a | a <;> simp [measurableSet_sum_iff]⟩
 
 open scoped Classical in
-/-- `F̃_λ` (source l. 255--257) is measurable on the configuration space. The summand depends on
+/-- `F̃_λ` (source l. 247–249) is measurable on the configuration space. The summand depends on
 `Z` through `Z ↦ φ₁ Z`, which is measurable with values in the finite set of self-maps of the index
 set, and through the measurable map `g_λ ∘ (Z i - Z (φ₁ i))` on each of its fibres. -/
 theorem measurable_reducedEnergy {N : ℕ} (lam : ℝ) :

@@ -16,45 +16,26 @@ import TwoComponentCoulomb.UpperBound.MarkedCells
 import TwoComponentCoulomb.UpperBound.PairBlocks
 import TwoComponentCoulomb.UpperBound.UpperAssembly
 import TwoComponentCoulomb.UpperBound.UpperRate
+import Mathlib.MeasureTheory.Integral.MeanInequalities
 
 /-!
 # Theorem 2, Step 6: the Hölder combination of (eq:A1), (eq:A2), (eq:finalA3)
 
-Source: proof of Theorem 2 (`prop:linear`), Step 6, l. 2212--2219 ("Hölder's inequality with
-three factors and `𝔼[e^{sX}] ≤ (𝔼[e^{rX}])^{s/r}` give the following bound from (eq:A1), (eq:A2)
-and (eq:finalA3)"), and the statement of `MomentBoundRate` (`Fluctuations/Theorem2Assembly.lean`).
+Source `source/dipole-formation.tex`, proof of Theorem 2, Step 6 (l. 2086–2093).
+The paper spells out Hölder with three factors and moment interpolation.
 
-Write `A₁, A₂, A₃` for `linearA1, linearA2, linearA3` (`Fluctuations/ElectricLower.lean`) and
-`Q = ∫ |∇h_α|²`. By Step 2 (`exists_integral_norm_sq_electricField_le_linearA`) there is `C_A` with
-`Q/(4π) ≤ A₁ + C_A (A₂ + A₃)` for generic configurations. Fix `c > 0` with `12π c ≤ β` and
-`12π c C_A ≤ 1`. Then, almost surely, `c Q ≤ a + b + d` with `a = 4πc A₁`, `b = 4πc C_A A₂`,
-`d = 4πc C_A A₃`, and `e^{a+b+d} ≤ e^{3a} + e^{3b} + e^{3d}` (the elementary replacement of
-Hölder's inequality with three factors: `a + b + d ≤ 3 max (a, b, d)`). The three exponential
-moments are
+Step 2 gives `Q/(4π) ≤ A₁ + C_A (A₂ + A₃)` almost everywhere. Choose `c > 0` with
+`12πc ≤ β` and `12πc C_A ≤ 1`. Fix `t = 1` in (eq:finalA3). Interpolation on the
+Gibbs probability space gives `𝔼[e^{sA}] ≤ 𝔼[e^{rA}]^{s/r}` for `0 ≤ s ≤ r`.
+Hölder with three equal exponents then combines the moments of `A₁`, `A₂` and `A₃`.
 
-* `𝔼[e^{12πc A₁}] ≤ 1 + 𝔼[e^{β A₁}]` (as `12π c ≤ β`, `e^{s x} ≤ 1 + e^{r x}` for `0 ≤ s ≤ r`: the
-  elementary replacement of Jensen's inequality, the Gibbs measure being a probability measure),
-* `𝔼[e^{12πc C_A A₂}] ≤ 1 + 𝔼[e^{A₂}]` (as `12π c C_A ≤ 1`),
-* `𝔼[e^{12πc C_A A₃}]`, directly (eq:finalA3 with `t = 12π c C_A`),
-
-bounded by (eq:A1), (eq:A2) (`momentA2_le_rate`) and (eq:finalA3). (The source fixes `t = 1` in
-(eq:finalA3) and lowers the exponent by `𝔼[e^{sX}] ≤ (𝔼[e^{rX}])^{s/r}`; here (eq:finalA3) is used
-directly at `t = 12π c C_A`.)
-
-The results are stated for a rate function `ω` satisfying `UpperRateHyp` in place of `ω_λ`, with
-conclusion `MomentBoundRate β hβ.le ω` (`Fluctuations/Theorem2Assembly.lean`); the instance
-`ω = errorRate β` is `momentBound_of_two_lt` (`Fluctuations/Moment.lean`).
-
-## Main results
-
-* `MomentCombine.measurable_linearA2`, `MomentCombine.measurable_linearA3`: `A₂, A₃` are
-  measurable functions of the configuration (so that integrals of sums split).
-* `MomentCombine.lintegral_exp_add_le`, `MomentCombine.lintegral_exp_mul_le_one_add`: the
-  elementary replacements of Hölder's and Jensen's inequalities.
-* `momentBound_of_moments_rate`: `MomentBoundRate β _ ω` from the exponential moments (eq:A1),
-  (eq:finalA3) (hypotheses) and (eq:A2) (`momentA2_le_rate`). This is a conditional helper.
-* `momentBound_of_two_lt_rate`: `MomentBoundRate β hβ.le ω` for `β > 2`, from `momentA1_le_rate`
-  and `momentA3_le_rate`.
+* `MomentCombine.lintegral_exp_mul_le_rpow`: the moment interpolation inequality.
+* `MomentCombine.lintegral_exp_sum_le_holder`: Hölder with three factors.
+* `momentBound_of_moments_rate`: the combination for a rate satisfying `UpperRateHyp`.
+  Its moment hypotheses are internal inputs supplied by the proved moment theorems.
+* `momentBound_of_two_lt_rate`: the resulting electric moment for `β > 2`.
+The unsuffixed declarations specialize the rate to `errorRate`. The instance
+uses `errorRate` in `Fluctuations/Moment.lean`.
 -/
 
 @[expose] public section
@@ -169,120 +150,104 @@ theorem ae_isGeneric_gibbsMeasure (N : ℕ) (β lam : ℝ) :
   ae_isGeneric_of_absolutelyContinuous (gibbsMeasure_absolutelyContinuous N β lam)
 
 /-- For `β > 2`, the Gibbs measure is a probability measure for `N ≥ 2` and `λ` small
-(`0 < Z < ∞`, by the upper bound (ubz) of Proposition 3.10). -/
+(`0 < Z < ∞`, by the upper bound of Propositions 3.9 and 3.10). -/
 theorem exists_isProbabilityMeasure_gibbsMeasure {β : ℝ} (hβ : 2 < β) :
     ∃ lam₀ : ℝ, 0 < lam₀ ∧ ∀ (N : ℕ), 2 ≤ N → ∀ lam : ℝ, 0 < lam → lam < lam₀ →
       IsProbabilityMeasure (gibbsMeasure N β lam) := by
-  obtain ⟨lam₀, hlam₀, C, c, hC, hc, h⟩ := UpperAssembly.proposition_3_10_main_of_two_lt hβ
+  obtain ⟨lam₀, hlam₀, C, c, hC, hc, h⟩ := UpperAssembly.proposition_3_9_main_of_two_lt hβ
   refine ⟨lam₀, hlam₀, fun N hN lam hlam hlamlt => ?_⟩
   exact isProbabilityMeasure_gibbsMeasure (ne_top_of_le_ne_top ENNReal.ofReal_ne_top
     (h N hN lam hlam hlamlt).1) (by omega)
 
 end GibbsMeasure
 
-/-! ### The elementary replacements of Hölder's and Jensen's inequalities -/
+/-! ### Hölder's inequality and moment interpolation -/
 
-section Elementary
+/-- Powers of a positive exponential, in the nonnegative integral convention. -/
+theorem ofReal_exp_rpow (x t : ℝ) :
+    ENNReal.ofReal (Real.exp x) ^ t = ENNReal.ofReal (Real.exp (t * x)) := by
+  rw [ENNReal.ofReal_rpow_of_pos (Real.exp_pos _), ← Real.exp_mul, mul_comm]
 
-/-- `e^{a+b+d} ≤ e^{3a} + e^{3b} + e^{3d}`, since `a + b + d ≤ 3 max (a, b, d)`. -/
-theorem exp_add_add_le {a b d : ℝ} :
-    Real.exp (a + b + d) ≤ Real.exp (3 * b) + Real.exp (3 * d) + Real.exp (3 * a) := by
-  have h : a + b + d ≤ 3 * a ∨ a + b + d ≤ 3 * b ∨ a + b + d ≤ 3 * d := by
-    by_contra h
-    push Not at h
-    linarith [h.1, h.2.1, h.2.2]
-  have ha := Real.exp_pos (3 * a)
-  have hb := Real.exp_pos (3 * b)
-  have hd := Real.exp_pos (3 * d)
-  rcases h with h | h | h
-  · linarith [Real.exp_le_exp.2 h]
-  · linarith [Real.exp_le_exp.2 h]
-  · linarith [Real.exp_le_exp.2 h]
-
-/-- **Hölder with three factors, in the elementary form** (source l. 2212--2216): if
-`Q ≤ a + b + d` almost everywhere, with `b, d` measurable, then
-`∫ e^Q ≤ ∫ e^{3a} + ∫ e^{3b} + ∫ e^{3d}`. -/
-theorem lintegral_exp_add_le {X : Type*} [MeasurableSpace X] {μ : Measure X} {Q a b d : X → ℝ}
-    (hb : Measurable b) (hd : Measurable d) (h : ∀ᵐ x ∂μ, Q x ≤ a x + b x + d x) :
-    ∫⁻ x, ENNReal.ofReal (Real.exp (Q x)) ∂μ ≤
-      ∫⁻ x, ENNReal.ofReal (Real.exp (3 * a x)) ∂μ + ∫⁻ x, ENNReal.ofReal (Real.exp (3 * b x)) ∂μ
-        + ∫⁻ x, ENNReal.ofReal (Real.exp (3 * d x)) ∂μ := by
-  have hmb : Measurable fun x => ENNReal.ofReal (Real.exp (3 * b x)) :=
-    ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp (hb.const_mul 3))
-  have hmd : Measurable fun x => ENNReal.ofReal (Real.exp (3 * d x)) :=
-    ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp (hd.const_mul 3))
-  calc _ ≤ ∫⁻ x, (ENNReal.ofReal (Real.exp (3 * b x)) + ENNReal.ofReal (Real.exp (3 * d x))
-        + ENNReal.ofReal (Real.exp (3 * a x))) ∂μ := by
-        refine lintegral_mono_ae (h.mono fun x hx => ?_)
-        rw [← ENNReal.ofReal_add (Real.exp_pos _).le (Real.exp_pos _).le,
-          ← ENNReal.ofReal_add (by positivity) (Real.exp_pos _).le]
-        exact ENNReal.ofReal_le_ofReal
-          ((Real.exp_le_exp.2 hx).trans exp_add_add_le)
-    _ = _ := by
-        have hmbd : Measurable fun x => ENNReal.ofReal (Real.exp (3 * b x)) +
-            ENNReal.ofReal (Real.exp (3 * d x)) := hmb.add hmd
-        rw [lintegral_add_left hmbd, lintegral_add_left hmb]
-        ring
-
-/-- **Jensen's inequality, in the elementary form** (source l. 2213--2215, "`𝔼[e^{sX}] ≤
-(𝔼[e^{rX}])^{s/r}`"): for a probability measure and `0 ≤ s ≤ r`, `e^{s x} ≤ 1 + e^{r x}` gives
-`∫ e^{s A} ≤ 1 + ∫ e^{r A}`. -/
-theorem lintegral_exp_mul_le_one_add {X : Type*} [MeasurableSpace X] {μ : Measure X}
-    [IsProbabilityMeasure μ] (A : X → ℝ) {s r : ℝ} (hs : 0 ≤ s) (hsr : s ≤ r) :
+/-- **Moment interpolation** (Theorem 2, Step 6): on a probability space,
+`𝔼[e^{sA}] ≤ 𝔼[e^{rA}]^{s/r}` for `0 ≤ s ≤ r` and `r > 0`.
+Apply Hölder to `(e^{rA})^{s/r}` and the function `1`. -/
+theorem lintegral_exp_mul_le_rpow {X : Type*} [MeasurableSpace X] {μ : Measure X}
+    [IsProbabilityMeasure μ] {A : X → ℝ} (hA : Measurable A)
+    {s r : ℝ} (hs : 0 ≤ s) (hsr : s ≤ r) (hr : 0 < r) :
     ∫⁻ x, ENNReal.ofReal (Real.exp (s * A x)) ∂μ ≤
-      1 + ∫⁻ x, ENNReal.ofReal (Real.exp (r * A x)) ∂μ := by
-  calc _ ≤ ∫⁻ x, (1 + ENNReal.ofReal (Real.exp (r * A x))) ∂μ := by
-        refine lintegral_mono fun x => ?_
-        rw [← ENNReal.ofReal_one, ← ENNReal.ofReal_add zero_le_one (Real.exp_pos _).le]
-        refine ENNReal.ofReal_le_ofReal ?_
-        rcases le_total 0 (A x) with hx | hx
-        · have := Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right hsr hx)
-          linarith
-        · have : s * A x ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hs hx
-          have := Real.exp_le_one_iff.2 this
-          linarith [Real.exp_pos (r * A x)]
-    _ = _ := by
-        rw [lintegral_add_left measurable_const, lintegral_const, measure_univ, mul_one]
+      (∫⁻ x, ENNReal.ofReal (Real.exp (r * A x)) ∂μ) ^ (s / r) := by
+  have hp : 0 ≤ s / r := div_nonneg hs hr.le
+  have hp1 : s / r ≤ 1 := (div_le_one hr).2 hsr
+  have h := ENNReal.lintegral_mul_norm_pow_le
+    (μ := μ) (f := fun x => ENNReal.ofReal (Real.exp (r * A x)))
+    (g := fun _ => 1) ((hA.const_mul r).exp.ennreal_ofReal.aemeasurable)
+    aemeasurable_const hp (sub_nonneg.2 hp1) (by ring : s / r + (1 - s / r) = 1)
+  simp only [ENNReal.one_rpow, mul_one, lintegral_const, measure_univ,
+    ENNReal.one_rpow] at h
+  convert h using 1
+  apply lintegral_congr
+  intro x
+  rw [ofReal_exp_rpow]
+  congr 2
+  field_simp
 
-/-- The real inequality closing the combination: the three exponential moments `1 + e^{R₁}`,
-`1 + e^{R₂}`, `e^{R₃}` are at most `e^R` for `R = C (N (φ + ω) + L)`, `C = C₁ + C₂ + C₃ + 2`,
-as soon as `5 ≤ e^{2L}` (here `L = log (N+1)`, `N ≥ 2`). -/
-theorem add_exp_le_exp {C₁ C₂ C₃ N φ ω L : ℝ} (hC₁ : 0 ≤ C₁) (hC₂ : 0 ≤ C₂) (hC₃ : 0 ≤ C₃)
-    (hN : 0 ≤ N) (hφ : 0 ≤ φ) (hω : 0 ≤ ω) (hL : 0 ≤ L) (h5 : 5 ≤ Real.exp (2 * L)) :
-    (1 + Real.exp (C₁ * N * (φ + ω) + C₁ * L)) + (1 + Real.exp (C₂ * N * ω + C₂ * L))
-        + Real.exp (C₃ * N * (φ + ω) + C₃ * L) ≤
-      Real.exp ((C₁ + C₂ + C₃ + 2) * N * (φ + ω) + (C₁ + C₂ + C₃ + 2) * L) := by
-  have hNφ : 0 ≤ N * φ := mul_nonneg hN hφ
-  have hNω : 0 ≤ N * ω := mul_nonneg hN hω
-  set R : ℝ := (C₁ + C₂ + C₃ + 2) * N * (φ + ω) + (C₁ + C₂ + C₃ + 2) * L - 2 * L with hR
-  have hR1 : C₁ * N * (φ + ω) + C₁ * L ≤ R := by
-    rw [hR]
-    linarith only [mul_nonneg (add_nonneg hC₂ hC₃) hNφ, mul_nonneg (add_nonneg hC₂ hC₃) hNω,
-      mul_nonneg (add_nonneg hC₂ hC₃) hL, hNφ, hNω]
-  have hR2 : C₂ * N * ω + C₂ * L ≤ R := by
-    rw [hR]
-    linarith only [mul_nonneg (add_nonneg hC₁ hC₃) hNω, mul_nonneg (add_nonneg hC₁ hC₃) hL,
-      mul_nonneg (add_nonneg hC₁ (add_nonneg hC₂ hC₃)) hNφ, hNφ, hNω]
-  have hR3 : C₃ * N * (φ + ω) + C₃ * L ≤ R := by
-    rw [hR]
-    linarith only [mul_nonneg (add_nonneg hC₁ hC₂) hNφ, mul_nonneg (add_nonneg hC₁ hC₂) hNω,
-      mul_nonneg (add_nonneg hC₁ hC₂) hL, hNφ, hNω]
-  have hR0 : 0 ≤ R := by
-    linarith only [hR1, mul_nonneg hC₁ hNφ, mul_nonneg hC₁ hNω, mul_nonneg hC₁ hL]
-  have e1 := Real.exp_le_exp.2 hR1
-  have e2 := Real.exp_le_exp.2 hR2
-  have e3 := Real.exp_le_exp.2 hR3
-  have e0 : 1 ≤ Real.exp R := Real.one_le_exp hR0
-  have eR : Real.exp ((C₁ + C₂ + C₃ + 2) * N * (φ + ω) + (C₁ + C₂ + C₃ + 2) * L) =
-      Real.exp R * Real.exp (2 * L) := by
-    rw [← Real.exp_add]
-    congr 1
-    rw [hR]
-    ring
-  rw [eR]
-  linarith only [e1, e2, e3, e0, mul_le_mul_of_nonneg_left h5 (Real.exp_pos R).le]
+/-- **Hölder with three factors** (Theorem 2, Step 6): the exponential of the sum
+has integral at most the product of the three cube roots of the moments at triple exponent. -/
+theorem lintegral_exp_sum_le_holder {X : Type*} [MeasurableSpace X] {μ : Measure X}
+    (A : Fin 3 → X → ℝ) (hA : ∀ i, Measurable (A i)) :
+    ∫⁻ x, ENNReal.ofReal (Real.exp (∑ i, A i x)) ∂μ ≤
+      ∏ i, (∫⁻ x, ENNReal.ofReal (Real.exp (3 * A i x)) ∂μ) ^ (1 / 3 : ℝ) := by
+  have h := ENNReal.lintegral_prod_norm_pow_le (μ := μ) (Finset.univ : Finset (Fin 3))
+    (f := fun i x => ENNReal.ofReal (Real.exp (3 * A i x)))
+    (p := fun _ => (1 / 3 : ℝ))
+    (fun i _ => ((hA i).const_mul 3).exp.ennreal_ofReal.aemeasurable)
+    (by norm_num) (by intros; norm_num)
+  simp only [ofReal_exp_rpow] at h
+  convert h using 1
+  apply lintegral_congr
+  intro x
+  simp only [show ∀ i, (1 / 3 : ℝ) * (3 * A i x) = A i x by intro i; ring]
+  rw [Real.exp_sum, ENNReal.ofReal_prod_of_nonneg (fun i _ => (Real.exp_pos _).le)]
 
-end Elementary
+/-- Interpolation followed by an upper bound for the larger exponential moment.
+The nonnegative exponent bound allows replacing its power `s/r ≤ 1` by `1`. -/
+theorem lintegral_exp_mul_le_exp {X : Type*} [MeasurableSpace X] {μ : Measure X}
+    [IsProbabilityMeasure μ] {A : X → ℝ} (hA : Measurable A)
+    {s r R : ℝ} (hs : 0 ≤ s) (hsr : s ≤ r) (hr : 0 < r) (hR : 0 ≤ R)
+    (h : ∫⁻ x, ENNReal.ofReal (Real.exp (r * A x)) ∂μ ≤ ENNReal.ofReal (Real.exp R)) :
+    ∫⁻ x, ENNReal.ofReal (Real.exp (s * A x)) ∂μ ≤ ENNReal.ofReal (Real.exp R) := by
+  calc _ ≤ (∫⁻ x, ENNReal.ofReal (Real.exp (r * A x)) ∂μ) ^ (s / r) :=
+        lintegral_exp_mul_le_rpow hA hs hsr hr
+    _ ≤ ENNReal.ofReal (Real.exp R) ^ (s / r) :=
+        ENNReal.rpow_le_rpow h (div_nonneg hs hr.le)
+    _ = ENNReal.ofReal (Real.exp (s / r * R)) := ofReal_exp_rpow R (s / r)
+    _ ≤ _ := ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2
+        (mul_le_of_le_one_left hR ((div_le_one hr).2 hsr)))
+
+open scoped Classical in
+/-- The first auxiliary energy is measurable, as are its finite graph-defined sums. -/
+theorem measurable_linearA1 (hN : 2 ≤ N) (lam γ C : ℝ) :
+    Measurable fun Z : Fin N ⊕ Fin N → ℂ => linearA1 hN lam γ C Z := by
+  have : MeasurableSingletonClass (Fin N ⊕ Fin N) := ⟨fun x => by
+    rcases x with a | a <;> simp [measurableSet_sum_iff]⟩
+  unfold linearA1
+  refine Measurable.sub (Measurable.add (measurable_energy lam) ?_) ?_
+  · refine Measurable.const_mul (Finset.measurable_sum _ fun i _ => ?_) _
+    exact (measurable_smearedKernel lam).comp
+      (by
+        let G : (Fin N ⊕ Fin N → ℂ) × (Fin N ⊕ Fin N → Fin N ⊕ Fin N) → ℂ :=
+          fun p => p.1 i - p.1 (p.2 i)
+        have hG : Measurable G := measurable_from_prod_countable_left fun f => by
+          dsimp [G]
+          fun_prop
+        exact hG.comp (measurable_id.prodMk measurable_nearestNeighbor))
+  · refine measurable_sum_filter (fun i => ?_) (fun i => ?_)
+    · exact (measurableSet_isIsolatedPair i).inter
+        ((measurableSet_isIsolatedDipole i).compl.inter
+          ((measurableSet_isIsolatedPair_secondNearestNeighbor hN i).inter
+            (measurableSet_isIsolatedPair_secondNearestNeighbor_nearestNeighbor hN i)))
+    · exact (((measurable_alphaRadius hN lam γ i).div
+        (measurable_firstNeighborRadius_apply hN lam i)).log).sub_const C
 
 end MomentCombine
 
@@ -290,11 +255,11 @@ open MeasureTheory
 open scoped ENNReal
 
 /-- **Theorem 2, Step 6: the exponential moment of the electric energy for `β > 2`, generic rate**
-(source l. 2212--2219), a *conditional helper*, for a rate `ω` satisfying `UpperRateHyp` in place
-of `ω_λ`. The exponential moments (eq:A1) and
+(source l. 2086–2093), a *conditional helper*: `momentBound_of_moments_rate` for a
+rate `ω` satisfying `UpperRateHyp` in place of `ω_λ`. The exponential moments (eq:A1) and
 (eq:finalA3) with `ω` are hypotheses (they are the statements of `momentA1_le_rate` and
 `momentA3_le_rate`), and (eq:A2) with `ω` is `momentA2_le_rate`. The conclusion is
-`MomentBoundRate β _ ω`, with the radii `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` (`alphaRadius`); besides the three
+`MomentBoundRate β _ ω`, with the radii `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` (`alphaRadius`). Besides the three
 moments, only `ω ≥ 0` (the field `UpperRateHyp.nonneg`) is used. -/
 theorem momentBound_of_moments_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) (hω : UpperRateHyp β hβ ω)
     (hA1 : ∀ C_A : ℝ, ∃ C lam₁ : ℝ, 0 < C ∧ 0 < lam₁ ∧
@@ -329,7 +294,7 @@ theorem momentBound_of_moments_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
   set t : ℝ := 12 * Real.pi * c * C_A with htdef
   have ht : 0 < t := by positivity
   obtain ⟨C₁, lam₁₁, hC₁, hlam₁₁, h1⟩ := hA1 C_A
-  obtain ⟨C₃, lam₁₃, hC₃, hlam₁₃, h3⟩ := hA3 t ht
+  obtain ⟨C₃, lam₁₃, hC₃, hlam₁₃, h3⟩ := hA3 1 one_pos
   obtain ⟨C₂, lam₁₂, hC₂, hlam₁₂, h2⟩ := momentA2_le_rate hβ ω hω
   obtain ⟨lam₁₄, hlam₁₄, hprob⟩ := MomentCombine.exists_isProbabilityMeasure_gibbsMeasure hβ
   have hα : ∀ (N : ℕ) (hN : 2 ≤ N) (lam γ : ℝ) (Z : Fin N ⊕ Fin N → ℂ),
@@ -375,64 +340,97 @@ theorem momentBound_of_moments_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
       have e : 4 * Real.pi * c * (1 / (4 * Real.pi) * Q Z) = c * Q Z := by field_simp
       simp only [hA₁, hA₂, hA₃]
       linarith only [h', e]
-    have hmain := MomentCombine.lintegral_exp_add_le (μ := μ) (Q := fun Z => c * Q Z)
-      (a := fun Z => 4 * Real.pi * c * A₁ Z) (b := fun Z => 4 * Real.pi * c * C_A * A₂ Z)
-      (d := fun Z => 4 * Real.pi * c * C_A * A₃ Z)
-      ((MomentCombine.measurable_linearA2 hN lam).const_mul _)
-      ((MomentCombine.measurable_linearA3 hN lam γ).const_mul _) hae
-    -- the three exponential moments
-    have hT₁ : ∫⁻ Z, ENNReal.ofReal (Real.exp (3 * (4 * Real.pi * c * A₁ Z))) ∂μ ≤
-        1 + ENNReal.ofReal (Real.exp (C₁ * N * (isolatedPhi β hβ.le lam γ +
-          ω lam) + C₁ * Real.log (N + 1))) := by
-      have hj := MomentCombine.lintegral_exp_mul_le_one_add (μ := μ) A₁
-        (s := 12 * Real.pi * c) (r := β) (by positivity) hc1
-      have e : ∀ Z, 3 * (4 * Real.pi * c * A₁ Z) = 12 * Real.pi * c * A₁ Z := fun Z => by ring
-      simp only [e]
-      exact hj.trans (add_le_add le_rfl (h1 N hN lam hlam hl11 γ hγ hγ1))
-    have hT₂ : ∫⁻ Z, ENNReal.ofReal (Real.exp (3 * (4 * Real.pi * c * C_A * A₂ Z))) ∂μ ≤
-        1 + ENNReal.ofReal (Real.exp (C₂ * N * ω lam +
-          C₂ * Real.log (N + 1))) := by
-      have hj := MomentCombine.lintegral_exp_mul_le_one_add (μ := μ) A₂
-        (s := t) (r := 1) ht.le hc2
-      have e : ∀ Z, 3 * (4 * Real.pi * c * C_A * A₂ Z) = t * A₂ Z := fun Z => by
-        rw [htdef]; ring
-      simp only [e]
-      refine hj.trans (add_le_add le_rfl ?_)
+    -- Fix the A₃ estimate at t = 1, then interpolate all three moments.
+    set R : ℝ := (C₁ + C₂ + C₃ + 2) * N * (isolatedPhi β hβ.le lam γ + ω lam)
+      + (C₁ + C₂ + C₃ + 2) * Real.log (N + 1) with hRdef
+    have hR0 : 0 ≤ R := by positivity
+    have hR1 : C₁ * N * (isolatedPhi β hβ.le lam γ + ω lam) +
+        C₁ * Real.log (N + 1) ≤ R := by
+      dsimp [R]
+      nlinarith [mul_nonneg hC₂.le (mul_nonneg hN0 (add_nonneg hφ0 hω0)),
+        mul_nonneg hC₃.le (mul_nonneg hN0 (add_nonneg hφ0 hω0)),
+        mul_nonneg hC₂.le hlogN, mul_nonneg hC₃.le hlogN]
+    have hR2 : C₂ * N * ω lam + C₂ * Real.log (N + 1) ≤ R := by
+      dsimp [R]
+      nlinarith [mul_nonneg hC₁.le (mul_nonneg hN0 (add_nonneg hφ0 hω0)),
+        mul_nonneg hC₃.le (mul_nonneg hN0 (add_nonneg hφ0 hω0)),
+        mul_nonneg hC₂.le (mul_nonneg hN0 hφ0),
+        mul_nonneg hC₁.le hlogN, mul_nonneg hC₃.le hlogN]
+    have hR3 : C₃ * N * (isolatedPhi β hβ.le lam γ + ω lam) +
+        C₃ * Real.log (N + 1) ≤ R := by
+      dsimp [R]
+      nlinarith [mul_nonneg hC₁.le (mul_nonneg hN0 (add_nonneg hφ0 hω0)),
+        mul_nonneg hC₂.le (mul_nonneg hN0 (add_nonneg hφ0 hω0)),
+        mul_nonneg hC₁.le hlogN, mul_nonneg hC₂.le hlogN]
+    have hm1 := MomentCombine.measurable_linearA1 hN lam γ C_A
+    have hm2 := MomentCombine.measurable_linearA2 hN lam
+    have hm3 := MomentCombine.measurable_linearA3 hN lam γ
+    have hT1 := MomentCombine.lintegral_exp_mul_le_exp (μ := μ) hm1
+      (s := 12 * Real.pi * c) (r := β) (by positivity) hc1 hβ0 hR0
+      ((h1 N hN lam hlam hl11 γ hγ hγ1).trans
+        (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 hR1)))
+    have h2' : ∫⁻ Z, ENNReal.ofReal (Real.exp (1 * A₂ Z)) ∂μ ≤
+        ENNReal.ofReal (Real.exp (C₂ * N * ω lam + C₂ * Real.log (N + 1))) := by
       simpa only [one_mul] using h2 N hN lam hlam hl12
-    have hT₃ : ∫⁻ Z, ENNReal.ofReal (Real.exp (3 * (4 * Real.pi * c * C_A * A₃ Z))) ∂μ ≤
-        ENNReal.ofReal (Real.exp (C₃ * N * (isolatedPhi β hβ.le lam γ +
-          ω lam) + C₃ * Real.log (N + 1))) := by
-      have e : ∀ Z, 3 * (4 * Real.pi * c * C_A * A₃ Z) = t * A₃ Z := fun Z => by
-        rw [htdef]; ring
-      simp only [e]
-      exact h3 N hN lam hlam hl13 γ hγ hγ1
-    have h5 : (5 : ℝ) ≤ Real.exp (2 * Real.log (N + 1)) := by
-      rw [two_mul, Real.exp_add, Real.exp_log (by positivity)]
-      have : (3 : ℝ) ≤ N + 1 := by
-        have : (2 : ℝ) ≤ N := by exact_mod_cast hN
-        linarith only [this]
-      linarith only [mul_le_mul this this (by norm_num) (by linarith only [this])]
-    have hfin := MomentCombine.add_exp_le_exp hC₁.le hC₂.le hC₃.le hN0 hφ0 hω0 hlogN h5
-    refine hmain.trans ?_
-    calc _ ≤ (1 + ENNReal.ofReal (Real.exp (C₁ * N * (isolatedPhi β hβ.le lam γ +
-            ω lam) + C₁ * Real.log (N + 1)))) +
-          (1 + ENNReal.ofReal (Real.exp (C₂ * N * ω lam +
-            C₂ * Real.log (N + 1)))) +
-          ENNReal.ofReal (Real.exp (C₃ * N * (isolatedPhi β hβ.le lam γ +
-            ω lam) + C₃ * Real.log (N + 1))) := by gcongr
-      _ = ENNReal.ofReal ((1 + Real.exp (C₁ * N * (isolatedPhi β hβ.le lam γ +
-            ω lam) + C₁ * Real.log (N + 1))) +
-          (1 + Real.exp (C₂ * N * ω lam + C₂ * Real.log (N + 1))) +
-          Real.exp (C₃ * N * (isolatedPhi β hβ.le lam γ +
-            ω lam) + C₃ * Real.log (N + 1))) := by
-          rw [ENNReal.ofReal_add (by positivity) (Real.exp_pos _).le,
-            ENNReal.ofReal_add (by positivity) (by positivity),
-            ENNReal.ofReal_add zero_le_one (Real.exp_pos _).le,
-            ENNReal.ofReal_add zero_le_one (Real.exp_pos _).le, ENNReal.ofReal_one]
-      _ ≤ _ := ENNReal.ofReal_le_ofReal hfin
+    have hT2 := MomentCombine.lintegral_exp_mul_le_exp (μ := μ) hm2
+      (s := t) (r := 1) ht.le hc2 one_pos hR0
+      (h2'.trans
+        (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 hR2)))
+    have hT3 := MomentCombine.lintegral_exp_mul_le_exp (μ := μ) hm3
+      (s := t) (r := 1) ht.le hc2 one_pos hR0
+      ((h3 N hN lam hlam hl13 γ hγ hγ1).trans
+        (ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 hR3)))
+    let B : Fin 3 → (Fin N ⊕ Fin N → ℂ) → ℝ :=
+      ![fun Z => 4 * Real.pi * c * A₁ Z,
+        fun Z => 4 * Real.pi * c * C_A * A₂ Z,
+        fun Z => 4 * Real.pi * c * C_A * A₃ Z]
+    have hBm : ∀ i, Measurable (B i) := by
+      intro i
+      fin_cases i
+      · exact hm1.const_mul _
+      · exact hm2.const_mul _
+      · exact hm3.const_mul _
+    have hBT : ∀ i, ∫⁻ Z, ENNReal.ofReal (Real.exp (3 * B i Z)) ∂μ ≤
+        ENNReal.ofReal (Real.exp R) := by
+      intro i
+      fin_cases i
+      · convert hT1 using 1
+        congr 2
+        funext Z
+        congr 2
+        dsimp [B]
+        ring
+      · convert hT2 using 1
+        congr 2
+        funext Z
+        congr 2
+        dsimp [B, t]
+        ring
+      · convert hT3 using 1
+        congr 2
+        funext Z
+        congr 2
+        dsimp [B, t]
+        ring
+    calc ∫⁻ Z, ENNReal.ofReal (Real.exp (c * Q Z)) ∂μ
+        ≤ ∫⁻ Z, ENNReal.ofReal (Real.exp (∑ i, B i Z)) ∂μ := by
+          refine lintegral_mono_ae (hae.mono fun Z hZ => ?_)
+          exact ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2
+            (by simpa [B, Fin.sum_univ_succ, add_assoc] using hZ))
+      _ ≤ ∏ i, (∫⁻ Z, ENNReal.ofReal (Real.exp (3 * B i Z)) ∂μ) ^ (1 / 3 : ℝ) :=
+          MomentCombine.lintegral_exp_sum_le_holder B hBm
+      _ ≤ ∏ _i : Fin 3, ENNReal.ofReal (Real.exp R) ^ (1 / 3 : ℝ) := by
+          gcongr with i
+          exact hBT i
+      _ = ENNReal.ofReal (Real.exp R) := by
+          simp only [MomentCombine.ofReal_exp_rpow, Finset.prod_const, Finset.card_univ,
+            Fintype.card_fin, ← ENNReal.ofReal_pow (Real.exp_pos _).le,
+            ← Real.exp_nat_mul]
+          congr 2
+          ring
 
-/-- **The moment bound for `β > 2`, generic rate** (the output of Theorem 2, Steps 2--4, and
-Step 6, source l. 1995--2219): for a rate `ω` satisfying `UpperRateHyp`,
+/-- **`MomentBoundRate` for `β > 2`, generic rate** (the output of Theorem 2, Steps 2--4, and Step 6,
+source l. 1872–2093): for a rate `ω` satisfying `UpperRateHyp`,
 `momentBound_of_moments_rate` applied to the proved exponential moments `momentA1_le_rate` (eq:A1)
 and `momentA3_le_rate` (eq:finalA3) gives `MomentBoundRate β _ ω`. -/
 theorem momentBound_of_two_lt_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) (hω : UpperRateHyp β hβ ω) :

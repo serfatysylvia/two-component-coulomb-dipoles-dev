@@ -12,8 +12,8 @@ import TwoComponentCoulomb.Gibbs.Basic
 /-!
 # Theorem 2, Step 3: the exponential moment of `A₂` (eq. (eq:A2)), `β > 2`
 
-Source: proof of Theorem 2 (`prop:linear`), l. 2117--2124: "To bound `A₂`, we repeat Steps 2
-and 3 of Proposition 3.10 with a larger coefficient in the neutral quadratic term." For `β > 2`,
+Source: proof of Theorem 2 (`prop:linear`), l. 1995–2002: "To bound `A₂`, we repeat Steps 2
+and 3 of Proposition 3.9 with a larger coefficient in the neutral quadratic term." For `β > 2`,
 `N ≥ 2` and `λ` small,
 
 `𝔼_ℙ[e^{A₂}] ≤ exp (C N ω_λ + C log (N+1))`,  `A₂ = linearA2`.
@@ -21,7 +21,7 @@ and 3 of Proposition 3.10 with a larger coefficient in the neutral quadratic ter
 ## Structure
 
 The weight `e^{A₂ - β F_λ}` is bounded on the cell `{γ_{2N} = γ}` of a marked graph
-`γ = (φ, T) ∈ D_{2N,K,p,p₀}` as in Steps 2--3 of the proof of Proposition 3.10
+`γ = (φ, T) ∈ D_{2N,K,p,p₀}` as in Steps 2--3 of the proof of Proposition 3.9
 (`UpperBound/UpperAssembly.lean`), with the following changes.
 
 * The quadratic sum of `A₂` runs over a subset of the marked neutral vertices, and with the
@@ -29,10 +29,10 @@ The weight `e^{A₂ - β F_λ}` is bounded on the cell `{γ_{2N} = γ}` of a mar
   of `F⁽¹⁾_{C'}` absorbs it (`MomentA2.le_energy_split_add`, `MomentA2.le_energy_full_add`; the bridge from
   the global radii to the radii of the block `I` is `MomentA2.sum_dip_le_split`).
 * The linear part `N - ½|I^dip|` of `A₂` is at most `(M₀ + 3)(N - K) + (p - p₀)` on the cell
-  (l. 2118--2120, `MomentA2.deficit_le`). The part `(M₀ + 3)(N - K)` is absorbed in the per-cell
+  (l. 1996–1998, `MomentA2.deficit_le`). The part `(M₀ + 3)(N - K)` is absorbed in the per-cell
   constant `A`, and the part `(p - p₀)` is absorbed in the allowance `C₀ (p - p₀)` of
-  (eq:representative-bound) (Proposition 3.9), taken with `C₀ = 61` instead of `C₀ = 60`
-  (l. 2121).
+  (eq:representative-bound) (Proposition 3.8), taken with `C₀ = 61` instead of `C₀ = 60`
+  (l. 1999).
 * The per-cell bound `CellBoundRate` obtained this way (`MomentA2.exists_cellBound_energy_rate`)
   feeds the generic summation `UpperAssembly.lintegral_le_of_cellBound_rate`, and the division by
   `Z` is Proposition 4.1.
@@ -60,10 +60,10 @@ open scoped ENNReal
 
 variable {N : ℕ}
 
-/-! ### The deficit `N - ½|I^dip|` (source l. 2118--2121) -/
+/-! ### The deficit `N - ½|I^dip|` (source l. 1996–1999) -/
 
 open scoped Classical in
-/-- **The deficit count** (source l. 2118--2121): on the cell of a marked graph of
+/-- **The deficit count** (source l. 1996–1999): on the cell of a marked graph of
 `D_{2N,K,p,p₀}`, `N - ½|I^dip| ≤ N - p₀ ≤ (M₀ + 3)(N - K) + (p - p₀)`. -/
 theorem deficit_le {hN : 2 ≤ N} {K p p₀ : ℕ} {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N}
     {T : Finset (Fin N ⊕ Fin N)} (hγ : (φ, T) ∈ markedGraphs hN K p p₀)
@@ -85,7 +85,7 @@ theorem deficit_le {hN : 2 ≤ N} {K p p₀ : ℕ} {φ : Fin N ⊕ Fin N → Fin
 /-! ### The quadratic sum of `A₂` -/
 
 open scoped Classical in
-/-- The quadratic sum of `A₂` (source l. 2088):
+/-- The quadratic sum of `A₂` (source l. 1966):
 `∑_{i ∈ I^dip, φ₂ i ∈ I^dip, φ₂ (φ₁ i) ∈ I^pair} (r̃₁(zᵢ) / r̃₂(zᵢ))²`. -/
 noncomputable def dipSum (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) : ℝ :=
   ∑ i ∈ Finset.univ.filter (fun i => IsIsolatedDipole Z i ∧
@@ -103,7 +103,7 @@ theorem linearA2_eq (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) :
 /-! ### The quadratic sum of `A₂` is dominated by the neutral quadratic term of `F⁽¹⁾` -/
 
 open scoped Classical in
-/-- **The quadratic sum of `A₂` in the block `I`** (source l. 2117--2121): the indices of the sum
+/-- **The quadratic sum of `A₂` in the block `I`** (source l. 1995–1999): the indices of the sum
 of `A₂` (`i ∈ I^dip`, `φ₂ i ∈ I^dip`, `φ₂ (φ₁ i) ∈ I^pair`) are marked neutral vertices, and for
 them `r̃₁, r̃₂` computed within `I` are the global ones; hence the sum is at most the quadratic term
 `∑_{i ∈ I ∖ I'} (r̃₁/r̃₂)²` of `F⁽¹⁾` (`pairAssignedEnergy`). -/
@@ -215,8 +215,7 @@ theorem pairAssignedEnergy_add {ι : Type*} [Fintype ι] [Nontrivial ι] [Decida
     nsmul_eq_mul, nsmul_eq_mul]
   ring
 
-/-- **The lower bound `F_λ ≥ F⁽¹⁾_{C+δ} + F⁽²⁾ - C(N - K) + δ ∑ (r̃₁/r̃₂)²`** (source l. 1532--1545,
-2117--2121), for `m ≥ 2` and `Iᶜ ≠ ∅`: Proposition 3.10, Step 2, with the neutral quadratic
+/-- **The lower bound `F_λ ≥ F⁽¹⁾_{C+δ} + F⁽²⁾ - C(N - K) + δ ∑ (r̃₁/r̃₂)²`** (source l. 1440–1453, 1995–1999), for `m ≥ 2` and `Iᶜ ≠ ∅`: Proposition 3.9, Step 2, with the neutral quadratic
 coefficient enlarged from `C` to `C + δ`; the gain is the quadratic sum of `A₂`. -/
 theorem le_energy_split_add {C δ : ℝ} (hC0 : 0 ≤ C) (hδ : 0 ≤ δ) (hC : Corollary23Holds C)
     (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) {Z : Fin N ⊕ Fin N → ℂ} (hZ : ∀ i, Z i ∈ box N)
@@ -267,7 +266,7 @@ theorem dipSum_eq_zero_of_twiceIsolatedSet_eq_empty (hN : 2 ≤ N) (lam : ℝ)
 
 section Cells
 
-/-- **Separation of variables (gred3) for a general weight** (source l. 1546--1551): if on the
+/-- **Separation of variables (gred3) for a general weight** (source l. 1454–1459): if on the
 cell of a marked graph `γ = (φ, T)` (in the box) the weight satisfies
 `W(Z) ≤ c · g₁(Z|_I) g₂(Z|_{Iᶜ})`, then the cell integral of `W` is at most
 `c ∫_{Λ^{2m} ∩ {γ_{2m} = γ¹}} g₁ · ∫_{Λ^{2N-2m} ∩ {γ_{2N-2m} = γ²}} g₂`. -/
@@ -359,14 +358,14 @@ theorem ofReal_exp_mul_le₃ {a b c x y : ℝ} (h : a + b ≤ c + x + y) :
 
 end Weight
 
-/-! ### The entropy with `C₀ = 61` (source l. 2121: "the allowance `C₀ (p - p₀)`") -/
+/-! ### The entropy with `C₀ = 61` (source l. 1999: "the allowance `C₀ (p - p₀)`") -/
 
 section Entropy
 
 open UpperCellBound
 
 /-- **(eq:F(1)), main form, with the extra factor `e^{p - p₀}`, generic rate** (source
-l. 1553--1565, 2117--2121): the entropy bound (eq:F(1)) with `C₀ = 61`, with an error rate
+l. 1461–1473, 1995–1999): the entropy bound (eq:F(1)) with `C₀ = 61`, with an error rate
 `r ≤ ω(λ)` for an arbitrary `ω : ℝ → ℝ` (no property of `ω` is used). -/
 theorem entropy_mul_le_main_sixty_one_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) {c Cb r X : ℝ}
     (hc : 0 ≤ c) (hCb : 0 ≤ Cb) {N m p p₀ p₀' : ℕ} (hm : 0 < m) (hmN : m ≤ N) (hp₀ : p₀ ≤ p)
@@ -443,13 +442,13 @@ theorem ofReal_exp_add_mul_mul (b q : ℝ) (Y₁ Y₂ : ℝ≥0∞) :
 
 end Entropy
 
-/-! ### The per-cell bound for the weight `e^{A₂} e^{-β F_λ}` (source l. 2117--2124) -/
+/-! ### The per-cell bound for the weight `e^{A₂} e^{-β F_λ}` (source l. 1995–2002) -/
 
 section CellBoundEnergy
 
 open UpperCellBound UpperAssembly
 
-/-- **The per-cell bound for the weight `e^{A₂ - β F_λ}`, generic rate** (source l. 2117--2124):
+/-- **The per-cell bound for the weight `e^{A₂ - β F_λ}`, generic rate** (source l. 1995–2002):
 for a rate `ω` satisfying `UpperRateHyp` in place of `ω_λ`, the integral of `e^{A₂} e^{-β F_λ}`
 over one marked cell satisfies `CellBoundRate`. The constants depend only on `β` and `ω`. -/
 theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ)
@@ -494,7 +493,7 @@ theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ
   set c₀ : ℝ := (β * Cc + (M0 + 3)) * ((N : ℝ) - numComponents Z₀) with hc₀
   set q : ℝ := (p : ℝ) - p₀ with hq
   rcases Nat.eq_zero_or_pos p with hp0 | hp1
-  · -- no marked pair: Lemma 3.5 on all points
+  · -- no marked pair: Lemma 3.4 on all points
     have hp₀0 : p₀ = 0 := by omega
     have hT0 : twiceIsolatedSet hN Z₀ = ∅ := by
       have h := card_twiceIsolatedSet (hN := hN) (Z := Z₀)
@@ -556,7 +555,7 @@ theorem exists_cellBound_energy_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ
     rwa [pairRestrict_pairRestrict] at this
   have hp₀' : p₀ + m - p + p = p₀ + m := by omega
   by_cases hmN' : m = N
-  · -- `Iᶜ = ∅`: Proposition 3.9 on all points
+  · -- `Iᶜ = ∅`: Proposition 3.8 on all points
     have hKeq : numComponents Z₀ = N := by omega
     have h3' : 3 ≤ Fintype.card (Fin N ⊕ Fin N) := by simp; omega
     have huniv : pairVerts (nearestNeighbor Z₀) = Finset.univ := by
@@ -703,11 +702,11 @@ end MomentA2
 open MeasureTheory
 open scoped ENNReal
 
-/-- **Theorem 2, eq. (eq:A2), generic rate** (source l. 2117--2124), for a rate `ω` satisfying
+/-- **Theorem 2, eq. (eq:A2), generic rate** (source l. 1995–2002), for a rate `ω` satisfying
 `UpperRateHyp` in place of `ω_λ`: for `β > 2` there are
 `C, λ₁ > 0`, depending only on `β` and `ω`, such that for `N ≥ 2` and `0 < λ < λ₁`,
 `𝔼_ℙ[e^{A₂}] ≤ exp (C N ω(λ) + C log (N+1))`. The division by the partition function uses
-Proposition 4.1, whose error rate for `β > 2` is that of Proposition 3.9, bounded by `ω(λ)` by the
+Proposition 4.1, whose error rate for `β > 2` is that of Proposition 3.8, bounded by `ω(λ)` by the
 field `UpperRateHyp.isolated_le`. -/
 theorem momentA2_le_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) (hω : UpperRateHyp β hβ ω) :
     ∃ C lam₁ : ℝ, 0 < C ∧ 0 < lam₁ ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam → lam < lam₁ →

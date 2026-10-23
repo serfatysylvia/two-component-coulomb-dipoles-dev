@@ -23,7 +23,7 @@ import TwoComponentCoulomb.Energy.Corollary23
 # Frozen: `TwoComponentCoulomb.corollary_2_3`
 
 Frozen statement, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 452–464.
+Source: l. 458–470.
 -/
 
 @[expose] public section
@@ -31,7 +31,7 @@ Source: l. 452–464.
 namespace TwoComponentCoulomb
 
 open scoped Classical in
-/-- **Corollary 2.3** (`coromino`, source l. 452–464). -/
+/-- **Corollary 2.3** (`coromino`, source l. 458–470). -/
 theorem corollary_2_3 :
     ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (hN : 2 ≤ N) (lam : ℝ), 0 < lam →
       ∀ Z : Fin N ⊕ Fin N → ℂ, (∀ i, Z i ∈ box N) → IsGeneric Z →

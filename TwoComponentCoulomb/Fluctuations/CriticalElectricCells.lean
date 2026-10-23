@@ -6,6 +6,7 @@ module
 
 public import TwoComponentCoulomb.Frozen.SmearedKernel
 public import TwoComponentCoulomb.UpperBound.CriticalRadial
+public import TwoComponentCoulomb.Fluctuations.CriticalSameSignSplit
 public import TwoComponentCoulomb.UpperBound.IsolatedRadial
 import TwoComponentCoulomb.Gibbs.Measurability
 import TwoComponentCoulomb.Integrals.GaussianMass
@@ -14,8 +15,8 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The pair weights of the electric moment at `β = 2` (Theorem 2, eq. (eq:critical electric))
 
-Source: l. 2023--2036 (proof of Theorem 2, Step 2, `β = 2`), repeating the
-proof of (eq:critical upper) (l. 1666--1739) with the same retained coordinates.
+Source `source/dipole-formation.tex`, l. 1910–1912 (proof of Theorem 2, Step 2, `β = 2`), repeating the
+proof of (eq:critical upper) (l. 1595–1652) with the same retained coordinates.
 
 Fix a nearest-neighbour graph `f = φ₁(Z)`. As in `UpperBound/CriticalCells.lean`, in each isolated
 pair one endpoint `w_j` is retained (the non-retained endpoints form `S = isoSecondVerts f`), the
@@ -28,14 +29,12 @@ in `Fluctuations/CriticalElectric.lean`.
 
 ## Main results
 
-* `elecNeutralWeight`, `elecSameSignWeight`: the pair weights (with the Gaussian factor).
-* `exists_lintegral_elecNeutralWeight_le`: the neutral mass is at most
-  `2π (ℓ + ½ log ℓ) + K · 2π (½ log ℓ + log (1/γ) + ½) + C` ("`J_λ(1/ℓ) + CS`"; this is
-  `neutralMass λ γ K C` of `UpperBound/CriticalGraphSum.lean`).
-* `lintegral_elecSameSignWeight_le`: the same-sign mass is at most
-  `elecSameSignMass = 256 π c + 512 π c (½ log ℓ + log (1/γ) + ½)` ("`CS`"), splitting the radial
-  integral at `4γ`.
-* `elecSameSignMass_pos`, `elecSameSignMass_le`: `0 < Mₛ ≤ C S`, `S = 1 + log ℓ + log (1/γ)`.
+* `elecNeutralWeight`, `elecSameSignWeight`: the literal pair weights with the Gaussian.
+* `exists_lintegral_elecNeutralWeight_le`: the neutral mass is bounded by
+  `J_λ(1/ℓ) + K J_λ(1/ℓ; γ) + C`, hence by `J_λ(1/ℓ) + CS`.
+* `exists_lintegral_elecSameSignWeight_le`: the literal same-sign mass is at most `CS`.
+  The proof uses the split into `(a/ρ)^4` and `min(a/γ,1)^4` from
+  `Fluctuations/CriticalSameSignSplit.lean`, where the core estimates and Gaussian tail are proved.
 -/
 
 @[expose] public section
@@ -46,12 +45,12 @@ open scoped ENNReal
 namespace TwoComponentCoulomb
 
 
-/-! ### The pair weights (source l. 2023--2036) -/
+/-! ### The pair weights (source l. 1903–1912) -/
 
 section Weights
 
 /-- The weight of an isolated neutral pair with displacement `u` and radius `ρ` in the electric
-moment (source l. 2023, 2027--2028): on the disc `|u| ≤ 4ρ`,
+moment : on the disc `|u| ≤ 4ρ`,
 `exp (2 g_λ(u) - |u|²/ℓ + c ((a/ρ)² + ((a/γ)² ∧ 1)))`, `a = (|u|/4) ∨ λ`; the Gaussian factor comes
 from the packing bound. -/
 noncomputable def elecNeutralWeight (lam ℓ γ c : ℝ) (p : ℂ × ℝ) : ℝ≥0∞ :=
@@ -61,12 +60,12 @@ noncomputable def elecNeutralWeight (lam ℓ γ c : ℝ) (p : ℂ × ℝ) : ℝ�
   else 0
 
 /-- The weight of an isolated same-sign pair with displacement `u` and radius `ρ` in the electric
-moment (source l. 2023, 2029--2030): on the disc `|u| ≤ 4ρ`,
-`c (|u| ∨ λ)² / ((ρ ∧ γ) ∨ a)⁴ · e^{-|u|²/ℓ}`, `a = (|u|/4) ∨ λ`. -/
+moment (source l. 1912): on the disc `|u| ≤ 4ρ`,
+`c e^{2g_λ(u)-|u|²/ℓ} (a/((ρ ∧ γ) ∨ a))⁴`, `a = (|u|/4) ∨ λ`. -/
 noncomputable def elecSameSignWeight (lam ℓ γ c : ℝ) (p : ℂ × ℝ) : ℝ≥0∞ :=
   if ‖p.1‖ ≤ 4 * p.2 then
-    ENNReal.ofReal (c * max ‖p.1‖ lam ^ 2 / max (min p.2 γ) (displacementScale lam p.1) ^ 4 *
-      Real.exp (-(‖p.1‖ ^ 2 / ℓ)))
+    ENNReal.ofReal (c * (Real.exp (2 * smearedKernel lam p.1 - ‖p.1‖ ^ 2 / ℓ) *
+      (displacementScale lam p.1 / max (min p.2 γ) (displacementScale lam p.1)) ^ 4))
   else 0
 
 theorem measurable_elecNeutralWeight (lam ℓ γ c : ℝ) :
@@ -89,10 +88,10 @@ theorem measurable_elecSameSignWeight (lam ℓ γ c : ℝ) :
     measurableSet_le (by fun_prop) (by fun_prop)
   have hd : Measurable fun p : ℂ × ℝ => displacementScale lam p.1 :=
     (continuous_displacementScale lam).measurable.comp measurable_fst
+  have hg := measurable_smearedKernel lam
   refine Measurable.ite hs ?_ measurable_const
-  refine ENNReal.measurable_ofReal.comp (Measurable.mul ?_ (by fun_prop))
-  refine Measurable.div (by fun_prop) ?_
-  exact ((measurable_snd.min measurable_const).max hd).pow_const 4
+  refine ENNReal.measurable_ofReal.comp ?_
+  fun_prop
 
 /-- `(a/r)² e^{2 g_λ(u) - |u|²/ℓ} ≤ e^{2 C₀} / r²` for `a ≤ |u| ∨ λ`. -/
 theorem sq_div_mul_exp_le {C₀ lam ℓ r a : ℝ}
@@ -115,17 +114,10 @@ theorem sq_div_mul_exp_le {C₀ lam ℓ r a : ℝ}
     _ = Real.exp (2 * C₀) / r ^ 2 := by
         field_simp
 
-/-- The bound `256 π c + 256 c · 2π (½ log ℓ + log (1/γ) + ½)` on the radial integral of a
-same-sign pair in the electric moment (source l. 2029--2030: the same-sign mass is at most
-`C'S`), `ℓ = |log λ|`. -/
-noncomputable def elecSameSignMass (lam γ c : ℝ) : ℝ :=
-  256 * Real.pi * c +
-    256 * c * (2 * Real.pi * ((1 / 2) * Real.log |Real.log lam| + Real.log (1 / γ) + 1 / 2))
-
-/-- **The neutral pair** (source l. 2025--2028, 2032, "splitting at `2λ` and `4γ`" bounds the
-neutral mass by `J_λ(1/ℓ) + C'S`): for every `c ≥ 0` there are `K, C ≥ 0` such that
+/-- **The neutral pair** (source l. 1912, "splitting the radial integrals at `2λ` and `4γ`
+gives masses at most `B + CS` for neutral pairs"): for every `c ≥ 0` there are `K, C ≥ 0` such that
 for `0 < λ ≤ e⁻¹`, `2λ ≤ γ ≤ 1` and `ρ ≥ λ`,
-`∫ elecNeutralWeight ≤ 2π (ℓ + ½ log ℓ) + K · 2π (½ log ℓ + log (1/γ) + ½) + C`.
+`∫ elecNeutralWeight ≤ J_λ(1/ℓ) + K J_λ(1/ℓ; γ) + C`.
 On `|u| ≤ 4γ` the correction `(a/γ)² ∧ 1` is at most `(a/γ)²`, which integrates against
 `e^{2 g_λ}` to `O(1)`; on `|u| > 4γ` it is at most `1` and the Gaussian tail beyond `γ` is
 `2π (½ log ℓ + log (1/γ) + O(1))`. -/
@@ -133,10 +125,7 @@ theorem exists_lintegral_elecNeutralWeight_le {c : ℝ} (hc : 0 ≤ c) :
     ∃ K C : ℝ, 0 ≤ K ∧ 0 ≤ C ∧ ∀ lam γ ρ : ℝ, 0 < lam → lam ≤ Real.exp (-1) → 2 * lam ≤ γ →
       γ ≤ 1 → lam ≤ ρ →
         ∫⁻ u, elecNeutralWeight lam |Real.log lam| γ c (u, ρ) ≤
-          ENNReal.ofReal (2 * Real.pi * (|Real.log lam| + (1 / 2) * Real.log |Real.log lam|) +
-            K * (2 * Real.pi * ((1 / 2) * Real.log |Real.log lam| + Real.log (1 / γ) + 1 / 2)) +
-            C) := by
-  obtain ⟨CB, hCB⟩ := exists_abs_gaussianMass_sub_le
+          ENNReal.ofReal (criticalCycleMass lam + K * criticalTailMass lam γ + C) := by
   obtain ⟨C₀, hC₀⟩ := exists_abs_smearedKernel_sub_logKernel_le
   set Kc : ℝ := Real.exp c - 1 with hKc
   have hKc0 : 0 ≤ Kc := by have := Real.one_le_exp hc; rw [hKc]; linarith
@@ -146,8 +135,7 @@ theorem exists_lintegral_elecNeutralWeight_le {c : ℝ} (hc : 0 ≤ c) :
   set K₃ : ℝ := K * Real.exp (2 * C₀) with hK₃
   have hK₁0 : 0 ≤ K₁ := by positivity
   have hK₃0 : 0 ≤ K₃ := by positivity
-  have hCB0 : 0 ≤ CB := (abs_nonneg _).trans (hCB (Real.exp (-1)) (Real.exp_pos _) le_rfl)
-  refine ⟨K, CB + 16 * Real.pi * K₁ + 16 * Real.pi * K₃, hK0, by positivity,
+  refine ⟨K, 16 * Real.pi * K₁ + 16 * Real.pi * K₃, hK0, by positivity,
     fun lam γ ρ hlam hle hγ hγ1 hρ => ?_⟩
   obtain ⟨h1, -⟩ := two_mul_le_sqrt_neg_log hlam hle
   have hab : |Real.log lam| = -Real.log lam := abs_of_neg (by linarith)
@@ -273,180 +261,49 @@ theorem exists_lintegral_elecNeutralWeight_le {c : ℝ} (hc : 0 ≤ c) :
       measurable_const.indicator Metric.isClosed_closedBall.measurableSet
     rw [lintegral_add_left (by exact (hm1.add hm2).add hm3),
       lintegral_add_left (by exact hm1.add hm2), lintegral_add_left (by exact hm1)]
-  have hB : ∫⁻ u, ENNReal.ofReal (X u) ≤ ENNReal.ofReal
-      (2 * Real.pi * (ℓ + (1 / 2) * Real.log ℓ) + CB) := by
-    rw [← ofReal_integral_eq_lintegral_ofReal (integrable_gaussianMass hlam hle)
-      (ae_of_all _ fun u => (Real.exp_pos _).le)]
-    refine ENNReal.ofReal_le_ofReal ?_
-    have := (abs_le.1 (hCB lam hlam hle)).2
-    linarith
-  have hBR : ∫⁻ u, ENNReal.ofReal (K * T u) ≤ ENNReal.ofReal
-      (K * (2 * Real.pi * ((1 / 2) * Real.log ℓ + Real.log (1 / γ) + 1 / 2))) := by
-    have hTi : Integrable T := integrable_tail_gaussianMass hlam hle
-    rw [← ofReal_integral_eq_lintegral_ofReal (hTi.const_mul _)
-      (ae_of_all _ fun u => mul_nonneg hK0 (hTnn u))]
-    refine ENNReal.ofReal_le_ofReal ?_
-    rw [integral_const_mul]
-    exact mul_le_mul_of_nonneg_left (integral_tail_gaussianMass_le hlam hle hγ hγ1) hK0
+  have hB : ∫⁻ u, ENNReal.ofReal (X u) = ENNReal.ofReal (criticalCycleMass lam) :=
+    (ofReal_criticalCycleMass hlam hle).symm
+  have hBR : ∫⁻ u, ENNReal.ofReal (K * T u) =
+      ENNReal.ofReal (K * criticalTailMass lam γ) := by
+    rw [← ofReal_integral_eq_lintegral_ofReal
+      ((integrable_tail_gaussianMass hlam hle).const_mul _) (ae_of_all _ fun u =>
+        mul_nonneg hK0 (hTnn u)), integral_const_mul]
+    rfl
   have hball1 := lintegral_indicator_closedBall_div_sq hρ0 hK₁0
   have hball3 := lintegral_indicator_closedBall_div_sq hγ0 hK₃0
   refine hint.trans ?_
   rw [hball1, hball3]
-  have hlogs : 0 ≤ (1 / 2) * Real.log ℓ + Real.log (1 / γ) + 1 / 2 := by positivity
-  calc (∫⁻ u, ENNReal.ofReal (X u)) + (∫⁻ u, ENNReal.ofReal (K * T u)) +
-        ENNReal.ofReal (16 * Real.pi * K₁) + ENNReal.ofReal (16 * Real.pi * K₃)
-      ≤ ENNReal.ofReal (2 * Real.pi * (ℓ + (1 / 2) * Real.log ℓ) + CB) +
-          ENNReal.ofReal (K * (2 * Real.pi * ((1 / 2) * Real.log ℓ + Real.log (1 / γ) + 1 / 2))) +
-          ENNReal.ofReal (16 * Real.pi * K₁) + ENNReal.ofReal (16 * Real.pi * K₃) := by
-        gcongr
-    _ = _ := by
-        rw [← ENNReal.ofReal_add (by positivity) (by positivity),
-          ← ENNReal.ofReal_add (by positivity) (by positivity),
-          ← ENNReal.ofReal_add (by positivity) (by positivity)]
-        congr 1
-        ring
+  rw [hB, hBR]
+  have hj := (criticalCycleMass_pos hlam hle).le
+  have ht := criticalTailMass_nonneg lam γ
+  rw [← ENNReal.ofReal_add (by positivity) (by positivity),
+    ← ENNReal.ofReal_add (by positivity) (by positivity),
+    ← ENNReal.ofReal_add (by positivity) (by positivity)]
+  exact le_of_eq (congrArg ENNReal.ofReal (by ring))
 
-/-- **The same-sign pair** (source l. 2029--2030, 2033--2036: the same-sign mass is at most
-`C'S`): for `0 < λ ≤ e⁻¹`, `2λ ≤ γ ≤ 1`, `ρ ≥ λ` and `c ≥ 0`,
-`∫ elecSameSignWeight ≤ 256 π c + 256 c · 2π (½ log ℓ + log (1/γ) + ½)`. On `|u| ≤ 4γ` (and
-`|u| ≤ 4ρ`) the weight is at most `16 c / (ρ ∧ γ)²`; on `|u| > 4γ` it is at most
-`256 c e^{-|u|²/ℓ} / |u|² = 256 c e^{2 g_λ(u) - |u|²/ℓ}`, whose integral is the Gaussian tail beyond
-`γ`. -/
-theorem lintegral_elecSameSignWeight_le {lam γ ρ c : ℝ} (hlam : 0 < lam)
-    (hle : lam ≤ Real.exp (-1)) (hγ : 2 * lam ≤ γ) (hγ1 : γ ≤ 1) (hρ : lam ≤ ρ) (hc : 0 ≤ c) :
-    ∫⁻ u, elecSameSignWeight lam |Real.log lam| γ c (u, ρ) ≤
-      ENNReal.ofReal (elecSameSignMass lam γ c) := by
-  obtain ⟨h1, -⟩ := two_mul_le_sqrt_neg_log hlam hle
-  have hab : |Real.log lam| = -Real.log lam := abs_of_neg (by linarith)
-  have hρ0 : 0 < ρ := hlam.trans_le hρ
-  have hγ0 : 0 < γ := by linarith
-  set ℓ := |Real.log lam| with hℓdef
-  have hℓ1 : 1 ≤ ℓ := by rw [hab]; exact h1
-  have hℓ0 : 0 < ℓ := by linarith
-  have hlogℓ : 0 ≤ Real.log ℓ := Real.log_nonneg hℓ1
-  have hlogγ : 0 ≤ Real.log (1 / γ) := Real.log_nonneg (by rw [le_div_iff₀ hγ0]; linarith)
-  set m := min ρ γ with hmdef
-  have hm0 : 0 < m := lt_min hρ0 hγ0
-  have hlm : lam ≤ m := le_min hρ (by linarith)
-  set X : ℂ → ℝ := fun u => Real.exp (2 * smearedKernel lam u - ‖u‖ ^ 2 / ℓ) with hX
-  set T : ℂ → ℝ := fun u => if γ < ‖u‖ then X u else 0 with hT
-  have hXm : Measurable X := by
-    have := measurable_smearedKernel lam
-    rw [hX]
-    fun_prop
-  have hTm : Measurable T :=
-    Measurable.ite (measurableSet_lt measurable_const measurable_norm) hXm measurable_const
-  have hTnn : ∀ u, 0 ≤ T u := fun u => by
-    rw [hT]
-    dsimp only
-    by_cases hRu : γ < ‖u‖
-    · rw [ite_eq_left hRu]; exact (Real.exp_pos _).le
-    · rw [ite_eq_right hRu]
-  -- pointwise bound
-  have hpt : ∀ u : ℂ, elecSameSignWeight lam ℓ γ c (u, ρ) ≤
-      (Metric.closedBall (0 : ℂ) (4 * m)).indicator (fun _ => ENNReal.ofReal (16 * c / m ^ 2)) u +
-        ENNReal.ofReal (256 * c * T u) := by
-    intro u
-    unfold elecSameSignWeight
-    dsimp only
-    by_cases hu : ‖u‖ ≤ 4 * ρ
-    · rw [ite_eq_left hu]
-      set a := displacementScale lam u with ha
-      set M := max (min ρ γ) a with hM
-      have hE1 : Real.exp (-(‖u‖ ^ 2 / ℓ)) ≤ 1 := Real.exp_le_one_iff.2 (by
-        have : 0 ≤ ‖u‖ ^ 2 / ℓ := by positivity
-        linarith)
-      have hE0 := Real.exp_pos (-(‖u‖ ^ 2 / ℓ))
-      by_cases hu4 : ‖u‖ ≤ 4 * γ
-      · -- the core `|u| ≤ 4 (ρ ∧ γ)`
-        have hum : ‖u‖ ≤ 4 * m := by
-          rcases le_total ρ γ with h | h
-          · rw [hmdef, min_eq_left h]; exact hu
-          · rw [hmdef, min_eq_right h]; exact hu4
-        have hmem : u ∈ Metric.closedBall (0 : ℂ) (4 * m) := by simpa using hum
-        rw [Set.indicator_of_mem hmem]
-        refine le_add_right (ENNReal.ofReal_le_ofReal ?_)
-        have hmx : max ‖u‖ lam ≤ 4 * m := max_le hum (by linarith)
-        have hmx0 : 0 ≤ max ‖u‖ lam := (norm_nonneg u).trans (le_max_left _ _)
-        have hmM : m ≤ M := le_max_left _ _
-        calc c * max ‖u‖ lam ^ 2 / M ^ 4 * Real.exp (-(‖u‖ ^ 2 / ℓ))
-            ≤ c * max ‖u‖ lam ^ 2 / M ^ 4 * 1 := by
-              gcongr
-          _ ≤ c * (4 * m) ^ 2 / m ^ 4 := by
-              rw [mul_one]
-              gcongr
-          _ = 16 * c / m ^ 2 := by
-              field_simp
-              ring
-      · -- outside `4γ`: `a = |u|/4`
-        have hγu : 4 * γ < ‖u‖ := lt_of_not_ge hu4
-        have hu0 : 0 < ‖u‖ := by linarith
-        have haeq : a = ‖u‖ / 4 := by
-          rw [ha, displacementScale]; exact max_eq_left (by linarith)
-        have hMa : ‖u‖ / 4 ≤ M := haeq ▸ le_max_right _ _
-        have hmaxu : max ‖u‖ lam = ‖u‖ := max_eq_left (by linarith)
-        have hTu : T u = X u := by rw [hT]; dsimp only; rw [ite_eq_left (by linarith)]
-        have hXu : X u = Real.exp (-(‖u‖ ^ 2 / ℓ)) / ‖u‖ ^ 2 := by
-          rw [hX]
-          dsimp only
-          rw [smearedKernel_eq_logKernel hlam (by linarith), logKernel,
-            show 2 * -Real.log ‖u‖ - ‖u‖ ^ 2 / ℓ = -(2 * Real.log ‖u‖) + -(‖u‖ ^ 2 / ℓ) by ring,
-            Real.exp_add, Real.exp_neg, show (2 : ℝ) * Real.log ‖u‖ = ((2 : ℕ) : ℝ) *
-              Real.log ‖u‖ by norm_num, ← Real.log_pow, Real.exp_log (by positivity)]
-          field_simp
-        refine le_add_left (ENNReal.ofReal_le_ofReal ?_)
-        rw [hTu, hXu, hmaxu]
-        have hM0 : 0 < M := by linarith
-        calc c * ‖u‖ ^ 2 / M ^ 4 * Real.exp (-(‖u‖ ^ 2 / ℓ))
-            ≤ c * ‖u‖ ^ 2 / (‖u‖ / 4) ^ 4 * Real.exp (-(‖u‖ ^ 2 / ℓ)) := by
-              gcongr
-          _ = 256 * c * (Real.exp (-(‖u‖ ^ 2 / ℓ)) / ‖u‖ ^ 2) := by
-              field_simp
-              ring
-    · rw [ite_eq_right hu]
-      exact zero_le
-  -- integrate
-  have hm1 : Measurable fun u => (Metric.closedBall (0 : ℂ) (4 * m)).indicator
-      (fun _ => ENNReal.ofReal (16 * c / m ^ 2)) u :=
-    measurable_const.indicator Metric.isClosed_closedBall.measurableSet
-  refine (lintegral_mono hpt).trans ?_
-  rw [lintegral_add_left hm1, lintegral_indicator_closedBall_div_sq hm0 (by positivity)]
-  have hBR : ∫⁻ u, ENNReal.ofReal (256 * c * T u) ≤ ENNReal.ofReal
-      (256 * c * (2 * Real.pi * ((1 / 2) * Real.log ℓ + Real.log (1 / γ) + 1 / 2))) := by
-    have hTi : Integrable T := integrable_tail_gaussianMass hlam hle
-    rw [← ofReal_integral_eq_lintegral_ofReal (hTi.const_mul _)
-      (ae_of_all _ fun u => mul_nonneg (by positivity) (hTnn u))]
-    refine ENNReal.ofReal_le_ofReal ?_
-    rw [integral_const_mul]
-    exact mul_le_mul_of_nonneg_left (integral_tail_gaussianMass_le hlam hle hγ hγ1) (by positivity)
-  calc ENNReal.ofReal (16 * Real.pi * (16 * c)) + ∫⁻ u, ENNReal.ofReal (256 * c * T u)
-      ≤ ENNReal.ofReal (16 * Real.pi * (16 * c)) + ENNReal.ofReal
-          (256 * c * (2 * Real.pi * ((1 / 2) * Real.log ℓ + Real.log (1 / γ) + 1 / 2))) := by
-        gcongr
-    _ = _ := by
-        rw [← ENNReal.ofReal_add (by positivity) (by positivity), elecSameSignMass, ← hℓdef]
-        congr 1
-        ring
-
-/-- The same-sign mass is positive. -/
-theorem elecSameSignMass_pos {lam γ c : ℝ} (hc : 0 < c) (hℓ : 1 ≤ |Real.log lam|) (hγ0 : 0 < γ)
-    (hγ1 : γ ≤ 1) : 0 < elecSameSignMass lam γ c := by
-  have hlogℓ : 0 ≤ Real.log |Real.log lam| := Real.log_nonneg hℓ
-  have hlogγ : 0 ≤ Real.log (1 / γ) := Real.log_nonneg (by rw [le_div_iff₀ hγ0]; linarith only [hγ1])
-  unfold elecSameSignMass
-  positivity
-
-/-- The same-sign pair bound: `Mₛ ≤ 512 π c S` with `S = 1 + log ℓ + log (1/γ)` (source
-l. 2029--2030, "`C'S`"). -/
-theorem elecSameSignMass_le {lam γ c : ℝ} (hc : 0 ≤ c) (hℓ : 1 ≤ |Real.log lam|) (hγ0 : 0 < γ)
-    (hγ1 : γ ≤ 1) :
-    elecSameSignMass lam γ c ≤
-      512 * Real.pi * c * (1 + Real.log |Real.log lam| + Real.log (1 / γ)) := by
-  have hlogℓ : 0 ≤ Real.log |Real.log lam| := Real.log_nonneg hℓ
-  have hlogγ : 0 ≤ Real.log (1 / γ) := Real.log_nonneg (by rw [le_div_iff₀ hγ0]; linarith)
-  unfold elecSameSignMass
-  have : 0 ≤ Real.pi * c * Real.log |Real.log lam| := by positivity
-  linarith only [this]
+/-- **The same-sign pair** in the electric moment. The literal radial weight is
+bounded by splitting the fourth-power cutoff into its `ρ` and `γ` contributions. -/
+theorem exists_lintegral_elecSameSignWeight_le :
+    ∃ C : ℝ, 0 < C ∧ ∀ lam γ ρ c : ℝ, 0 < lam → lam ≤ Real.exp (-1) →
+      2 * lam ≤ γ → γ ≤ 1 → lam ≤ ρ → 0 ≤ c →
+      ∫⁻ u, elecSameSignWeight lam |Real.log lam| γ c (u, ρ) ≤
+        ENNReal.ofReal (C * c * (1 + Real.log |Real.log lam| + Real.log (1 / γ))) := by
+  obtain ⟨C, hC, hsplit⟩ := exists_lintegral_critical_sameSign_split_le
+  refine ⟨C, hC, fun lam γ ρ c hlam hle hγ hγ1 hρ hc => ?_⟩
+  have hind : (fun u => elecSameSignWeight lam |Real.log lam| γ c (u, ρ)) =
+      (Metric.closedBall (0 : ℂ) (4 * ρ)).indicator (fun u =>
+        ENNReal.ofReal c * ENNReal.ofReal
+          (Real.exp (2 * smearedKernel lam u - ‖u‖ ^ 2 / |Real.log lam|) *
+            (displacementScale lam u / max (min ρ γ) (displacementScale lam u)) ^ 4)) := by
+    funext u
+    simp only [elecSameSignWeight, ENNReal.ofReal_mul hc,
+      Metric.mem_closedBall, dist_zero_right, Set.indicator]
+  rw [hind, lintegral_indicator Metric.isClosed_closedBall.measurableSet,
+    lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+  refine (mul_le_mul_right (hsplit lam γ ρ hlam hle hγ hγ1 hρ) _).trans_eq ?_
+  rw [← ENNReal.ofReal_mul hc]
+  congr 1
+  ring
 
 end Weights
 

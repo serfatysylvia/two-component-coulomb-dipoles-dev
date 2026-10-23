@@ -11,7 +11,7 @@ public import TwoComponentCoulomb.Frozen.NearestNeighbor
 # Frozen: `TwoComponentCoulomb.secondNearestNeighbor`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 367–368.
+Source: l. 370–371.
 -/
 
 @[expose] public section
@@ -20,7 +20,7 @@ namespace TwoComponentCoulomb
 
 /-- `φ₂(i)`: the nearest neighbour of `z_i` among the points other than `z_i` and
 `z_{φ₁(i)}`, ties broken by the smallest index in the source numbering `x₁, …, x_N, y₁, …,
-y_N` (source l. 367–368, ruling R4). It needs at least three points, hence `2 ≤ N`. -/
+y_N` (source l. 370–371, ruling R4). It needs at least three points, hence `2 ≤ N`. -/
 noncomputable def secondNearestNeighbor {N : ℕ} (hN : 2 ≤ N) (Z : Fin N ⊕ Fin N → ℂ)
     (i : Fin N ⊕ Fin N) : Fin N ⊕ Fin N :=
   finSumFinEquiv.symm <|

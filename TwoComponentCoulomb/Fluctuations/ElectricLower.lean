@@ -21,20 +21,20 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The energy bounds the electric energy of the grown discs (Theorem 2, Step 2)
 
-Source: l. 2062–2090 (the case `β > 2` of Step 2; the inequalities below
+Source: l. 1941–1968 (the case `β > 2` of Step 2; the inequalities below
 hold for every configuration and do not involve `β`). Write `I^pair` for the indices in an
 isolated pair (`IsIsolatedPair`), `I^dip` for the indices in an isolated dipole
 (`IsIsolatedDipole`), `K = numComponents Z`, `φ₂ = secondNearestNeighbor hN Z`, and
 `αᵢ = alphaRadius hN λ γ Z i`.
 
-* `exists_energy_ge_electric_alphaRadius` : (l. 2062–2078) arguing as in the proof of
+* `exists_energy_ge_electric_alphaRadius` : (l. 1941–1956) arguing as in the proof of
   Corollary 2.3, for `2λ ≤ γ ≤ 1` and generic `Z`,
   `F_λ ≥ (1/4π) ∫ |∇h_α|² - ½ Σᵢ g_λ(zᵢ - z_{φ₁ i})
     + Σ_{i ∈ I^pair ∖ I^dip, φ₂ i, φ₂ (φ₁ i) ∈ I^pair} (log (αᵢ / r̃₁(zᵢ)) - C)
     - C Σ_{i ∈ I^dip, φ₂ i, φ₂ (φ₁ i) ∈ I^pair} [(r̃₁ / r̃₂)² + ((r̃₁ / γ)² ∧ 1)] - C (N - K)`.
-* `linearA1`, `linearA2`, `linearA3` : the quantities `A₁`, `A₂`, `A₃` of l. 2084–2089.
-* `exists_integral_norm_sq_electricField_le_linearA` : (l. 2079–2090)
-  `(1/4π) ∫ |∇h_α|² ≤ A₁ + C (A₂ + A₃)`, using Remark 2.1 (a point is the second nearest
+* `linearA1`, `linearA2`, `linearA3` : the quantities `A₁`, `A₂`, `A₃` of l. 1962–1967.
+* `exists_integral_norm_sq_electricField_le_linearA` : (l. 1957–1968)
+  `(1/4π) ∫ |∇h_α|² ≤ A₁ + C (A₂ + A₃)`, using Lemma 2.1 (a point is the second nearest
   neighbour of at most twelve points), `|I^pair ∖ I^dip| ≤ 2N - |I^dip|` and `|I^dip| / 2 ≤ K`.
 
 The constants are absolute.
@@ -54,7 +54,7 @@ section Termwise
 
 open scoped Classical in
 /-- The termwise comparison of the proof of Corollary 2.3, repeated with the radii `α`
-(source l. 2062–2078). The left-hand side is the term of index `i` of the lower bound of
+(source l. 1941–1956). The left-hand side is the term of index `i` of the lower bound of
 `exists_energy_ge_electric_alphaRadius` (the term `C' (N - K)` and the electric energy aside),
 minus the cost `c` charged to an exceptional index (`i ∉ I^pair`, or `φ₂ i ∉ I^pair`, or
 `φ₂ (φ₁ i) ∉ I^pair`); the right-hand side is the term of index `i` of the lower bound of
@@ -186,13 +186,13 @@ private theorem termwise_le_alphaRadius (hN : 2 ≤ N) {Cg c C' : ℝ}
 
 end Termwise
 
-/-! ### The energy lower bound with the electric energy (source l. 2062–2078) -/
+/-! ### The energy lower bound with the electric energy (source l. 1941–1956) -/
 
 section Lower
 
 open scoped Classical in
 /-- **The energy bounds the electric energy of the grown discs** (Theorem 2, Step 2, source
-l. 2062–2078, the form of Corollary 2.3 with the radii `α` and the electric energy kept): there is
+l. 1941–1956, the form of Corollary 2.3 with the radii `α` and the electric energy kept): there is
 an absolute constant `C` such that for `N ≥ 2`, `0 < λ`, `2λ ≤ γ ≤ 1` and generic `Z`,
 `F_λ ≥ (1/4π) ∫ |∇h_α|² - ½ Σᵢ g_λ(zᵢ - z_{φ₁ i})
   + Σ_{i ∈ I^pair ∖ I^dip, φ₂ i, φ₂ (φ₁ i) ∈ I^pair} (log (αᵢ / r̃₁(zᵢ)) - C)
@@ -249,12 +249,12 @@ theorem exists_energy_ge_electric_alphaRadius :
 
 end Lower
 
-/-! ### The decomposition `(1/4π) ∫ |∇h_α|² ≤ A₁ + C (A₂ + A₃)` (source l. 2079–2090) -/
+/-! ### The decomposition `(1/4π) ∫ |∇h_α|² ≤ A₁ + C (A₂ + A₃)` (source l. 1957–1968) -/
 
 section Decomposition
 
 open scoped Classical in
-/-- `A₁` of Theorem 2, Step 2 (source l. 2085–2086), with the constant `C` of the energy lower
+/-- `A₁` of Theorem 2, Step 2 (source l. 1963–1964), with the constant `C` of the energy lower
 bound as a parameter:
 `A₁ = F_λ(Z) + ½ Σᵢ g_λ(zᵢ - z_{φ₁ i})
   - Σ_{i ∈ I^pair ∖ I^dip, φ₂ i ∈ I^pair, φ₂ (φ₁ i) ∈ I^pair} (log (αᵢ / r̃₁(zᵢ)) - C)`. -/
@@ -266,7 +266,7 @@ noncomputable def linearA1 (hN : 2 ≤ N) (lam γ C : ℝ) (Z : Fin N ⊕ Fin N 
       (Real.log (alphaRadius hN lam γ Z i / firstNeighborRadius lam Z i) - C)
 
 open scoped Classical in
-/-- `A₂` of Theorem 2, Step 2 (source l. 2088):
+/-- `A₂` of Theorem 2, Step 2 (source l. 1966):
 `A₂ = Σ_{i ∈ I^dip, φ₂ i ∈ I^dip, φ₂ (φ₁ i) ∈ I^pair} (r̃₁(zᵢ) / r̃₂(zᵢ))² + (N - ½ |I^dip|)`. -/
 noncomputable def linearA2 (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ) : ℝ :=
   ∑ i ∈ Finset.univ.filter (fun i => IsIsolatedDipole Z i ∧
@@ -276,7 +276,7 @@ noncomputable def linearA2 (hN : 2 ≤ N) (lam : ℝ) (Z : Fin N ⊕ Fin N → �
   ((N : ℝ) - (1 / 2) * ((Finset.univ.filter (IsIsolatedDipole Z)).card : ℝ))
 
 open scoped Classical in
-/-- `A₃` of Theorem 2, Step 2 (source l. 2089):
+/-- `A₃` of Theorem 2, Step 2 (source l. 1967):
 `A₃ = Σ_{i ∈ I^dip, φ₂ i ∈ I^dip, φ₂ (φ₁ i) ∈ I^pair} ((r̃₁(zᵢ) / γ)² ∧ 1)`. -/
 noncomputable def linearA3 (hN : 2 ≤ N) (lam γ : ℝ) (Z : Fin N ⊕ Fin N → ℂ) : ℝ :=
   ∑ i ∈ Finset.univ.filter (fun i => IsIsolatedDipole Z i ∧
@@ -303,7 +303,7 @@ theorem sub_numComponents_le_sub_half_card_isIsolatedDipole (Z : Fin N ⊕ Fin N
   constructor <;> linarith
 
 open scoped Classical in
-/-- **Remark 2.1 in the decomposition** (source l. 2079): the indices `i ∈ I^dip` with
+/-- **Lemma 2.1 in the decomposition** (source l. 1957): the indices `i ∈ I^dip` with
 `φ₂ i ∈ I^pair ∖ I^dip` are at most `12 |I^pair ∖ I^dip| ≤ 12 (2N - |I^dip|)`, and their summands
 `(r̃₁ / r̃₂)² + ((r̃₁ / γ)² ∧ 1)` are at most `2`. -/
 theorem sum_isIsolatedDipole_le_sum_add (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < lam) (γ : ℝ)
@@ -396,7 +396,7 @@ theorem linearA1_le_linearA1 (hN : 2 ≤ N) (lam γ : ℝ) {C C' : ℝ} (h : C �
     fun i _ => by linarith
   linarith
 
-/-- **The decomposition of the electric energy** (Theorem 2, Step 2, source l. 2079–2090): there is
+/-- **The decomposition of the electric energy** (Theorem 2, Step 2, source l. 1957–1968): there is
 an absolute constant `C` such that for `N ≥ 2`, `0 < λ`, `2λ ≤ γ ≤ 1` and generic `Z`,
 `(1/4π) ∫ |∇h_α|² ≤ A₁ + C (A₂ + A₃)`, where `A₁ = linearA1 hN λ γ C Z` carries the same
 constant. -/

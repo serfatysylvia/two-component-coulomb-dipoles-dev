@@ -14,8 +14,8 @@ import TwoComponentCoulomb.UpperBound.UpperRate
 /-!
 # Theorem 2, Steps 2--4 and the moment bound
 
-Source: proof of Theorem 2 (`prop:linear`), Steps 2--4 (l. 1995--2180) and the moment bound of
-Step 6 (l. 2212--2219): for the radii `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` there are `c, C > 0` and `λ₁ > 0`
+Source: proof of Theorem 2 (`prop:linear`), Steps 2--4 (l. 1872–2058) and the moment bound of
+Step 6 (l. 2086–2093): for the radii `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` there are `c, C > 0` and `λ₁ > 0`
 such that, for `N ≥ 2`, `0 < λ < λ₁` and `2λ ≤ γ ≤ 1`,
 
 `log 𝔼_ℙ[exp (c ∫ |∇h_α|²)] ≤ C N (φ_β(γ) + ω_λ) + C log (N + 1)`,
@@ -28,9 +28,9 @@ of the assembly `theorem_2_of_moment_rate` at `ω = errorRate β hβ`.
   (`momentBound_of_two_lt_rate`, `Fluctuations/MomentCombine.lean`) at `ω = errorRate β`, which
   satisfies the rate hypotheses of the upper bound (`upperRateHyp_errorRate`,
   `UpperBound/UpperRate.lean`). The lower bound of Proposition 4.1 used in the division by the
-  partition function has, for `β > 2`, the error rate of Proposition 3.9, which these hypotheses
-  bound by `ω_λ` (source l. 1905--1911).
-* `β = 2`: (eq:critical electric) with `ℓ^{-1/5} = ω_λ` (source l. 2023--2060,
+  partition function has, for `β > 2`, the error rate of Proposition 3.8, which these hypotheses
+  bound by `ω_λ` .
+* `β = 2`: (eq:critical electric) with `ℓ^{-1/5} = ω_λ` (source l. 1903–1938,
   `exists_momentBound_two`, `Fluctuations/CriticalElectric.lean`), in the shape of
   `MomentBoundRate` (`momentBound_two`).
 
@@ -46,14 +46,14 @@ of the assembly `theorem_2_of_moment_rate` at `ω = errorRate β hβ`.
 namespace TwoComponentCoulomb
 
 /-- **The moment bound for `β > 2`** (Theorem 2, Steps 2--4 and Step 6; source
-l. 1995--2219): `MomentBoundRate` at `ω_λ = errorRate β λ`. It is `momentBound_of_two_lt_rate`
+l. 1872–2093): `MomentBoundRate` at `ω_λ = errorRate β λ`. It is `momentBound_of_two_lt_rate`
 at `ω = errorRate β`, which satisfies `UpperRateHyp` (`upperRateHyp_errorRate`). -/
 theorem momentBound_of_two_lt {β : ℝ} (hβ : 2 < β) :
     MomentBoundRate β hβ.le (errorRate β hβ.le) :=
   momentBound_of_two_lt_rate hβ _ (upperRateHyp_errorRate β hβ)
 
 /-- **The moment bound at `β = 2`** (Theorem 2, Step 2 at `β = 2`, (eq:critical
-electric), source l. 2023--2060, with `ℓ^{-1/5} = ω_λ`): `MomentBoundRate` at
+electric), source l. 1903–1938, with `ℓ^{-1/5} = ω_λ`): `MomentBoundRate` at
 `ω_λ = errorRate 2 λ`. The radii are `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` (`alphaRadius`) for `N ≥ 2`;
 `MomentBoundRate` quantifies over all `N`, and its three items only concern `N ≥ 2`, so the radii
 for `N < 2` are irrelevant (they are taken to be `γ`). The bounds are those of
@@ -75,7 +75,7 @@ theorem momentBound_two : MomentBoundRate 2 le_rfl (errorRate 2 le_rfl) := by
     simp only [hα N hN]
     exact hmom N hN lam γ hlam hlam1 hγ hγ1
 
-/-- **The moment bound of Theorem 2, Steps 2--4** (source l. 1995--2219): for every
+/-- **The moment bound of Theorem 2, Steps 2--4** (source l. 1872–2093): for every
 `β ≥ 2`, `MomentBoundRate β hβ (errorRate β hβ)`, i.e. there are radii `0 < αᵢ ≤ γ ∨ r̃₁(zᵢ)`
 and `c, C, λ₁ > 0` such that, for `N ≥ 2`, `0 < λ < λ₁` and `2λ ≤ γ ≤ 1`,
 `𝔼_ℙ[exp (c ∫ |∇h_α|²)] ≤ exp (C N (φ_β(γ) + ω_λ) + C log (N + 1))` with

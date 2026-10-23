@@ -17,18 +17,20 @@ import TwoComponentCoulomb.Potential.SmearedCharge
 # The electric energy of a neutral configuration of disc charges
 
 For a neutral configuration (`Σᵢ dᵢ = 0`) of disc charges with positive radii the Dirichlet energy
-of the electric potential `h_α` is finite and (source l. 198-200, 503-509, 1973)
+of the electric potential `h_α` is finite and (source l. 228–246, 499–507, 1842–1866)
 
 `(1 / 2π) ∫ |∇h_α|² = Σᵢⱼ dᵢ dⱼ P_{ij}`,   `P_{ij} = ∬ g(x - y) dδ_{zᵢ}^{(αᵢ)}(x) dδ_{zⱼ}^{(αⱼ)}(y)`.
 
 * `integral_norm_sq_electricField` : the energy identity. It is obtained from the Green identity
   `integral_fderiv_apply_electricField` applied to `ξ = χ_R h_α` with a smooth cutoff `χ_R`, and
   letting `R → ∞` using the decay `exists_decay_electric_nonneg` (the cross term is `O(R⁻²)`).
-* `sum_pairInteraction_nonneg` : positivity of the pair energy of a neutral configuration.
 * `abs_sum_mul_integral_smearedCharge_le` : the fluctuation bound of Theorem 2, Step 1,
   `|Σᵢ dᵢ ∫ ξ dδ_{zᵢ}^{(αᵢ)}| ≤ (2π)⁻¹ ‖∇ξ‖_{L²} ‖∇h_α‖_{L²}`.
 * `energy_eq_integral_norm_sq_electricField` : eq. (eq:rewrF),
   `F_λ = (1 / 4π) ∫ |∇h_λ|² - N (g(λ) + κ)`.
+
+The full polarized Lemma 2.4 is proved in `Potential/ChangeRadii.lean` by testing the
+Poisson equations with the compactly supported potential difference.
 -/
 
 @[expose] public section
@@ -272,14 +274,6 @@ theorem integral_norm_sq_electricField (hα : ∀ i, 0 < α i) (hn : ∑ i, d i 
   rw [add_zero] at hsum
   exact tendsto_nhds_unique hsum (tendsto_const_nhds.congr' (hid.mono fun R hR => hR.symm))
 
-/-- **Positivity of the pair energy of a neutral configuration** (Lemma 2.4). -/
-theorem sum_pairInteraction_nonneg (hα : ∀ i, 0 < α i) (hn : ∑ i, d i = 0) :
-    0 ≤ ∑ i, ∑ j, d i * d j * pairInteraction (z i) (z j) (α i) (α j) := by
-  have h := integral_norm_sq_electricField (d := d) (z := z) hα hn
-  have h0 : 0 ≤ ∫ x, ‖electricField d z α x‖ ^ 2 := integral_nonneg fun x => sq_nonneg _
-  rw [h] at h0
-  exact nonneg_of_mul_nonneg_right h0 (by positivity)
-
 /-! ### The fluctuation bound -/
 
 /-- The Cauchy-Schwarz inequality for the integral of a product of nonnegative square-integrable
@@ -300,7 +294,7 @@ theorem integral_mul_le_sqrt_mul_sqrt {f g : ℂ → ℝ} (hf0 : ∀ x, 0 ≤ f 
   rw [Real.sqrt_eq_rpow, Real.sqrt_eq_rpow]
   exact h
 
-/-- **The electric energy bounds the fluctuations** (Theorem 2, Step 1, source l. 1973-1976):
+/-- **The electric energy bounds the fluctuations** (Theorem 2, Step 1, source l. 1851–1854):
 for `ξ` of class `C¹` with compact support and a neutral configuration,
 `|Σᵢ dᵢ ∫ ξ dδ_{zᵢ}^{(αᵢ)}| ≤ (2π)⁻¹ ‖∇ξ‖_{L²} ‖∇h_α‖_{L²}`. -/
 theorem abs_sum_mul_integral_smearedCharge_le (hα : ∀ i, 0 < α i) (hn : ∑ i, d i = 0)
@@ -340,7 +334,7 @@ theorem abs_sum_mul_integral_smearedCharge_le (hα : ∀ i, 0 < α i) (hn : ∑ 
 theorem sum_charge_eq_zero (N : ℕ) : ∑ a : Fin N ⊕ Fin N, charge a = 0 := by
   simp [Fintype.sum_sum_type]
 
-/-- **The energy as an electric energy** (source eq. (eq:rewrF), l. 198-200):
+/-- **The energy as an electric energy** (source eq. (eq:rewrF), l. 183–185):
 `F_λ = (1 / 4π) ∫ |∇h_λ|² - N (g(λ) + κ)`. -/
 theorem energy_eq_integral_norm_sq_electricField {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) {lam : ℝ}
     (hlam : 0 < lam) :

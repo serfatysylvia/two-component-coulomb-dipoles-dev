@@ -13,30 +13,31 @@ public import TwoComponentCoulomb.Frozen.IsolatedDipoles
 public import TwoComponentCoulomb.Frozen.LongIsolatedDipoles
 public import TwoComponentCoulomb.Frozen.PartitionFunction
 public import TwoComponentCoulomb.Frozen.ReducedEnergy
-import TwoComponentCoulomb.Main.ErrorRateBounds
+import TwoComponentCoulomb.Fluctuations.SourceScale
 import TwoComponentCoulomb.Main.Theorem1AssemblyBounds
 
 /-!
 # Theorem 2, Steps 5--6: the rate `errorRate`, and Theorem 1 in the general-rate shape
 
-Source: Theorem 1 (`theorem:th1`, l. 235--274), Theorem 2 (`prop:linear`, l. 297--305), and the
-proof of Theorem 2, Steps 5--6 (l. 2182--2247).
+Source: Theorem 1 (`theorem:th1`, l. 220–266), Theorem 2 (`prop:linear`, l. 294–302), and the
+proof of Theorem 2, Steps 5--6 (l. 2060–2121).
 
 Steps 5--6 of the proof of Theorem 2 are proved for a general rate `ω` with the properties
 `Theorem2RateHyp` (`Fluctuations/Theorem2Rate.lean`), consuming Theorem 1 in the shape
 `Theorem1ShapeRate`. This file supplies the two inputs for the rate `ω_λ = errorRate β hβ λ`.
 
 * `theorem2RateHyp_errorRate` : `Theorem2RateHyp β hβ (errorRate β hβ)`, from the elementary
-  rate facts of `Main/ErrorRateBounds.lean`.
+  rate facts of `Main/ErrorRateBounds.lean` and the manuscript scale bound of
+  `Fluctuations/SourceScale.lean`.
 * `theorem1ShapeRate_of_theorem_1` : the statement of the frozen `theorem_1` (copied verbatim as the
   hypothesis `h`) implies `Theorem1ShapeRate β hβ (errorRate β hβ)`. This is an internal
-  *conditional helper*; it is not a frozen statement and never stands in for one. The proof
-  of `theorem_2` (`Main/Theorem2.lean`) discharges its hypothesis with the frozen `theorem_1`. The
-  two statements differ only in the form of the two long-dipole bullets, as follows.
+  *conditional helper*. It is not a source result and never stands in for one. The provider
+  of `theorem_2` discharges its hypothesis with the sealed anchor `theorem_1`. The two
+  statements differ only in the form of the two long-dipole bullets, as follows.
   * For `β > 2`, `theorem_1` has constants `(c, C₁, C₂)` with `C₁` the threshold and `c` the
-    gain, while `Theorem1ShapeRate` has `c` the threshold, `C₁` the gain and `C₂ √ω_λ` the
-    error; the constants are swapped and `ω_λ ≤ √ω_λ` (from `0 < ω_λ ≤ 1` on `(0, e⁻¹)`) is
-    used.
+    gain, while `Theorem1ShapeRate` follows an internal weaker shape (`c` the threshold, `C₁` the
+    gain, `C₂ √ω_λ` the error). The constants are swapped and `ω_λ ≤ √ω_λ` (from
+    `0 < ω_λ ≤ 1` on `(0, e⁻¹)`) is used.
   * For `β = 2`, `Theorem1ShapeRate` has the larger error term
     `(1 + log |log λ| + log (1/R)) / |log λ|` in place of `log (1/R) / |log λ|`
     (`1 + log |log λ| ≥ 0` for `0 < λ < e⁻¹`), and the threshold `λ₀ = λ_β`.
@@ -59,10 +60,17 @@ theorem theorem2RateHyp_errorRate (β : ℝ) (hβ : 2 ≤ β) :
   rpow_le h2 _ h0 h1 := rpow_le_errorRate β hβ h2 h0 h1
   two_mul_le_rpow_quarter h _ h0 h1 := (R0_regime_of_eq_two hβ h h0 h1).1
   log_div_le h _ h0 h1 := (R0_regime_of_eq_two hβ h h0 h1).2
-  gammaChoice_le _ h0 h1 := gamma_regime β hβ h0 h1 rfl
+  gammaChoice_le lam h0 h1 := by
+    have h1' : lam < Real.exp (-1) := h1.trans (Real.exp_lt_exp.2 (by norm_num))
+    have hω0 := errorRate_pos β hβ h0 h1'
+    have hω1 := errorRate_le_one β hβ h0 h1'
+    have hωsqrt : errorRate β hβ lam ≤ Real.sqrt (errorRate β hβ lam) :=
+      Real.le_sqrt_of_sq_le (by nlinarith only [hω0, hω1])
+    exact ((manuscriptGammaChoice_regime β hβ h0 h1).2.2).trans
+      (mul_le_mul_of_nonneg_left hωsqrt (by norm_num))
 
 /-- **Conditional helper (not a frozen statement)**: the statement of the frozen
-`TwoComponentCoulomb.theorem_1` (`theorem:th1`, source l. 235--274), copied verbatim as the
+`TwoComponentCoulomb.theorem_1` (`theorem:th1`, source l. 220–266), copied verbatim as the
 hypothesis `h`, implies `Theorem1ShapeRate β hβ (errorRate β hβ)`, the form of Theorem 1
 consumed by Steps 5--6 of the proof of Theorem 2 (`theorem_2_of_moment_rate`).
 

@@ -12,14 +12,14 @@ public import Mathlib.Data.Fintype.Sum
 # Frozen: `TwoComponentCoulomb.firstNeighborRadius`
 
 Frozen definition, approved by the authors in this exact form (RULINGS.md R18, R19).
-Source: l. 365.
+Source: l. 368.
 -/
 
 @[expose] public section
 
 namespace TwoComponentCoulomb
 
-/-- `r₁(z_i) = (¼ min_{j ≠ i} |z_i − z_j|) ∨ λ`, eq. (nn2) (source l. 365). -/
+/-- `r₁(z_i) = (¼ min_{j ≠ i} |z_i − z_j|) ∨ λ`, eq. (nn2) (source l. 368). -/
 noncomputable def firstNeighborRadius {N : ℕ} (lam : ℝ) (Z : Fin N ⊕ Fin N → ℂ)
     (i : Fin N ⊕ Fin N) : ℝ :=
   max ((Finset.univ.erase i).inf' (by

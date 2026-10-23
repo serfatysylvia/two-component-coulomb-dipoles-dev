@@ -14,9 +14,9 @@ public import TwoComponentCoulomb.PhaseSpace.Packing
 /-!
 # Successive placement: volume of separated configurations
 
-Source: l. 1763--1772 and 1848--1853 (Proposition 4.1: placing the
-points one at a time leaves area at least `N - C√Nλ - CNλ² ≥ N/2` at each step), l. 1820--1824
-(the case `β = 2`) and l. 970--973, 982--985 (Lemma 3.6, lower bounds: placing the positive
+Source: l. 1672–1681, 1758–1763 (Proposition 4.1: placing the
+points one at a time leaves area at least `N - C√Nλ - CNλ² ≥ N/2` at each step), l. 1730–1734
+(the case `β = 2`) and l. 920–923, 932–935 (Lemma 3.5, lower bounds: placing the positive
 particles one at a time gives volume at least `N^N e^{-C(Nt² + √N t)}`).
 
 Let `Λ = [0, √N]²` be the box (`box N`) and `Λ_a = [a, √N - a]²` the inner square. The set
@@ -124,7 +124,7 @@ theorem volume_section_ge {N n : ℕ} {a b : ℝ} (hb : 0 ≤ b) (h2a : 2 * a �
   exact tsub_le_tsub_left (volume_ball_union_le hb Y) _
 
 /-- **Successive placement**: adding one more point to a separated configuration of `n` points
-leaves room of area at least `(√N - 2a)² - nπb²` (source l. 1763--1772). -/
+leaves room of area at least `(√N - 2a)² - nπb²` (source l. 1672–1681). -/
 theorem volume_placementSet_succ_ge {N n : ℕ} {a b : ℝ} (hab : 0 ≤ a ∧ 0 ≤ b)
     (h2a : 2 * a ≤ Real.sqrt N) :
     volume (placementSet N (n + 1) a b) ≥
@@ -167,7 +167,7 @@ theorem volume_placementSet_zero (N : ℕ) (a b : ℝ) : volume (placementSet N 
   rw [placementSet_zero, volume_pi, Measure.pi_univ]
   simp
 
-/-- **Volume of separated configurations, product form** (source l. 1763--1772, 1848--1853):
+/-- **Volume of separated configurations, product form** (source l. 1672–1681, 1758–1763):
 `vol H(N, n, a, b) ≥ ∏_{k<n} ((√N - 2a)² - kπb²)`. -/
 theorem prod_le_volume_placementSet {N : ℕ} {a b : ℝ} (hab : 0 ≤ a ∧ 0 ≤ b)
     (h2a : 2 * a ≤ Real.sqrt N) (n : ℕ) :
@@ -196,7 +196,7 @@ theorem exp_neg_two_mul_le_one_sub {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1 / 2) :
     linarith only [this]
   exact le_of_mul_le_mul_right (h4.trans h5) (by positivity)
 
-/-- **Volume of separated configurations** (source l. 1848--1853, 1820--1824, 970--973, 982--985):
+/-- **Volume of separated configurations** (source l. 1758–1763, 1730–1734, 920–923, 932–935):
 if `4a√N + Nπb² ≤ N/2` then `vol H(N, N, a, b) ≥ N^N exp(-8a√N - πNb²)`. -/
 theorem volume_placementSet_ge {N : ℕ} {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (h : 4 * a * Real.sqrt N + N * Real.pi * b ^ 2 ≤ N / 2) :

@@ -20,32 +20,12 @@ import TwoComponentCoulomb.NearestNeighbor.Isolated
 import TwoComponentCoulomb.UpperBound.CriticalUpper
 
 /-!
-# Proposition 3.10 at `β = 2`: (ubz) and (eq:neutral bound) from the critical bound
+# Consequences of Proposition 3.10 at `β = 2`
 
-Source: l. 1739 (proof of Proposition 3.10, `prop:upper bound`): "Taking `R = 1` also proves (ubz)
-and (eq:neutral bound) at `β = 2`, since `N - ½|I^dip| ≥ (N - ½|I^dip|)² / N`".
-
-Write `ℓ = |log λ|` and `ω_λ = ℓ^{-1/5}` (`errorRate 2 _ λ`) for the rate at `β = 2`. Take `R = 1`
-in (eq:critical upper) (`TwoComponentCoulomb.critical_upper`):
-`∫_{Λ^{2N}} e^{-2F_λ + N - p + D_1} ≤ exp (2N log N + N (log (2πℓ) - 1)
-  + C N ω_λ + C log (N+1))`, where `p = |I^dip|/2` is the number of isolated
-dipoles and `D_1 ≥ 0`. Since `N - p ≥ 0` and `D_1 ≥ 0`, the integrand dominates `e^{-2F_λ}`, which
-gives the bound on the partition function. On `{p = p₀}` it dominates `e^{N - p₀} e^{-2F_λ}`, and
-`N - p₀ ≥ (N - p₀)²/N` gives the Gaussian factor.
-
-The deduction from the `R = 1` bound does not use the form of the rate: it is done in
-`TwoComponentCoulomb.Prop310Critical.main_two_of_critical_bound_one` (an internal helper whose
-hypothesis is the proved `R = 1` bound with the rate value left abstract), and instantiated at
-`errorRate`.
-
-## Main results
-
-* `TwoComponentCoulomb.proposition_3_10_main_two`: the first block of the frozen statement of
-  Proposition 3.10 for `β = 2` (the `∃ C c`, partition function and neutral-pair bound), with the
-  `if`s of the frozen statement kept, for all `0 < λ < e⁻²` (`λ₀ = e⁻²`).
-* `TwoComponentCoulomb.proposition_3_10_critical`: the critical block of the frozen
-  `proposition_3_10` for `β = 2` (eq:critical upper with the rate `errorRate`), for all
-  `0 < λ < e⁻²`.
+Source: `source/dipole-formation.tex`, l. 1575–1584.
+Taking `R = 1` in (eq:critical upper) bounds the partition function and the integral
+on a prescribed dipole-count event. The frozen `proposition_3_9_and_3_10` bundles these
+consequences with Proposition 3.9 and the critical bound itself.
 -/
 
 @[expose] public section
@@ -85,10 +65,10 @@ theorem exists_critical_bound_one :
     Real.log_mul (by positivity) (by linarith only [hℓ])]
 
 /-- **The deduction of (ubz) and (eq:neutral bound) at `β = 2` from the `R = 1` bound**
-(source l. 1739), independent of the rate. An internal lemma: its hypothesis `hG` is the bound
+, independent of the rate. An internal lemma: its hypothesis `hG` is the bound
 (eq:critical upper) at `R = 1`, proved in `critical_upper`, with the value `ωl = ω_λ` of the rate
 left abstract; it is instantiated in `proposition_3_10_main_two`. The conclusion is the first
-block of the frozen statement of Proposition 3.10 with `c = 1`, `if`s kept, and
+block of the joint frozen statement of Propositions 3.9 and 3.10 with `c = 1`, `if`s kept, and
 `C * errorRate β hβ lam` replaced by `C * ωl`. -/
 theorem main_two_of_critical_bound_one {β : ℝ} (hβ : 2 ≤ β) (hβ2 : β = 2) {N : ℕ} (hN : 2 ≤ N)
     {lam C ωl : ℝ}
@@ -186,8 +166,8 @@ end Prop310Critical
 
 open Prop310Critical in
 open Prop310Critical in
-/-- **Proposition 3.10 at `β = 2`: (ubz) and (eq:neutral bound)** (source l. 1739). The first
-block of the frozen `proposition_3_10` for `β = 2` (with the `if`s kept) for the rate
+/-- **Consequences of Proposition 3.10: the partition-function and dipole-count bounds.** The first
+block of the frozen `proposition_3_9_and_3_10` for `β = 2` (with the `if`s kept) for the rate
 `ω_λ = errorRate β hβ λ = ℓ^{-1/5}`, with the threshold `λ₀ = e⁻²`: there are `C, c > 0` such
 that for `N ≥ 2`, `0 < λ < e⁻²` the partition function is at most
 `exp (2N log N + N (log |log λ| + log (2π) - 1 + C ω_λ) + C log (N+1))`, and for `p₀ ≤ N`,
@@ -218,9 +198,9 @@ theorem proposition_3_10_main_two (β : ℝ) (hβ : 2 ≤ β) (hβ2 : β = 2) :
     main_two_of_critical_bound_one hβ rfl hN (h N hN lam hlam hlt)⟩
 
 open Prop310Critical in
-/-- **Proposition 3.10 at `β = 2`: (eq:critical upper)** (source l. 1447--1454, proof
-l. 1668--1739). The critical block of the frozen
-`proposition_3_10` for `β = 2`, with the threshold `λ₀ = e⁻²` (the shared threshold of the frozen
+/-- **Proposition 3.10: (eq:critical upper)** (source l. 1575–1584, proof
+l. 1595–1650). The critical block of the frozen
+`proposition_3_9_and_3_10` for `β = 2`, with the threshold `λ₀ = e⁻²` (the shared threshold of the frozen
 statement, `λ₀ ≤ e⁻²`): there is `C > 0` such that for `N ≥ 2`, `0 < λ < e⁻²` and `2λ ≤ R ≤ 1`,
 `∫_{Λ^{2N}} e^{-2F_λ + N - |I^dip|/2 + D_R} ≤ exp (2N log N + N (log (2π |log λ|) - 1)
   + C N (ω_λ + log (1/R)/|log λ|) + C log (N+1))`, with `ω_λ = errorRate β hβ λ`. -/

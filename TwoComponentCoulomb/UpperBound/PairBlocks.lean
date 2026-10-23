@@ -9,12 +9,12 @@ public import TwoComponentCoulomb.UpperBound.MarkedCells
 public import TwoComponentCoulomb.UpperBound.PairAssignedEnergy
 
 /-!
-# The blocks `I = I^pair` and `Iᶜ` of Proposition 3.10, Step 2
+# The blocks `I = I^pair` and `Iᶜ` of Proposition 3.9, Step 2
 
-Source: proof of Proposition 3.10, Step 2, l. 1532--1566. Fix a marked
+Source: proof of Proposition 3.9, Step 2, l. 1440–1474. Fix a marked
 graph `γ = (φ, T)`. Let `I = I^pair` be the vertices of the isolated 2-cycles of `φ`, with
 `|I| = 2m`, and `I'` the vertices of the `p - p₀` marked same-sign pairs. This file sets up the two
-blocks `I` and `Iᶜ` on which the energies `F⁽¹⁾` (def:F(1)) and `F⁽²⁾` (def:F(2)) live.
+blocks `I` and `Iᶜ` on which the energies `F⁽¹⁾` the definition of F⁽¹⁾ and `F⁽²⁾` the definition of F⁽²⁾ live.
 
 * Each vertex has its nearest neighbour in its own block (isolated pairs are mutual nearest
   neighbours and no other vertex points into them), so the restrictions `γ¹, γ²` of `φ` to `I`
@@ -26,7 +26,7 @@ blocks `I` and `Iᶜ` on which the energies `F⁽¹⁾` (def:F(1)) and `F⁽²�
 * The radius `r̃₁` computed within a block is the global one, and so is `r̃₂` at a vertex whose
   second nearest neighbour lies in the block (`TwoComponentCoulomb.nnRadius_subtype_eq`,
   `TwoComponentCoulomb.nnRadius2_subtype_eq`): "At marked vertices, the second neighbor also lies
-  in `I`, so `r̃₂` is unchanged there" (l. 1542).
+  in `I`, so `r̃₂` is unchanged there" (l. 1450).
 
 ## Main definitions
 
@@ -37,7 +37,7 @@ blocks `I` and `Iᶜ` on which the energies `F⁽¹⁾` (def:F(1)) and `F⁽²�
 * `TwoComponentCoulomb.markedSameSign f T`, `TwoComponentCoulomb.markedSameSignIn f T`: the vertices
   `I'` of the marked same-sign pairs, in `Fin N ⊕ Fin N` and in `I`.
 
-## Bookkeeping (source l. 1532--1566)
+## Bookkeeping (source l. 1440–1474)
 
 For a configuration `Z` with `φ₁(Z) = φ` and twice-isolated set `T`:
 `γ¹` is a fixed-point-free involution of `I` (a perfect matching of the `m` isolated pairs);
@@ -68,7 +68,7 @@ section Graph
 variable {ι : Type*} [Fintype ι]
 
 open scoped Classical in
-/-- The vertices `I^pair` of the isolated 2-cycles of a self-map `f` (source l. 375--385, ruling
+/-- The vertices `I^pair` of the isolated 2-cycles of a self-map `f` (source l. 378–388, ruling
 R5): `{i, f i}` is a 2-cycle into which no other vertex maps. -/
 noncomputable def pairVerts (f : ι → ι) : Finset ι :=
   univ.filter fun i => f (f i) = i ∧ ∀ k, (f k = i ∨ f k = f i) → k = i ∨ k = f i
@@ -97,11 +97,11 @@ theorem apply_not_mem_pairVerts {f : ι → ι} {i : ι} (h : i ∉ pairVerts f)
   · exact h (h' ▸ hfi)
   · exact h (h' ▸ apply_mem_pairVerts hfi)
 
-/-- The restriction `γ¹` of `f` to `I^pair` (source l. 1546). -/
+/-- The restriction `γ¹` of `f` to `I^pair` (source l. 1454). -/
 def pairRestrict (f : ι → ι) (i : {i // i ∈ pairVerts f}) : {i // i ∈ pairVerts f} :=
   ⟨f i, apply_mem_pairVerts i.2⟩
 
-/-- The restriction `γ²` of `f` to the complement of `I^pair` (source l. 1546). -/
+/-- The restriction `γ²` of `f` to the complement of `I^pair` (source l. 1454). -/
 def complRestrict (f : ι → ι) (i : {i // i ∉ pairVerts f}) : {i // i ∉ pairVerts f} :=
   ⟨f i, apply_not_mem_pairVerts i.2⟩
 
@@ -143,7 +143,7 @@ theorem isolatedPairSet_eq_pairVerts (Z : Fin N ⊕ Fin N → ℂ) :
   rw [mem_isolatedPairSet, mem_pairVerts_nearestNeighbor]
 
 open scoped Classical in
-/-- The vertices `I'` of the marked same-sign pairs (source l. 1532): the marked vertices `i ∈ T`
+/-- The vertices `I'` of the marked same-sign pairs (source l. 1440): the marked vertices `i ∈ T`
 whose pair `{i, f i}` is not neutral. -/
 noncomputable def markedSameSign (f : Fin N ⊕ Fin N → Fin N ⊕ Fin N) (T : Finset (Fin N ⊕ Fin N)) :
     Finset (Fin N ⊕ Fin N) :=
@@ -185,7 +185,7 @@ variable {p : Fin N ⊕ Fin N → Prop} [Fintype {i // p i}] [Nontrivial {i // p
   {φ : Fin N ⊕ Fin N → Fin N ⊕ Fin N}
 
 /-- On a block of indices closed under `φ = φ₁(Z)`, the nearest neighbour computed within the
-block, with the induced tie-break key, is `φ` (source l. 1542--1546). -/
+block, with the induced tie-break key, is `φ` (source l. 1450–1454). -/
 theorem nnMap_subtype_val (hφ : nearestNeighbor Z = φ) (hp : ∀ i, p i → p (φ i))
     (i : {i // p i}) :
     (nnMap (subtypeKey p (sumKey N)) (fun j : {i // p i} => Z j) i).1 = φ i := by
@@ -205,7 +205,7 @@ theorem nnRadius_subtype_eq (hφ : nearestNeighbor Z = φ) (hp : ∀ i, p i → 
   rw [nnRadius_eq (subtypeKey p (sumKey N)), nnMap_subtype_val hφ hp i, firstNeighborRadius_eq, hφ]
 
 /-- A vertex whose second nearest neighbour lies in the block keeps its second radius `r̃₂` when the
-distances are computed within the block (source l. 1538, 1542, "At marked vertices, the second
+distances are computed within the block (source l. 1446, 1450, "At marked vertices, the second
 neighbor also lies in `I`, so `r̃₂` is unchanged there"). -/
 theorem nnRadius2_subtype_eq (hN : 2 ≤ N) (h3 : 3 ≤ Fintype.card {i // p i})
     (hφ : nearestNeighbor Z = φ) (hp : ∀ i, p i → p (φ i)) (lam : ℝ) (i : {i // p i})
@@ -233,7 +233,7 @@ theorem nnRadius2_subtype_eq (hN : 2 ≤ N) (h3 : 3 ≤ Fintype.card {i // p i})
     linarith
 
 omit [Fintype {i // p i}] [Nontrivial {i // p i}] in
-/-- **Restricted graphs** (source l. 1546, `γ¹`): the nearest-neighbour map of `Z|_I` is the
+/-- **Restricted graphs** (source l. 1454, `γ¹`): the nearest-neighbour map of `Z|_I` is the
 restriction of `φ₁(Z)` to `I = I^pair`. -/
 theorem nnMap_pairRestrict (hφ : nearestNeighbor Z = φ) [Nontrivial {i // i ∈ pairVerts φ}] :
     nnMap (subtypeKey (· ∈ pairVerts φ) (sumKey N)) (fun j : {i // i ∈ pairVerts φ} => Z j) =
@@ -242,7 +242,7 @@ theorem nnMap_pairRestrict (hφ : nearestNeighbor Z = φ) [Nontrivial {i // i �
     (nnMap_subtype_val (p := (· ∈ pairVerts φ)) hφ (fun _ hi => apply_mem_pairVerts hi) i)
 
 omit [Fintype {i // p i}] [Nontrivial {i // p i}] in
-/-- **Restricted graphs** (source l. 1546, `γ²`): the nearest-neighbour map of `Z|_{Iᶜ}` is the
+/-- **Restricted graphs** (source l. 1454, `γ²`): the nearest-neighbour map of `Z|_{Iᶜ}` is the
 restriction of `φ₁(Z)` to the complement of `I^pair`. -/
 theorem nnMap_complRestrict (hφ : nearestNeighbor Z = φ) [Nontrivial {i // i ∉ pairVerts φ}] :
     nnMap (subtypeKey (· ∉ pairVerts φ) (sumKey N)) (fun j : {i // i ∉ pairVerts φ} => Z j) =
@@ -390,7 +390,7 @@ theorem card_compl_pairVerts_subtype (hφ : nearestNeighbor Z = φ)
     ← isolatedPairSet_eq_pairVerts, card_compl_isolatedPairSet]
 
 /-- The 2-cycle vertices of `γ²` are the 2-cycle vertices of `φ` outside `I`: there are
-`2(K - m)` of them, so `γ²` has `K - m` components (source l. 1566). -/
+`2(K - m)` of them, so `γ²` has `K - m` components (source l. 1474). -/
 theorem card_cycle_complRestrict (hφ : nearestNeighbor Z = φ)
     [Fintype {i : {i // i ∉ pairVerts φ} // complRestrict φ (complRestrict φ i) = i}] :
     Fintype.card {i : {i // i ∉ pairVerts φ} // complRestrict φ (complRestrict φ i) = i} =

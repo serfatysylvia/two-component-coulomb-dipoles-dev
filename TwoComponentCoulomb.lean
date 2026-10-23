@@ -18,11 +18,11 @@ public import Mathlib.Topology.EMetricSpace.Lipschitz
 public import TwoComponentCoulomb.Frozen.Fluct
 public import TwoComponentCoulomb.Frozen.Proposition22
 public import TwoComponentCoulomb.Frozen.Corollary23
-public import TwoComponentCoulomb.Frozen.Lemma36
+public import TwoComponentCoulomb.Frozen.Lemma35
 public import TwoComponentCoulomb.Frozen.Box
 public import TwoComponentCoulomb.Frozen.SmearedKernel
 public import TwoComponentCoulomb.Frozen.Proposition41
-public import TwoComponentCoulomb.Frozen.Proposition310
+public import TwoComponentCoulomb.Frozen.Proposition39And310
 public import TwoComponentCoulomb.Frozen.Theorem1
 public import TwoComponentCoulomb.Frozen.Theorem2
 
@@ -39,8 +39,8 @@ definitions their statements use:
 * `TwoComponentCoulomb.theorem_2` (Theorem 2)
 * `TwoComponentCoulomb.proposition_2_2` (Proposition 2.2)
 * `TwoComponentCoulomb.corollary_2_3` (Corollary 2.3)
-* `TwoComponentCoulomb.lemma_3_6` (Lemma 3.6)
-* `TwoComponentCoulomb.proposition_3_10` (Proposition 3.10)
+* `TwoComponentCoulomb.lemma_3_5` (Lemma 3.5)
+* `TwoComponentCoulomb.proposition_3_9_and_3_10` (Propositions 3.9 and 3.10)
 * `TwoComponentCoulomb.proposition_4_1` (Proposition 4.1)
 -/
 

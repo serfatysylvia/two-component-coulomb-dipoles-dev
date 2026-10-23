@@ -10,9 +10,9 @@ public import TwoComponentCoulomb.Frozen.Kappa
 public import TwoComponentCoulomb.Frozen.LogKernel
 public import TwoComponentCoulomb.Frozen.SmearedKernel
 public import TwoComponentCoulomb.Potential.Electric
+public import TwoComponentCoulomb.Potential.ChangeRadii
 import TwoComponentCoulomb.Potential.DiscField
 import TwoComponentCoulomb.Potential.DiscPotentialMeasure
-import TwoComponentCoulomb.Potential.ElectricEnergy
 import TwoComponentCoulomb.Potential.PairIntegral
 import TwoComponentCoulomb.Potential.SmearedKernel
 
@@ -21,22 +21,20 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 
 For centres `zᵢ`, radii `αᵢ > 0` and real charges `dᵢ` write
 `P(z, a; w, b) = pairInteraction z w a b = ∬ g(x - y) dδ_z^{(a)}(x) dδ_w^{(b)}(y)` and
-`E(α) = Σᵢⱼ dᵢ dⱼ P(zᵢ, αᵢ; zⱼ, αⱼ)`. The key input is the positivity `E(α) ≥ 0` of the energy of
-a neutral configuration of discs (`sum_pairInteraction_nonneg`, Lemma 2.4). Since
-`F_λ(Z) = ½ E(λ) - N (g(λ) + κ)` (eq. (eq:F3), l. 155–158), the inequality `E(α) ≥ 0` gives the
-ball-growth bound of Proposition 2.2 (source l. 512–544, (peq)):
-`F_λ(Z) ≥ ½ (E(λ) - E(α)) - N (g(λ) + κ)`, in which the discs of radius `λ ≤ αᵢ` are replaced
-by grown discs, and by Newton's theorem most terms cancel.
+`E(α) = Σᵢⱼ dᵢ dⱼ P(zᵢ, αᵢ; zⱼ, αⱼ)`. We apply the polarized change-of-radii
+identity (Lemma 2.4) and cancel its mixed sums by exchanging the two labels. This gives
+`F_λ = (1/4π) ∫ |∇h_α|² + ½ (E(λ) - E(α)) - N (g(λ) + κ)`.
+The enlarged electric energy is retained while Newton's theorem removes disjoint pairs.
 
 * `pairInteraction_eq_logKernel_of_add_le` : Newton's theorem for two discs of radii `a` and `b`
   whose closures are disjoint (`a + b ≤ |z - w|`): `P(z, a; w, b) = g(z - w)`.
 * `pairInteraction_self`, `pairInteraction_eq_scaling` : `P(z, a; z, a) = g(a) + κ` and
   `P(z, a; w, a) = g(a) + g₁((w - z) / a)`.
 * `energy_eq_half_sum_pairInteraction` : `F_λ = ½ Σ_{ab} d_a d_b P(z_a, λ; z_b, λ) - N (g(λ) + κ)`.
-* `energy_ge_ballGrowth` : the ball-growth inequality for arbitrary radii `αᵢ ≥ λ`.
-* `energy_ge_ballGrowth_overlap` : the reduced form of the inequality, in which only the
+* `energy_eq_ballGrowth` : the change-of-radii identity for arbitrary positive radii.
+* `energy_eq_ballGrowth_overlap` : the reduced form of the identity, in which only the
   ordered pairs `(i, j)`, `i ≠ j`, whose grown discs overlap (`|zᵢ - zⱼ| < αᵢ + αⱼ`) contribute:
-  `F_λ(Z) ≥ -½ Σᵢ (g(αᵢ) + κ) + ½ Σ_{(i,j)} dᵢ dⱼ [g_λ(zⱼ - zᵢ) - P(zᵢ, αᵢ; zⱼ, αⱼ)]`.
+  `F_λ(Z) = (1/4π) ∫ |∇h_α|² - ½ Σᵢ (g(αᵢ) + κ) + ½ Σ_{(i,j)} dᵢ dⱼ [g_λ(zⱼ - zᵢ) - P(zᵢ, αᵢ; zⱼ, αⱼ)]`.
 -/
 
 @[expose] public section
@@ -85,27 +83,25 @@ end PairInteraction
 section BallGrowth
 
 /-- `F_λ` as a bilinear form in the pair interactions of discs of radius `λ`
-(source eq. (eq:F3), l. 155–158). -/
+(source eq. (eq:F3), l. 140–143). -/
 theorem energy_eq_half_sum_pairInteraction {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) {lam : ℝ} :
     energy lam Z = (1 / 2) * ∑ i, ∑ j, charge i * charge j * pairInteraction (Z i) (Z j) lam lam -
       N * (logKernel (lam : ℂ) + kappa) := by
   rfl
 
-/-- **The ball-growth inequality for disc charges of general radii** (source l. 512–544, (peq)):
-for radii `αᵢ ≥ λ`,
-`F_λ(Z) ≥ ½ Σᵢⱼ dᵢ dⱼ [P(zᵢ, λ; zⱼ, λ) - P(zᵢ, αᵢ; zⱼ, αⱼ)] - N (g(λ) + κ)`.
-It follows from the positivity of the pair energy `Σᵢⱼ dᵢ dⱼ P(zᵢ, αᵢ; zⱼ, αⱼ)` of the neutral
-configuration of grown discs (Lemma 2.4). -/
-theorem energy_ge_ballGrowth {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) {lam : ℝ} (hlam : 0 < lam)
-    (α : Fin N ⊕ Fin N → ℝ) (hα : ∀ i, lam ≤ α i) :
-    energy lam Z ≥ (1 / 2) * ∑ i, ∑ j, charge i * charge j *
+/-- Apply Lemma 2.4 and cancel the mixed interactions, as in (peq). -/
+theorem energy_eq_ballGrowth {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) {lam : ℝ} (hlam : 0 < lam)
+    (α : Fin N ⊕ Fin N → ℝ) (hα : ∀ i, 0 < α i) :
+    energy lam Z = (1 / (4 * Real.pi)) * (∫ x, ‖electricField charge Z α x‖ ^ 2) +
+      (1 / 2) * ∑ i, ∑ j, charge i * charge j *
         (pairInteraction (Z i) (Z j) lam lam - pairInteraction (Z i) (Z j) (α i) (α j)) -
       N * (logKernel (lam : ℂ) + kappa) := by
-  have hpos : ∀ i, 0 < α i := fun i => hlam.trans_le (hα i)
-  have h0 := sum_pairInteraction_nonneg (d := charge) (z := Z) hpos (sum_charge_eq_zero N)
-  rw [energy_eq_half_sum_pairInteraction Z]
-  simp_rw [mul_sub, Finset.sum_sub_distrib]
-  linarith
+  have h := integral_norm_sq_electricField_sub (d := charge) (z := Z)
+    (fun _ => hlam) hα (sum_charge_eq_zero N)
+  rw [energy_eq_integral_norm_sq_electricField Z hlam]
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  field_simp
+  nlinarith [h]
 
 /-- A double sum over `ι × ι` whose off-diagonal terms vanish outside a relation `P` splits into
 the diagonal and the sum over the ordered pairs `i ≠ j` with `P i j`. -/
@@ -130,21 +126,23 @@ theorem sum_sum_eq_sum_diag_add_sum_filter {ι : Type*} [Fintype ι] [DecidableE
     simp
   rw [h1, Finset.sum_congr rfl fun p _ => hpt p, Finset.sum_add_distrib, h2, Finset.sum_filter]
 
-/-- **The reduced ball-growth inequality** (source l. 512–544, (peq)): for radii `αᵢ ≥ λ`, with
+/-- **The reduced ball-growth identity** (source l. 517–549, (peq)): for radii `αᵢ ≥ λ`, with
 `S` the set of ordered pairs `i ≠ j` whose grown discs overlap (`|zᵢ - zⱼ| < αᵢ + αⱼ`),
-`F_λ(Z) ≥ -½ Σᵢ (g(αᵢ) + κ) + ½ Σ_{(i,j) ∈ S} dᵢ dⱼ [g_λ(zⱼ - zᵢ) - P(zᵢ, αᵢ; zⱼ, αⱼ)]`.
+`F_λ(Z) = (1/4π) ∫ |∇h_α|² - ½ Σᵢ (g(αᵢ) + κ)
+  + ½ Σ_{(i,j) ∈ S} dᵢ dⱼ [g_λ(zⱼ - zᵢ) - P(zᵢ, αᵢ; zⱼ, αⱼ)]`.
 The diagonal terms contribute `g(λ) - g(αᵢ)`, and the pairs of disjoint grown discs cancel by
 Newton's theorem (`pairInteraction_eq_logKernel_of_add_le`). -/
-theorem energy_ge_ballGrowth_overlap {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) {lam : ℝ} (hlam : 0 < lam)
+theorem energy_eq_ballGrowth_overlap {N : ℕ} (Z : Fin N ⊕ Fin N → ℂ) {lam : ℝ} (hlam : 0 < lam)
     (α : Fin N ⊕ Fin N → ℝ) (hα : ∀ i, lam ≤ α i) :
-    energy lam Z ≥ -(1 / 2) * ∑ i, (logKernel (α i : ℂ) + kappa) +
+    energy lam Z = (1 / (4 * Real.pi)) * (∫ x, ‖electricField charge Z α x‖ ^ 2) -
+      (1 / 2) * ∑ i, (logKernel (α i : ℂ) + kappa) +
       (1 / 2) * ∑ p ∈ Finset.univ.filter (fun p : (Fin N ⊕ Fin N) × (Fin N ⊕ Fin N) =>
           p.1 ≠ p.2 ∧ ‖Z p.1 - Z p.2‖ < α p.1 + α p.2),
         charge p.1 * charge p.2 *
           (smearedKernel lam (Z p.2 - Z p.1) -
             pairInteraction (Z p.1) (Z p.2) (α p.1) (α p.2)) := by
   have hpos : ∀ i, 0 < α i := fun i => hlam.trans_le (hα i)
-  refine le_of_eq_of_le ?_ (energy_ge_ballGrowth Z hlam α hα)
+  rw [energy_eq_ballGrowth Z hlam α hpos]
   rw [sum_sum_eq_sum_diag_add_sum_filter _ (fun i j => ‖Z i - Z j‖ < α i + α j)]
   · have hdiag : ∀ i, charge i * charge i *
         (pairInteraction (Z i) (Z i) lam lam - pairInteraction (Z i) (Z i) (α i) (α i)) =

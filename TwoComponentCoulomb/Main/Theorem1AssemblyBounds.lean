@@ -10,11 +10,11 @@ public import TwoComponentCoulomb.Frozen.M0
 /-!
 # Elementary logarithm bounds for the assembly of Theorem 1
 
-The proof of Theorem 1 (l. 1904--1959) bounds the error rates of Lemma 3.6 and Proposition 4.1
-by `ω_λ = errorRate β hβ λ` (eq. (eq:defgammal), l. 236--244), the rate of Proposition 3.10 and
-Theorem 1 (l. 1905--1911, 1937); these comparisons are proved in `Main/ErrorRateBounds.lean`.
+The proof of Theorem 1 (l. 1808–1837) bounds the error rates of Lemma 3.5 and Proposition 4.1
+by `ω_λ = errorRate β hβ λ` (eq. (eq:defgammal), l. 221–229), the rate of Propositions 3.9 and 3.10 and
+Theorem 1; these comparisons are proved in `Main/ErrorRateBounds.lean`.
 This file holds the two elementary facts about `|log λ|` that they use (`λ ≤ λ |log λ| ≤ 1` for
-`λ ≤ e⁻¹`, l. 1905).
+`λ ≤ e⁻¹`, ).
 
 * `one_lt_abs_log` : `1 < |log λ|` for `0 < λ < e⁻¹`.
 * `mul_abs_log_lt_one` : `λ |log λ| < 1` for `0 < λ < 1`.

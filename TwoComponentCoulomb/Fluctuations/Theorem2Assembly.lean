@@ -28,7 +28,7 @@ import TwoComponentCoulomb.NearestNeighbor.Second
 /-!
 # Theorem 2, Steps 5--6: conclusion, as a conditional helper
 
-Source: proof of Theorem 2, Steps 5--6 (l. 2182--2247); the statement is l. 297--305.
+Source: proof of Theorem 2, Steps 5--6 (l. 2060–2121); the statement is l. 294–302.
 
 `theorem_2_of_moment_rate` is a *conditional helper*, stated for a rate function `ω` in place of
 `ω_λ`: it takes the rate properties `Theorem2RateHyp β hβ ω` (`Fluctuations/Theorem2Rate.lean`),
@@ -37,7 +37,7 @@ of Steps 2--4 with `ω` (`MomentBoundRate β hβ ω`), and concludes the stateme
 `ω`. It is not a frozen statement and never stands in for one; the proof of `theorem_2`
 (`Main/Theorem2.lean`) applies it at `ω = errorRate β hβ`.
 
-`MomentBoundRate β hβ ω` records the output of Steps 2--4 (l. 1995--2180, and Step 6 l. 2212--2219,
+`MomentBoundRate β hβ ω` records the output of Steps 2--4 (l. 1872–2058, and Step 6 l. 2086–2093,
 Hölder combination of (eq:A1), (eq:A2), (eq:finalA3)) in the weak form used by Steps 5--6: radii
 `αᵢ` (in the source `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)`, so `0 < αᵢ ≤ γ ∨ r̃₁(zᵢ)`) for which the electric
 energy `∫ |∇h_α|²` has an exponential moment
@@ -49,7 +49,7 @@ The assembly follows the source:
   `exists_gibbsMeasure_eventARate_compl_le`); on `A_M`, `(Σ r̃₁)² ≤ (8 + 12 M) N² √ω`
   (eq. (eq:sumrr1), `sq_sum_firstNeighborRadius_le`).
 * Step 6: Markov's inequality gives the event `B_M = {∫ |∇h_α|² ≤ (2/c) M N (φ_β(γ) + ω)}` with
-  `ℙ(B_Mᶜ) ≤ (N+1)^C e^{-M N ω}` (eq. (eq2), `gibbsMeasure_electric_compl_le`); Step 1 and
+  `ℙ(B_Mᶜ) ≤ (N+1)^C e^{-M N ω}` (the electric-energy tail bound of Step 6, `gibbsMeasure_electric_compl_le`); Step 1 and
   `α_i ≤ γ + r̃₁(z_i)` give `Fluct² ≤ C M L² N (γ² + √ω + φ_β(γ))` on `A_M ∩ B_M`
   (eq. (eq:f), `exists_fluct_sq_le_of_good_rate`); the choice of `γ` (`gammaChoice`) makes
   `φ_β(γ) + γ² ≤ 3 √ω`; finally the polynomial prefactor is absorbed
@@ -68,7 +68,7 @@ namespace TwoComponentCoulomb
 
 /-! ### The exponential moment bound of Steps 3--4 -/
 
-/-- **The moment bound of Steps 2--4 for a general rate function `ω`** (source l. 1995--2219):
+/-- **The moment bound of Steps 2--4 for a general rate function `ω`** (source l. 1872–2093):
 there are radii `αᵢ` and `c, C, λ₁ > 0` such that, for `N ≥ 2`, `0 < λ < λ₁` and `2λ ≤ γ ≤ 1`,
 (i) `0 < αᵢ ≤ γ ∨ r̃₁(zᵢ)`, (ii) `Z ↦ ∫ |∇h_α|²` is almost-everywhere measurable for the Gibbs
 measure, and (iii) `𝔼[exp(c ∫ |∇h_α|²)] ≤ exp(C N (φ_β(γ) + ω(λ)) + C log (N+1))`.
@@ -122,7 +122,7 @@ theorem gibbsMeasure_compl_pi_box (N : ℕ) (β lam : ℝ) :
 
 /-! ### The deterministic combination (eq:f) -/
 
-/-- The algebra behind (eq:f), source l. 2227--2230: from
+/-- The algebra behind (eq:f), source l. 2101–2104: from
 `F ≤ C_F L² (I + S²/N)`, `I ≤ (2/c) M N (φ + ω)`, `S ≤ 2 N γ + S₁`, `S₁² ≤ (8 + 12 M) N² √ω`,
 `φ + γ² ≤ K √ω` and `ω ≤ √ω`, `M ≥ 1`, one gets `F ≤ C_F ((2/c)(K+1) + 8K + 40) M L² N √ω`. -/
 theorem fluct_algebra {F CF L2 I S S₁ N M c φ ω γ K : ℝ} (hCF : 0 ≤ CF) (hL2 : 0 ≤ L2)
@@ -178,7 +178,7 @@ theorem fluct_algebra {F CF L2 I S S₁ N M c φ ω γ K : ℝ} (hCF : 0 ≤ CF)
         mul_le_mul_of_nonneg_left hB hCL
     _ = _ := by ring
 
-/-- **(eq:f) for a general rate function `ω`**, source l. 2227--2230: there
+/-- **(eq:f) for a general rate function `ω`**, source l. 2101–2104: there
 is an absolute constant `C_F` such that, for `0 < ω(λ) ≤ 1`, a configuration `Z` in the box lying
 in `A_M` (`eventARate`), radii `0 < αᵢ ≤ γ ∨ r̃₁(zᵢ)` whose electric energy satisfies
 `∫ |∇h_α|² ≤ (2/c) M N (φ_β(γ) + ω(λ))` and `φ_β(γ) + γ² ≤ K √ω(λ)`,
@@ -236,9 +236,9 @@ theorem exists_fluct_sq_le_of_good_rate :
     (sq_nonneg _) hN0 hc hM hω0.le hω1 hφ0 hK hstep hI hS0 hS hS₁' hφγ
   linarith
 
-/-! ### The event `B_M` (eq. (eq2)) -/
+/-! ### The event `B_M` (the electric-energy tail bound of Step 6) -/
 
-/-- **(eq2), source l. 2220--2226**: Markov's inequality for the electric energy. If
+/-- **the electric-energy tail bound of Step 6, source l. 2094–2100**: Markov's inequality for the electric energy. If
 `𝔼[exp(c f)] ≤ exp(C N (φ + ω) + C log (N+1))`, `φ, ω ≥ 0` and `M ≥ C`, then
 `ℙ(f > (2/c) M N (φ + ω)) ≤ (N+1)^C e^{-M N ω}`. -/
 theorem gibbsMeasure_electric_compl_le {N : ℕ} {β lam : ℝ}
@@ -319,7 +319,7 @@ hypothesis `hω` collects the elementary properties of `ω` used in Steps 5--6
 (`MomentBoundRate`). The conclusion is the statement of Theorem 2 (`prop:linear`) with `ω` in
 place of `ω_λ`; for `ω = errorRate β hβ` it is the statement of the frozen `theorem_2`. This is
 not a frozen statement: it only records the assembly of Steps 5--6 of the proof of Theorem 2
-(source l. 2182--2247). -/
+(source l. 2060–2121). -/
 theorem theorem_2_of_moment_rate (β : ℝ) (hβ : 2 ≤ β) (ω : ℝ → ℝ) (hω : Theorem2RateHyp β hβ ω)
     (h1 : Theorem1ShapeRate β hβ ω) (hm : MomentBoundRate β hβ ω) :
     ∃ lamβ Mβ Cβ : ℝ, 0 < lamβ ∧ lamβ < Real.exp (-1) ∧ 0 < Mβ ∧ 0 < Cβ ∧

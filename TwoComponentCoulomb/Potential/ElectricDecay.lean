@@ -12,7 +12,7 @@ import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 # Decay of the electric potential and field of a neutral configuration
 
 For a *neutral* configuration (`Σᵢ dᵢ = 0`) of disc charges the electric potential and field decay
-like a dipole at infinity (source l. 200, 503):
+like a dipole at infinity :
 
 * `exists_decay_electric_nonneg` : there are `R₀, C ≥ 0` with `|h_α(x)| ≤ C / |x|` and
   `|∇h_α(x)| ≤ C / |x|²` for `|x| ≥ R₀`. Outside all discs `h_α(x) = -Σᵢ dᵢ log |x - zᵢ|` and

@@ -11,30 +11,30 @@ import TwoComponentCoulomb.Fluctuations.TiltedIsolatedCrude
 /-!
 # Theorem 2, Step 4: the exponential moment of `A₃` (eq:finalA3)
 
-Source: proof of Theorem 2 (`prop:linear`), Step 4, l. 2125--2178, for `β > 2`: for every `t > 0`,
+Source: proof of Theorem 2 (`prop:linear`), Step 4, l. 2003–2056, for `β > 2`: for every `t > 0`,
 `log 𝔼_ℙ[e^{t A₃}] ≤ C_{β,t} N (φ_β(γ) + ω_λ) + C_{β,t} log (N + 1)`   (eq:finalA3),
 where `A₃ = ∑_{i ∈ I^dip, φ₂(i) ∈ I^dip, φ₂(φ₁ i) ∈ I^pair} ((r̃₁(z_i)/γ)² ∧ 1)` (`linearA3`).
 
 ## Proof
 
 `𝔼_ℙ[e^{t A₃}] = Z⁻¹ ∫_Λ e^{t A₃ - β F_λ}`. The integral is split along the marked graphs
-`γ' = (φ, T) ∈ D_{2N,K,p,p₀}` of Proposition 3.10, Step 2 (l. 2125--2131). On one cell
+`γ' = (φ, T) ∈ D_{2N,K,p,p₀}` of Proposition 3.9, Step 2 (l. 2003–2009). On one cell
 (`MomentCells.ofReal_exp_linearA3_mul_le_split`, `MomentCells.ofReal_exp_linearA3_mul_le_full`)
 `A₃ ≤ ∑_{i ∈ I} ((r̃₁(z_i)/γ)² ∧ 1)` with the distances computed within `I = I^pair`
-(l. 2132--2136), and (gred3) separates the variables (l. 2136--2142). The three cases are those of
+(l. 2011–2014), and (gred3) separates the variables (l. 2014–2020). The three cases are those of
 `UpperAssembly.exists_cellBound_energy_rate`:
 
 * no marked pair (`p = 0`): `A₃ = 0` (every index of `A₃` is twice isolated), Corollary 2.3 and
-  Lemma 3.5 on all points;
+  Lemma 3.4 on all points;
 * `m = N` (`Iᶜ = ∅`): the tilted (eq:n neutral conv) `tiltedBlock_n_neutral_conv` on all points;
-* `2 ≤ m < N`: `tiltedBlock_n_neutral_conv` (if `N ≤ 2m`, l. 2158--2166) or the crude bound
-  `tiltedBlock_crude` (if `2m < N`, hence `p < N/2`; l. 2167, "For `p < N/2`, the tilt is at most
+* `2 ≤ m < N`: `tiltedBlock_n_neutral_conv` (if `N ≤ 2m`, l. 2036–2044) or the crude bound
+  `tiltedBlock_crude` (if `2m < N`, hence `p < N/2`; l. 2045, "For `p < N/2`, the tilt is at most
   `e^{2tm}`, so the crude bound suffices") on `I`, and (eq:F(2)) on `Iᶜ`.
 
 This gives the per-cell bound `CellBoundRate` with the extra exponent `C_{β,t} N φ_β(γ)`
 (`MomentA3.exists_cellBound_rate`). Summing over the marked graphs and subtracting the lower bound
 of Proposition 4.1 (`MomentCells.exists_lintegral_gibbsMeasure_le_of_cellBound_rate`,
-l. 2167--2178) gives (eq:finalA3).
+l. 2045–2056) gives (eq:finalA3).
 
 The bounds are stated for a rate function `ω` satisfying `UpperRateHyp` in place of `ω_λ`; the
 rate `ω_λ = errorRate β λ` satisfies it (`upperRateHyp_errorRate`), and the instance is taken in
@@ -58,7 +58,7 @@ namespace MomentA3
 
 open UpperCellBound UpperAssembly MomentCells
 
-/-- **The per-cell bound for the `A₃` integrand, generic rate** (source l. 2125--2172): for a rate
+/-- **The per-cell bound for the `A₃` integrand, generic rate** (source l. 2003–2050): for a rate
 `ω` satisfying `UpperRateHyp` in place of `ω_λ`, the integral of `e^{t A₃} e^{-β F_λ}` over one
 marked cell satisfies `CellBoundRate` with an extra exponent `Cx N φ_β(γ)`. The constants depend
 only on `β`, `ω` and `t`. -/
@@ -101,7 +101,7 @@ theorem exists_cellBound_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) (hω 
   have hnt : Nontrivial (Fin N ⊕ Fin N) :=
     ⟨⟨Sum.inl ⟨0, hNpos⟩, Sum.inr ⟨0, hNpos⟩, Sum.inl_ne_inr⟩⟩
   rcases Nat.eq_zero_or_pos p with hp0 | hp1
-  · -- no marked pair: `A₃ = 0`, Corollary 2.3 and Lemma 3.5 on all points
+  · -- no marked pair: `A₃ = 0`, Corollary 2.3 and Lemma 3.4 on all points
     have hp₀0 : p₀ = 0 := by omega
     have hT0 : twiceIsolatedSet hN Z₀ = ∅ := by
       have h := card_twiceIsolatedSet (hN := hN) (Z := Z₀)
@@ -160,7 +160,7 @@ theorem exists_cellBound_rate {β : ℝ} (hβ : 2 < β) (ω : ℝ → ℝ) (hω 
     rwa [pairRestrict_pairRestrict] at this
   have hp₀' : p₀ + m - p + p = p₀ + m := by omega
   by_cases hmN' : m = N
-  · -- `Iᶜ = ∅`: the tilted Proposition 3.9 on all points
+  · -- `Iᶜ = ∅`: the tilted Proposition 3.8 on all points
     have hKeq : numComponents Z₀ = N := by omega
     have h3' : 3 ≤ Fintype.card (Fin N ⊕ Fin N) := by simp; omega
     have hcell := lintegral_markedCell_le_full_of_le hN (φ := nearestNeighbor Z₀)
@@ -294,7 +294,7 @@ end MomentA3
 
 open MomentCells
 
-/-- **Theorem 2, eq. (eq:finalA3), generic rate** (`prop:linear`, Step 4, source l. 2125--2178),
+/-- **Theorem 2, eq. (eq:finalA3), generic rate** (`prop:linear`, Step 4, source l. 2003–2056),
 for a rate `ω` satisfying `UpperRateHyp` in place of `ω_λ`: for `β > 2` and `t > 0` there are
 `C, λ₁ > 0`, depending only on `β`, `ω` and `t`, such that for `N ≥ 2`, `0 < λ < λ₁` and
 `2λ ≤ γ ≤ 1`, `𝔼_ℙ[e^{t A₃}] ≤ exp (C N (φ_β(γ) + ω(λ)) + C log (N + 1))`. -/

@@ -14,12 +14,12 @@ import TwoComponentCoulomb.Potential.SmearedKernel
 /-!
 # The ball-growth inequality keeping the electric energy (Theorem 2, Step 2)
 
-Source: l. 1995–2022. The proof of Proposition 2.2 (source l. 512–593) is
+Source `source/dipole-formation.tex`, l. 1872–1899. The proof of Proposition 2.2 (source l. 517–598) is
 repeated with the radii `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)` (`alphaRadius`) in place of `τᵢ`, and the
 electric energy `∫ |∇h_α|²` of the grown discs is kept instead of being dropped.
 
-Write `P_{ij}(a, b) = pairInteraction zᵢ zⱼ a b` and `E_α = electricField charge Z α`. The key
-identity is `∫ |E_α|² = 2π Σᵢⱼ dᵢ dⱼ P_{ij}(αᵢ, αⱼ)` (`integral_norm_sq_electricField`), so that
+Write `P_{ij}(a, b) = pairInteraction zᵢ zⱼ a b` and `E_α = electricField charge Z α`. The polarized
+change-of-radii identity (`energy_eq_ballGrowth`, Lemma 2.4) shows that
 `F_λ = ½ Σᵢⱼ dᵢ dⱼ P_{ij}(λ, λ) - N (g(λ) + κ)` becomes
 
 `F_λ = (1/4π) ∫ |E_α|² + ½ Σᵢⱼ dᵢ dⱼ [P_{ij}(λ, λ) - P_{ij}(αᵢ, αⱼ)] - N (g(λ) + κ)`.
@@ -37,7 +37,7 @@ The second term is then reduced exactly as in Proposition 2.2. Only `λ ≤ α�
   `F_λ ≥ (1/4π) ∫ |E_α|² + ½ (Σ_{𝒞} [dᵢ d_{φ₁ i} g_λ(zᵢ - z_{φ₁ i}) - dᵢ (dᵢ + d_{φ₁ i}) (g(αᵢ) + κ)
     - 64 (r̃₁ / ((r̃₂ ∧ γ) ∨ r̃₁))²] - Σ_{ℐ ∖ 𝒞} (g(αᵢ) + κ))`.
 * `integral_norm_sq_electricField_ge_alphaRadius` : the same inequality in the form displayed in
-  the source (l. 2014–2022), for `∫ |∇h_λ|²`, with the diagonal term `4Nπ g_λ(0)`.
+  the source (l. 1891–1899), for `∫ |∇h_λ|²`, with the diagonal term `4Nπ g_λ(0)`.
 -/
 
 @[expose] public section
@@ -50,7 +50,7 @@ variable {N : ℕ}
 
 section Electric
 
-/-- **The energy with the electric energy of grown discs** (source l. 2014, Lemma 2.4 and
+/-- **The energy with the electric energy of grown discs** (source l. 1891, Lemma 2.4 and
 eq. (eq:rewrF)): for radii `αᵢ > 0`,
 `F_λ = (1/4π) ∫ |∇h_α|² + ½ Σᵢⱼ dᵢ dⱼ [P_{ij}(λ, λ) - P_{ij}(αᵢ, αⱼ)] - N (g(λ) + κ)`. -/
 theorem energy_eq_electric_add_sum_pairInteraction_sub (Z : Fin N ⊕ Fin N → ℂ) (lam : ℝ)
@@ -59,6 +59,9 @@ theorem energy_eq_electric_add_sum_pairInteraction_sub (Z : Fin N ⊕ Fin N → 
       (1 / 2) * ∑ i, ∑ j, charge i * charge j *
         (pairInteraction (Z i) (Z j) lam lam - pairInteraction (Z i) (Z j) (α i) (α j)) -
       N * (logKernel (lam : ℂ) + kappa) := by
+  by_cases hlam : 0 < lam
+  · exact energy_eq_ballGrowth Z hlam α hα
+  -- The statement is total in `lam`. The source only uses the positive-radius branch.
   rw [integral_norm_sq_electricField (d := charge) (z := Z) hα (sum_charge_eq_zero N),
     energy_eq_half_sum_pairInteraction Z]
   simp_rw [mul_sub, Finset.sum_sub_distrib]
@@ -66,7 +69,7 @@ theorem energy_eq_electric_add_sum_pairInteraction_sub (Z : Fin N ⊕ Fin N → 
   field_simp
   ring
 
-/-- **Reduction to the overlapping grown discs** (source l. 527–545, (peq)–(disz)): for radii
+/-- **Reduction to the overlapping grown discs** (source l. 532–550, (peq)–(disz)): for radii
 `αᵢ ≥ λ > 0`, the diagonal terms of `½ Σᵢⱼ dᵢ dⱼ [P_{ij}(λ, λ) - P_{ij}(αᵢ, αⱼ)]` contribute
 `½ Σᵢ (g(λ) - g(αᵢ))`, and the pairs of disjoint grown discs cancel by Newton's theorem. -/
 theorem half_sum_pairInteraction_sub_eq_overlap (Z : Fin N ⊕ Fin N → ℂ) {lam : ℝ}
@@ -137,7 +140,7 @@ theorem bracket_eq_zero_of_add_le_of_le (hα : ∀ i, lam ≤ α i) {i j : Fin N
 
 include hN hlam in
 /-- **The pair sum is a sum over 2-cycle vertices**, for radii `λ ≤ αᵢ ≤ τᵢ` with
-`α_{φ₁ i} = αᵢ` on 2-cycles (source l. 527–557, (disz)–(trcomp), repeated with `α`). -/
+`α_{φ₁ i} = αᵢ` on 2-cycles (source l. 532–562, (disz)–(trcomp), repeated with `α`). -/
 theorem sum_overlap_eq_sum_twoCycle_of_le_tau (hα : ∀ i, lam ≤ α i)
     (hατ : ∀ i, α i ≤ tau hN lam Z i)
     (hsym : ∀ i, nearestNeighbor Z (nearestNeighbor Z i) = i → α (nearestNeighbor Z i) = α i) :
@@ -207,7 +210,7 @@ theorem sum_overlap_eq_sum_twoCycle_of_le_tau (hα : ∀ i, lam ≤ α i)
   ring
 
 include hN hlam in
-/-- **The ball-growth identity keeping the electric energy** (source l. 2014–2022), for radii
+/-- **The ball-growth identity keeping the electric energy** (source l. 1891–1899), for radii
 `λ ≤ αᵢ ≤ τᵢ` with `α_{φ₁ i} = αᵢ` on 2-cycles:
 `F_λ = (1/4π) ∫ |∇h_α|² - ½ Σᵢ (g(αᵢ) + κ)
   + ½ Σ_{φ₁(φ₁ i) = i} dᵢ d_{φ₁ i} [g_λ(z_{φ₁ i} - zᵢ) - g(αᵢ) - g₁((z_{φ₁ i} - zᵢ) / αᵢ)]`. -/
@@ -231,7 +234,7 @@ end CycleSum
 
 section Vertex
 
-/-- **The per-vertex estimate with the radii `α`** (source l. 2020, using `|g₁(w) - κ| ≤ |w|²`
+/-- **The per-vertex estimate with the radii `α`** (source l. 1897, using `|g₁(w) - κ| ≤ |w|²`
 and the displacement ratio `sq_norm_div_alphaRadius_le`): at a vertex `i` of a 2-cycle,
 `dᵢ d_{φ₁ i} g_λ(zᵢ - z_{φ₁ i}) - dᵢ d_{φ₁ i} (g(αᵢ) + κ) - 64 (r̃₁ / ((r̃₂ ∧ γ) ∨ r̃₁))² ≤
   dᵢ d_{φ₁ i} [g_λ(z_{φ₁ i} - zᵢ) - g(αᵢ) - g₁((z_{φ₁ i} - zᵢ) / αᵢ)]`. -/
@@ -272,7 +275,7 @@ end Vertex
 section Assembly
 
 /-- **The ball-growth inequality keeping the electric energy** (Theorem 2, Step 2, source
-l. 2014–2022), with the constant `64` in the quadratic error: for the radii
+l. 1891–1899), with the constant `64` in the quadratic error: for the radii
 `αᵢ = (τᵢ ∧ γ) ∨ r̃₁(zᵢ)`,
 `F_λ ≥ (1/4π) ∫ |∇h_α|² + ½ (Σ_{φ₁(φ₁ i) = i} [dᵢ d_{φ₁ i} g_λ(zᵢ - z_{φ₁ i})
     - dᵢ (dᵢ + d_{φ₁ i}) (g(αᵢ) + κ) - 64 (r̃₁(zᵢ) / ((r̃₂(zᵢ) ∧ γ) ∨ r̃₁(zᵢ)))²]
@@ -324,7 +327,7 @@ theorem energy_ge_electric_alphaRadius (hN : 2 ≤ N) {lam : ℝ} (hlam : 0 < la
   linarith
 
 /-- **The ball-growth inequality of Theorem 2, Step 2, in the form of the source**
-(l. 2014–2022): with `h_λ`, `h_α` the potentials of the discs of radii `λ` and `αᵢ`,
+(l. 1891–1899): with `h_λ`, `h_α` the potentials of the discs of radii `λ` and `αᵢ`,
 `∫ |∇h_λ|² ≥ ∫ |∇h_α|² + 2π (Σ_{φ₁(φ₁ i) = i} [dᵢ d_{φ₁ i} g_λ(zᵢ - z_{φ₁ i})
     - dᵢ (dᵢ + d_{φ₁ i}) (g(αᵢ) + κ) - 64 (r̃₁(zᵢ) / ((r̃₂(zᵢ) ∧ γ) ∨ r̃₁(zᵢ)))²]
     - Σ_{φ₁(φ₁ i) ≠ i} (g(αᵢ) + κ)) + 4Nπ g_λ(0)`. -/
