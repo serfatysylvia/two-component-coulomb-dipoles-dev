@@ -1,0 +1,63 @@
+# Author rulings
+
+These rulings record how the authors resolved the interpretive choices made in transcribing
+the paper into Lean, and their approval of the exact Lean statements. They are authoritative
+for how the frozen statements read the source. Rulings are interpretive: every ruling that
+shapes a frozen declaration was checked again when the authors approved that declaration's
+exact Lean text.
+
+Pinned source: `source/dipole-formation.tex`, SHA-256
+`f217f2cace961b1cbd66315ae194d10a72d054d34683823d5870deb818462b91`. Line numbers below and in
+the Lean docstrings refer to this file.
+
+The statements were first approved in exact Lean form for an earlier revision of the
+manuscript (R17, R18, 2026-10-10). When the authors revised the manuscript to the revision of
+2026-10-18, every frozen declaration was compared with it again: 28 were unchanged in meaning
+and were kept (R19), and four were replaced by statements of the revised version, approved in
+exact Lean form (R20, 2026-10-18). This repository contains only the statements of the version
+in `source/`.
+
+This file is condensed and edited for the release. Line references and declaration names refer
+to the version in `source/` (R21); parts of rulings that were later superseded are restated in
+their final form (R8, R9, R17, R18, R20); terminology is aligned with the README; and rulings R12a
+and R14, which concern neither a frozen statement nor a published proof, are omitted. The meaning of every ruling that
+shapes a frozen declaration is unchanged.
+
+Status values:
+
+- `EXPLICIT`: the authors answered this ruling directly.
+- `DEFAULT`: the authors did not single the ruling out; it was proposed by the formalizers and
+  accepted when the authors approved the overall transcription.
+
+"Tier A" is the first group of frozen declarations: the definitions used in the statements of
+Theorems 1 and 2, and the two theorems. "Tier B" is the second: the intermediate results
+Proposition 2.2, Corollary 2.3, Lemma 3.5, the joint upper bound of Propositions 3.9 and 3.10,
+and Proposition 4.1, with the definitions they need.
+
+| ID | Date | Status | Ruling |
+|---|---|---|---|
+| R1 | 2026-10-10 | DEFAULT | ℝ² is modelled by `ℂ`, with the Euclidean norm and Lebesgue `volume`. Configurations are `X Y : Fin N → ℂ`. The combined index type is `Fin N ⊕ Fin N`, with sign `+1` on `inl` (the xᵢ) and `−1` on `inr` (the yᵢ). |
+| R2 | 2026-10-10 | DEFAULT | δ_z^(a) is the normalized Lebesgue measure on the open ball `B(z, a)`. |
+| R3 | 2026-10-10 | DEFAULT | F_λ (eq:F3) is the bilinear expansion ½ Σ_{a,b} d_a d_b ∬ g(x−y) dδ_{z_a}^λ(x) dδ_{z_b}^λ(y) − N(g(λ)+κ), written with iterated real integrals. Wording amended by R15. |
+| R4 | 2026-10-10 | EXPLICIT | The nearest neighbour φ₁(i) is the nearest j ≠ i. Ties are broken by the smallest index, and likewise for φ_k. This differs from the source only on the null set excluded at l. 202. |
+| R5 | 2026-10-10 | DEFAULT | An isolated (neutral) dipole is a 2-cycle {i, φ₁ i} into which no other vertex points ("no tree attached"), whose two points have opposite signs. Equivalence with "forms a whole connected component" is a proved lemma. |
+| R6 | 2026-10-10 | EXPLICIT | Constants that the source defines only for β ≥ 2, namely 𝒵_β and ω_λ, take the hypothesis `2 ≤ β` as an argument. No values are invented for β < 2. λ enters only through Mathlib's total `log` and `rpow`. Addendum: R16. |
+| R7 | 2026-10-10 | EXPLICIT | Theorem 2's constants λ_β, M_β, C_β and c_{β,M} are uniform in the test function ξ₀: they are quantified before ξ₀. "Compactly supported" is kept as a premise because the source states it. |
+| R8 | 2026-10-10 | EXPLICIT | ‖∇ξ₀‖_{L^∞} in Theorem 2 is read as the Lipschitz constant of ξ₀: for every `L` with `LipschitzWith L ξ₀`, the bound holds with `L²` in place of ‖∇ξ₀‖²_∞. This is equivalent to using the best constant. |
+| R9 | 2026-10-10 | DEFAULT | Theorem 1 is one joint frozen theorem with a shared λ_β, which also serves its β = 2 bullet (as amended by R20(1)). Per-item results are internal theorems and are not frozen. |
+| R10 | 2026-10-10 | DEFAULT | Z and E_P are taken in `[0, ∞]` as `lintegral`s. Theorem 1 asserts `0 < Z < ∞`. A bound "log P(A) ≤ X" is stated as `P(A) ≤ exp X`. |
+| R11 | 2026-10-10 | DEFAULT | Every O_β(·), C_β and c_β becomes an explicit positive constant, quantified before N, λ, R and p₀ wherever the source asserts uniformity. |
+| R12b | 2026-10-10 | DEFAULT | The electric formulation (eq:rewrF, Lem 2.4, and Thm 2 Step 1) is implemented through the explicit radial potential of a disc charge. This is an implementation of the source's argument, not a deviation. |
+| R12c | 2026-10-10 | DEFAULT | The §3 machinery (Props 3.6–3.10) is proved once, in a weighted/tilted generality, and is consumed by both §3 and §5. This is architecture, not a deviation. |
+| R13 | 2026-10-10 | EXPLICIT | The Tier B results are frozen statements: Prop 2.2 `prop:mino2`, Cor 2.3 `coromino`, Lemma 3.5 `lemma:part nn`, Props 3.9 and 3.10 `prop:upper bound`, `prop:critical upper`, and Prop 4.1 `prop:lower bound`. |
+| R15 | 2026-10-10 | EXPLICIT | Amends the wording of R3. Each pair term of F_λ is the Bochner integral of g(x − y) against the product measure δ_{z_a}^λ ⊗ δ_{z_b}^λ, which matches the source's ∬. It equals the iterated integral by Fubini. |
+| R16 | 2026-10-10 | EXPLICIT | Addendum to R6. `smearedCharge` is total in its radius, and `smearedKernel`, `energy`, `partitionFunction` and `gibbsMeasure` are total in λ. For λ ≤ 0 they take Mathlib's default values: the uniform measure on an empty ball is the zero measure, so for example `energy 0 Z = −N·κ`. Every frozen theorem assumes `0 < λ`, so these values are never consumed. |
+| R17 | 2026-10-10 | EXPLICIT | **Tier A approved.** The exact Lean text of the 18 definitions used in the statements of Theorems 1–2 and of the two theorems, shown to the authors on 2026-10-10, was frozen in `TwoComponentCoulomb/Frozen/`. The 17 definitions other than the error rate are unchanged in the revision of 2026-10-18 (R19); the error rate and the two theorems were replaced by R20. Approved with it, and still in force: Theorem 2 does not restate `0 < Z < ∞`, which Theorem 1 proves; Theorem 2 caps λ_β < e⁻¹, which does not change the statement's strength. Freeze note: the identifier `M₀` is frozen as `M0`, because the anchor checker parses only ASCII identifiers. The elaborated declarations are identical to the approved draft (a `pp.all` comparison up to auxiliary proof names and whitespace). |
+| R18 | 2026-10-10 | EXPLICIT | **Tier B approved.** The exact Lean text of 7 definitions (`IsGeneric`, `secondNearestNeighbor`, `firstNeighborRadius`, `secondNeighborRadius`, `IsIsolatedPair`, `numComponents`, `reducedPartitionFunction`) and of the 5 Tier B results (R13), shown to the authors on 2026-10-10, was frozen in `TwoComponentCoulomb/Frozen/`. Approved with it: (1) the excluded null set (l. 202, 351) is `IsGeneric`: no coinciding points and no two distinct unordered pairs at equal distance; (2) superseded by R20(4); (3) in Prop 2.2 the sums over 𝒞_k and ℐ_k ∖ 𝒞_k are written as sums over 2-cycle vertices and over the remaining vertices; (4) Lemma 3.5 asserts 0 < 𝒦 < ∞; φ₂ and r₂ take `2 ≤ N`; μ_β([R/λ, ∞)) is written out as an integral; \|I^dip\| = 2p₀ is written `(isolatedDipoles Z).card = p₀`; (5) Prop 2.2 and Cor 2.3 hold for every λ > 0. The elaborated frozen declarations are identical to the approved draft (a `pp.all` comparison up to auxiliary proof names and whitespace). The joint upper bound of Propositions 3.9 and 3.10 was later replaced by R20. |
+| R19 | 2026-10-18 | EXPLICIT | **Revised manuscript adopted.** The authors supplied the revision of 2026-10-18 and asked that the formalization certify its statements. An independent refute-first audit (2026-10-18) compared every frozen declaration with it. 28 are unchanged in meaning: the 24 definitions other than the error rate ω_λ, and Prop 2.2 (`prop:mino2`, l. 440–449), Cor 2.3 (`coromino`, l. 458–470), Lemma 3.5 (`lemma:part nn`, l. 870–896) and Prop 4.1 (`prop:lower bound`, l. 1657–1668). The wording changes of the revised manuscript are equivalent to the frozen Lean: Lemma 3.5 now caps λ_β ≤ e⁻², which can always be met by shrinking the threshold, and states 0 < 𝒦 < ∞ explicitly; Proposition 2.2 and Corollary 2.3 (l. 441, 459) replace "in Λ^{2N}" by "satisfying the standing assumptions", which l. 110 defines in Λ. Four declarations change and were replaced (R20): the error rate `errorRate`, `theorem_1`, `theorem_2` and `proposition_3_9_and_3_10`. |
+| R20 | 2026-10-18 | EXPLICIT | **Revised statements approved.** The exact Lean text of `errorRate` (eq:defgammal, l. 221–229), `proposition_3_9_and_3_10` (`prop:upper bound`, `prop:critical upper`, Propositions 3.9 and 3.10, l. 1340–1363 and 1575–1584), `theorem_1` (`theorem:th1`, l. 220–266) and `theorem_2` (`prop:linear`, l. 294–302), shown to the authors on 2026-10-18, was frozen in `TwoComponentCoulomb/Frozen/{ErrorRate,Proposition39And310,Theorem1,Theorem2}.lean`. Approved with it: (1) Theorem 1's β = 2 bullet and the joint upper bound's critical bound use the shared threshold λ_β (equivalent to separate thresholds, since every bound holds for all smaller λ); (2) the joint upper bound's threshold satisfies λ_β ≤ e⁻², as the source states; (3) Theorem 1's β > 2 long-dipole bound has constants C₁ (threshold), c (gain), C₂ (error), following the source; (4) the events and weights of Props 3.9 and 3.10 use `longIsolatedDipoles` (length > R), which is the source's D_R. The independent statement audit found these statements faithful to the source. |
+| R21 | 2026-10-18 | EXPLICIT | **Public release.** The public repository contains the statements of the revision of 2026-10-18 only. Declarations follow its numbering: the statements approved in R20 as `errorRateV2`, `proposition_3_9_v2`, `theorem_1_v2`, `theorem_2_v2`, and the Lemma 3.6 statement approved in R18 as `lemma_3_5`, are named `errorRate`, `proposition_3_10`, `theorem_1`, `theorem_2` and `lemma_3_6`, with their files and supporting declarations renamed accordingly. The elaborated statements of all 32 frozen declarations are identical to the approved ones up to this renaming (a `pp.all` comparison). R24 replaced this source by the current version of the paper. |
+| R22 | 2026-10-22 | EXPLICIT | **Proposition 4.1 follows the paper.** The proof of Proposition 4.1 is the paper's (l. 1670–1804). Step 1: on each disc B(x_i, ϱ(x_i)), u_i solves the Neumann problem −Δu_i = 2π(δ_{x_i}^{(λ)} − δ_{y_i}^{(λ)}), ∂_νu_i = 0 (the screened dipoles); the pasted field E = Σ_i 1_{B(x_i,ϱ(x_i))}∇u_i satisfies (divE); the L² projection gives (hui); the decomposition u_i = g*δ_{x_i}^{(λ)} − g*δ_{y_i}^{(λ)} + v_i with (estimatesv) gives the energy of each disc and (majof). Step 2 uses J_β with the correction −A_β s²/r² and (align57); Step 3 bounds E_ℚ[φ_β(ϱ(x_1))]; for β = 2 the energy error of (majof) is CNt². |
+| R22a | 2026-10-22 | DEFAULT | Implementation of R22, in the manner of R12b. On a disc the Neumann problem has an explicit solution (image charge): u_i = g*δ_{x_i}^{(λ)} − g*δ_{y_i}^{(λ)} + v_i with v_i(z) = log\|1 − (z − x_i)·conj(y_i − x_i)/ϱ(x_i)²\|. The proof uses this solution. It checks the Neumann problem in weak form, ∫_B ∇ξ·∇u_i = 2π∫ξ d(δ_{x_i}^{(λ)} − δ_{y_i}^{(λ)}) for every C¹ function ξ, by the divergence theorem on a disc, instead of citing the solvability of the Neumann problem; and it proves (estimatesv) from the explicit v_i instead of citing elliptic regularity. This implements the paper's argument; it is not a deviation. |
+| R23 | 2026-10-22 | EXPLICIT | **Sections 2, 3 and 5 follow the written proofs.** The authors accepted the following local choices. In subsection 3.5 the pair corrections use a global kernel bound, the graph normalization is carried out in exponential form, and the neutral mass is bounded directly rather than through the displayed ratio. In Section 5 the numerical strengthening by λ^{1/40} and the little-o refinement at l. 2069 are not needed: the proofs establish the bounds consumed by the subsequent steps. These local choices do not change any frozen statement. |
+| R24 | 2026-10-22 | EXPLICIT | **Current source adopted.** The authors replaced the source by the current version of the paper. An independent audit compared all 32 frozen declarations with it and found that all match (`reviews/statement_audit_2026-10-22.md`). The elaborated statements are unchanged up to the renames `lemma_3_6` → `lemma_3_5` and `proposition_3_10` → `proposition_3_9_and_3_10`, with their files and supporting declarations renamed accordingly. |
